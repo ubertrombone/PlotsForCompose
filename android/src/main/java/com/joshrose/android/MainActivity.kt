@@ -1,16 +1,16 @@
 package com.joshrose.android
 
-import com.joshrose.common.App
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.MaterialTheme
+import com.joshrose.common.App
+import com.roseFinancials.lenafx.ui.theme.PlotsForComposeTheme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            PlotsForComposeTheme {
                 App()
             }
         }
