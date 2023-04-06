@@ -1,4 +1,4 @@
-package com.joshrose.common
+package com.joshrose.plotsforcompose
 
 actual fun getPlatformName(): String {
     return "Android"

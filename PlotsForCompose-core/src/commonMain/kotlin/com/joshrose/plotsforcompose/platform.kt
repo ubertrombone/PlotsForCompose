@@ -1,3 +1,3 @@
-package com.joshrose.common
+package com.joshrose.plotsforcompose
 
 expect fun getPlatformName(): String
