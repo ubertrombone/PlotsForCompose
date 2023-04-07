@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_VARIABLE")
+
 import org.jetbrains.compose.compose
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
@@ -5,10 +7,12 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("kotlin-parcelize")
 }
 
 group = "com.joshrose"
 version = "1.0-SNAPSHOT"
+
 
 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
 kotlin {
@@ -22,6 +26,8 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
+                api("com.arkivanov.decompose:decompose:${extra["decompose.version"] as String}")
+                api("com.arkivanov.decompose:extensions-compose-jetbrains:${extra["decompose.version"] as String}")
                 implementation(project(":PlotsForCompose-core"))
             }
         }
