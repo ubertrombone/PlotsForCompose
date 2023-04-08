@@ -10,6 +10,7 @@ version = "1.0-SNAPSHOT"
 dependencies {
     implementation(project(":common"))
     implementation("androidx.activity:activity-compose:1.7.0")
+    implementation(project(":PlotsForCompose-core"))
 }
 
 android {

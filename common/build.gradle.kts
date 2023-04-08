@@ -28,7 +28,7 @@ kotlin {
                 api(compose.material3)
                 api("com.arkivanov.decompose:decompose:${extra["decompose.version"] as String}")
                 api("com.arkivanov.decompose:extensions-compose-jetbrains:${extra["decompose.version"] as String}")
-                implementation(project(":PlotsForCompose-core"))
+                api(project(":PlotsForCompose-core"))
             }
         }
         val commonTest by getting {

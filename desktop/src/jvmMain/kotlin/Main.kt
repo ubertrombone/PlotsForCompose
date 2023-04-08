@@ -1,3 +1,4 @@
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -9,7 +10,7 @@ import com.arkivanov.essenty.parcelable.ParcelableContainer
 import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
 import com.joshrose.common.App
 import com.joshrose.common.root.DefaultRootComponent
-import com.roseFinancials.lenafx.ui.theme.PlotsForComposeTheme
+import com.joshrose.plotsforcompose.theme.PlotsForComposeTheme
 import java.awt.Dimension
 import java.io.File
 import java.io.ObjectInputStream
@@ -41,7 +42,10 @@ fun main() = application {
             windowParams.height.value.toInt()
         )
 
-        PlotsForComposeTheme {
+        PlotsForComposeTheme(
+            darkTheme = isSystemInDarkTheme(),
+            dynamicColor = false
+        ) {
             App(root)
         }
     }

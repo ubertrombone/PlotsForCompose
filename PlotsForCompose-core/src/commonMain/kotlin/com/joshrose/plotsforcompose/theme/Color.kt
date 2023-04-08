@@ -1,4 +1,4 @@
-package com.roseFinancials.lenafx.ui.theme
+package com.joshrose.plotsforcompose.theme
 
 import androidx.compose.ui.graphics.Color
 
