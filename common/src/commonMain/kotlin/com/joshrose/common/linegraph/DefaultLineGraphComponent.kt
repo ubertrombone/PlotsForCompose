@@ -6,7 +6,9 @@ class DefaultLineGraphComponent(
     componentContext: ComponentContext,
     private val onPrev: () -> Unit
 ): LineGraphComponent, ComponentContext by componentContext {
-    override fun onBackClicked() {
-        onPrev
-    }
+
+    override val lineGraphName = "Line Graph"
+    override val isBackEnabled = true
+
+    override fun onBackClicked() { onPrev() }
 }

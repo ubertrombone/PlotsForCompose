@@ -11,7 +11,6 @@ import com.joshrose.common.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.linegraph.LineGraphComponent
 import com.joshrose.common.root.RootComponent.Child.HomeChild
 import com.joshrose.common.root.RootComponent.Child.LineGraphChild
-import kotlinx.coroutines.flow.MutableStateFlow
 
 class DefaultRootComponent(
     componentContext: ComponentContext
@@ -36,10 +35,9 @@ class DefaultRootComponent(
     private fun home(componentContext: ComponentContext): HomeComponent =
         DefaultHomeComponent(
             componentContext = componentContext,
-            selectedChildId = MutableStateFlow(null),
             onChildSelected = {
                 when (it) {
-                    0 -> navigation.push(Config.LineGraph)
+                    "Line Graph" -> navigation.push(Config.LineGraph)
                 }
             }
         )
@@ -47,16 +45,18 @@ class DefaultRootComponent(
     private fun lineGraph(componentContext: ComponentContext): LineGraphComponent =
         DefaultLineGraphComponent(
             componentContext = componentContext,
-            onPrev = {
-                navigation.pop()
-            }
+            onPrev = { navigation.pop { isSuccess -> println(isSuccess) } }
         )
+
+    override fun onBackPressed() {
+        navigation.pop { isSuccess -> println(isSuccess) }
+    }
 
     private sealed class Config: Parcelable {
         @Parcelize
         object Home: Config()
 
         @Parcelize
-        object LineGraph: Config() // id = 0
+        object LineGraph: Config()
     }
 }

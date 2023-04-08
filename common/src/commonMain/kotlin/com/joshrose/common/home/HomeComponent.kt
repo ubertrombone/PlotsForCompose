@@ -4,17 +4,11 @@ import com.arkivanov.decompose.value.Value
 
 interface HomeComponent {
 
-    val children: Value<Children>
+    val children: Value<Names>
+    val homeName: String
+    val isBackEnabled: Boolean
 
-    fun onChildClicked(id: Int)
+    fun onChildClicked(name: String)
 
-    data class Children(
-        val children: List<Child>,
-        val selectedChildId: Int?
-    )
-
-    data class Child(
-        val id: Int,
-        val name: String
-    )
+    data class Names(val name: List<String>)
 }
