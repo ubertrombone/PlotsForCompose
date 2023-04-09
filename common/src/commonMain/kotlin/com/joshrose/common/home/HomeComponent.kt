@@ -1,14 +1,14 @@
 package com.joshrose.common.home
 
 import com.arkivanov.decompose.value.Value
+import com.joshrose.common.util.ScreenNames
 
 interface HomeComponent {
 
     val children: Value<Names>
-    val homeName: String
-    val isBackEnabled: Boolean
+    val screenProperties: ScreenNames
 
-    fun onChildClicked(name: String)
+    fun onChildClicked(name: ScreenNames)
 
-    data class Names(val name: List<String>)
+    data class Names(val name: List<ScreenNames>)
 }

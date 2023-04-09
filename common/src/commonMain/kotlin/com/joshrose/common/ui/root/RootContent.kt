@@ -13,6 +13,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.root.RootComponent
 import com.joshrose.common.ui.home.HomeContent
 import com.joshrose.common.ui.linegraph.LineGraphContent
+import com.joshrose.common.util.ScreenNames.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,12 +22,12 @@ fun RootContent(
     modifier: Modifier = Modifier
 ) {
     val childStack by component.childStack.subscribeAsState()
-    var title by remember { mutableStateOf("Plots For Compose") }
+    var title by remember { mutableStateOf(HOME.title) }
     var isBackEnabled by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = title,
@@ -43,7 +44,7 @@ fun RootContent(
                         }
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
@@ -57,14 +58,14 @@ fun RootContent(
             ) {
                 when (val child = it.instance) {
                     is RootComponent.Child.HomeChild -> {
-                        title = child.component.homeName
-                        isBackEnabled = child.component.isBackEnabled
+                        title = child.component.screenProperties.title
+                        isBackEnabled = child.component.screenProperties.isBackEnabled
                         HomeContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
 
                     is RootComponent.Child.LineGraphChild -> {
-                        title = child.component.lineGraphName
-                        isBackEnabled = child.component.isBackEnabled
+                        title = child.component.screenProperties.title
+                        isBackEnabled = child.component.screenProperties.isBackEnabled
                         LineGraphContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
                 }

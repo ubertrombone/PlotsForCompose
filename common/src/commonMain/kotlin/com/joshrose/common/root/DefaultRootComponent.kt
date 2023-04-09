@@ -11,6 +11,7 @@ import com.joshrose.common.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.linegraph.LineGraphComponent
 import com.joshrose.common.root.RootComponent.Child.HomeChild
 import com.joshrose.common.root.RootComponent.Child.LineGraphChild
+import com.joshrose.common.util.ScreenNames.*
 
 class DefaultRootComponent(
     componentContext: ComponentContext
@@ -37,7 +38,8 @@ class DefaultRootComponent(
             componentContext = componentContext,
             onChildSelected = {
                 when (it) {
-                    "Line Graph" -> navigation.push(Config.LineGraph)
+                    HOME -> throw IllegalStateException("Home is not a child of Home")
+                    LINE_GRAPH -> navigation.push(Config.LineGraph)
                 }
             }
         )

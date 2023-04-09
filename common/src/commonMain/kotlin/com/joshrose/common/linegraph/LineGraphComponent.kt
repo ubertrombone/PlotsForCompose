@@ -1,7 +1,8 @@
 package com.joshrose.common.linegraph
 
+import com.joshrose.common.util.ScreenNames
+
 interface LineGraphComponent {
-    val lineGraphName: String
-    val isBackEnabled: Boolean
+    val screenProperties: ScreenNames
     fun onBackClicked()
 }

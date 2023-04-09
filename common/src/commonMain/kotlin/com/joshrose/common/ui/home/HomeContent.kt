@@ -22,7 +22,7 @@ internal fun HomeContent(component: HomeComponent, modifier: Modifier = Modifier
     LazyColumn(modifier = modifier.fillMaxSize()) {
         items(childrenList.name) { child ->
             Text(
-                text = child,
+                text = child.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable { component.onChildClicked(name = child) }
