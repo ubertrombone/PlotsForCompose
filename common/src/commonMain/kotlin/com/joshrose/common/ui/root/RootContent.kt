@@ -8,8 +8,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.root.RootComponent
@@ -23,7 +21,7 @@ fun RootContent(
     modifier: Modifier = Modifier
 ) {
     val childStack by component.childStack.subscribeAsState()
-    var title by remember { mutableStateOf("PlotsForCompose") }
+    var title by remember { mutableStateOf("Plots For Compose") }
     var isBackEnabled by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -32,8 +30,7 @@ fun RootContent(
                 title = {
                     Text(
                         text = title,
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 20.sp
+                        style = MaterialTheme.typography.titleLarge
                     )
                 },
                 navigationIcon = {
@@ -64,6 +61,7 @@ fun RootContent(
                         isBackEnabled = child.component.isBackEnabled
                         HomeContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
+
                     is RootComponent.Child.LineGraphChild -> {
                         title = child.component.lineGraphName
                         isBackEnabled = child.component.isBackEnabled
