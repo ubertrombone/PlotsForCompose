@@ -28,7 +28,7 @@ fun main() = application {
         )
     }
 
-    val windowParams = DpSize(1250.dp, 750.dp)
+    val windowParams = DpSize(750.dp, 750.dp)
     val windowState = rememberWindowState(size = windowParams)
 
     Window(
