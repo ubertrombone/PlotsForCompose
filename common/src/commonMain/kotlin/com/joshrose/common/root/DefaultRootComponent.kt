@@ -14,7 +14,7 @@ import com.joshrose.common.root.RootComponent.Child.LineGraphChild
 
 class DefaultRootComponent(
     componentContext: ComponentContext
-): RootComponent, ComponentContext by componentContext {
+) : RootComponent, ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Config>()
 
@@ -45,18 +45,16 @@ class DefaultRootComponent(
     private fun lineGraph(componentContext: ComponentContext): LineGraphComponent =
         DefaultLineGraphComponent(
             componentContext = componentContext,
-            onPrev = { navigation.pop { isSuccess -> println(isSuccess) } }
+            onPrev = { navigation.pop() }
         )
 
-    override fun onBackPressed() {
-        navigation.pop { isSuccess -> println(isSuccess) }
-    }
+    override fun onBackPressed() { navigation.pop() }
 
-    private sealed class Config: Parcelable {
+    private sealed class Config : Parcelable {
         @Parcelize
-        object Home: Config()
+        object Home : Config()
 
         @Parcelize
-        object LineGraph: Config()
+        object LineGraph : Config()
     }
 }

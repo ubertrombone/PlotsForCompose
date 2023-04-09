@@ -11,7 +11,7 @@ interface RootComponent {
     fun onBackPressed()
 
     sealed class Child {
-        class HomeChild(val component: HomeComponent): Child()
-        class LineGraphChild(val component: LineGraphComponent): Child()
+        class HomeChild(val component: HomeComponent) : Child()
+        class LineGraphChild(val component: LineGraphComponent) : Child()
     }
 }

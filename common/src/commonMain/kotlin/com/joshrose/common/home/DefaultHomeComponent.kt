@@ -8,7 +8,7 @@ import com.joshrose.common.home.HomeComponent.Names
 class DefaultHomeComponent(
     componentContext: ComponentContext,
     private val onChildSelected: (name: String) -> Unit
-): HomeComponent, ComponentContext by componentContext {
+) : HomeComponent, ComponentContext by componentContext {
 
     private val _children = MutableValue(
         Names(
@@ -22,5 +22,7 @@ class DefaultHomeComponent(
     override val homeName = "PlotsForCompose"
     override val isBackEnabled = false
 
-    override fun onChildClicked(name: String) { onChildSelected(name) }
+    override fun onChildClicked(name: String) {
+        onChildSelected(name)
+    }
 }
