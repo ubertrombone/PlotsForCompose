@@ -3,7 +3,7 @@ package com.joshrose.common.components.root
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import com.joshrose.common.components.home.HomeComponent
-import com.joshrose.common.components.linegraph.LineGraphComponent
+import com.joshrose.common.components.graph.LineGraphComponent
 
 interface RootComponent {
     val childStack: Value<ChildStack<*, Child>>

@@ -7,8 +7,7 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.joshrose.common.components.home.DefaultHomeComponent
 import com.joshrose.common.components.home.HomeComponent
-import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
-import com.joshrose.common.components.linegraph.LineGraphComponent
+import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.components.root.RootComponent.Child.HomeChild
 import com.joshrose.common.components.root.RootComponent.Child.LineGraphChild
 import com.joshrose.common.util.ScreenNames.*
@@ -45,10 +44,7 @@ class DefaultRootComponent(
         )
 
     private fun lineGraph(componentContext: ComponentContext): LineGraphComponent =
-        DefaultLineGraphComponent(
-            componentContext = componentContext,
-            onPrev = { navigation.pop() }
-        )
+        LineGraphComponent(componentContext = componentContext)
 
     override fun onBackPressed() { navigation.pop() }
 
