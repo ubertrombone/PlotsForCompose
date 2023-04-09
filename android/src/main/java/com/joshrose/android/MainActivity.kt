@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import com.arkivanov.decompose.defaultComponentContext
 import com.joshrose.common.App
-import com.joshrose.common.root.DefaultRootComponent
+import com.joshrose.common.components.root.DefaultRootComponent
 import com.joshrose.plotsforcompose.theme.PlotsForComposeTheme
 
 class MainActivity : ComponentActivity() {

@@ -1,16 +1,16 @@
-package com.joshrose.common.root
+package com.joshrose.common.components.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.joshrose.common.home.DefaultHomeComponent
-import com.joshrose.common.home.HomeComponent
-import com.joshrose.common.linegraph.DefaultLineGraphComponent
-import com.joshrose.common.linegraph.LineGraphComponent
-import com.joshrose.common.root.RootComponent.Child.HomeChild
-import com.joshrose.common.root.RootComponent.Child.LineGraphChild
+import com.joshrose.common.components.home.DefaultHomeComponent
+import com.joshrose.common.components.home.HomeComponent
+import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
+import com.joshrose.common.components.linegraph.LineGraphComponent
+import com.joshrose.common.components.root.RootComponent.Child.HomeChild
+import com.joshrose.common.components.root.RootComponent.Child.LineGraphChild
 import com.joshrose.common.util.ScreenNames.*
 
 class DefaultRootComponent(

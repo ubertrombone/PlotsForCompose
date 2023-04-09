@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.joshrose.common.root.RootComponent
+import com.joshrose.common.components.root.RootComponent
 import com.joshrose.common.ui.home.HomeContent
 import com.joshrose.common.ui.linegraph.LineGraphContent
 import com.joshrose.common.util.ScreenNames.*

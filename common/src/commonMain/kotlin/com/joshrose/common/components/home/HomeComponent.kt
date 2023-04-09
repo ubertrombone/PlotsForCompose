@@ -1,4 +1,4 @@
-package com.joshrose.common.home
+package com.joshrose.common.components.home
 
 import com.arkivanov.decompose.value.Value
 import com.joshrose.common.util.ScreenNames

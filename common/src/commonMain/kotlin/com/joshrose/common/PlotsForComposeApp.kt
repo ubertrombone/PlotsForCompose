@@ -5,7 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.joshrose.common.root.RootComponent
+import com.joshrose.common.components.root.RootComponent
 import com.joshrose.common.ui.root.RootContent
 
 @Composable

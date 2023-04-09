@@ -9,7 +9,7 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.arkivanov.essenty.parcelable.ParcelableContainer
 import com.arkivanov.essenty.statekeeper.StateKeeperDispatcher
 import com.joshrose.common.App
-import com.joshrose.common.root.DefaultRootComponent
+import com.joshrose.common.components.root.DefaultRootComponent
 import com.joshrose.plotsforcompose.theme.PlotsForComposeTheme
 import java.awt.Dimension
 import java.io.File

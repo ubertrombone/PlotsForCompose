@@ -1,4 +1,4 @@
-package com.joshrose.common.linegraph
+package com.joshrose.common.components.linegraph
 
 import com.arkivanov.decompose.ComponentContext
 import com.joshrose.common.util.ScreenNames.LINE_GRAPH

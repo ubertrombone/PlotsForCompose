@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.joshrose.common.home.HomeComponent
+import com.joshrose.common.components.home.HomeComponent
 
 @Composable
 internal fun HomeContent(component: HomeComponent, modifier: Modifier = Modifier) {

@@ -1,9 +1,9 @@
-package com.joshrose.common.home
+package com.joshrose.common.components.home
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
-import com.joshrose.common.home.HomeComponent.Names
+import com.joshrose.common.components.home.HomeComponent.Names
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.*
 
