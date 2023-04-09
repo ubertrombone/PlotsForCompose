@@ -35,7 +35,7 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         state = windowState,
         resizable = true,
-        title = "PlotsForKotlin"
+        title = "Plots for Kotlin"
     ) {
         window.minimumSize = Dimension(
             windowParams.width.value.toInt(),
