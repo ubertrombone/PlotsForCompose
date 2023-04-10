@@ -42,8 +42,9 @@ data class LabelsConfig(
 object LabelsConfigDefaults {
 
     /**
-     * Creates a [LabelsConfig] for basic label implementations using a light theme.
+     * Creates a [LabelsConfig] for basic label implementations.
      *
+     * @param isDarkTheme true if labels should be a dark theme.
      * @param fontColor label font color.
      * @param textStyle style of label text. To use this default style but update one or more of the properties, use the copy method.
      * @param xOffset value to offset each label along the x-axis.
@@ -60,51 +61,8 @@ object LabelsConfigDefaults {
      *  offset labels from the adjacent axis.
      *  @return the resulting [LabelsConfig] to be used with an axis configuration.
      */
-    fun lightThemeLabelsConfigDefaults(
-        fontColor: Color = md_theme_light_primary,
-        textStyle: TextStyle = Typography.headlineSmall,
-        xOffset: Dp = 0.dp,
-        yOffset: Dp = 0.dp,
-        rotation: Int = 0,
-        breaks: Int = 5,
-        isBaseZero: Boolean = false,
-        minValueAdjustment: Multiplier = Multiplier(factor = 0f),
-        maxValueAdjustment: Multiplier = Multiplier(factor = 0f),
-        rangeAdjustment: Multiplier = Multiplier(factor = 0f)
-    ): LabelsConfig =
-        LabelsConfig(
-            fontColor = fontColor,
-            textStyle = textStyle,
-            xOffset = xOffset,
-            yOffset = yOffset,
-            rotation = rotation,
-            breaks = breaks,
-            isBaseZero = isBaseZero,
-            minValueAdjustment = minValueAdjustment,
-            maxValueAdjustment = maxValueAdjustment,
-            rangeAdjustment = rangeAdjustment
-        )
-
-    /**
-     * Creates a [LabelsConfig] for basic label implementations using a dark theme.
-     *
-     * @param fontColor label font color.
-     * @param textStyle style of label text. To use this default style but update one or more of the properties, use the copy method.
-     * @param xOffset value to offset each label along the x-axis.
-     * @param yOffset value to offset each label along the y-axis.
-     * @param rotation degrees to rotate the labels. When rotated, the axis will automatically
-     *  center y-axis labels according to their bottom right point and
-     *  x-axis labels according to their top left point (from 0 degrees).
-     *  Using negatives values is recommended when rotating y labels.
-     *  @param breaks the number of labels to apply to the axis.
-     *  @param isBaseZero true if axis should start at 0. Defaults to false.
-     *  @param minValueAdjustment the amount as a [Multiplier] to adjust the given data's minimum value.
-     *  @param maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
-     *  @param rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
-     *  offset labels from the adjacent axis.
-     *  @return the resulting [LabelsConfig] to be used with an axis configuration.
-     */
-    fun darkThemeLabelsConfigDefaults(
+    fun labelsConfigDefaults(
+        isDarkTheme: Boolean,
         fontColor: Color = md_theme_dark_primary,
         textStyle: TextStyle = Typography.headlineSmall,
         xOffset: Dp = 0.dp,
@@ -117,7 +75,7 @@ object LabelsConfigDefaults {
         rangeAdjustment: Multiplier = Multiplier(factor = 0f)
     ): LabelsConfig =
         LabelsConfig(
-            fontColor = fontColor,
+            fontColor = if (isDarkTheme) fontColor else md_theme_light_primary,
             textStyle = textStyle,
             xOffset = xOffset,
             yOffset = yOffset,

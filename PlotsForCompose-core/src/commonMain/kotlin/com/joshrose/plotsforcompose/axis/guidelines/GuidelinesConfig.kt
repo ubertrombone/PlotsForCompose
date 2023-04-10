@@ -28,44 +28,24 @@ data class GuidelinesConfig(
 object GuidelinesConfigDefaults {
 
     /**
-     * Creates a [GuidelinesConfig] for basic guideline implementations using a light theme.
+     * Creates a [GuidelinesConfig] for basic guideline implementations.
      *
+     * @param isDarkTheme true if guidelines should be a dark theme.
      * @param lineColor the guideline color.
      * @param alpha the guideline alpha.
      * @param strokeWidth the guideline line width.
      * @param padding the padding to offset the start of the guideline from the axis.
      * @return the resulting [GuidelinesConfig] to be used with an axis configuration.
      */
-    fun lightThemeGuidelinesConfigDefaults(
-        lineColor: Color = md_theme_light_onBackground,
-        alpha: Multiplier = Multiplier(factor = .1f),
-        strokeWidth: Dp = 2.dp,
-        padding: Dp = 25.dp
-    ): GuidelinesConfig =
-        GuidelinesConfig(
-            lineColor = lineColor,
-            alpha = alpha,
-            strokeWidth = strokeWidth,
-            padding = padding
-        )
-
-    /**
-     * Creates a [GuidelinesConfig] for basic guideline implementations using a dark theme.
-     *
-     * @param lineColor the guideline color.
-     * @param alpha the guideline alpha.
-     * @param strokeWidth the guideline line width.
-     * @param padding the padding to offset the start of the guideline from the axis.
-     * @return the resulting [GuidelinesConfig] to be used with an axis configuration.
-     */
-    fun darkThemeGuidelinesConfigDefaults(
+    fun guidelinesConfigDefaults(
+        isDarkTheme: Boolean,
         lineColor: Color = md_theme_dark_onBackground,
         alpha: Multiplier = Multiplier(factor = .1f),
         strokeWidth: Dp = 2.dp,
         padding: Dp = 25.dp
     ): GuidelinesConfig =
         GuidelinesConfig(
-            lineColor = lineColor,
+            lineColor = if (isDarkTheme) lineColor else md_theme_light_onBackground,
             alpha = alpha,
             strokeWidth = strokeWidth,
             padding = padding
