@@ -5,7 +5,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.util.Multiplier
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
-import com.joshrose.plotsforcompose.theme.md_theme_light_onBackground
 
 /**
  * This class defines all available guidelines properties.
@@ -30,7 +29,6 @@ object GuidelinesConfigDefaults {
     /**
      * Creates a [GuidelinesConfig] for basic guideline implementations.
      *
-     * @param isDarkTheme true if guidelines should be a dark theme.
      * @param lineColor the guideline color.
      * @param alpha the guideline alpha.
      * @param strokeWidth the guideline line width.
@@ -38,14 +36,13 @@ object GuidelinesConfigDefaults {
      * @return the resulting [GuidelinesConfig] to be used with an axis configuration.
      */
     fun guidelinesConfigDefaults(
-        isDarkTheme: Boolean,
         lineColor: Color = md_theme_dark_onBackground,
         alpha: Multiplier = Multiplier(factor = .1f),
         strokeWidth: Dp = 2.dp,
         padding: Dp = 25.dp
     ): GuidelinesConfig =
         GuidelinesConfig(
-            lineColor = if (isDarkTheme) lineColor else md_theme_light_onBackground,
+            lineColor = lineColor,
             alpha = alpha,
             strokeWidth = strokeWidth,
             padding = padding

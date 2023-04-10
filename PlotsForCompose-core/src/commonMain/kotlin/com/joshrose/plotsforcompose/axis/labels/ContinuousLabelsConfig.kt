@@ -7,10 +7,9 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.util.Multiplier
 import com.joshrose.plotsforcompose.theme.Typography
 import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
-import com.joshrose.plotsforcompose.theme.md_theme_light_primary
 
 /**
- * This class defines all available label properties.
+ * This class defines all available continuous label properties.
  *
  * @property fontColor the [Color] of the labels.
  * @property textStyle the [TextStyle] of the labels.
@@ -42,9 +41,8 @@ data class ContinuousLabelsConfig(
 object ContinuousLabelsConfigDefaults {
 
     /**
-     * Creates a [ContinuousLabelsConfig] for basic label implementations.
+     * Creates a [ContinuousLabelsConfig] for basic continuous label implementations.
      *
-     * @param isDarkTheme true if labels should be a dark theme.
      * @param fontColor label font color.
      * @param textStyle style of label text. To use this default style but update one or more of the properties, use the copy method.
      * @param xOffset value to offset each label along the x-axis.
@@ -62,7 +60,6 @@ object ContinuousLabelsConfigDefaults {
      *  @return the resulting [ContinuousLabelsConfig] to be used with an axis configuration.
      */
     fun continuousLabelsConfigDefaults(
-        isDarkTheme: Boolean,
         fontColor: Color = md_theme_dark_primary,
         textStyle: TextStyle = Typography.headlineSmall,
         xOffset: Dp = 0.dp,
@@ -75,7 +72,7 @@ object ContinuousLabelsConfigDefaults {
         rangeAdjustment: Multiplier = Multiplier(factor = 0f)
     ): ContinuousLabelsConfig =
         ContinuousLabelsConfig(
-            fontColor = if (isDarkTheme) fontColor else md_theme_light_primary,
+            fontColor = fontColor,
             textStyle = textStyle,
             xOffset = xOffset,
             yOffset = yOffset,
