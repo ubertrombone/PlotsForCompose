@@ -25,7 +25,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_light_primary
  * offset labels from the adjacent axis.
  * @constructor Creates a configuration for axis labels.
  */
-data class LabelsConfig(
+data class ContinuousLabelsConfig(
     val fontColor: Color,
     val textStyle: TextStyle,
     val xOffset: Dp,
@@ -38,11 +38,11 @@ data class LabelsConfig(
     val rangeAdjustment: Multiplier
 )
 
-/** Contains default values used for implementations of [LabelsConfig] */
-object LabelsConfigDefaults {
+/** Contains default values used for implementations of [ContinuousLabelsConfig] */
+object ContinuousLabelsConfigDefaults {
 
     /**
-     * Creates a [LabelsConfig] for basic label implementations.
+     * Creates a [ContinuousLabelsConfig] for basic label implementations.
      *
      * @param isDarkTheme true if labels should be a dark theme.
      * @param fontColor label font color.
@@ -59,9 +59,9 @@ object LabelsConfigDefaults {
      *  @param maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
      *  @param rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
      *  offset labels from the adjacent axis.
-     *  @return the resulting [LabelsConfig] to be used with an axis configuration.
+     *  @return the resulting [ContinuousLabelsConfig] to be used with an axis configuration.
      */
-    fun labelsConfigDefaults(
+    fun continuousLabelsConfigDefaults(
         isDarkTheme: Boolean,
         fontColor: Color = md_theme_dark_primary,
         textStyle: TextStyle = Typography.headlineSmall,
@@ -73,8 +73,8 @@ object LabelsConfigDefaults {
         minValueAdjustment: Multiplier = Multiplier(factor = 0f),
         maxValueAdjustment: Multiplier = Multiplier(factor = 0f),
         rangeAdjustment: Multiplier = Multiplier(factor = 0f)
-    ): LabelsConfig =
-        LabelsConfig(
+    ): ContinuousLabelsConfig =
+        ContinuousLabelsConfig(
             fontColor = if (isDarkTheme) fontColor else md_theme_light_primary,
             textStyle = textStyle,
             xOffset = xOffset,

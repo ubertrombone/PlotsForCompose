@@ -2,8 +2,8 @@ package com.joshrose.plotsforcompose.axis.continuous
 
 import com.joshrose.plotsforcompose.axis.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.guidelines.GuidelinesConfigDefaults
-import com.joshrose.plotsforcompose.axis.labels.LabelsConfig
-import com.joshrose.plotsforcompose.axis.labels.LabelsConfigDefaults
+import com.joshrose.plotsforcompose.axis.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.labels.ContinuousLabelsConfigDefaults
 
 /**
  * This class defines all available continuous axis properties.
@@ -12,7 +12,7 @@ import com.joshrose.plotsforcompose.axis.labels.LabelsConfigDefaults
  * @property showLabels if true, labels for the axis will be drawn.
  * @property showGuidelines if true, guidelines will be drawn.
  * @property guidelines provides [GuidelinesConfig].
- * @property labels provides [LabelsConfig].
+ * @property labels provides [ContinuousLabelsConfig].
  * @constructor Creates a configuration for a continuous axis.
  */
 data class ContinuousAxisConfig(
@@ -20,7 +20,7 @@ data class ContinuousAxisConfig(
     val showLabels: Boolean,
     val showGuidelines: Boolean,
     val guidelines: GuidelinesConfig,
-    val labels: LabelsConfig
+    val labels: ContinuousLabelsConfig
 )
 
 /** Contains default values used for implementations of [ContinuousAxisConfig] */
@@ -46,6 +46,6 @@ object ContinuousAxisConfigDefaults {
             showLabels = showLabels,
             showGuidelines = showGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults(isDarkTheme),
-            labels = LabelsConfigDefaults.labelsConfigDefaults(isDarkTheme)
+            labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults(isDarkTheme)
         )
 }
