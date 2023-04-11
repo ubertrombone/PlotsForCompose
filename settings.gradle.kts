@@ -20,4 +20,7 @@ pluginManagement {
 
 rootProject.name = "PlotsForCompose"
 
-include(":android", ":desktop", ":common", ":PlotsForCompose-core")
+include(":plots-for-compose")
+include(":app:common")
+include(":app:android")
+include(":app:desktop")
