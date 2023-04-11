@@ -1,10 +1,10 @@
-package com.joshrose.plotsforcompose.axis.labels
+package com.joshrose.plotsforcompose.axis.config.labels
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.util.Multiplier
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.theme.Typography
 import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
 

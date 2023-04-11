@@ -1,9 +1,9 @@
-package com.joshrose.plotsforcompose.axis.guidelines
+package com.joshrose.plotsforcompose.axis.config.guidelines
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.util.Multiplier
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 
 /**

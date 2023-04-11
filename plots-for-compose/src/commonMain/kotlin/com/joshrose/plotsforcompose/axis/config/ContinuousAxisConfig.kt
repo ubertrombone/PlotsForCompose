@@ -1,9 +1,9 @@
-package com.joshrose.plotsforcompose.axis
+package com.joshrose.plotsforcompose.axis.config
 
-import com.joshrose.plotsforcompose.axis.guidelines.GuidelinesConfig
-import com.joshrose.plotsforcompose.axis.guidelines.GuidelinesConfigDefaults
-import com.joshrose.plotsforcompose.axis.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.labels.ContinuousLabelsConfigDefaults
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
+import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 
 /**
  * This class defines all available continuous axis properties.

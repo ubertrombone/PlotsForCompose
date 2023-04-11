@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.axis.util
+package com.joshrose.plotsforcompose.axis.config.util
 
 /**
  * A wrapper for [Float].
