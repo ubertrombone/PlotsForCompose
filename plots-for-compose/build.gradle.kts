@@ -1,4 +1,4 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
+@file:Suppress("UNUSED_VARIABLE")
 
 plugins {
     kotlin("multiplatform")
@@ -9,7 +9,6 @@ plugins {
 group = "com.joshrose"
 version = "1.0-SNAPSHOT"
 
-@OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
 kotlin {
     android()
     jvm("desktop") {
@@ -40,29 +39,9 @@ kotlin {
 android {
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = 26
-        targetSdk = 33
-    }
+    defaultConfig.minSdk = 26
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.1"
-    }
-}
-
-compose.desktop {
-    application {
-        mainClass = "MainKt"
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "PlotsForCompose"
-            packageVersion = "1.0.0"
-        }
     }
 }
