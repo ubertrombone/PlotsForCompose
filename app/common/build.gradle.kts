@@ -21,8 +21,8 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
-                api("com.arkivanov.decompose:decompose:${extra["decompose.version"] as String}")
-                api("com.arkivanov.decompose:extensions-compose-jetbrains:${extra["decompose.version"] as String}")
+                api(deps.decompose.decompose)
+                api(deps.decompose.extensionsComposeJetbrains)
                 api(project(":plots-for-compose"))
             }
         }
@@ -33,13 +33,8 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.9.0")
-            }
-        }
-        val androidTest by getting {
-            dependencies {
-                implementation("junit:junit:4.13.2")
+                api(deps.androidx.activity.activityCompose)
+                api(deps.androidx.core.coreKtx)
             }
         }
         val desktopMain by getting {

@@ -8,9 +8,9 @@ group = "com.joshrose"
 version = "1.0-SNAPSHOT"
 
 dependencies {
-    implementation(project(":app:common"))
-    implementation("androidx.activity:activity-compose:1.7.0")
-    implementation(project(":plots-for-compose"))
+    api(project(":app:common"))
+    api(project(":plots-for-compose"))
+    api(deps.androidx.activity.activityCompose)
 }
 
 android {

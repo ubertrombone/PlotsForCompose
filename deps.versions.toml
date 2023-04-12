@@ -1,0 +1,13 @@
+[versions]
+
+decompose = "2.0.0-alpha-01"
+androidxCore = "1.10.0"
+androidxActivityCompose = "1.7.0"
+
+[libraries]
+
+androidx-core-coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
+androidx-activity-activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
+
+decompose-decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
+decompose-extensionsComposeJetbrains = { group = "com.arkivanov.decompose", name = "extensions-compose-jetbrains", version.ref = "decompose" }

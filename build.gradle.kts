@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "com.joshrose"
 version = "1.0-SNAPSHOT"
 
@@ -9,10 +7,6 @@ allprojects {
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.freeCompilerArgs += "-Xopt-in=RequiresOptIn"
 }
 
 plugins {
