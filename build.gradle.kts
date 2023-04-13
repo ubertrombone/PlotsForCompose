@@ -1,3 +1,5 @@
+@file:Suppress("DSL_SCOPE_VIOLATION")
+
 group = "com.joshrose"
 version = "1.0-SNAPSHOT"
 
