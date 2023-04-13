@@ -14,6 +14,7 @@ dependencies {
 }
 
 android {
+    namespace = "com.joshrose.android"
     compileSdk = 33
     defaultConfig {
         applicationId = "com.joshrose.android"

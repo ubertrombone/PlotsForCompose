@@ -47,6 +47,7 @@ kotlin {
 }
 
 android {
+    namespace = "com.joshrose.common"
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig.minSdk = 26
