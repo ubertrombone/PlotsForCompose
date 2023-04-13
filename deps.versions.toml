@@ -19,7 +19,9 @@ decompose-extensionsComposeJetbrains = { group = "com.arkivanov.decompose", name
 
 android-application = { id = "com.android.application", version.ref = "androidGradle" }
 android-library = { id = "com.android.library", version.ref = "androidGradle" }
+
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
