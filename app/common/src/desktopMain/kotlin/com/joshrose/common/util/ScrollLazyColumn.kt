@@ -2,6 +2,7 @@ package com.joshrose.common.util
 
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.defaultScrollbarStyle
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,13 +17,20 @@ import androidx.compose.ui.Modifier
 
 @Composable
 actual fun ScrollLazyColumn(
+    verticalArrangement: Arrangement.Vertical,
+    horizontalAlignment: Alignment.Horizontal,
     modifier: Modifier,
     items: LazyListScope.() -> Unit
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         val state = rememberLazyListState()
 
-        LazyColumn(modifier.fillMaxSize(), state) { items() }
+        LazyColumn(
+            verticalArrangement = verticalArrangement,
+            horizontalAlignment = horizontalAlignment,
+            modifier = modifier.fillMaxSize(),
+            state = state
+        ) { items() }
         VerticalScrollbar(
             modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight(),
             adapter = rememberScrollbarAdapter(scrollState = state),

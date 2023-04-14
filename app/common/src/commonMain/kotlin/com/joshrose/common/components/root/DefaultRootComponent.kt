@@ -5,11 +5,11 @@ import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.components.home.DefaultHomeComponent
 import com.joshrose.common.components.home.HomeComponent
 import com.joshrose.common.components.graph.LineGraphComponent
-import com.joshrose.common.components.root.RootComponent.Child.HomeChild
-import com.joshrose.common.components.root.RootComponent.Child.LineGraphChild
+import com.joshrose.common.components.root.RootComponent.Child.*
 import com.joshrose.common.util.ScreenNames.*
 
 class DefaultRootComponent(
@@ -29,7 +29,8 @@ class DefaultRootComponent(
     private fun createChild(config: Config, componentContext: ComponentContext): RootComponent.Child =
         when (config) {
             is Config.Home -> HomeChild(home(componentContext))
-            is Config.LineGraph -> LineGraphChild(lineGraph(componentContext))
+            is Config.Axes -> AxesChild(AxesComponent(componentContext))
+            is Config.LineGraph -> LineGraphChild(LineGraphComponent(componentContext))
         }
 
     private fun home(componentContext: ComponentContext): HomeComponent =
@@ -38,19 +39,20 @@ class DefaultRootComponent(
             onChildSelected = {
                 when (it) {
                     HOME -> throw IllegalStateException("Home is not a child of Home")
+                    AXES -> navigation.push(Config.Axes)
                     LINE_GRAPH -> navigation.push(Config.LineGraph)
                 }
             }
         )
-
-    private fun lineGraph(componentContext: ComponentContext): LineGraphComponent =
-        LineGraphComponent(componentContext = componentContext)
 
     override fun onBackPressed() { navigation.pop() }
 
     private sealed class Config : Parcelable {
         @Parcelize
         object Home : Config()
+
+        @Parcelize
+        object Axes: Config()
 
         @Parcelize
         object LineGraph : Config()

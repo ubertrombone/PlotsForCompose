@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.root.RootComponent
+import com.joshrose.common.ui.axes.AxesContent
 import com.joshrose.common.ui.home.HomeContent
 import com.joshrose.common.ui.linegraph.LineGraphContent
 import com.joshrose.common.util.ScreenNames.*
@@ -61,6 +62,12 @@ fun RootContent(
                         title = child.component.screenProperties.title
                         isBackEnabled = child.component.screenProperties.isBackEnabled
                         HomeContent(component = child.component, modifier = Modifier.fillMaxSize())
+                    }
+
+                    is RootComponent.Child.AxesChild -> {
+                        title = child.component.screenProperties.title
+                        isBackEnabled = child.component.screenProperties.isBackEnabled
+                        AxesContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
 
                     is RootComponent.Child.LineGraphChild -> {

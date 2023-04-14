@@ -22,7 +22,7 @@ data class DiscreteLabelsConfig(
     val textStyle: TextStyle,
     val xOffset: Dp,
     val yOffset: Dp,
-    val rotation: Int
+    val rotation: Dp
 )
 
 /** Contains default values used for implementations of [DiscreteLabelsConfig] */
@@ -46,7 +46,7 @@ object DiscreteLabelsConfigDefaults {
         textStyle: TextStyle = Typography.headlineSmall,
         xOffset: Dp = 0.dp,
         yOffset: Dp = 0.dp,
-        rotation: Int = 0
+        rotation: Dp = 0.dp
     ): DiscreteLabelsConfig =
         DiscreteLabelsConfig(
             fontColor = fontColor,
