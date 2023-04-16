@@ -17,7 +17,6 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  * @property yOffset the amount in [Dp] to offset each label along the y-axis.
  * @property rotation the number of degrees to rotate each label.
  * @property breaks the number of labels to apply to the axis.
- * @property isBaseZero if true, the axis' minimum value will be 0.
  * @property minValueAdjustment the amount as a [Multiplier] to adjust the given data's minimum value.
  * @property maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
  * @property rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
@@ -31,7 +30,6 @@ data class ContinuousLabelsConfig(
     val yOffset: Dp,
     val rotation: Dp,
     val breaks: Int,
-    val isBaseZero: Boolean,
     val minValueAdjustment: Multiplier,
     val maxValueAdjustment: Multiplier,
     val rangeAdjustment: Multiplier
@@ -52,7 +50,6 @@ object ContinuousLabelsConfigDefaults {
      *  x-axis labels according to their top left point (from 0 degrees).
      *  Using negatives values is recommended when rotating y labels.
      *  @param breaks the number of labels to apply to the axis.
-     *  @param isBaseZero true if axis should start at 0. Defaults to false.
      *  @param minValueAdjustment the amount as a [Multiplier] to adjust the given data's minimum value.
      *  @param maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
      *  @param rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
@@ -61,15 +58,14 @@ object ContinuousLabelsConfigDefaults {
      */
     fun continuousLabelsConfigDefaults(
         fontColor: Color = md_theme_dark_primary,
-        textStyle: TextStyle = Typography.headlineSmall,
+        textStyle: TextStyle = Typography.labelMedium,
         xOffset: Dp = 0.dp,
         yOffset: Dp = 0.dp,
         rotation: Dp = 0.dp,
         breaks: Int = 5,
-        isBaseZero: Boolean = false,
         minValueAdjustment: Multiplier = Multiplier(factor = 0f),
         maxValueAdjustment: Multiplier = Multiplier(factor = 0f),
-        rangeAdjustment: Multiplier = Multiplier(factor = 0f)
+        rangeAdjustment: Multiplier = Multiplier(factor = 0.1f)
     ): ContinuousLabelsConfig =
         ContinuousLabelsConfig(
             fontColor = fontColor,
@@ -78,7 +74,6 @@ object ContinuousLabelsConfigDefaults {
             yOffset = yOffset,
             rotation = rotation,
             breaks = breaks,
-            isBaseZero = isBaseZero,
             minValueAdjustment = minValueAdjustment,
             maxValueAdjustment = maxValueAdjustment,
             rangeAdjustment = rangeAdjustment

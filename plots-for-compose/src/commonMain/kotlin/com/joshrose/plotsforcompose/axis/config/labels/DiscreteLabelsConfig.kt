@@ -43,7 +43,7 @@ object DiscreteLabelsConfigDefaults {
      */
     fun discreteLabelsConfigDefaults(
         fontColor: Color = md_theme_dark_primary,
-        textStyle: TextStyle = Typography.headlineSmall,
+        textStyle: TextStyle = Typography.labelMedium,
         xOffset: Dp = 0.dp,
         yOffset: Dp = 0.dp,
         rotation: Dp = 0.dp

@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.joshrose.common.components.graph.GraphComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,34 +34,38 @@ class AxesComponent(
     val yRange = _yRange.asStateFlow()
 
     fun maxValues(
-        yValue: Float,
-        yValueAdjustment: Multiplier,
-        xValue: Float,
-        xValueAdjustment: Multiplier
+        yMaxValue: Float,
+        yMaxValueAdjustment: Multiplier,
+        xMaxValue: Float,
+        xMaxValueAdjustment: Multiplier
     ) {
-        _maxYValue.update { yValue.plus(yValue.times(yValueAdjustment.factor)) }
-        _maxXValue.update { xValue.plus(xValue.times(xValueAdjustment.factor)) }
+        _maxYValue.update { yMaxValue.plus(yMaxValue.times(yMaxValueAdjustment.factor)) }
+        _maxXValue.update { xMaxValue.plus(xMaxValue.times(xMaxValueAdjustment.factor)) }
     }
 
     fun minValues(
-        xValue: Float,
-        xValueAdjustment: Multiplier,
-        isXBaseZero: Boolean,
-        yValue: Float,
-        yValueAdjustment: Multiplier,
-        isYBaseZero: Boolean
+        yMinValue: Float,
+        yMinValueAdjustment: Multiplier,
+        xMinValue: Float,
+        xMinValueAdjustment: Multiplier,
     ) {
-        val adjustedMinYValue = if (isYBaseZero) 0f else yValue.minus(abs(yValue.times(yValueAdjustment.factor)))
-        val finalYValue = if (yValue < 0) _maxYValue.value?.times(-1) ?: 100f else adjustedMinYValue
+        val adjustedMinYValue = yMinValue.minus(abs(yMinValue.times(yMinValueAdjustment.factor)))
+        val finalYValue = if (yMinValue < 0) _maxYValue.value?.times(-1) ?: 100f else adjustedMinYValue
         _minYValue.update { finalYValue }
 
-        val adjustedMinXValue = if (isXBaseZero) 0f else xValue.minus(abs(xValue.times(xValueAdjustment.factor)))
-        val finalXValue = if (xValue < 0) _maxXValue.value?.times(-1) ?: 100f else adjustedMinXValue
+        val adjustedMinXValue = xMinValue.minus(abs(xMinValue.times(xMinValueAdjustment.factor)))
+        val finalXValue = if (xMinValue < 0) _maxXValue.value?.times(-1) ?: 100f else adjustedMinXValue
         _minXValue.update { finalXValue }
     }
 
-    fun ranges() {
-        _xRange.update { _maxXValue.value?.minus(_minXValue.value ?: 0f) ?: 0f }
-        _yRange.update { _maxYValue.value?.minus(_minYValue.value ?: 0f) ?: 0f }
+    fun ranges(
+        yRangeAdjustment: Multiplier,
+        xRangeAdjustment: Multiplier
+    ) {
+        val xRange = _maxXValue.value?.minus(_minXValue.value ?: 0f) ?: 0f
+        _xRange.update { xRange.plus(xRange.times(xRangeAdjustment.factor)) }
+
+        val yRange = _maxYValue.value?.minus(_minYValue.value ?: 0f) ?: 0f
+        _yRange.update { yRange.plus(yRange.times(yRangeAdjustment.factor)) }
     }
 }

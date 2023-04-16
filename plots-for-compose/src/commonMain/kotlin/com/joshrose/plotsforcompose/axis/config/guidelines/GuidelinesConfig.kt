@@ -12,7 +12,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  *
  * @property lineColor the color of each guideline.
  * @property alpha the alpha to apply to the guidelines. This property must be of type [Multiplier].
- * To hide guidelines, set the axis config property showLabels to false.
+ * To hide guidelines, set the axis config property showGuidelines to false.
  * @property strokeWidth the width of the lines.
  * @property pathEffect the pathEffect to apply to the guidelines.
  * @property padding the padding to be applied to the end of the guidelines closest to the axis.

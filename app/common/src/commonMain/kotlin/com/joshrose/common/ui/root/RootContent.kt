@@ -14,7 +14,7 @@ import com.joshrose.common.components.root.RootComponent
 import com.joshrose.common.ui.axes.AxesContent
 import com.joshrose.common.ui.home.HomeContent
 import com.joshrose.common.ui.linegraph.LineGraphContent
-import com.joshrose.common.util.ScreenNames.*
+import com.joshrose.common.util.ScreenNames.HOME
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +67,10 @@ fun RootContent(
                     is RootComponent.Child.AxesChild -> {
                         title = child.component.screenProperties.title
                         isBackEnabled = child.component.screenProperties.isBackEnabled
-                        AxesContent(component = child.component, modifier = Modifier.fillMaxSize())
+                        AxesContent(
+                            component = child.component,
+                            modifier = Modifier.fillMaxSize()
+                        )
                     }
 
                     is RootComponent.Child.LineGraphChild -> {

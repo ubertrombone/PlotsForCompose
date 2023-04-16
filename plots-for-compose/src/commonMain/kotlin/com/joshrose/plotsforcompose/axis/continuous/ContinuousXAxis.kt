@@ -5,54 +5,56 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
-import com.joshrose.plotsforcompose.axis.util.XPositions
+import com.joshrose.plotsforcompose.axis.util.YPositions
 import com.joshrose.plotsforcompose.util.calculateOffset
-import com.joshrose.plotsforcompose.util.drawYFloatLabel
+import com.joshrose.plotsforcompose.util.drawXFloatLabel
 
 @Suppress("DuplicatedCode")
 @OptIn(ExperimentalTextApi::class)
-fun DrawScope.continuousYAxis(
+fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
-    xPositions: XPositions,
-    maxYValue: Float,
+    yPositions: YPositions,
     maxXValue: Float,
+    maxYValue: Float,
     range: Float,
     textMeasurer: TextMeasurer,
 ) {
+    // TODO: allow user to Force orient the axis - AUTO|TOP|BOTTOM - or create alt axis functions
+
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
     labels.forEach { label ->
-        // y - calculates the proportion of the range that rangeDiff occupies and then scales that
-        // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
-        val rangeDiff = calculateOffset(maxValue = maxYValue, offsetValue = label, range = range)
-        val y = size.height.minus(rangeDiff.div(range).times(size.height))
+        // x - calculates the proportion of the range that rangeDiff occupies and then scales that
+        // difference to the DrawScope's width.
+        val rangeDiff = calculateOffset(maxValue = maxXValue, offsetValue = label, range = range)
+        val x = rangeDiff.div(range).times(size.width)
 
         if (config.showLabels) {
-            drawYFloatLabel(
-                y = y,
-                x = xPositions.labels,
+            drawXFloatLabel(
+                y = yPositions.labels,
+                x = x,
                 label = label,
-                maxXValue = maxXValue,
+                maxYValue = maxYValue,
                 textMeasurer = textMeasurer,
                 labelConfig = config.labels
             )
         }
 
         if (config.showGuidelines) {
-            val lineLength = size.width.minus(config.guidelines.padding.toPx())
-            val startX = when (xPositions.axis) {
-                size.width -> 0f
-                size.width.div(2) -> 0f
+            val lineLength = size.height.minus(config.guidelines.padding.toPx())
+            val startY = when (yPositions.axis) {
+                size.height -> 0f
+                size.height.div(2) -> 0f
                 else -> config.guidelines.padding.toPx()
             }
-            val endX =
-                if (xPositions.axis == size.width.div(2)) size.width
-                else startX.plus(lineLength)
+            val endY =
+                if (yPositions.axis == size.height.div(2)) size.height
+                else startY.plus(lineLength)
 
             drawLine(
-                start = Offset(x = startX, y = y),
-                end = Offset(x = endX, y = y),
+                start = Offset(x = x, y = startY),
+                end = Offset(x = x, y = endY),
                 color = config.guidelines.lineColor,
                 alpha = config.guidelines.alpha.factor,
                 pathEffect = config.guidelines.pathEffect,
@@ -61,17 +63,17 @@ fun DrawScope.continuousYAxis(
         }
 
         if (config.showAxisLine && config.axisLine.ticks) {
-            val xOffset = config.labels.xOffset.toPx()
-            val tickStart = when (xPositions.axis) {
-                size.width -> xPositions.axis
-                size.width.div(2f) -> xPositions.axis.minus(xOffset.div(4f))
-                else -> xPositions.axis.minus(xOffset.div(2f))
+            val yOffset = config.labels.yOffset.toPx()
+            val tickStart = when (yPositions.axis) {
+                size.height -> yPositions.axis
+                size.width.div(2f) -> yPositions.axis.minus(yOffset.div(4f))
+                else -> yPositions.axis.minus(yOffset.div(2f))
             }
-            val tickEnd = tickStart.plus(xOffset.div(2f))
+            val tickEnd = tickStart.plus(yOffset.div(2f))
 
             drawLine(
-                start = Offset(x = tickStart, y = y),
-                end = Offset(x = tickEnd, y = y),
+                start = Offset(x = x, y = tickStart),
+                end = Offset(x = x, y = tickEnd),
                 color = config.axisLine.lineColor,
                 alpha = config.axisLine.alpha.factor,
                 strokeWidth = config.axisLine.strokeWidth.toPx()
@@ -81,8 +83,8 @@ fun DrawScope.continuousYAxis(
 
     if (config.showAxisLine) {
         drawLine(
-            start = Offset(x = xPositions.axis, y = 0f),
-            end = Offset(x = xPositions.axis, y = size.height),
+            start = Offset(x = 0f, y = yPositions.axis),
+            end = Offset(x = size.width, y = yPositions.axis),
             color = config.axisLine.lineColor,
             alpha = config.axisLine.alpha.factor,
             pathEffect = config.axisLine.pathEffect,

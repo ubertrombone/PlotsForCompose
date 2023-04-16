@@ -15,6 +15,7 @@ class DefaultHomeComponent(
     private val _children = MutableValue(
         Names(
             name = listOf(
+                AXES,
                 LINE_GRAPH
             )
         )
