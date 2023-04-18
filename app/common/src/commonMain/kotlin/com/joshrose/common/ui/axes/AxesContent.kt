@@ -3,14 +3,12 @@
 package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
@@ -32,6 +30,9 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
+    var xRotation by remember { mutableStateOf(0.dp) }
+    var yRotation by remember { mutableStateOf(0.dp) }
+
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
 
@@ -39,23 +40,28 @@ fun AxesContent(
         .copy(
             showGuidelines = true,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
-                lineColor = Color.White,
-                strokeWidth = 5.dp
+                strokeWidth = 1.dp,
+                lineColor = MaterialTheme.colorScheme.onBackground
+            ),
+            labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
+                rotation = xRotation,
+                yOffset = 15.dp
             )
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
             showGuidelines = true,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
-                lineColor = Color.Black,
-                strokeWidth = 5.dp
+                strokeWidth = 1.dp,
+                lineColor = MaterialTheme.colorScheme.onBackground
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
-                rotation = (-45).dp
+                rotation = yRotation,
+                xOffset = 15.dp
             )
         )
 
-    val data = mapOf(1f to 1000f, 2f to 2000f, 3f to 3000f)
+    val data = mapOf(1000f to 1000f, 2000f to 2000f, 3000f to 3000f)
 
     val xMax = data.maxOf { it.key }
     val xMaxAdjusted = xMax.plus(xMax.times(xConfig.labels.maxValueAdjustment.factor))
@@ -84,31 +90,27 @@ fun AxesContent(
         maxValue = yMaxAdjusted
     ).reversed()
 
-    ScrollLazyColumn(modifier = modifier.fillMaxSize().background(Color.Cyan).padding(20.dp)) {
+    ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(20.dp)) {
         item {
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
                     .height(300.dp)
+                    .padding(10.dp)
             ) {
-                println("SIZE: $size")
-
                 val yPositions = yPositions(
                     height = size.height,
                     yMax = yMaxAdjusted,
                     yMin = yMinFinal,
                     yOffset = xConfig.labels.yOffset.toPx()
                 )
-                println("YPOS: $yPositions")
+
                 val xPositions = xPositions(
                     width = size.width,
                     xMax = xMaxAdjusted,
                     xMin = xMinFinal,
                     xOffset = yConfig.labels.xOffset.toPx()
                 )
-                println("XPOS: $xPositions")
-
 
                 continuousXAxis(
                     config = xConfig,
@@ -129,6 +131,29 @@ fun AxesContent(
                     textMeasurer = yTextMeasurer
                 )
             }
+        }
+        item {
+            Spacer(Modifier.height(50.dp))
+
+            Text("X Rotation: ${xRotation.value}")
+            Spacer(modifier.height(2.5.dp))
+            Slider(
+                value = xRotation.value,
+                onValueChange = { xRotation = it.dp },
+                valueRange = 0f..90f
+            )
+        }
+
+        item {
+            Spacer(Modifier.height(50.dp))
+
+            Text("Y Rotation: ${yRotation.value}")
+            Spacer(modifier.height(2.5.dp))
+            Slider(
+                value = yRotation.value,
+                onValueChange = { yRotation = it.dp },
+                valueRange = -90f..0f
+            )
         }
     }
 }
