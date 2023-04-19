@@ -140,7 +140,7 @@ fun AxesContent(
             Slider(
                 value = xRotation.value,
                 onValueChange = { xRotation = it.dp },
-                valueRange = 0f..90f
+                valueRange = -90f..90f
             )
         }
 
@@ -152,7 +152,7 @@ fun AxesContent(
             Slider(
                 value = yRotation.value,
                 onValueChange = { yRotation = it.dp },
-                valueRange = -90f..0f
+                valueRange = -90f..90f
             )
         }
     }
