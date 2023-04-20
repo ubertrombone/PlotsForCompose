@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
+import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.YPositions
 import com.joshrose.plotsforcompose.util.calculateOffset
 import com.joshrose.plotsforcompose.util.drawXFloatLabel
@@ -16,15 +17,15 @@ fun DrawScope.continuousXAxis(
     labels: List<Float>,
     yPositions: YPositions,
     maxXValue: Float,
-    maxYValue: Float,
+    yRangeValues: Range,
     range: Float,
     textMeasurer: TextMeasurer,
 ) {
-    // TODO: allow user to Force orient the axis - AUTO|TOP|BOTTOM - or create alt axis functions
-
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
     labels.forEach { label ->
+        if (yRangeValues.min < 0 && yRangeValues.max > 0 && label == 0f) return@forEach
+
         // x - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's width.
         val rangeDiff = calculateOffset(maxValue = maxXValue, offsetValue = label, range = range)
@@ -35,7 +36,7 @@ fun DrawScope.continuousXAxis(
                 y = yPositions.labels,
                 x = x,
                 label = label,
-                maxYValue = maxYValue,
+                maxYValue = yRangeValues.max,
                 textMeasurer = textMeasurer,
                 labelConfig = config.labels
             )

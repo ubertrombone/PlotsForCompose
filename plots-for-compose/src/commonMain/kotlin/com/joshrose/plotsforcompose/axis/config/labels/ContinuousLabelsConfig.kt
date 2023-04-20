@@ -65,7 +65,7 @@ object ContinuousLabelsConfigDefaults {
         breaks: Int = 5,
         minValueAdjustment: Multiplier = Multiplier(factor = 0f),
         maxValueAdjustment: Multiplier = Multiplier(factor = 0f),
-        rangeAdjustment: Multiplier = Multiplier(factor = 0.1f)
+        rangeAdjustment: Multiplier = Multiplier(factor = 0f)
     ): ContinuousLabelsConfig =
         ContinuousLabelsConfig(
             fontColor = fontColor,

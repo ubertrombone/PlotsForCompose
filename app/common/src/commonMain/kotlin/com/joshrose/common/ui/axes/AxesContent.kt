@@ -4,9 +4,7 @@ package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Slider
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -19,6 +17,7 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefau
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.continuous.continuousYAxis
+import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.util.xPositions
 import com.joshrose.plotsforcompose.axis.util.yPositions
@@ -57,22 +56,27 @@ fun AxesContent(
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
-                xOffset = 15.dp
+                xOffset = 25.dp
             )
         )
 
-    val data = mapOf(1000f to 1000f, 2000f to 2000f, 3000f to 3000f)
+    // TODO: Force axis location
+    // TODO: Force set axis min and max
+    // TODO: Button to generate random data
 
-    val xMax = data.maxOf { it.key }
+    var xData by remember { mutableStateOf(listOf(-1000f, -2000f, 3000f)) }
+    var yData by remember { mutableStateOf(listOf(1000f, 2000f, 3000f)) }
+
+    val xMax = xData.max()
     val xMaxAdjusted = xMax.plus(xMax.times(xConfig.labels.maxValueAdjustment.factor))
-    val xMin = data.minOf { it.key }
+    val xMin = xData.min()
     val xMinAdjusted = xMin.minus(abs(xMin.times(xConfig.labels.minValueAdjustment.factor)))
-    val xMinFinal = if (xMin < 0) xMaxAdjusted.times(-1) else xMinAdjusted
-    val yMax = data.maxOf { it.value }
+    val xMinFinal = if (xMin < 0 && xMaxAdjusted > 0) xMaxAdjusted.times(-1) else xMinAdjusted
+    val yMax = yData.max()
     val yMaxAdjusted = yMax.plus(yMax.times(yConfig.labels.maxValueAdjustment.factor))
-    val yMin = data.minOf { it.value }
+    val yMin = yData.min()
     val yMinAdjusted = yMin.minus(abs(yMin.times(yConfig.labels.minValueAdjustment.factor)))
-    val yMinFinal = if (yMin < 0) yMaxAdjusted.times(-1) else yMinAdjusted
+    val yMinFinal = if (yMin < 0 && yMaxAdjusted > 0) yMaxAdjusted.times(-1) else yMinAdjusted
     val xRange = xMaxAdjusted.minus(xMinFinal)
     val xRangeAdjusted = xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
     val yRange = yMaxAdjusted.minus(yMinFinal)
@@ -92,11 +96,28 @@ fun AxesContent(
 
     ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(20.dp)) {
         item {
+            Button(
+                onClick = {
+                    xData = (1..10).map { (-10_000..100_000).random().toFloat() }
+                    yData = (1..10).map { (-10_000..100_000).random().toFloat() }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primary
+                )
+            ) {
+                Text(
+                    text = "Generate New Axes",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+        }
+        item {
             Canvas(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
-                    .padding(10.dp)
+                    .padding(30.dp)
             ) {
                 val yPositions = yPositions(
                     height = size.height,
@@ -117,7 +138,7 @@ fun AxesContent(
                     labels = xLabels,
                     yPositions = yPositions,
                     maxXValue = xMaxAdjusted,
-                    maxYValue = yMaxAdjusted,
+                    yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
                     range = xRangeAdjusted,
                     textMeasurer = xTextMeasurer
                 )
@@ -126,7 +147,7 @@ fun AxesContent(
                     labels = yLabels,
                     xPositions = xPositions,
                     maxYValue = yMaxAdjusted,
-                    maxXValue = xMaxAdjusted,
+                    xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
                     range = yRangeAdjusted,
                     textMeasurer = yTextMeasurer
                 )

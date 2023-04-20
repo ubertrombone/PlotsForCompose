@@ -6,11 +6,13 @@ package com.joshrose.plotsforcompose.util
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.center
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import java.text.DecimalFormat
 
@@ -24,40 +26,29 @@ fun DrawScope.drawYFloatLabel(
     labelConfig: ContinuousLabelsConfig,
     labelFormat: String = "#.##"
 ) {
-    val labelString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = labelConfig.fontColor)) {
-            append(label.formatToString(labelFormat))
-        }
-    }
-
-    val labelDimensions = textMeasurer.measure(labelString)
+    val labelString = AnnotatedString(label.formatToString(labelFormat))
+    val labelDimensions = textMeasurer.measure(
+        text = labelString,
+        style = labelConfig.textStyle.copy(color = labelConfig.fontColor),
+        overflow = TextOverflow.Visible,
+        softWrap = false
+    )
 
     // Centers the label on the x-axis. xOffset is already applied when xPositions is called.
-    val xAdjusted = x.minus(labelDimensions.size.width.div(2f))
+    val xAdjusted = if (maxXValue < 0) x else x.minus(labelDimensions.size.width.div(2f))
+    val yAdjusted = y.minus(labelDimensions.size.height.div(2f))
 
-    val yAdjusted = when {
-            labelConfig.rotation == 0.dp -> y.minus(labelDimensions.size.center.y)
-            labelConfig.rotation.value.mod(90f) == 0f -> y.minus(labelDimensions.size.width.div(2f))
-            else -> y.minus(labelDimensions.size.center.y)
-        }
-
-    val yPivot = when {
-        labelConfig.rotation == 90.dp -> yAdjusted.plus(labelDimensions.size.height)
-        labelConfig.rotation > 0.dp -> yAdjusted
-        else -> yAdjusted.plus(labelDimensions.size.height)
+    val yPivot =
+        if (labelConfig.rotation.value.mod(90f) == 0f) yAdjusted.plus(labelDimensions.size.center.y) else y
+    val xPivot = when {
+        labelConfig.rotation.value.mod(90f) == 0f -> xAdjusted.plus(labelDimensions.size.center.x)
+        else -> if (maxXValue < 0) xAdjusted else xAdjusted.plus(labelDimensions.size.width)
     }
 
-    // TODO: Make sure calcs work when axis is on other side and for X
-    val degrees = if (maxXValue < 0) labelConfig.rotation.abs().value else labelConfig.rotation.value
-    rotate(degrees = degrees, pivot = Offset(x = x, y = yPivot)) {
+    rotate(degrees = labelConfig.rotation.value, pivot = Offset(x = xPivot, y = yPivot)) {
         drawText(
-            textMeasurer = textMeasurer,
-            text = labelString,
-            style = labelConfig.textStyle,
-            topLeft = Offset(x = xAdjusted, y = yAdjusted),
-            overflow = TextOverflow.Visible,
-            softWrap = false,
-            size = labelDimensions.size.toSize()
+            textLayoutResult = labelDimensions,
+            topLeft = Offset(x = xAdjusted, y = yAdjusted)
         )
     }
 }
@@ -72,34 +63,27 @@ fun DrawScope.drawXFloatLabel(
     labelConfig: ContinuousLabelsConfig,
     labelFormat: String = "#.##"
 ) {
-    val labelString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = labelConfig.fontColor)) {
-            append(label.formatToString(labelFormat))
-        }
-    }
-
-    val labelDimensions = textMeasurer.measure(labelString)
+    val labelString = AnnotatedString(label.formatToString(labelFormat))
+    val labelDimensions = textMeasurer.measure(
+        text = labelString,
+        style = labelConfig.textStyle.copy(color = labelConfig.fontColor),
+        overflow = TextOverflow.Visible,
+        softWrap = false
+    )
 
     val yAdjusted = y.minus(labelDimensions.size.height.div(2f))
-
     val xAdjusted = when {
             labelConfig.rotation == 0.dp -> x.minus(labelDimensions.size.width.div(2f))
             labelConfig.rotation < 0.dp -> x.minus(labelDimensions.size.width)
             else -> x
         }
-
     val xPivot = if (labelConfig.rotation < 0.dp) xAdjusted.plus(labelDimensions.size.width) else xAdjusted
 
-    val degrees = if (maxYValue < 0) -(labelConfig.rotation.value) else labelConfig.rotation.value
+    val degrees = labelConfig.rotation.value.times(if (maxYValue < 0) -1 else 1)
     rotate(degrees = degrees, pivot = Offset(x = xPivot, y = y)) {
         drawText(
-            textMeasurer = textMeasurer,
-            text = labelString,
-            style = labelConfig.textStyle,
-            topLeft = Offset(x = xAdjusted, y = yAdjusted),
-            overflow = TextOverflow.Visible,
-            softWrap = false,
-            size = labelDimensions.size.toSize()
+            textLayoutResult = labelDimensions,
+            topLeft = Offset(x = xAdjusted, y = yAdjusted)
         )
     }
 }
