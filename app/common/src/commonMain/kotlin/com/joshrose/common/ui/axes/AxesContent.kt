@@ -62,7 +62,6 @@ fun AxesContent(
 
     // TODO: Force axis location
     // TODO: Force set axis min and max
-    // TODO: Button to generate random data
 
     var xData by remember { mutableStateOf(listOf(-1000f, -2000f, 3000f)) }
     var yData by remember { mutableStateOf(listOf(1000f, 2000f, 3000f)) }
