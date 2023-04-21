@@ -8,13 +8,13 @@ fun yPositions(
 ): YPositions {
 
     val yForAxis = when {
-        yMax < 0 -> 0f
+        yMax <= 0 -> 0f
         yMin < 0 -> height.div(2f)
         else -> height
     }
 
     val yForLabels =
-        if (yMax < 0) yForAxis.minus(yOffset)
+        if (yMax <= 0) yForAxis.minus(yOffset)
         else yForAxis.plus(yOffset)
 
     return YPositions(labels = yForLabels, axis = yForAxis)

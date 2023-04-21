@@ -63,8 +63,8 @@ fun AxesContent(
     // TODO: Force axis location
     // TODO: Force set axis min and max
 
-    var xData by remember { mutableStateOf(listOf(-1000f, -2000f, 3000f)) }
-    var yData by remember { mutableStateOf(listOf(1000f, 2000f, 3000f)) }
+    var xData by remember { mutableStateOf(listOf(0f, -2000f, -3000f)) }
+    var yData by remember { mutableStateOf(listOf(0f, 2000f, 3000f)) }
 
     val xMax = xData.max()
     val xMaxAdjusted = xMax.plus(xMax.times(xConfig.labels.maxValueAdjustment.factor))
@@ -97,8 +97,8 @@ fun AxesContent(
         item {
             Button(
                 onClick = {
-                    xData = (1..10).map { (-10_000..100_000).random().toFloat() }
-                    yData = (1..10).map { (-10_000..100_000).random().toFloat() }
+                    xData = (1..2).map { (-10_000..10_000).random().toFloat() }
+                    yData = (1..2).map { (-10_000..10_000).random().toFloat() }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,

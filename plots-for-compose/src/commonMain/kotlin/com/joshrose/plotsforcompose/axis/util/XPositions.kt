@@ -8,13 +8,13 @@ fun xPositions(
 ): XPositions {
 
     val xForAxis = when {
-        xMax < 0 -> width
+        xMax <= 0 -> width
         xMin < 0 -> width.div(2f)
         else -> 0f
     }
 
     val xForLabels =
-        if (xMax < 0) xForAxis.plus(xOffset)
+        if (xMax <= 0) xForAxis.plus(xOffset)
         else xForAxis.minus(xOffset)
 
     return XPositions(labels = xForLabels, axis = xForAxis)
