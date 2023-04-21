@@ -6,6 +6,7 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.Range
+import com.joshrose.plotsforcompose.axis.util.XPositions
 import com.joshrose.plotsforcompose.axis.util.YPositions
 import com.joshrose.plotsforcompose.util.calculateOffset
 import com.joshrose.plotsforcompose.util.drawXFloatLabel
@@ -15,21 +16,28 @@ import com.joshrose.plotsforcompose.util.drawXFloatLabel
 fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
-    yPositions: YPositions,
-    maxXValue: Float,
+    xRangeValues: Range,
+    xPositions: XPositions,
     yRangeValues: Range,
+    yPositions: YPositions,
     range: Float,
     textMeasurer: TextMeasurer,
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
-    labels.forEach { label ->
-        if (yRangeValues.min < 0 && yRangeValues.max > 0 && label == 0f) return@forEach
+    labels.forEachIndexed { index, label ->
+        if (yRangeValues.min < 0 && yRangeValues.max > 0 && label == 0f) return@forEachIndexed
 
         // x - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's width.
-        val rangeDiff = calculateOffset(maxValue = maxXValue, offsetValue = label, range = range)
-        val x = rangeDiff.div(range).times(size.width)
+        val rangeDiff = calculateOffset(maxValue = xRangeValues.max, offsetValue = label, range = range)
+        val x =
+            if (xRangeValues.max <= 0)
+                size.width
+                    .times(1f.minus(config.labels.rangeAdjustment.factor))
+                    .div(labels.size.minus(1))
+                    .times(index)
+            else rangeDiff.div(range).times(size.width)
 
         if (config.showLabels) {
             drawXFloatLabel(
@@ -42,7 +50,7 @@ fun DrawScope.continuousXAxis(
             )
         }
 
-        if (config.showGuidelines) {
+        if (config.showGuidelines && xPositions.axis != x) {
             val lineLength = size.height.minus(config.guidelines.padding.toPx())
             val startY = when (yPositions.axis) {
                 size.height -> 0f

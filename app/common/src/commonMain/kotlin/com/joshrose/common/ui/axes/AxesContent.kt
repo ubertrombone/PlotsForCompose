@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
@@ -15,6 +16,7 @@ import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.continuous.continuousYAxis
 import com.joshrose.plotsforcompose.axis.util.Range
@@ -40,11 +42,13 @@ fun AxesContent(
             showGuidelines = true,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
-                lineColor = MaterialTheme.colorScheme.onBackground
+                alpha = Multiplier(1f),
+                lineColor = Color.Red//MaterialTheme.colorScheme.onBackground
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
-                yOffset = 15.dp
+                yOffset = 15.dp,
+                rangeAdjustment = Multiplier(.1f)
             )
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -52,11 +56,13 @@ fun AxesContent(
             showGuidelines = true,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
-                lineColor = MaterialTheme.colorScheme.onBackground
+                alpha = Multiplier(1f),
+                lineColor = Color.Red//MaterialTheme.colorScheme.onBackground
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
-                xOffset = 25.dp
+                xOffset = 25.dp,
+                rangeAdjustment = Multiplier(.1f)
             )
         )
 
@@ -77,9 +83,13 @@ fun AxesContent(
     val yMinAdjusted = yMin.minus(abs(yMin.times(yConfig.labels.minValueAdjustment.factor)))
     val yMinFinal = if (yMin < 0 && yMaxAdjusted > 0) yMaxAdjusted.times(-1) else yMinAdjusted
     val xRange = xMaxAdjusted.minus(xMinFinal)
-    val xRangeAdjusted = xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
+    val xRangeAdjusted =
+        if (xMinFinal < 0 && xMaxAdjusted > 0) xRange
+        else xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
     val yRange = yMaxAdjusted.minus(yMinFinal)
-    val yRangeAdjusted = yRange.plus(yRange.times(yConfig.labels.rangeAdjustment.factor))
+    val yRangeAdjusted =
+        if (yMinFinal < 0 && yMaxAdjusted > 0) yRange
+        else yRange.plus(yRange.times(yConfig.labels.rangeAdjustment.factor))
 
     val xLabels = floatLabels(
         breaks = xConfig.labels.breaks,
@@ -91,7 +101,7 @@ fun AxesContent(
         breaks = yConfig.labels.breaks,
         minValue = yMinFinal,
         maxValue = yMaxAdjusted
-    ).reversed()
+    )
 
     ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(20.dp)) {
         item {
@@ -124,29 +134,30 @@ fun AxesContent(
                     yMin = yMinFinal,
                     yOffset = xConfig.labels.yOffset.toPx()
                 )
-
                 val xPositions = xPositions(
                     width = size.width,
                     xMax = xMaxAdjusted,
                     xMin = xMinFinal,
                     xOffset = yConfig.labels.xOffset.toPx()
                 )
-
+                // TODO: If x and y mins are both 0, only x should draw it
                 continuousXAxis(
                     config = xConfig,
                     labels = xLabels,
-                    yPositions = yPositions,
-                    maxXValue = xMaxAdjusted,
+                    xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
+                    xPositions = xPositions,
                     yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
+                    yPositions = yPositions,
                     range = xRangeAdjusted,
                     textMeasurer = xTextMeasurer
                 )
                 continuousYAxis(
                     config = yConfig,
                     labels = yLabels,
-                    xPositions = xPositions,
-                    maxYValue = yMaxAdjusted,
+                    yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
+                    yPositions = yPositions,
                     xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
+                    xPositions = xPositions,
                     range = yRangeAdjusted,
                     textMeasurer = yTextMeasurer
                 )

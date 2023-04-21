@@ -7,6 +7,7 @@ import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.XPositions
+import com.joshrose.plotsforcompose.axis.util.YPositions
 import com.joshrose.plotsforcompose.util.calculateOffset
 import com.joshrose.plotsforcompose.util.drawYFloatLabel
 
@@ -15,21 +16,30 @@ import com.joshrose.plotsforcompose.util.drawYFloatLabel
 fun DrawScope.continuousYAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
-    xPositions: XPositions,
-    maxYValue: Float,
+    yRangeValues: Range,
+    yPositions: YPositions,
     xRangeValues: Range,
+    xPositions: XPositions,
     range: Float,
     textMeasurer: TextMeasurer,
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
-    labels.forEach { label ->
-        if (xRangeValues.min < 0 && xRangeValues.max > 0 && label == 0f) return@forEach
+    labels.reversed().forEachIndexed { index, label ->
+        if (xRangeValues.min < 0 && xRangeValues.max > 0 && label == 0f) return@forEachIndexed
 
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
-        val rangeDiff = calculateOffset(maxValue = maxYValue, offsetValue = label, range = range)
-        val y = size.height.minus(rangeDiff.div(range).times(size.height))
+        val rangeDiff = calculateOffset(maxValue = yRangeValues.max, offsetValue = label, range = range)
+        val y =
+            if (yRangeValues.max <= 0) {
+                size.height
+                    .times(1f.minus(config.labels.rangeAdjustment.factor))
+                    .div(labels.size.minus(1))
+                    .times(index)
+                    .plus(size.height.times(config.labels.rangeAdjustment.factor))
+            }
+            else size.height.minus(rangeDiff.div(range).times(size.height))
 
         if (config.showLabels) {
             drawYFloatLabel(
@@ -42,7 +52,7 @@ fun DrawScope.continuousYAxis(
             )
         }
 
-        if (config.showGuidelines) {
+        if (config.showGuidelines && yPositions.axis != y) {
             val lineLength = size.width.minus(config.guidelines.padding.toPx())
             val startX = when (xPositions.axis) {
                 size.width -> 0f
