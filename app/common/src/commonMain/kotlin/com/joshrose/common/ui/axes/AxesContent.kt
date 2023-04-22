@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
@@ -42,8 +41,7 @@ fun AxesContent(
             showGuidelines = true,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
-                alpha = Multiplier(1f),
-                lineColor = Color.Red//MaterialTheme.colorScheme.onBackground
+                lineColor = MaterialTheme.colorScheme.onBackground
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
@@ -56,8 +54,7 @@ fun AxesContent(
             showGuidelines = true,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
-                alpha = Multiplier(1f),
-                lineColor = Color.Red//MaterialTheme.colorScheme.onBackground
+                lineColor = MaterialTheme.colorScheme.onBackground
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
@@ -70,7 +67,7 @@ fun AxesContent(
     // TODO: Force set axis min and max
 
     var xData by remember { mutableStateOf(listOf(0f, -2000f, -3000f)) }
-    var yData by remember { mutableStateOf(listOf(0f, 2000f, 3000f)) }
+    var yData by remember { mutableStateOf(listOf(0f, -2000f, -3000f)) }
 
     val xMax = xData.max()
     val xMaxAdjusted = xMax.plus(xMax.times(xConfig.labels.maxValueAdjustment.factor))
@@ -84,11 +81,11 @@ fun AxesContent(
     val yMinFinal = if (yMin < 0 && yMaxAdjusted > 0) yMaxAdjusted.times(-1) else yMinAdjusted
     val xRange = xMaxAdjusted.minus(xMinFinal)
     val xRangeAdjusted =
-        if (xMinFinal < 0 && xMaxAdjusted > 0) xRange
+        if (xMinFinal <= 0 && xMaxAdjusted >= 0) xRange
         else xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
     val yRange = yMaxAdjusted.minus(yMinFinal)
     val yRangeAdjusted =
-        if (yMinFinal < 0 && yMaxAdjusted > 0) yRange
+        if (yMinFinal <= 0 && yMaxAdjusted >= 0) yRange
         else yRange.plus(yRange.times(yConfig.labels.rangeAdjustment.factor))
 
     val xLabels = floatLabels(
@@ -140,7 +137,7 @@ fun AxesContent(
                     xMin = xMinFinal,
                     xOffset = yConfig.labels.xOffset.toPx()
                 )
-                // TODO: If x and y mins are both 0, only x should draw it
+
                 continuousXAxis(
                     config = xConfig,
                     labels = xLabels,

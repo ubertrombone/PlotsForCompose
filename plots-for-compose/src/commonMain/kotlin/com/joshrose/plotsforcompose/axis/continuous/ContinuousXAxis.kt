@@ -4,6 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.XPositions
@@ -27,6 +28,19 @@ fun DrawScope.continuousXAxis(
 
     labels.forEachIndexed { index, label ->
         if (yRangeValues.min < 0 && yRangeValues.max > 0 && label == 0f) return@forEachIndexed
+        if ((xRangeValues.min == 0f || xRangeValues.max ==0f) && label == 0f) {
+            if (config.showLabels) {
+                drawXFloatLabel(
+                    y = yPositions.labels,
+                    x = xPositions.labels,
+                    label = label,
+                    maxYValue = yRangeValues.max,
+                    textMeasurer = textMeasurer,
+                    labelConfig = config.labels.copy(rotation = 0.dp)
+                )
+            }
+            return@forEachIndexed
+        }
 
         // x - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's width.

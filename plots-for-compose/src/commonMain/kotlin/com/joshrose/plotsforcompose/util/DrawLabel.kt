@@ -35,14 +35,14 @@ fun DrawScope.drawYFloatLabel(
     )
 
     // Centers the label on the x-axis. xOffset is already applied when xPositions is called.
-    val xAdjusted = if (maxXValue < 0) x else x.minus(labelDimensions.size.width.div(2f))
+    val xAdjusted = if (maxXValue <= 0) x else x.minus(labelDimensions.size.width.div(2f))
     val yAdjusted = y.minus(labelDimensions.size.height.div(2f))
 
     val yPivot =
         if (labelConfig.rotation.value.mod(90f) == 0f) yAdjusted.plus(labelDimensions.size.center.y) else y
     val xPivot = when {
         labelConfig.rotation.value.mod(90f) == 0f -> xAdjusted.plus(labelDimensions.size.center.x)
-        else -> if (maxXValue < 0) xAdjusted else xAdjusted.plus(labelDimensions.size.width)
+        else -> if (maxXValue <= 0) xAdjusted else xAdjusted.plus(labelDimensions.size.width)
     }
 
     rotate(degrees = labelConfig.rotation.value, pivot = Offset(x = xPivot, y = yPivot)) {
@@ -79,7 +79,7 @@ fun DrawScope.drawXFloatLabel(
         }
     val xPivot = if (labelConfig.rotation < 0.dp) xAdjusted.plus(labelDimensions.size.width) else xAdjusted
 
-    val degrees = labelConfig.rotation.value.times(if (maxYValue < 0) -1 else 1)
+    val degrees = labelConfig.rotation.value.times(if (maxYValue <= 0) -1 else 1)
     rotate(degrees = degrees, pivot = Offset(x = xPivot, y = y)) {
         drawText(
             textLayoutResult = labelDimensions,
