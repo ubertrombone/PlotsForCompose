@@ -28,7 +28,7 @@ data class ContinuousLabelsConfig(
     val textStyle: TextStyle,
     val xOffset: Dp,
     val yOffset: Dp,
-    val rotation: Dp,
+    val rotation: Float,
     val breaks: Int,
     val minValueAdjustment: Multiplier,
     val maxValueAdjustment: Multiplier,
@@ -48,7 +48,6 @@ object ContinuousLabelsConfigDefaults {
      * @param rotation degrees to rotate the labels. When rotated, the axis will automatically
      *  center y-axis labels according to their bottom right point and
      *  x-axis labels according to their top left point (from 0 degrees).
-     *  Using negatives values is recommended when rotating y labels.
      *  @param breaks the number of labels to apply to the axis.
      *  @param minValueAdjustment the amount as a [Multiplier] to adjust the given data's minimum value.
      *  @param maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
@@ -61,7 +60,7 @@ object ContinuousLabelsConfigDefaults {
         textStyle: TextStyle = Typography.labelMedium,
         xOffset: Dp = 0.dp,
         yOffset: Dp = 0.dp,
-        rotation: Dp = 0.dp,
+        rotation: Float = 0f,
         breaks: Int = 5,
         minValueAdjustment: Multiplier = Multiplier(factor = 0f),
         maxValueAdjustment: Multiplier = Multiplier(factor = 0f),

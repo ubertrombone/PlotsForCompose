@@ -30,8 +30,8 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
-    var xRotation by remember { mutableStateOf(0.dp) }
-    var yRotation by remember { mutableStateOf(0.dp) }
+    var xRotation by remember { mutableStateOf(0f) }
+    var yRotation by remember { mutableStateOf(0f) }
 
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
@@ -163,11 +163,11 @@ fun AxesContent(
         item {
             Spacer(Modifier.height(50.dp))
 
-            Text("X Rotation: ${xRotation.value}")
+            Text("X Rotation: $xRotation")
             Spacer(modifier.height(2.5.dp))
             Slider(
-                value = xRotation.value,
-                onValueChange = { xRotation = it.dp },
+                value = xRotation,
+                onValueChange = { xRotation = it },
                 valueRange = -90f..90f
             )
         }
@@ -175,11 +175,11 @@ fun AxesContent(
         item {
             Spacer(Modifier.height(50.dp))
 
-            Text("Y Rotation: ${yRotation.value}")
+            Text("Y Rotation: $yRotation")
             Spacer(modifier.height(2.5.dp))
             Slider(
-                value = yRotation.value,
-                onValueChange = { yRotation = it.dp },
+                value = yRotation,
+                onValueChange = { yRotation = it },
                 valueRange = -90f..90f
             )
         }

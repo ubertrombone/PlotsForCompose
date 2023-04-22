@@ -4,7 +4,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
-import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.XPositions
@@ -36,7 +35,7 @@ fun DrawScope.continuousXAxis(
                     label = label,
                     maxYValue = yRangeValues.max,
                     textMeasurer = textMeasurer,
-                    labelConfig = config.labels.copy(rotation = 0.dp)
+                    labelConfig = config.labels.copy(rotation = 0f)
                 )
             }
             return@forEachIndexed

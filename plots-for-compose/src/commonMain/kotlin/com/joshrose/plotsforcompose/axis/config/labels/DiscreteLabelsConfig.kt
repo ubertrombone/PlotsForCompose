@@ -22,7 +22,7 @@ data class DiscreteLabelsConfig(
     val textStyle: TextStyle,
     val xOffset: Dp,
     val yOffset: Dp,
-    val rotation: Dp
+    val rotation: Float
 )
 
 /** Contains default values used for implementations of [DiscreteLabelsConfig] */
@@ -38,7 +38,6 @@ object DiscreteLabelsConfigDefaults {
      * @param rotation degrees to rotate the labels. When rotated, the axis will automatically
      *  center y-axis labels according to their bottom right point and
      *  x-axis labels according to their top left point (from 0 degrees).
-     *  Using negatives values is recommended when rotating y labels.
      *  @return the resulting [DiscreteLabelsConfig] to be used with an axis configuration.
      */
     fun discreteLabelsConfigDefaults(
@@ -46,7 +45,7 @@ object DiscreteLabelsConfigDefaults {
         textStyle: TextStyle = Typography.labelMedium,
         xOffset: Dp = 0.dp,
         yOffset: Dp = 0.dp,
-        rotation: Dp = 0.dp
+        rotation: Float = 0f
     ): DiscreteLabelsConfig =
         DiscreteLabelsConfig(
             fontColor = fontColor,
