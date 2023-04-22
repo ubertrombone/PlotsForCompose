@@ -1,13 +1,14 @@
-package com.joshrose.plotsforcompose.axis.continuous
+package com.joshrose.plotsforcompose.axis.y.continuous
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.util.XPositions
-import com.joshrose.plotsforcompose.axis.util.YPositions
+import com.joshrose.plotsforcompose.axis.x.util.XPositions
+import com.joshrose.plotsforcompose.axis.y.util.YPositions
 import com.joshrose.plotsforcompose.util.calculateOffset
 import com.joshrose.plotsforcompose.util.drawYFloatLabel
 
@@ -21,7 +22,7 @@ fun DrawScope.continuousYAxis(
     xRangeValues: Range,
     xPositions: XPositions,
     range: Float,
-    textMeasurer: TextMeasurer,
+    textMeasurer: TextMeasurer
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
@@ -31,16 +32,15 @@ fun DrawScope.continuousYAxis(
 
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
-        val rangeDiff = calculateOffset(maxValue = yRangeValues.max, offsetValue = label, range = range)
-        val y =
-            if (yRangeValues.max <= 0) {
-                size.height
-                    .times(1f.minus(config.labels.rangeAdjustment.factor))
-                    .div(labels.size.minus(1))
-                    .times(index)
-                    .plus(size.height.times(config.labels.rangeAdjustment.factor))
-            }
-            else size.height.minus(rangeDiff.div(range).times(size.height))
+        val y = getY(
+            height = size.height,
+            yMax = yRangeValues.max,
+            label = label,
+            range = range,
+            rangeAdj = config.labels.rangeAdjustment,
+            index = index,
+            labelsSize = labels.size
+        )
 
         if (config.showLabels) {
             drawYFloatLabel(
@@ -103,4 +103,23 @@ fun DrawScope.continuousYAxis(
             strokeWidth = config.axisLine.strokeWidth.toPx()
         )
     }
+}
+
+fun getY(
+    height: Float,
+    yMax: Float,
+    label: Float,
+    range: Float,
+    rangeAdj: Multiplier,
+    index: Int,
+    labelsSize: Int
+): Float {
+    val rangeDiff = calculateOffset(maxValue = yMax, offsetValue = label, range = range)
+    return if (yMax <= 0) {
+        height
+            .times(1f.minus(rangeAdj.factor))
+            .div(labelsSize.minus(1))
+            .times(index)
+            .plus(height.times(rangeAdj.factor))
+    } else height.minus(rangeDiff.div(range).times(height))
 }

@@ -16,12 +16,12 @@ import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.continuous.continuousXAxis
-import com.joshrose.plotsforcompose.axis.continuous.continuousYAxis
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.util.xPositions
-import com.joshrose.plotsforcompose.axis.util.yPositions
+import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
+import com.joshrose.plotsforcompose.axis.x.util.xPositions
+import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
+import com.joshrose.plotsforcompose.axis.y.util.yPositions
 import kotlin.math.abs
 
 @OptIn(ExperimentalTextApi::class)
@@ -66,8 +66,8 @@ fun AxesContent(
     // TODO: Force axis location
     // TODO: Force set axis min and max
 
-    var xData by remember { mutableStateOf(listOf(0f, -2000f, -3000f)) }
-    var yData by remember { mutableStateOf(listOf(0f, -2000f, -3000f)) }
+    var xData by remember { mutableStateOf(listOf(0f, 2000f, 3000f)) }
+    var yData by remember { mutableStateOf(listOf(100f, 2000f, 3000f)) }
 
     val xMax = xData.max()
     val xMaxAdjusted = xMax.plus(xMax.times(xConfig.labels.maxValueAdjustment.factor))
@@ -80,13 +80,17 @@ fun AxesContent(
     val yMinAdjusted = yMin.minus(abs(yMin.times(yConfig.labels.minValueAdjustment.factor)))
     val yMinFinal = if (yMin < 0 && yMaxAdjusted > 0) yMaxAdjusted.times(-1) else yMinAdjusted
     val xRange = xMaxAdjusted.minus(xMinFinal)
-    val xRangeAdjusted =
-        if (xMinFinal <= 0 && xMaxAdjusted >= 0) xRange
-        else xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
+    val xRangeAdjusted = when {
+        xMinFinal <= 0 && xMaxAdjusted >= 0 -> xRange
+        xMinFinal == 0f || xMaxAdjusted == 0f -> xRange
+        else -> xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
+    }
     val yRange = yMaxAdjusted.minus(yMinFinal)
-    val yRangeAdjusted =
-        if (yMinFinal <= 0 && yMaxAdjusted >= 0) yRange
-        else yRange.plus(yRange.times(yConfig.labels.rangeAdjustment.factor))
+    val yRangeAdjusted = when {
+        yMinFinal <= 0 && yMaxAdjusted >= 0 -> yRange
+        yMinFinal == 0f || yMaxAdjusted == 0f -> yRange
+        else -> yRange.plus(yRange.times(yConfig.labels.rangeAdjustment.factor))
+    }
 
     val xLabels = floatLabels(
         breaks = xConfig.labels.breaks,

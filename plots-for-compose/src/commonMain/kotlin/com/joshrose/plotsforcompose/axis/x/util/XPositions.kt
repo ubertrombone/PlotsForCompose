@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.axis.util
+package com.joshrose.plotsforcompose.axis.x.util
 
 fun xPositions(
     width: Float,

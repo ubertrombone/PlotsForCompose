@@ -13,7 +13,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.center
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import java.text.DecimalFormat
+import com.joshrose.plotsforcompose.axis.util.formatToString
 
 @OptIn(ExperimentalTextApi::class)
 fun DrawScope.drawYFloatLabel(
@@ -51,40 +51,3 @@ fun DrawScope.drawYFloatLabel(
         )
     }
 }
-
-@OptIn(ExperimentalTextApi::class)
-fun DrawScope.drawXFloatLabel(
-    y: Float,
-    x: Float,
-    label: Float,
-    maxYValue: Float,
-    textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig,
-    labelFormat: String = "#.##"
-) {
-    val labelString = AnnotatedString(label.formatToString(labelFormat))
-    val labelDimensions = textMeasurer.measure(
-        text = labelString,
-        style = labelConfig.textStyle.copy(color = labelConfig.fontColor),
-        overflow = TextOverflow.Visible,
-        softWrap = false
-    )
-
-    val yAdjusted = y.minus(labelDimensions.size.height.div(2f))
-    val xAdjusted = when {
-            labelConfig.rotation == 0f -> x.minus(labelDimensions.size.width.div(2f))
-            labelConfig.rotation < 0f -> x.minus(labelDimensions.size.width)
-            else -> x
-        }
-    val xPivot = if (labelConfig.rotation < 0f) xAdjusted.plus(labelDimensions.size.width) else xAdjusted
-
-    val degrees = labelConfig.rotation.times(if (maxYValue <= 0) -1 else 1)
-    rotate(degrees = degrees, pivot = Offset(x = xPivot, y = y)) {
-        drawText(
-            textLayoutResult = labelDimensions,
-            topLeft = Offset(x = xAdjusted, y = yAdjusted)
-        )
-    }
-}
-
-fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
