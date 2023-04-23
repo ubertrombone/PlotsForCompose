@@ -21,6 +21,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  * @property maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
  * @property rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
  * offset labels from the adjacent axis.
+ * @property format a string pattern to format numeric labels. E.g., "#.##" -- "1.23"
  * @constructor Creates a configuration for axis labels.
  */
 data class ContinuousLabelsConfig(
@@ -32,7 +33,8 @@ data class ContinuousLabelsConfig(
     val breaks: Int,
     val minValueAdjustment: Multiplier,
     val maxValueAdjustment: Multiplier,
-    val rangeAdjustment: Multiplier
+    val rangeAdjustment: Multiplier,
+    val format: String
 )
 
 /** Contains default values used for implementations of [ContinuousLabelsConfig] */
@@ -53,6 +55,7 @@ object ContinuousLabelsConfigDefaults {
      *  @param maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
      *  @param rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
      *  offset labels from the adjacent axis.
+     *  @param format a string pattern to format numeric labels. E.g., "#.##" -- "1.23"
      *  @return the resulting [ContinuousLabelsConfig] to be used with an axis configuration.
      */
     fun continuousLabelsConfigDefaults(
@@ -64,7 +67,8 @@ object ContinuousLabelsConfigDefaults {
         breaks: Int = 5,
         minValueAdjustment: Multiplier = Multiplier(factor = 0f),
         maxValueAdjustment: Multiplier = Multiplier(factor = 0f),
-        rangeAdjustment: Multiplier = Multiplier(factor = 0f)
+        rangeAdjustment: Multiplier = Multiplier(factor = 0f),
+        format: String = "#.##"
     ): ContinuousLabelsConfig =
         ContinuousLabelsConfig(
             fontColor = fontColor,
@@ -75,6 +79,7 @@ object ContinuousLabelsConfigDefaults {
             breaks = breaks,
             minValueAdjustment = minValueAdjustment,
             maxValueAdjustment = maxValueAdjustment,
-            rangeAdjustment = rangeAdjustment
+            rangeAdjustment = rangeAdjustment,
+            format = format
         )
 }

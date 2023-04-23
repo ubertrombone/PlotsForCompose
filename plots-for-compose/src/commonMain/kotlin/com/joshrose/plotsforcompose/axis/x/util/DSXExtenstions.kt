@@ -1,14 +1,17 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.plotsforcompose.axis.x.util
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.rotate
-import androidx.compose.ui.text.*
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextMeasurer
+import androidx.compose.ui.text.drawText
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.util.formatToString
+import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 fun DrawScope.drawXGuideline(
     guidelineConfig: GuidelinesConfig,
@@ -72,14 +75,15 @@ fun DrawScope.drawXFloatLabel(
     label: Float,
     maxYValue: Float,
     textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig,
-    labelFormat: String = "#.##"
+    labelConfig: ContinuousLabelsConfig
 ) {
     val labelDimensions = makeTextLayout(
-        label = label, textMeasurer = textMeasurer, labelConfig = labelConfig, labelFormat = labelFormat
+        label = label,
+        textMeasurer = textMeasurer,
+        labelConfig = labelConfig
     )
 
-    val (xAdjusted, yAdjusted, xPivot) = adjustCoordinates(
+    val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
         x = x,
         y = y,
         rotation = labelConfig.rotation,
@@ -103,14 +107,15 @@ fun DrawScope.drawXFloatLabel(
     axisPos: XAxisPos,
     label: Float,
     textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig,
-    labelFormat: String = "#.##"
+    labelConfig: ContinuousLabelsConfig
 ) {
     val labelDimensions = makeTextLayout(
-        label = label, textMeasurer = textMeasurer, labelConfig = labelConfig, labelFormat = labelFormat
+        label = label,
+        textMeasurer = textMeasurer,
+        labelConfig = labelConfig
     )
 
-    val (xAdjusted, yAdjusted, xPivot) = adjustCoordinates(
+    val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
         x = x,
         y = y,
         rotation = labelConfig.rotation,
@@ -127,23 +132,7 @@ fun DrawScope.drawXFloatLabel(
     }
 }
 
-@OptIn(ExperimentalTextApi::class)
-fun makeTextLayout(
-    label: Float,
-    textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig,
-    labelFormat: String = "#.##"
-): TextLayoutResult {
-    val labelString = AnnotatedString(label.formatToString(labelFormat))
-    return textMeasurer.measure(
-        text = labelString,
-        style = labelConfig.textStyle.copy(color = labelConfig.fontColor),
-        overflow = TextOverflow.Visible,
-        softWrap = false
-    )
-}
-
-fun adjustCoordinates(
+fun adjustXLabelCoordinates(
     y: Float,
     x: Float,
     rotation: Float,
