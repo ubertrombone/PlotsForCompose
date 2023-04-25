@@ -11,6 +11,8 @@ import androidx.compose.ui.text.drawText
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.TOP_START
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 fun DrawScope.drawXGuideline(
@@ -104,7 +106,7 @@ fun DrawScope.drawXFloatLabel(
 fun DrawScope.drawXFloatLabel(
     y: Float,
     x: Float,
-    axisPos: XAxisPos,
+    axisPos: AxisPosition,
     label: Float,
     textMeasurer: TextMeasurer,
     labelConfig: ContinuousLabelsConfig
@@ -123,7 +125,7 @@ fun DrawScope.drawXFloatLabel(
         xOffset = labelDimensions.size.width.toFloat()
     )
 
-    val degrees = labelConfig.rotation.times(if (axisPos == XAxisPos.TOP) -1 else 1)
+    val degrees = labelConfig.rotation.times(if (axisPos == TOP_START) -1 else 1)
     rotate(degrees = degrees, pivot = Offset(x = xPivot, y = y)) {
         drawText(
             textLayoutResult = labelDimensions,

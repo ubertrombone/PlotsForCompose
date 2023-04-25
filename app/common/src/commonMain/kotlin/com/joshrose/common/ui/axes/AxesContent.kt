@@ -16,12 +16,13 @@ import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
-import com.joshrose.plotsforcompose.axis.x.util.xPositions
+import com.joshrose.plotsforcompose.axis.x.util.yAxisPosition
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
-import com.joshrose.plotsforcompose.axis.y.util.yPositions
+import com.joshrose.plotsforcompose.axis.y.util.xAxisPosition
 import kotlin.math.abs
 
 @OptIn(ExperimentalTextApi::class)
@@ -63,7 +64,8 @@ fun AxesContent(
             )
         )
 
-    // TODO: Force axis location
+    // TODO: Make Force Axis Placement default and check placement in Canvas
+    // TODO: Make Axis placement a nullable config property
     // TODO: Force set axis min and max
 
     var xData by remember { mutableStateOf(listOf(0f, 2000f, 3000f)) }
@@ -129,38 +131,64 @@ fun AxesContent(
                     .height(300.dp)
                     .padding(30.dp)
             ) {
-                val yPositions = yPositions(
+                val xAxisPosition = xConfig.axisLine.axisPosition?.let {
+                    xAxisPosition(
+                        height = size.height,
+                        yOffset = xConfig.labels.yOffset.toPx(),
+                        axisPos = it
+                    )
+                } ?: xAxisPosition(
                     height = size.height,
                     yMax = yMaxAdjusted,
                     yMin = yMinFinal,
                     yOffset = xConfig.labels.yOffset.toPx()
                 )
-                val xPositions = xPositions(
+
+                val yAxisPosition = yConfig.axisLine.axisPosition?.let {
+                    yAxisPosition(
+                        width = size.width,
+                        xOffset = xConfig.labels.xOffset.toPx(),
+                        axisPos = it
+                    )
+                } ?: yAxisPosition(
                     width = size.width,
                     xMax = xMaxAdjusted,
                     xMin = xMinFinal,
                     xOffset = yConfig.labels.xOffset.toPx()
                 )
 
+                // TODO: resolve the purpose of axisPosition
+                // TODO: Remove original overload functions
                 continuousXAxis(
                     config = xConfig,
                     labels = xLabels,
                     xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
-                    xPositions = xPositions,
+                    yAxisPosition = yAxisPosition,
                     yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
-                    yPositions = yPositions,
+                    xAxisPosition = xAxisPosition,
                     range = xRangeAdjusted,
-                    textMeasurer = xTextMeasurer
+                    textMeasurer = xTextMeasurer,
+                    axisPosition = when {
+                        yMaxAdjusted <= 0 -> TOP_START
+                        yMinFinal < 0 -> CENTER
+                        else -> BOTTOM_END
+                    }
                 )
+
                 continuousYAxis(
                     config = yConfig,
                     labels = yLabels,
                     yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
-                    yPositions = yPositions,
+                    xAxisPosition = xAxisPosition,
                     xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
-                    xPositions = xPositions,
+                    yAxisPosition = yAxisPosition,
                     range = yRangeAdjusted,
-                    textMeasurer = yTextMeasurer
+                    textMeasurer = yTextMeasurer,
+                    axisPosition = when {
+                        xMaxAdjusted <= 0 -> BOTTOM_END
+                        xMinFinal < 0 -> CENTER
+                        else -> TOP_START
+                    }
                 )
             }
         }

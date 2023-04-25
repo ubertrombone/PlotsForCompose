@@ -1,5 +1,5 @@
 @file:Suppress("DuplicatedCode")
-@file:OptIn(ExperimentalTextApi::class, ExperimentalTextApi::class, ExperimentalTextApi::class)
+@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.y.util
 
@@ -14,8 +14,9 @@ import androidx.compose.ui.unit.center
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
-import com.joshrose.plotsforcompose.axis.y.util.YAxisPos.RIGHT
 
 fun DrawScope.drawYGuideline(
     guidelineConfig: GuidelinesConfig,
@@ -118,7 +119,7 @@ fun DrawScope.drawYFloatLabel(
     y: Float,
     x: Float,
     label: Float,
-    axisPos: YAxisPos,
+    axisPos: AxisPosition,
     textMeasurer: TextMeasurer,
     labelConfig: ContinuousLabelsConfig
 ) {
@@ -172,9 +173,9 @@ fun adjustYLabelCoordinates(
     x: Float,
     yOffset: Float,
     xOffset: Float,
-    labelPos: YAxisPos
+    labelPos: AxisPosition
 ): Pair<Float, Float> {
-    val xAdjusted = if (labelPos == RIGHT) x else x.minus(xOffset.div(2f))
+    val xAdjusted = if (labelPos == BOTTOM_END) x else x.minus(xOffset.div(2f))
     val yAdjusted = y.minus(yOffset.div(2f))
     return xAdjusted to yAdjusted
 }
@@ -201,7 +202,7 @@ fun yLabelPivotCoordinates(
     y: Float,
     yAdjusted: Float,
     xAdjusted: Float,
-    labelPos: YAxisPos,
+    labelPos: AxisPosition,
     rotation: Float,
     labelWidth: Float,
     labelSize: IntOffset
@@ -210,7 +211,7 @@ fun yLabelPivotCoordinates(
         if (rotation.mod(90f) == 0f) yAdjusted.plus(labelSize.y) else y
     val xPivot = when {
         rotation.mod(90f) == 0f -> xAdjusted.plus(labelSize.x)
-        else -> if (labelPos == RIGHT) xAdjusted else xAdjusted.plus(labelWidth)
+        else -> if (labelPos == BOTTOM_END) xAdjusted else xAdjusted.plus(labelWidth)
     }
     return xPivot to yPivot
 }

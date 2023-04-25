@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 
 /**
@@ -15,6 +16,8 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  *  To hide the axis line, set the axis config property showAxisLine to false.
  *  @property strokeWidth the width of the line.
  *  @property pathEffect the pathEffect to apply to the line.
+ *  @property ticks if true, ticks will be drawn on the axis.
+ *  @property axisPosition the position of the axis in the chart.
  *  @constructor Creates a configuration for the axis line.
  */
 data class AxisLineConfig(
@@ -22,7 +25,8 @@ data class AxisLineConfig(
     val alpha: Multiplier,
     val strokeWidth: Dp,
     val pathEffect: PathEffect?,
-    val ticks: Boolean
+    val ticks: Boolean,
+    val axisPosition: AxisPosition?
 )
 
 /** Contains default values used for implementations of [AxisLineConfig] */
@@ -36,6 +40,8 @@ object AxisLineConfigDefaults {
      * @param strokeWidth the axis line width.
      * @param pathEffect the pathEffect to apply to the axis line.
      * @param ticks if true, ticks will be drawn for each label along the axis.
+     * @param axisPosition where to draw the axis on the chart. Defaults to null - chart will draw the axis in the
+     * most appropriate spot.
      * @return the resulting [AxisLineConfig] to be used with an axis configuration.
      */
     fun axisLineConfigDefaults(
@@ -43,13 +49,15 @@ object AxisLineConfigDefaults {
         alpha: Multiplier = Multiplier(1f),
         strokeWidth: Dp = 2.dp,
         pathEffect: PathEffect? = null,
-        ticks: Boolean = false
+        ticks: Boolean = false,
+        axisPosition: AxisPosition? = null
     ): AxisLineConfig =
         AxisLineConfig(
             lineColor = lineColor,
             alpha = alpha,
             strokeWidth = strokeWidth,
             pathEffect = pathEffect,
-            ticks = ticks
+            ticks = ticks,
+            axisPosition = axisPosition
         )
 }

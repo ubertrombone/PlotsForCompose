@@ -7,9 +7,11 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.CENTER
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.x.util.*
-import com.joshrose.plotsforcompose.axis.y.util.YPositions
+import com.joshrose.plotsforcompose.axis.y.util.XAxisPosition
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 @Suppress("DuplicatedCode")
@@ -18,9 +20,9 @@ fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     xRangeValues: Range,
-    xPositions: XPositions,
+    xPositions: YAxisPosition,
     yRangeValues: Range,
-    yPositions: YPositions,
+    yPositions: XAxisPosition,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
@@ -93,15 +95,33 @@ fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     xRangeValues: Range,
-    xPositions: XPositions,
-    yPositions: YPositions,
-    axisPosition: XAxisPos,
+    yAxisPosition: YAxisPosition,
+    yRangeValues: Range,
+    xAxisPosition: XAxisPosition,
+    axisPosition: AxisPosition,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
     labels.forEachIndexed { index, label ->
+        if (yAxisPosition.axis == size.width.div(2f) && axisPosition == CENTER && label == 0f) return@forEachIndexed
+        if ((xRangeValues.min == 0f || xRangeValues.max ==0f) &&
+            (yRangeValues.min == 0f || yRangeValues.max == 0f) &&
+            label == 0f) {
+            if (config.showLabels) {
+                drawXFloatLabel(
+                    y = xAxisPosition.labels,
+                    x = yAxisPosition.labels,
+                    label = label,
+                    axisPos = axisPosition,
+                    textMeasurer = textMeasurer,
+                    labelConfig = config.labels.copy(rotation = 0f)
+                )
+            }
+            return@forEachIndexed
+        }
+
         val x = getX(
             width = size.width,
             xMax = xRangeValues.max,
@@ -114,7 +134,7 @@ fun DrawScope.continuousXAxis(
 
         if (config.showLabels) {
             drawXFloatLabel(
-                y = yPositions.labels,
+                y = xAxisPosition.labels,
                 x = x,
                 label = label,
                 axisPos = axisPosition,
@@ -123,11 +143,11 @@ fun DrawScope.continuousXAxis(
             )
         }
 
-        if (config.showGuidelines && xPositions.axis != x) {
+        if (config.showGuidelines && yAxisPosition.axis != x) {
             drawXGuideline(
                 guidelineConfig = config.guidelines,
                 x = x,
-                yPosition = yPositions.axis
+                yPosition = xAxisPosition.axis
             )
         }
 
@@ -135,13 +155,13 @@ fun DrawScope.continuousXAxis(
             drawXTick(
                 axisLineConfig = config.axisLine,
                 x = x,
-                yPosition = yPositions.axis,
+                yPosition = xAxisPosition.axis,
                 yOffset = config.labels.yOffset.toPx()
             )
         }
     }
 
-    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, yPosition = yPositions.axis)
+    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, yPosition = xAxisPosition.axis)
 }
 
 fun getX(

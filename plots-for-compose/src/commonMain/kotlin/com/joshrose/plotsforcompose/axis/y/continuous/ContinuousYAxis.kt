@@ -8,8 +8,10 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.CENTER
 import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.x.util.XPositions
+import com.joshrose.plotsforcompose.axis.x.util.YAxisPosition
 import com.joshrose.plotsforcompose.axis.y.util.*
 import com.joshrose.plotsforcompose.util.calculateOffset
 
@@ -18,9 +20,9 @@ fun DrawScope.continuousYAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     yRangeValues: Range,
-    yPositions: YPositions,
+    xAxisPosition: XAxisPosition,
     xRangeValues: Range,
-    xPositions: XPositions,
+    yAxisPosition: YAxisPosition,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
@@ -46,7 +48,7 @@ fun DrawScope.continuousYAxis(
         if (config.showLabels) {
             drawYFloatLabel(
                 y = y,
-                x = xPositions.labels,
+                x = yAxisPosition.labels,
                 label = label,
                 maxXValue = xRangeValues.max,
                 textMeasurer = textMeasurer,
@@ -54,11 +56,11 @@ fun DrawScope.continuousYAxis(
             )
         }
 
-        if (config.showGuidelines && yPositions.axis != y) {
+        if (config.showGuidelines && xAxisPosition.axis != y) {
             drawYGuideline(
                 guidelineConfig = config.guidelines,
                 y = y,
-                xPosition = xPositions.axis
+                xPosition = yAxisPosition.axis
             )
         }
 
@@ -66,13 +68,13 @@ fun DrawScope.continuousYAxis(
             drawYTick(
                 axisLineConfig = config.axisLine,
                 y = y,
-                xPosition = xPositions.axis,
+                xPosition = yAxisPosition.axis,
                 xOffset = config.labels.xOffset.toPx()
             )
         }
     }
 
-    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, xPosition = xPositions.axis)
+    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, xPosition = yAxisPosition.axis)
 }
 
 @ExperimentalTextApi
@@ -80,15 +82,19 @@ fun DrawScope.continuousYAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     yRangeValues: Range,
-    yPositions: YPositions,
-    xPositions: XPositions,
-    axisPosition: YAxisPos,
+    xAxisPosition: XAxisPosition,
+    xRangeValues: Range,
+    yAxisPosition: YAxisPosition,
+    axisPosition: AxisPosition,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
     labels.reversed().forEachIndexed { index, label ->
+        if (xAxisPosition.axis == size.height.div(2f) && axisPosition == CENTER && label == 0f) return@forEachIndexed
+        if ((xRangeValues.min == 0f || xRangeValues.max ==0f) && label == 0f) return@forEachIndexed
+
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
         val y = getY(
@@ -104,7 +110,7 @@ fun DrawScope.continuousYAxis(
         if (config.showLabels) {
             drawYFloatLabel(
                 y = y,
-                x = xPositions.labels,
+                x = yAxisPosition.labels,
                 label = label,
                 textMeasurer = textMeasurer,
                 labelConfig = config.labels,
@@ -112,11 +118,11 @@ fun DrawScope.continuousYAxis(
             )
         }
 
-        if (config.showGuidelines && yPositions.axis != y) {
+        if (config.showGuidelines && xAxisPosition.axis != y) {
             drawYGuideline(
                 guidelineConfig = config.guidelines,
                 y = y,
-                xPosition = xPositions.axis
+                xPosition = yAxisPosition.axis
             )
         }
 
@@ -124,13 +130,13 @@ fun DrawScope.continuousYAxis(
             drawYTick(
                 axisLineConfig = config.axisLine,
                 y = y,
-                xPosition = xPositions.axis,
+                xPosition = yAxisPosition.axis,
                 xOffset = config.labels.xOffset.toPx()
             )
         }
     }
 
-    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, xPosition = xPositions.axis)
+    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, xPosition = yAxisPosition.axis)
 }
 
 fun getY(
