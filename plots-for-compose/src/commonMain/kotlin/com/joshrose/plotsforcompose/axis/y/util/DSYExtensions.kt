@@ -21,11 +21,11 @@ import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 fun DrawScope.drawYGuideline(
     guidelineConfig: GuidelinesConfig,
     y: Float,
-    xPosition: Float
+    yAxisPosition: AxisPosition
 ) {
     val lineLength = size.width.minus(guidelineConfig.padding.toPx())
-    val startX = if (xPosition == 0f) guidelineConfig.padding.toPx() else 0f
-    val endX = if (xPosition == size.width.div(2)) size.width else startX.plus(lineLength)
+    val startX = if (yAxisPosition == TOP_START) guidelineConfig.padding.toPx() else 0f
+    val endX = if (yAxisPosition == CENTER) size.width else startX.plus(lineLength)
 
     drawLine(
         start = Offset(x = startX, y = y),
@@ -40,13 +40,13 @@ fun DrawScope.drawYGuideline(
 fun DrawScope.drawYTick(
     axisLineConfig: AxisLineConfig,
     y: Float,
-    xPosition: Float,
+    yAxisPosition: AxisPosition,
     xOffset: Float
 ) {
-    val tickStart = when (xPosition) {
-        size.width -> xPosition
-        size.width.div(2f) -> xPosition.minus(xOffset.div(4f))
-        else -> xPosition.minus(xOffset.div(2f))
+    val tickStart = when (yAxisPosition) {
+        TOP_START -> 0f.minus(xOffset.div(2f))
+        BOTTOM_END -> size.width
+        CENTER -> size.width.div(2f).minus(xOffset.div(4f))
     }
     val tickEnd = tickStart.plus(xOffset.div(2f))
 
@@ -61,11 +61,17 @@ fun DrawScope.drawYTick(
 
 fun DrawScope.drawYAxis(
     axisLineConfig: AxisLineConfig,
-    xPosition: Float
+    yAxisPosition: AxisPosition
 ) {
+    val x = when (yAxisPosition) {
+        TOP_START -> 0f
+        BOTTOM_END -> size.width
+        CENTER -> size.width.div(2f)
+    }
+
     drawLine(
-        start = Offset(x = xPosition, y = 0f),
-        end = Offset(x = xPosition, y = size.height),
+        start = Offset(x = x, y = 0f),
+        end = Offset(x = x, y = size.height),
         color = axisLineConfig.lineColor,
         alpha = axisLineConfig.alpha.factor,
         pathEffect = axisLineConfig.pathEffect,
@@ -73,12 +79,11 @@ fun DrawScope.drawYAxis(
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
 fun DrawScope.drawYFloatLabel(
     y: Float,
     x: Float,
     label: Float,
-    maxXValue: Float,
+    yAxisPosition: AxisPosition,
     textMeasurer: TextMeasurer,
     labelConfig: ContinuousLabelsConfig
 ) {
@@ -88,20 +93,19 @@ fun DrawScope.drawYFloatLabel(
         labelConfig = labelConfig
     )
 
-    // Centers the label on the x-axis. xOffset is already applied when xPositions is called.
     val (xAdjusted, yAdjusted) = adjustYLabelCoordinates(
         y = y,
-        x = x,
+        x = if (yAxisPosition == BOTTOM_END) x.plus(labelConfig.xOffset.toPx()) else x.minus(labelConfig.xOffset.toPx()),
         yOffset = labelDimensions.size.height.toFloat(),
         xOffset = labelDimensions.size.width.toFloat(),
-        maxXValue = maxXValue
+        labelPos = yAxisPosition
     )
 
     val (xPivot, yPivot) = yLabelPivotCoordinates(
         y = y,
         yAdjusted = yAdjusted,
         xAdjusted = xAdjusted,
-        maxXValue = maxXValue,
+        labelPos = yAxisPosition,
         rotation = labelConfig.rotation,
         labelWidth = labelDimensions.size.width.toFloat(),
         labelSize = labelDimensions.size.center
@@ -113,59 +117,6 @@ fun DrawScope.drawYFloatLabel(
             topLeft = Offset(x = xAdjusted, y = yAdjusted)
         )
     }
-}
-
-fun DrawScope.drawYFloatLabel(
-    y: Float,
-    x: Float,
-    label: Float,
-    axisPos: AxisPosition,
-    textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig
-) {
-    val labelDimensions = makeTextLayout(
-        label = label,
-        textMeasurer = textMeasurer,
-        labelConfig = labelConfig
-    )
-
-    // Centers the label on the x-axis. xOffset is already applied when xPositions is called.
-    val (xAdjusted, yAdjusted) = adjustYLabelCoordinates(
-        y = y,
-        x = x,
-        yOffset = labelDimensions.size.height.toFloat(),
-        xOffset = labelDimensions.size.width.toFloat(),
-        labelPos = axisPos
-    )
-
-    val (xPivot, yPivot) = yLabelPivotCoordinates(
-        y = y,
-        yAdjusted = yAdjusted,
-        xAdjusted = xAdjusted,
-        labelPos = axisPos,
-        rotation = labelConfig.rotation,
-        labelWidth = labelDimensions.size.width.toFloat(),
-        labelSize = labelDimensions.size.center
-    )
-
-    rotate(degrees = labelConfig.rotation, pivot = Offset(x = xPivot, y = yPivot)) {
-        drawText(
-            textLayoutResult = labelDimensions,
-            topLeft = Offset(x = xAdjusted, y = yAdjusted)
-        )
-    }
-}
-
-fun adjustYLabelCoordinates(
-    y: Float,
-    x: Float,
-    yOffset: Float,
-    xOffset: Float,
-    maxXValue: Float
-): Pair<Float, Float> {
-    val xAdjusted = if (maxXValue <= 0) x else x.minus(xOffset.div(2f))
-    val yAdjusted = y.minus(yOffset.div(2f))
-    return xAdjusted to yAdjusted
 }
 
 fun adjustYLabelCoordinates(
@@ -178,24 +129,6 @@ fun adjustYLabelCoordinates(
     val xAdjusted = if (labelPos == BOTTOM_END) x else x.minus(xOffset.div(2f))
     val yAdjusted = y.minus(yOffset.div(2f))
     return xAdjusted to yAdjusted
-}
-
-fun yLabelPivotCoordinates(
-    y: Float,
-    yAdjusted: Float,
-    xAdjusted: Float,
-    maxXValue: Float,
-    rotation: Float,
-    labelWidth: Float,
-    labelSize: IntOffset
-): Pair<Float, Float> {
-    val yPivot =
-        if (rotation.mod(90f) == 0f) yAdjusted.plus(labelSize.y) else y
-    val xPivot = when {
-        rotation.mod(90f) == 0f -> xAdjusted.plus(labelSize.x)
-        else -> if (maxXValue <= 0) xAdjusted else xAdjusted.plus(labelWidth)
-    }
-    return xPivot to yPivot
 }
 
 fun yLabelPivotCoordinates(
