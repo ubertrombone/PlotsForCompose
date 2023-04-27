@@ -8,9 +8,9 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
+import com.joshrose.plotsforcompose.axis.util.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.YAxisPosition
 import com.joshrose.plotsforcompose.axis.y.util.drawYAxis
 import com.joshrose.plotsforcompose.axis.y.util.drawYFloatLabel
 import com.joshrose.plotsforcompose.axis.y.util.drawYGuideline
@@ -22,16 +22,16 @@ fun DrawScope.continuousYAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     yRangeValues: Range,
-    yAxisPosition: AxisPosition,
+    yAxisPosition: YAxisPosition,
     xRangeValues: Range,
-    xAxisPosition: AxisPosition,
+    xAxisPosition: XAxisPosition,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
     labels.reversed().forEachIndexed { index, label ->
-        if (xAxisPosition == CENTER && yAxisPosition == CENTER && label == 0f) return@forEachIndexed
+        if (xAxisPosition == XAxisPosition.CENTER && yAxisPosition == YAxisPosition.CENTER && label == 0f) return@forEachIndexed
 
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
@@ -46,9 +46,9 @@ fun DrawScope.continuousYAxis(
         )
 
         val x = when (yAxisPosition) {
-            TOP_START -> 0f
-            BOTTOM_END -> size.width
-            CENTER -> size.width.div(2f)
+            YAxisPosition.START -> 0f
+            YAxisPosition.END -> size.width
+            YAxisPosition.CENTER -> size.width.div(2f)
         }
 
         if (config.showLabels) {

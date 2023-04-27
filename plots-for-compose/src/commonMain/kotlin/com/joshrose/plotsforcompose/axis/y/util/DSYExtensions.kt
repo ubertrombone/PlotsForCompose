@@ -14,17 +14,17 @@ import androidx.compose.ui.unit.center
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
+import com.joshrose.plotsforcompose.axis.util.YAxisPosition
+import com.joshrose.plotsforcompose.axis.util.YAxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 fun DrawScope.drawYGuideline(
     guidelineConfig: GuidelinesConfig,
     y: Float,
-    yAxisPosition: AxisPosition
+    yAxisPosition: YAxisPosition
 ) {
     val lineLength = size.width.minus(guidelineConfig.padding.toPx())
-    val startX = if (yAxisPosition == TOP_START) guidelineConfig.padding.toPx() else 0f
+    val startX = if (yAxisPosition == START) guidelineConfig.padding.toPx() else 0f
     val endX = if (yAxisPosition == CENTER) size.width else startX.plus(lineLength)
 
     drawLine(
@@ -40,12 +40,12 @@ fun DrawScope.drawYGuideline(
 fun DrawScope.drawYTick(
     axisLineConfig: AxisLineConfig,
     y: Float,
-    yAxisPosition: AxisPosition,
+    yAxisPosition: YAxisPosition,
     xOffset: Float
 ) {
     val tickStart = when (yAxisPosition) {
-        TOP_START -> 0f.minus(xOffset.div(2f))
-        BOTTOM_END -> size.width
+        START -> 0f.minus(xOffset.div(2f))
+        END -> size.width
         CENTER -> size.width.div(2f).minus(xOffset.div(4f))
     }
     val tickEnd = tickStart.plus(xOffset.div(2f))
@@ -61,11 +61,11 @@ fun DrawScope.drawYTick(
 
 fun DrawScope.drawYAxis(
     axisLineConfig: AxisLineConfig,
-    yAxisPosition: AxisPosition
+    yAxisPosition: YAxisPosition
 ) {
     val x = when (yAxisPosition) {
-        TOP_START -> 0f
-        BOTTOM_END -> size.width
+        START -> 0f
+        END -> size.width
         CENTER -> size.width.div(2f)
     }
 
@@ -83,7 +83,7 @@ fun DrawScope.drawYFloatLabel(
     y: Float,
     x: Float,
     label: Float,
-    yAxisPosition: AxisPosition,
+    yAxisPosition: YAxisPosition,
     textMeasurer: TextMeasurer,
     labelConfig: ContinuousLabelsConfig
 ) {
@@ -95,17 +95,17 @@ fun DrawScope.drawYFloatLabel(
 
     val (xAdjusted, yAdjusted) = adjustYLabelCoordinates(
         y = y,
-        x = if (yAxisPosition == BOTTOM_END) x.plus(labelConfig.xOffset.toPx()) else x.minus(labelConfig.xOffset.toPx()),
+        x = if (yAxisPosition == END) x.plus(labelConfig.xOffset.toPx()) else x.minus(labelConfig.xOffset.toPx()),
         yOffset = labelDimensions.size.height.toFloat(),
         xOffset = labelDimensions.size.width.toFloat(),
-        labelPos = yAxisPosition
+        yAxisPosition = yAxisPosition
     )
 
     val (xPivot, yPivot) = yLabelPivotCoordinates(
         y = y,
         yAdjusted = yAdjusted,
         xAdjusted = xAdjusted,
-        labelPos = yAxisPosition,
+        yAxisPosition = yAxisPosition,
         rotation = labelConfig.rotation,
         labelWidth = labelDimensions.size.width.toFloat(),
         labelSize = labelDimensions.size.center
@@ -124,9 +124,9 @@ fun adjustYLabelCoordinates(
     x: Float,
     yOffset: Float,
     xOffset: Float,
-    labelPos: AxisPosition
+    yAxisPosition: YAxisPosition
 ): Pair<Float, Float> {
-    val xAdjusted = if (labelPos == BOTTOM_END) x else x.minus(xOffset.div(2f))
+    val xAdjusted = if (yAxisPosition == END) x else x.minus(xOffset.div(2f))
     val yAdjusted = y.minus(yOffset.div(2f))
     return xAdjusted to yAdjusted
 }
@@ -135,7 +135,7 @@ fun yLabelPivotCoordinates(
     y: Float,
     yAdjusted: Float,
     xAdjusted: Float,
-    labelPos: AxisPosition,
+    yAxisPosition: YAxisPosition,
     rotation: Float,
     labelWidth: Float,
     labelSize: IntOffset
@@ -144,7 +144,7 @@ fun yLabelPivotCoordinates(
         if (rotation.mod(90f) == 0f) yAdjusted.plus(labelSize.y) else y
     val xPivot = when {
         rotation.mod(90f) == 0f -> xAdjusted.plus(labelSize.x)
-        else -> if (labelPos == BOTTOM_END) xAdjusted else xAdjusted.plus(labelWidth)
+        else -> if (yAxisPosition == END) xAdjusted else xAdjusted.plus(labelWidth)
     }
     return xPivot to yPivot
 }

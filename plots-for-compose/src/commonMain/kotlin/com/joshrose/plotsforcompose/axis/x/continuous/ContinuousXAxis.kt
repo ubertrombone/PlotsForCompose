@@ -7,9 +7,9 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
+import com.joshrose.plotsforcompose.axis.util.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.YAxisPosition
 import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
 import com.joshrose.plotsforcompose.axis.x.util.drawXFloatLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
@@ -21,16 +21,16 @@ fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     xRangeValues: Range,
-    xAxisPosition: AxisPosition,
+    xAxisPosition: XAxisPosition,
     yRangeValues: Range,
-    yAxisPosition: AxisPosition,
+    yAxisPosition: YAxisPosition,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
     if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
 
     labels.forEachIndexed { index, label ->
-        if (yAxisPosition == CENTER && xAxisPosition == CENTER && label == 0f) return@forEachIndexed
+        if (yAxisPosition == YAxisPosition.CENTER && xAxisPosition == XAxisPosition.CENTER && label == 0f) return@forEachIndexed
 
         val x = getX(
             width = size.width,
@@ -43,9 +43,9 @@ fun DrawScope.continuousXAxis(
         )
 
         val y = when (xAxisPosition) {
-            TOP_START -> 0f
-            BOTTOM_END -> size.height
-            CENTER -> size.height.div(2f)
+            XAxisPosition.TOP -> 0f
+            XAxisPosition.BOTTOM -> size.height
+            XAxisPosition.CENTER -> size.height.div(2f)
         }
 
         if (config.showLabels) {
@@ -55,9 +55,9 @@ fun DrawScope.continuousXAxis(
                 drawXFloatLabel(
                     y = y,
                     x = when (yAxisPosition) {
-                        TOP_START -> 0f
-                        BOTTOM_END -> size.width
-                        CENTER -> size.width.div(2f)
+                        YAxisPosition.START -> 0f
+                        YAxisPosition.END -> size.width
+                        YAxisPosition.CENTER -> size.width.div(2f)
                     },
                     label = label,
                     xAxisPosition = xAxisPosition,

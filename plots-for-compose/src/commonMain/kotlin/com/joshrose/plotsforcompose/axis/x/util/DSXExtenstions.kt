@@ -12,17 +12,17 @@ import androidx.compose.ui.text.drawText
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
+import com.joshrose.plotsforcompose.axis.util.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.XAxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 fun DrawScope.drawXGuideline(
     guidelineConfig: GuidelinesConfig,
     x: Float,
-    xAxisPosition: AxisPosition
+    xAxisPosition: XAxisPosition
 ) {
     val lineLength = size.height.minus(guidelineConfig.padding.toPx())
-    val startY = if (xAxisPosition == TOP_START) guidelineConfig.padding.toPx() else 0f
+    val startY = if (xAxisPosition == TOP) guidelineConfig.padding.toPx() else 0f
     val endY = if (xAxisPosition == CENTER) size.height else startY.plus(lineLength)
 
     drawLine(
@@ -38,12 +38,12 @@ fun DrawScope.drawXGuideline(
 fun DrawScope.drawXTick(
     axisLineConfig: AxisLineConfig,
     x: Float,
-    xAxisPosition: AxisPosition,
+    xAxisPosition: XAxisPosition,
     yOffset: Float
 ) {
     val tickStart = when (xAxisPosition) {
-        TOP_START -> 0f.minus(yOffset.div(2f))
-        BOTTOM_END -> size.height
+        TOP -> 0f.minus(yOffset.div(2f))
+        BOTTOM -> size.height
         CENTER -> size.height.div(2f).minus(yOffset.div(4f))
     }
     val tickEnd = tickStart.plus(yOffset.div(2f))
@@ -59,11 +59,11 @@ fun DrawScope.drawXTick(
 
 fun DrawScope.drawXAxis(
     axisLineConfig: AxisLineConfig,
-    xAxisPosition: AxisPosition
+    xAxisPosition: XAxisPosition
 ) {
     val y = when (xAxisPosition) {
-        TOP_START -> 0f
-        BOTTOM_END -> size.height
+        TOP -> 0f
+        BOTTOM -> size.height
         CENTER -> size.height.div(2f)
     }
 
@@ -80,7 +80,7 @@ fun DrawScope.drawXAxis(
 fun DrawScope.drawXFloatLabel(
     y: Float,
     x: Float,
-    xAxisPosition: AxisPosition,
+    xAxisPosition: XAxisPosition,
     label: Float,
     textMeasurer: TextMeasurer,
     labelConfig: ContinuousLabelsConfig
@@ -91,7 +91,7 @@ fun DrawScope.drawXFloatLabel(
         labelConfig = labelConfig
     )
 
-    val offsetY = if (xAxisPosition == TOP_START) y.minus(labelConfig.yOffset.toPx()) else y.plus(labelConfig.yOffset.toPx())
+    val offsetY = if (xAxisPosition == TOP) y.minus(labelConfig.yOffset.toPx()) else y.plus(labelConfig.yOffset.toPx())
 
     val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
         x = x,
@@ -101,7 +101,7 @@ fun DrawScope.drawXFloatLabel(
         xOffset = labelDimensions.size.width.toFloat()
     )
 
-    val degrees = labelConfig.rotation.times(if (xAxisPosition == TOP_START) -1 else 1)
+    val degrees = labelConfig.rotation.times(if (xAxisPosition == TOP) -1 else 1)
     rotate(degrees = degrees, pivot = Offset(x = xPivot, y = offsetY)) {
         drawText(
             textLayoutResult = labelDimensions,
