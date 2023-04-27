@@ -91,16 +91,18 @@ fun DrawScope.drawXFloatLabel(
         labelConfig = labelConfig
     )
 
+    val offsetY = if (xAxisPosition == TOP_START) y.minus(labelConfig.yOffset.toPx()) else y.plus(labelConfig.yOffset.toPx())
+
     val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
         x = x,
-        y = if (xAxisPosition == TOP_START) y.minus(labelConfig.yOffset.toPx()) else y.plus(labelConfig.yOffset.toPx()),
+        y = offsetY,
         rotation = labelConfig.rotation,
         yOffset = labelDimensions.size.height.toFloat(),
         xOffset = labelDimensions.size.width.toFloat()
     )
 
     val degrees = labelConfig.rotation.times(if (xAxisPosition == TOP_START) -1 else 1)
-    rotate(degrees = degrees, pivot = Offset(x = xPivot, y = y)) {
+    rotate(degrees = degrees, pivot = Offset(x = xPivot, y = offsetY)) {
         drawText(
             textLayoutResult = labelDimensions,
             topLeft = Offset(x = xAdjusted, y = yAdjusted)
