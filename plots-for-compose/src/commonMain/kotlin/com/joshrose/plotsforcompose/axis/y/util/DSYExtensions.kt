@@ -40,15 +40,14 @@ fun DrawScope.drawYGuideline(
 fun DrawScope.drawYTick(
     axisLineConfig: AxisLineConfig,
     y: Float,
-    yAxisPosition: YAxisPosition,
-    xOffset: Float
+    yAxisPosition: YAxisPosition
 ) {
     val tickStart = when (yAxisPosition) {
-        START -> 0f.minus(xOffset.div(2f))
+        START -> 0f.minus(axisLineConfig.ticks.value.div(2f))
         END -> size.width
-        CENTER -> size.width.div(2f).minus(xOffset.div(4f))
+        CENTER -> size.width.div(2f).minus(axisLineConfig.ticks.value.div(4f))
     }
-    val tickEnd = tickStart.plus(xOffset.div(2f))
+    val tickEnd = tickStart.plus(axisLineConfig.ticks.value.div(2f))
 
     drawLine(
         start = Offset(x = tickStart, y = y),

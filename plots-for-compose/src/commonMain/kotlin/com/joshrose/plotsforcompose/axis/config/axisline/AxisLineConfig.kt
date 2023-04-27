@@ -16,7 +16,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  *  To hide the axis line, set the axis config property showAxisLine to false.
  *  @property strokeWidth the width of the line.
  *  @property pathEffect the pathEffect to apply to the line.
- *  @property ticks if true, ticks will be drawn on the axis.
+ *  @property ticks the length of axis tick marks.
  *  @property axisPosition the position of the axis in the chart.
  *  @constructor Creates a configuration for the axis line.
  */
@@ -25,7 +25,7 @@ data class AxisLineConfig(
     val alpha: Multiplier,
     val strokeWidth: Dp,
     val pathEffect: PathEffect?,
-    val ticks: Boolean,
+    val ticks: Dp,
     val axisPosition: AxisPosition?
 )
 
@@ -39,7 +39,7 @@ object AxisLineConfigDefaults {
      * @param alpha the axis line alpha.
      * @param strokeWidth the axis line width.
      * @param pathEffect the pathEffect to apply to the axis line.
-     * @param ticks if true, ticks will be drawn for each label along the axis.
+     * @param ticks tick length.
      * @param axisPosition where to draw the axis on the chart. Defaults to null - chart will draw the axis in the
      * most appropriate spot.
      * @return the resulting [AxisLineConfig] to be used with an axis configuration.
@@ -49,7 +49,7 @@ object AxisLineConfigDefaults {
         alpha: Multiplier = Multiplier(1f),
         strokeWidth: Dp = 2.dp,
         pathEffect: PathEffect? = null,
-        ticks: Boolean = false,
+        ticks: Dp = 0.dp,
         axisPosition: AxisPosition? = null
     ): AxisLineConfig =
         AxisLineConfig(

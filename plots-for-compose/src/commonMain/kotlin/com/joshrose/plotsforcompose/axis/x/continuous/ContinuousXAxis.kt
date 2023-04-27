@@ -85,12 +85,11 @@ fun DrawScope.continuousXAxis(
             )
         }
 
-        if (config.showAxisLine && config.axisLine.ticks) {
+        if (config.showAxisLine) {
             drawXTick(
                 axisLineConfig = config.axisLine,
                 x = x,
-                xAxisPosition = xAxisPosition,
-                yOffset = config.labels.yOffset.toPx()
+                xAxisPosition = xAxisPosition
             )
         }
     }

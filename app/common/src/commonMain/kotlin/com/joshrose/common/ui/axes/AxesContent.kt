@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
@@ -48,8 +49,12 @@ fun AxesContent(
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
-                yOffset = 15.dp,
+                yOffset = 30.dp,
                 rangeAdjustment = Multiplier(.1f)
+            ),
+            axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
+                ticks = 30.dp,
+                lineColor = MaterialTheme.colorScheme.primary
             )
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -63,6 +68,10 @@ fun AxesContent(
                 rotation = yRotation,
                 xOffset = 25.dp,
                 rangeAdjustment = Multiplier(.1f)
+            ),
+            axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
+                ticks = 25.dp,
+                lineColor = MaterialTheme.colorScheme.primary
             )
         )
 
