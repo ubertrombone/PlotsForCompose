@@ -13,6 +13,9 @@ kotlin {
     android()
     jvm("desktop") {
         jvmToolchain(16)
+        testRuns["test"].executionTask.configure {
+            useJUnitPlatform()
+        }
     }
     sourceSets {
         val commonMain by getting {
