@@ -22,6 +22,11 @@ kotlin {
                 api(compose.material3)
             }
         }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
         val androidMain by getting {
             dependencies {
                 api(deps.androidx.activity.activityCompose)
