@@ -39,7 +39,10 @@ fun AxesContent(
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
 
-    // TODO: Break down configs. I think that's more user friendly
+    // TODO: Put Canvas in another composable to simulate how actual functions will look
+    // TODO: Build out the sample
+    // TODO: Make component work -- add mins, maxes, and ranges there using Flow
+    // TODO: Add a loading state to make component work like we hope
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
             showGuidelines = true,
@@ -49,11 +52,11 @@ fun AxesContent(
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
-                yOffset = 30.dp,
+                yOffset = 20.dp,
                 rangeAdjustment = Multiplier(.1f)
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
-                ticks = 30.dp,
+                ticks = 10.dp,
                 lineColor = MaterialTheme.colorScheme.primary
             )
         )
@@ -66,16 +69,16 @@ fun AxesContent(
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
-                xOffset = 25.dp,
+                xOffset = 20.dp,
                 rangeAdjustment = Multiplier(.1f)
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
-                ticks = 25.dp,
+                ticks = 10.dp,
                 lineColor = MaterialTheme.colorScheme.primary
             )
         )
 
-    // TODO: Force set axis min and max
+    // TODO: Force set axis min and max -- For later
 
     var xData by remember { mutableStateOf(listOf(0f, 2000f, 3000f)) }
     var yData by remember { mutableStateOf(listOf(100f, 2000f, 3000f)) }

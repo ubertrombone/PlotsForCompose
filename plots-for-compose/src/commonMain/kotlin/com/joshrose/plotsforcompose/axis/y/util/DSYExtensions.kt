@@ -43,11 +43,13 @@ fun DrawScope.drawYTick(
     yAxisPosition: YAxisPosition
 ) {
     val tickStart = when (yAxisPosition) {
-        START -> 0f.minus(axisLineConfig.ticks.value.div(2f))
+        START -> 0f.minus(axisLineConfig.ticks.value)
         END -> size.width
-        CENTER -> size.width.div(2f).minus(axisLineConfig.ticks.value.div(4f))
+        CENTER -> size.width.div(2f).minus(axisLineConfig.ticks.value)
     }
-    val tickEnd = tickStart.plus(axisLineConfig.ticks.value.div(2f))
+    val tickEnd =
+        if (yAxisPosition == CENTER) tickStart.plus(axisLineConfig.ticks.value.times(2f))
+        else tickStart.plus(axisLineConfig.ticks.value)
 
     drawLine(
         start = Offset(x = tickStart, y = y),
@@ -92,9 +94,13 @@ fun DrawScope.drawYFloatLabel(
         labelConfig = labelConfig
     )
 
+    val offsetX =
+        if (yAxisPosition == END) x.plus(labelConfig.xOffset.toPx())
+        else x.minus(labelDimensions.size.width.div(2f)).minus(labelConfig.xOffset.toPx())
+
     val (xAdjusted, yAdjusted) = adjustYLabelCoordinates(
         y = y,
-        x = if (yAxisPosition == END) x.plus(labelConfig.xOffset.toPx()) else x.minus(labelConfig.xOffset.toPx()),
+        x = offsetX,//if (yAxisPosition == END) x.plus(labelConfig.xOffset.toPx()) else x.minus(labelConfig.xOffset.toPx()),
         yOffset = labelDimensions.size.height.toFloat(),
         xOffset = labelDimensions.size.width.toFloat(),
         yAxisPosition = yAxisPosition

@@ -41,11 +41,13 @@ fun DrawScope.drawXTick(
     xAxisPosition: XAxisPosition
 ) {
     val tickStart = when (xAxisPosition) {
-        TOP -> 0f.minus(axisLineConfig.ticks.value.div(2f))
+        TOP -> 0f.minus(axisLineConfig.ticks.value)
         BOTTOM -> size.height
-        CENTER -> size.height.div(2f).minus(axisLineConfig.ticks.value.div(4f))
+        CENTER -> size.height.div(2f).minus(axisLineConfig.ticks.value)
     }
-    val tickEnd = tickStart.plus(axisLineConfig.ticks.value.div(2f))
+    val tickEnd =
+        if (xAxisPosition == CENTER) tickStart.plus(axisLineConfig.ticks.value.times(2f))
+        else tickStart.plus(axisLineConfig.ticks.value)
 
     drawLine(
         start = Offset(x = x, y = tickStart),
@@ -90,7 +92,9 @@ fun DrawScope.drawXFloatLabel(
         labelConfig = labelConfig
     )
 
-    val offsetY = if (xAxisPosition == TOP) y.minus(labelConfig.yOffset.toPx()) else y.plus(labelConfig.yOffset.toPx())
+    val offsetY =
+        if (xAxisPosition == TOP) y.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.yOffset.toPx())
+        else y.plus(labelDimensions.size.height.div(2f)).plus(labelConfig.yOffset.toPx())
 
     val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
         x = x,
