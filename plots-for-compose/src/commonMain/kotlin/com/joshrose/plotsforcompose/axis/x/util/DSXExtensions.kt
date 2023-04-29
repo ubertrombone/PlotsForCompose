@@ -1,5 +1,4 @@
 @file:Suppress("DuplicatedCode")
-@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.x.util
 
@@ -79,6 +78,7 @@ fun DrawScope.drawXAxis(
     )
 }
 
+@ExperimentalTextApi
 fun DrawScope.drawXFloatLabel(
     y: Float,
     x: Float,

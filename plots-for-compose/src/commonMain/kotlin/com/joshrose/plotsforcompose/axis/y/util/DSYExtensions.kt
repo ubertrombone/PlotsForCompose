@@ -1,5 +1,4 @@
 @file:Suppress("DuplicatedCode")
-@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.y.util
 
@@ -81,6 +80,7 @@ fun DrawScope.drawYAxis(
     )
 }
 
+@ExperimentalTextApi
 fun DrawScope.drawYFloatLabel(
     y: Float,
     x: Float,
