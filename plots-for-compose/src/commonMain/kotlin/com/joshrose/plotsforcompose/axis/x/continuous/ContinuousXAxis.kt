@@ -89,7 +89,8 @@ fun DrawScope.continuousXAxis(
             drawXTick(
                 axisLineConfig = config.axisLine,
                 x = x,
-                xAxisPosition = xAxisPosition
+                xAxisPosition = xAxisPosition,
+                axisOffset = config.labels.axisOffset.toPx()
             )
         }
     }

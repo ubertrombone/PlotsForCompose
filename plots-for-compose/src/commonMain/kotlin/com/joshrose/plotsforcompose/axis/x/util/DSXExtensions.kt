@@ -38,16 +38,17 @@ fun DrawScope.drawXGuideline(
 fun DrawScope.drawXTick(
     axisLineConfig: AxisLineConfig,
     x: Float,
-    xAxisPosition: XAxisPosition
+    xAxisPosition: XAxisPosition,
+    axisOffset: Float
 ) {
     val tickStart = when (xAxisPosition) {
-        TOP -> 0f.minus(axisLineConfig.ticks.value)
+        TOP -> 0f.minus(axisOffset.div(2f))
         BOTTOM -> size.height
-        CENTER -> size.height.div(2f).minus(axisLineConfig.ticks.value)
+        CENTER -> size.height.div(2f).minus(axisOffset.div(2f))
     }
     val tickEnd =
-        if (xAxisPosition == CENTER) tickStart.plus(axisLineConfig.ticks.value.times(2f))
-        else tickStart.plus(axisLineConfig.ticks.value)
+        if (xAxisPosition == CENTER) tickStart.plus(axisOffset)
+        else tickStart.plus(axisOffset.div(2f))
 
     drawLine(
         start = Offset(x = x, y = tickStart),

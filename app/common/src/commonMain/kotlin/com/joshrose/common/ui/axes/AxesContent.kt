@@ -56,7 +56,7 @@ fun AxesContent(
                 rangeAdjustment = Multiplier(.1f)
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
-                ticks = 10.dp,
+                ticks = true,
                 lineColor = MaterialTheme.colorScheme.primary
             )
         )
@@ -73,7 +73,7 @@ fun AxesContent(
                 rangeAdjustment = Multiplier(.1f)
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
-                ticks = 10.dp,
+                ticks = true,
                 lineColor = MaterialTheme.colorScheme.primary
             )
         )

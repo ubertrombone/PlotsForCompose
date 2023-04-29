@@ -76,7 +76,8 @@ fun DrawScope.continuousYAxis(
             drawYTick(
                 axisLineConfig = config.axisLine,
                 y = y,
-                yAxisPosition = yAxisPosition
+                yAxisPosition = yAxisPosition,
+                axisOffset = config.labels.axisOffset.toPx()
             )
         }
     }
