@@ -93,8 +93,8 @@ fun DrawScope.drawXFloatLabel(
     )
 
     val offsetY =
-        if (xAxisPosition == TOP) y.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.yOffset.toPx())
-        else y.plus(labelDimensions.size.height.div(2f)).plus(labelConfig.yOffset.toPx())
+        if (xAxisPosition == TOP) y.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.axisOffset.toPx())
+        else y.plus(labelDimensions.size.height.div(2f)).plus(labelConfig.axisOffset.toPx())
 
     val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
         x = x,

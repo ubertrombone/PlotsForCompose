@@ -95,8 +95,8 @@ fun DrawScope.drawYFloatLabel(
     )
 
     val offsetX =
-        if (yAxisPosition == END) x.plus(labelConfig.xOffset.toPx())
-        else x.minus(labelDimensions.size.width.div(2f)).minus(labelConfig.xOffset.toPx())
+        if (yAxisPosition == END) x.plus(labelConfig.axisOffset.toPx())
+        else x.minus(labelDimensions.size.width.div(2f)).minus(labelConfig.axisOffset.toPx())
 
     val (xAdjusted, yAdjusted) = adjustYLabelCoordinates(
         y = y,

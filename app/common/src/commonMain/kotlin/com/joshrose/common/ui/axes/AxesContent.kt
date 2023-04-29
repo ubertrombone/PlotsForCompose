@@ -52,7 +52,7 @@ fun AxesContent(
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
-                yOffset = 20.dp,
+                axisOffset = 20.dp,
                 rangeAdjustment = Multiplier(.1f)
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
@@ -69,7 +69,7 @@ fun AxesContent(
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
-                xOffset = 20.dp,
+                axisOffset = 20.dp,
                 rangeAdjustment = Multiplier(.1f)
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(

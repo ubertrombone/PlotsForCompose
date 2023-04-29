@@ -13,8 +13,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  *
  * @property fontColor the [Color] of the labels.
  * @property textStyle the [TextStyle] of the labels.
- * @property xOffset the amount in [Dp] to offset each label along the x-axis.
- * @property yOffset the amount in [Dp] to offset each label along the y-axis.
+ * @property axisOffset value to offset each label from the respective axis.
  * @property rotation the number of degrees to rotate each label.
  * @property breaks the number of labels to apply to the axis.
  * @property minValueAdjustment the amount as a [Multiplier] to adjust the given data's minimum value.
@@ -27,8 +26,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
 data class ContinuousLabelsConfig(
     val fontColor: Color,
     val textStyle: TextStyle,
-    val xOffset: Dp,
-    val yOffset: Dp,
+    val axisOffset: Dp,
     val rotation: Float,
     val breaks: Int,
     val minValueAdjustment: Multiplier,
@@ -45,8 +43,7 @@ object ContinuousLabelsConfigDefaults {
      *
      * @param fontColor label font color.
      * @param textStyle style of label text. To use this default style but update one or more of the properties, use the copy method.
-     * @param xOffset value to offset each label along the x-axis.
-     * @param yOffset value to offset each label along the y-axis.
+     * @param axisOffset value to offset each label from the respective axis.
      * @param rotation degrees to rotate the labels. When rotated, the axis will automatically
      *  center y-axis labels according to their bottom right point and
      *  x-axis labels according to their top left point (from 0 degrees).
@@ -61,8 +58,7 @@ object ContinuousLabelsConfigDefaults {
     fun continuousLabelsConfigDefaults(
         fontColor: Color = md_theme_dark_primary,
         textStyle: TextStyle = Typography.labelMedium,
-        xOffset: Dp = 0.dp,
-        yOffset: Dp = 0.dp,
+        axisOffset: Dp = 0.dp,
         rotation: Float = 0f,
         breaks: Int = 5,
         minValueAdjustment: Multiplier = Multiplier(factor = 0f),
@@ -73,8 +69,7 @@ object ContinuousLabelsConfigDefaults {
         ContinuousLabelsConfig(
             fontColor = fontColor,
             textStyle = textStyle,
-            xOffset = xOffset,
-            yOffset = yOffset,
+            axisOffset = axisOffset,
             rotation = rotation,
             breaks = breaks,
             minValueAdjustment = minValueAdjustment,
