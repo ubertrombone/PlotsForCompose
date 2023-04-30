@@ -27,23 +27,23 @@ fun AxisChipRow(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(label)
-        Spacer(modifier = Modifier.width(15.dp))
+        Spacer(modifier = Modifier.width(10.dp))
         ScrollLazyRow(modifier = Modifier.fillMaxWidth()) {
             item {
                 ElevatedFilterChip(selected = axisSelected, label = "Axis") { axisOnClick() }
-                Spacer(Modifier.width(15.dp))
+                Spacer(Modifier.width(5.dp))
             }
             item {
                 ElevatedFilterChip(selected = axisLineSelected, label = "Axis Line") { axisLineOnClick() }
-                Spacer(Modifier.width(15.dp))
+                Spacer(Modifier.width(5.dp))
             }
             item {
                 ElevatedFilterChip(selected = guidelinesSelected, label = "Guidelines") { guidelinesOnClick() }
-                Spacer(Modifier.width(15.dp))
+                Spacer(Modifier.width(5.dp))
             }
             item {
                 ElevatedFilterChip(selected = labelsSelected, label = "Labels") { labelsOnClick() }
-                Spacer(Modifier.width(15.dp))
+                Spacer(Modifier.width(5.dp))
             }
         }
     }

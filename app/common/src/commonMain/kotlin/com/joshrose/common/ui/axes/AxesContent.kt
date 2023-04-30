@@ -88,6 +88,28 @@ fun AxesContent(
 
     ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 10.dp)) {
         item {
+            Button(
+                onClick = {
+                    data = List(2) {
+                        Coordinates(
+                            x = (-10_000..10_000).random().toFloat(),
+                            y = (-10_000..10_000).random().toFloat()
+                        )
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            ) {
+                Text(
+                    text = "Generate New Axes",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+            Spacer(Modifier.height(20.dp))
+        }
+        item {
             AxisChipRow(
                 label = "X-Axis:",
                 axisSelected = showXAxis,
@@ -115,28 +137,7 @@ fun AxesContent(
                 labelsOnClick = { showYLabels = !showYLabels },
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(Modifier.height(20.dp))
-        }
-        item {
-            Button(
-                onClick = {
-                    data = List(2) {
-                        Coordinates(
-                            x = (-10_000..10_000).random().toFloat(),
-                            y = (-10_000..10_000).random().toFloat()
-                        )
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            ) {
-                Text(
-                    text = "Generate New Axes",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
+            Spacer(Modifier.height(10.dp))
         }
         item {
             AxesCanvas(
