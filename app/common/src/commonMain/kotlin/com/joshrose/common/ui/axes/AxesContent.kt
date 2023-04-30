@@ -2,13 +2,11 @@
 
 package com.joshrose.common.ui.axes
 
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.util.ScrollLazyColumn
@@ -17,15 +15,7 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toXAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toYAxisPosition
-import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.util.XAxisPosition
-import com.joshrose.plotsforcompose.axis.util.YAxisPosition
-import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
-import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
-import kotlin.math.abs
+import com.joshrose.plotsforcompose.util.Coordinates
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -33,16 +23,11 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
+    // TODO: Move these states to component?
     var xRotation by remember { mutableStateOf(0f) }
     var yRotation by remember { mutableStateOf(0f) }
 
-    val xTextMeasurer = rememberTextMeasurer()
-    val yTextMeasurer = rememberTextMeasurer()
-
-    // TODO: Put Canvas in another composable to simulate how actual functions will look
     // TODO: Build out the sample
-    // TODO: Make component work -- add mins, maxes, and ranges there using Flow
-    // TODO: Add a loading state to make component work like we hope
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
             showGuidelines = true,
@@ -80,50 +65,22 @@ fun AxesContent(
 
     // TODO: Force set axis min and max -- For later
 
-    var xData by remember { mutableStateOf(listOf(0f, 2000f, 3000f)) }
-    var yData by remember { mutableStateOf(listOf(100f, 2000f, 3000f)) }
-
-    val xMax = xData.max()
-    val xMaxAdjusted = xMax.plus(xMax.times(xConfig.labels.maxValueAdjustment.factor))
-    val xMin = xData.min()
-    val xMinAdjusted = xMin.minus(abs(xMin.times(xConfig.labels.minValueAdjustment.factor)))
-    val xMinFinal = if (xMin < 0 && xMaxAdjusted > 0) xMaxAdjusted.times(-1) else xMinAdjusted
-    val yMax = yData.max()
-    val yMaxAdjusted = yMax.plus(yMax.times(yConfig.labels.maxValueAdjustment.factor))
-    val yMin = yData.min()
-    val yMinAdjusted = yMin.minus(abs(yMin.times(yConfig.labels.minValueAdjustment.factor)))
-    val yMinFinal = if (yMin < 0 && yMaxAdjusted > 0) yMaxAdjusted.times(-1) else yMinAdjusted
-    val xRange = xMaxAdjusted.minus(xMinFinal)
-    val xRangeAdjusted = when {
-        xMinFinal <= 0 && xMaxAdjusted >= 0 -> xRange
-        xMinFinal == 0f || xMaxAdjusted == 0f -> xRange
-        else -> xRange.plus(xRange.times(xConfig.labels.rangeAdjustment.factor))
+    var data by remember {
+        mutableStateOf(
+            listOf(Coordinates(0f, 100f), Coordinates(2000f, 2000f), Coordinates(3000f, 3000f))
+        )
     }
-    val yRange = yMaxAdjusted.minus(yMinFinal)
-    val yRangeAdjusted = when {
-        yMinFinal <= 0 && yMaxAdjusted >= 0 -> yRange
-        yMinFinal == 0f || yMaxAdjusted == 0f -> yRange
-        else -> yRange.plus(yRange.times(yConfig.labels.rangeAdjustment.factor))
-    }
-
-    val xLabels = floatLabels(
-        breaks = xConfig.labels.breaks,
-        minValue = xMinFinal,
-        maxValue = xMaxAdjusted
-    )
-
-    val yLabels = floatLabels(
-        breaks = yConfig.labels.breaks,
-        minValue = yMinFinal,
-        maxValue = yMaxAdjusted
-    )
 
     ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(20.dp)) {
         item {
             Button(
                 onClick = {
-                    xData = (1..2).map { (-10_000..10_000).random().toFloat() }
-                    yData = (1..2).map { (-10_000..10_000).random().toFloat() }
+                    data = List(2) {
+                        Coordinates(
+                            x = (-10_000..10_000).random().toFloat(),
+                            y = (-10_000..10_000).random().toFloat()
+                        )
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -137,46 +94,16 @@ fun AxesContent(
             }
         }
         item {
-            Canvas(
+            AxesCanvas(
+                component = component,
+                xConfig = xConfig,
+                yConfig = yConfig,
+                data = data,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
-                    .padding(30.dp)
-            ) {
-                val xAxisPosition = xConfig.axisLine.axisPosition?.toXAxisPosition() ?: when {
-                    yMaxAdjusted <= 0 -> XAxisPosition.TOP
-                    yMinFinal < 0 -> XAxisPosition.CENTER
-                    else -> XAxisPosition.BOTTOM
-                }
-
-                val yAxisPosition = yConfig.axisLine.axisPosition?.toYAxisPosition() ?: when {
-                    xMaxAdjusted <= 0 -> YAxisPosition.END
-                    xMinFinal < 0 -> YAxisPosition.CENTER
-                    else -> YAxisPosition.START
-                }
-
-                continuousXAxis(
-                    config = xConfig,
-                    labels = xLabels,
-                    xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
-                    xAxisPosition = xAxisPosition,
-                    yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
-                    yAxisPosition = yAxisPosition,
-                    range = xRangeAdjusted,
-                    textMeasurer = xTextMeasurer
-                )
-
-                continuousYAxis(
-                    config = yConfig,
-                    labels = yLabels,
-                    yRangeValues = Range(min = yMinFinal, max = yMaxAdjusted),
-                    yAxisPosition = yAxisPosition,
-                    xRangeValues = Range(min = xMinFinal, max = xMaxAdjusted),
-                    xAxisPosition = xAxisPosition,
-                    range = yRangeAdjusted,
-                    textMeasurer = yTextMeasurer
-                )
-            }
+                    .padding(50.dp)
+            )
         }
         item {
             Spacer(Modifier.height(50.dp))

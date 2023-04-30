@@ -4,7 +4,11 @@ import com.arkivanov.decompose.ComponentContext
 import com.joshrose.common.components.graph.GraphComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
+import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.util.*
+import com.joshrose.plotsforcompose.util.LoadingState.COMPLETE
+import com.joshrose.plotsforcompose.util.LoadingState.LOADING
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -33,7 +37,10 @@ class AxesComponent(
     private val _yRange = MutableStateFlow<Float?>(null)
     val yRange = _yRange.asStateFlow()
 
-    fun maxValues(
+    private val _loading = MutableStateFlow(LOADING)
+    val loading = _loading.asStateFlow()
+
+    private fun maxValues(
         yMaxValue: Float,
         yMaxValueAdjustment: Multiplier,
         xMaxValue: Float,
@@ -43,29 +50,65 @@ class AxesComponent(
         _maxXValue.update { xMaxValue.plus(xMaxValue.times(xMaxValueAdjustment.factor)) }
     }
 
-    fun minValues(
+    private fun minValues(
         yMinValue: Float,
         yMinValueAdjustment: Multiplier,
         xMinValue: Float,
         xMinValueAdjustment: Multiplier,
     ) {
         val adjustedMinYValue = yMinValue.minus(abs(yMinValue.times(yMinValueAdjustment.factor)))
-        val finalYValue = if (yMinValue < 0) _maxYValue.value?.times(-1) ?: 100f else adjustedMinYValue
+        val finalYValue = if (yMinValue < 0 && _maxYValue.value!! > 0) _maxYValue.value?.times(-1) ?: 100f else adjustedMinYValue
         _minYValue.update { finalYValue }
 
         val adjustedMinXValue = xMinValue.minus(abs(xMinValue.times(xMinValueAdjustment.factor)))
-        val finalXValue = if (xMinValue < 0) _maxXValue.value?.times(-1) ?: 100f else adjustedMinXValue
+        val finalXValue = if (xMinValue < 0 && _maxXValue.value!! > 0) _maxXValue.value?.times(-1) ?: 100f else adjustedMinXValue
         _minXValue.update { finalXValue }
     }
 
-    fun ranges(
+    private fun ranges(
         yRangeAdjustment: Multiplier,
         xRangeAdjustment: Multiplier
     ) {
         val xRange = _maxXValue.value?.minus(_minXValue.value ?: 0f) ?: 0f
-        _xRange.update { xRange.plus(xRange.times(xRangeAdjustment.factor)) }
+        _xRange.update {
+            when {
+                _minXValue.value!! <= 0 && _maxXValue.value!! >= 0 -> xRange
+                _minXValue.value!! == 0f || _maxXValue.value == 0f -> xRange
+                else -> xRange.plus(xRange.times(xRangeAdjustment.factor))
+            }
+        }
 
         val yRange = _maxYValue.value?.minus(_minYValue.value ?: 0f) ?: 0f
-        _yRange.update { yRange.plus(yRange.times(yRangeAdjustment.factor)) }
+        _yRange.update {
+            when {
+                _minYValue.value!! <= 0 && _maxYValue.value!! >= 0 -> yRange
+                _minYValue.value!! == 0f || _maxYValue.value!! == 0f -> yRange
+                else -> yRange.plus(yRange.times(yRangeAdjustment.factor))
+            }
+        }
+    }
+
+    fun calculateData(
+        xConfig: ContinuousLabelsConfig,
+        yConfig: ContinuousLabelsConfig,
+        data: List<Coordinates>
+    ) {
+        maxValues(
+            yMaxValue = data.maxYValue(),
+            yMaxValueAdjustment = yConfig.maxValueAdjustment,
+            xMaxValue = data.maxXValue(),
+            xMaxValueAdjustment = xConfig.maxValueAdjustment
+        )
+
+        minValues(
+            yMinValue = data.minYValue(),
+            yMinValueAdjustment = yConfig.minValueAdjustment,
+            xMinValue = data.minXValue(),
+            xMinValueAdjustment = xConfig.minValueAdjustment
+        )
+
+        ranges(yRangeAdjustment = yConfig.rangeAdjustment, xRangeAdjustment = xConfig.rangeAdjustment)
+
+        _loading.update { COMPLETE }
     }
 }
