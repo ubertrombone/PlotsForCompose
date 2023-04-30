@@ -24,6 +24,7 @@ fun AxesContent(
     modifier: Modifier = Modifier
 ) {
     // TODO: Move these states to component?
+    // TODO: Add a reset function when doing the above
     var showXAxis by remember { mutableStateOf(true) }
     var showYAxis by remember { mutableStateOf(true) }
     var showXAxisLine by remember { mutableStateOf(true) }
@@ -45,7 +46,9 @@ fun AxesContent(
             showGuidelines = showXGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
-                lineColor = MaterialTheme.colorScheme.onBackground
+                lineColor = MaterialTheme.colorScheme.onBackground,
+                alpha = Multiplier(.5f),
+                padding = 0.dp
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
@@ -65,7 +68,9 @@ fun AxesContent(
             showGuidelines = showYGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
-                lineColor = MaterialTheme.colorScheme.onBackground
+                lineColor = MaterialTheme.colorScheme.onBackground,
+                alpha = Multiplier(.5f),
+                padding = 0.dp
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,

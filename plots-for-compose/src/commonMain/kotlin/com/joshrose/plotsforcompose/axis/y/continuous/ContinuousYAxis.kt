@@ -25,6 +25,7 @@ fun DrawScope.continuousYAxis(
     yAxisPosition: YAxisPosition,
     xRangeValues: Range,
     xAxisPosition: XAxisPosition,
+    drawXAxis: Boolean,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
@@ -64,11 +65,13 @@ fun DrawScope.continuousYAxis(
             )
         }
 
-        val xAxisPositionYValue = when (xAxisPosition) {
-            XAxisPosition.BOTTOM -> size.height
-            XAxisPosition.CENTER -> size.height.div(2f)
-            XAxisPosition.TOP -> 0f
-        }
+        val xAxisPositionYValue = if (drawXAxis) {
+            when (xAxisPosition) {
+                XAxisPosition.BOTTOM -> size.height
+                XAxisPosition.CENTER -> size.height.div(2f)
+                XAxisPosition.TOP -> 0f
+            }
+        } else null
 
         if (config.showGuidelines && xAxisPositionYValue != y) {
             drawYGuideline(

@@ -73,7 +73,6 @@ fun AxesCanvas(
             maxValue = yMax
         )
 
-        // TODO: How to handle when the axis isn't shown? NONE?
         val xAxisPosition = xConfig.axisLine.axisPosition?.toXAxisPosition() ?: when {
             yMax <= 0 -> XAxisPosition.TOP
             yMin < 0 -> XAxisPosition.CENTER
@@ -95,6 +94,7 @@ fun AxesCanvas(
                     xAxisPosition = xAxisPosition,
                     yRangeValues = Range(min = yMin, max = yMax),
                     yAxisPosition = yAxisPosition,
+                    drawYAxis = yConfig.showAxis,
                     range = xRange,
                     textMeasurer = xTextMeasurer
                 )
@@ -108,6 +108,7 @@ fun AxesCanvas(
                     yAxisPosition = yAxisPosition,
                     xRangeValues = Range(min = xMin, max = xMax),
                     xAxisPosition = xAxisPosition,
+                    drawXAxis = xConfig.showAxis,
                     range = yRange,
                     textMeasurer = yTextMeasurer
                 )
