@@ -64,7 +64,13 @@ fun DrawScope.continuousYAxis(
             )
         }
 
-        if (config.showGuidelines && x != y) {
+        val xAxisPositionYValue = when (xAxisPosition) {
+            XAxisPosition.BOTTOM -> size.height
+            XAxisPosition.CENTER -> size.height.div(2f)
+            XAxisPosition.TOP -> 0f
+        }
+
+        if (config.showGuidelines && xAxisPositionYValue != y) {
             drawYGuideline(
                 guidelineConfig = config.guidelines,
                 y = y,
