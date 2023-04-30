@@ -24,13 +24,25 @@ fun AxesContent(
     modifier: Modifier = Modifier
 ) {
     // TODO: Move these states to component?
+    var showXAxis by remember { mutableStateOf(true) }
+    var showYAxis by remember { mutableStateOf(true) }
+    var showXAxisLine by remember { mutableStateOf(true) }
+    var showYAxisLine by remember { mutableStateOf(true) }
+    var showXGuidelines by remember { mutableStateOf(true) }
+    var showYGuidelines by remember { mutableStateOf(true) }
+    var showXLabels by remember { mutableStateOf(true) }
+    var showYLabels by remember { mutableStateOf(true) }
+
     var xRotation by remember { mutableStateOf(0f) }
     var yRotation by remember { mutableStateOf(0f) }
 
     // TODO: Build out the sample
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
-            showGuidelines = true,
+            showAxis = showXAxis,
+            showLabels = showXLabels,
+            showAxisLine = showXAxisLine,
+            showGuidelines = showXGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
                 lineColor = MaterialTheme.colorScheme.onBackground
@@ -47,7 +59,10 @@ fun AxesContent(
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
-            showGuidelines = true,
+            showAxis = showYAxis,
+            showLabels = showYLabels,
+            showAxisLine = showYAxisLine,
+            showGuidelines = showYGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = 1.dp,
                 lineColor = MaterialTheme.colorScheme.onBackground
@@ -71,7 +86,37 @@ fun AxesContent(
         )
     }
 
-    ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(20.dp)) {
+    ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 10.dp)) {
+        item {
+            AxisChipRow(
+                label = "X-Axis:",
+                axisSelected = showXAxis,
+                axisLineSelected = showXAxisLine,
+                guidelinesSelected = showXGuidelines,
+                labelsSelected = showXLabels,
+                axisOnClick = { showXAxis = !showXAxis },
+                axisLineOnClick = { showXAxisLine = !showXAxisLine },
+                guidelinesOnClick = { showXGuidelines = !showXGuidelines },
+                labelsOnClick = { showXLabels = !showXLabels },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(10.dp))
+        }
+        item {
+            AxisChipRow(
+                label = "Y-Axis:",
+                axisSelected = showYAxis,
+                axisLineSelected = showYAxisLine,
+                guidelinesSelected = showYGuidelines,
+                labelsSelected = showYLabels,
+                axisOnClick = { showYAxis = !showYAxis },
+                axisLineOnClick = { showYAxisLine = !showYAxisLine },
+                guidelinesOnClick = { showYGuidelines = !showYGuidelines },
+                labelsOnClick = { showYLabels = !showYLabels },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(20.dp))
+        }
         item {
             Button(
                 onClick = {
@@ -84,7 +129,7 @@ fun AxesContent(
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             ) {
                 Text(

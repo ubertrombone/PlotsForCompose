@@ -86,27 +86,31 @@ fun AxesCanvas(
         }
 
         Canvas(modifier = modifier) {
-            continuousXAxis(
-                config = xConfig,
-                labels = xLabels,
-                xRangeValues = Range(min = xMin, max = xMax),
-                xAxisPosition = xAxisPosition,
-                yRangeValues = Range(min = yMin, max = yMax),
-                yAxisPosition = yAxisPosition,
-                range = xRange,
-                textMeasurer = xTextMeasurer
-            )
+            if (xConfig.showAxis) {
+                continuousXAxis(
+                    config = xConfig,
+                    labels = xLabels,
+                    xRangeValues = Range(min = xMin, max = xMax),
+                    xAxisPosition = xAxisPosition,
+                    yRangeValues = Range(min = yMin, max = yMax),
+                    yAxisPosition = yAxisPosition,
+                    range = xRange,
+                    textMeasurer = xTextMeasurer
+                )
+            }
 
-            continuousYAxis(
-                config = yConfig,
-                labels = yLabels,
-                yRangeValues = Range(min = yMin, max = yMax),
-                yAxisPosition = yAxisPosition,
-                xRangeValues = Range(min = xMin, max = xMax),
-                xAxisPosition = xAxisPosition,
-                range = yRange,
-                textMeasurer = yTextMeasurer
-            )
+            if (yConfig.showAxis) {
+                continuousYAxis(
+                    config = yConfig,
+                    labels = yLabels,
+                    yRangeValues = Range(min = yMin, max = yMax),
+                    yAxisPosition = yAxisPosition,
+                    xRangeValues = Range(min = xMin, max = xMax),
+                    xAxisPosition = xAxisPosition,
+                    range = yRange,
+                    textMeasurer = yTextMeasurer
+                )
+            }
         }
     }
 }
