@@ -1,6 +1,7 @@
 package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,11 +23,11 @@ fun AxisChipRow(
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(label)
+        Text(label, color = MaterialTheme.colorScheme.primary)
         Spacer(modifier = Modifier.width(10.dp))
         ScrollLazyRow(modifier = Modifier.fillMaxWidth()) {
             item {
