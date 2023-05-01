@@ -1,5 +1,6 @@
 package com.joshrose.common.components.axes
 
+import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
 import com.joshrose.common.components.graph.GraphComponent
 import com.joshrose.common.util.ScreenNames
@@ -111,4 +112,60 @@ class AxesComponent(
 
         _loading.update { COMPLETE }
     }
+
+    private val _showXAxis = MutableStateFlow(true)
+    val showXAxis = _showXAxis.asStateFlow()
+    fun updateShowXAxis() = _showXAxis.update { !it }
+
+    private val _showYAxis = MutableStateFlow(true)
+    val showYAxis = _showYAxis.asStateFlow()
+    fun updateShowYAxis() = _showYAxis.update { !it }
+
+    private val _showXAxisLine = MutableStateFlow(true)
+    val showXAxisLine = _showXAxisLine.asStateFlow()
+    fun updateShowXAxisLine() = _showXAxisLine.update { !it }
+
+    private val _showYAxisLine = MutableStateFlow(true)
+    val showYAxisLine = _showYAxisLine.asStateFlow()
+    fun updateShowYAxisLine() = _showYAxisLine.update { !it }
+
+    private val _showXGuidelines = MutableStateFlow(true)
+    val showXGuidelines = _showXGuidelines.asStateFlow()
+    fun updateShowXGuidelines() = _showXGuidelines.update { !it }
+
+    private val _showYGuidelines = MutableStateFlow(true)
+    val showYGuidelines = _showYGuidelines.asStateFlow()
+    fun updateShowYGuidelines() = _showYGuidelines.update { !it }
+
+    private val _showXLabels = MutableStateFlow(true)
+    val showXLabels = _showXLabels.asStateFlow()
+    fun updateShowXLabels() = _showXLabels.update { !it }
+
+    private val _showYLabels = MutableStateFlow(true)
+    val showYLabels = _showYLabels.asStateFlow()
+    fun updateShowYLabels() = _showYLabels.update { !it }
+
+    private val _guidelinesStrokeWidthX = MutableStateFlow(1.dp)
+    val guidelinesStrokeWidthX = _guidelinesStrokeWidthX.asStateFlow()
+    fun incGuidelinesStrokeWidthX() = _guidelinesStrokeWidthX.update { it.plus(1.dp) }
+    fun decGuidelinesStrokeWidthX() = _guidelinesStrokeWidthX.update { it.minus(1.dp) }
+
+    private val _guidelinesStrokeWidthY = MutableStateFlow(1.dp)
+    val guidelinesStrokeWidthY = _guidelinesStrokeWidthY.asStateFlow()
+    fun incGuidelinesStrokeWidthY() = _guidelinesStrokeWidthY.update { it.plus(1.dp) }
+    fun decGuidelinesStrokeWidthY() = _guidelinesStrokeWidthY.update { it.minus(1.dp) }
+
+    private val _guidelinesAlphaX = MutableStateFlow(Multiplier(0.5f))
+    val guidelinesAlphaX = _guidelinesAlphaX.asStateFlow()
+    private val _guidelinesAlphaY = MutableStateFlow(Multiplier(0.5f))
+    val guidelinesAlphaY = _guidelinesAlphaY.asStateFlow()
+    private val _guidelinesPaddingX = MutableStateFlow(0.dp)
+    val guidelinesPaddingX = _guidelinesPaddingX.asStateFlow()
+    private val _guidelinesPaddingY = MutableStateFlow(0.dp)
+    val guidelinesPaddingY = _guidelinesPaddingY.asStateFlow()
+
+    private val _xRotation = MutableStateFlow(0f)
+    val xRotation = _xRotation.asStateFlow()
+    private val _yRotation = MutableStateFlow(0f)
+    val yRotation = _yRotation.asStateFlow()
 }

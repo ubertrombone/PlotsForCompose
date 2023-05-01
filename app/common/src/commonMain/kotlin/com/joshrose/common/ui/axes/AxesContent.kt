@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.axes.AxesComponent
+import com.joshrose.common.ui.axes.guidelines.Guidelines
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
@@ -25,14 +26,21 @@ fun AxesContent(
 ) {
     // TODO: Move these states to component?
     // TODO: Add a reset function when doing the above
-    var showXAxis by remember { mutableStateOf(true) }
-    var showYAxis by remember { mutableStateOf(true) }
-    var showXAxisLine by remember { mutableStateOf(true) }
-    var showYAxisLine by remember { mutableStateOf(true) }
-    var showXGuidelines by remember { mutableStateOf(true) }
-    var showYGuidelines by remember { mutableStateOf(true) }
-    var showXLabels by remember { mutableStateOf(true) }
-    var showYLabels by remember { mutableStateOf(true) }
+    val showXAxis by component.showXAxis.collectAsState()
+    val showYAxis by component.showYAxis.collectAsState()
+    val showXAxisLine by component.showXAxisLine.collectAsState()
+    val showYAxisLine by component.showYAxisLine.collectAsState()
+    val showXGuidelines by component.showXGuidelines.collectAsState()
+    val showYGuidelines by component.showYGuidelines.collectAsState()
+    val showXLabels by component.showXLabels.collectAsState()
+    val showYLabels by component.showYLabels.collectAsState()
+
+    val guidelinesStrokeWidthX by component.guidelinesStrokeWidthX.collectAsState()
+    val guidelinesStrokeWidthY by component.guidelinesStrokeWidthY.collectAsState()
+    var guidelinesAlphaX by remember { mutableStateOf(Multiplier(0.5f)) }
+    var guidelinesAlphaY by remember { mutableStateOf(Multiplier(0.5f)) }
+    var guidelinesPaddingX by remember { mutableStateOf(0.dp) }
+    var guidelinesPaddingY by remember { mutableStateOf(0.dp) }
 
     var xRotation by remember { mutableStateOf(0f) }
     var yRotation by remember { mutableStateOf(0f) }
@@ -45,10 +53,10 @@ fun AxesContent(
             showAxisLine = showXAxisLine,
             showGuidelines = showXGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
-                strokeWidth = 1.dp,
+                strokeWidth = guidelinesStrokeWidthX,
                 lineColor = MaterialTheme.colorScheme.onBackground,
-                alpha = Multiplier(.5f),
-                padding = 0.dp
+                alpha = guidelinesAlphaX,
+                padding = guidelinesPaddingX
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
@@ -67,10 +75,10 @@ fun AxesContent(
             showAxisLine = showYAxisLine,
             showGuidelines = showYGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
-                strokeWidth = 1.dp,
+                strokeWidth = guidelinesStrokeWidthY,
                 lineColor = MaterialTheme.colorScheme.onBackground,
-                alpha = Multiplier(.5f),
-                padding = 0.dp
+                alpha = guidelinesAlphaY,
+                padding = guidelinesPaddingY
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
@@ -121,10 +129,10 @@ fun AxesContent(
                 axisLineSelected = showXAxisLine,
                 guidelinesSelected = showXGuidelines,
                 labelsSelected = showXLabels,
-                axisOnClick = { showXAxis = !showXAxis },
-                axisLineOnClick = { showXAxisLine = !showXAxisLine },
-                guidelinesOnClick = { showXGuidelines = !showXGuidelines },
-                labelsOnClick = { showXLabels = !showXLabels },
+                axisOnClick = component::updateShowXAxis,
+                axisLineOnClick = component::updateShowXAxisLine,
+                guidelinesOnClick = component::updateShowXGuidelines,
+                labelsOnClick = component::updateShowXLabels,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(10.dp))
@@ -136,10 +144,10 @@ fun AxesContent(
                 axisLineSelected = showYAxisLine,
                 guidelinesSelected = showYGuidelines,
                 labelsSelected = showYLabels,
-                axisOnClick = { showYAxis = !showYAxis },
-                axisLineOnClick = { showYAxisLine = !showYAxisLine },
-                guidelinesOnClick = { showYGuidelines = !showYGuidelines },
-                labelsOnClick = { showYLabels = !showYLabels },
+                axisOnClick = component::updateShowYAxis,
+                axisLineOnClick = component::updateShowYAxisLine,
+                guidelinesOnClick = component::updateShowYGuidelines,
+                labelsOnClick = component::updateShowYLabels,
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(Modifier.height(10.dp))
@@ -154,6 +162,12 @@ fun AxesContent(
                     .fillMaxWidth()
                     .height(300.dp)
                     .padding(50.dp)
+            )
+        }
+        item {
+            Guidelines(
+                component = component,
+                modifier = Modifier.fillMaxWidth().padding(10.dp)
             )
         }
         item {
