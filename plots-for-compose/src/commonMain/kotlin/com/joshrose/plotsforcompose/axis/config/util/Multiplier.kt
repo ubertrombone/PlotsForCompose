@@ -14,4 +14,7 @@ value class Multiplier(val factor: Float) {
             "factor must be greater than equal to 0 and less than or equal to 1: $factor"
         }
     }
+
+    operator fun plus(increment: Float): Multiplier = Multiplier(factor + increment)
+    operator fun minus(decrement: Float): Multiplier = Multiplier(factor - decrement)
 }
