@@ -40,7 +40,7 @@ fun Guidelines(
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .padding(5.dp)
+                .padding(10.dp)
         )
         GuidelinesColumn(
             label = "Y Guidelines",
@@ -54,7 +54,7 @@ fun Guidelines(
                     color = MaterialTheme.colorScheme.primaryContainer,
                     shape = RoundedCornerShape(8.dp)
                 )
-                .padding(5.dp)
+                .padding(10.dp)
         )
     }
 }

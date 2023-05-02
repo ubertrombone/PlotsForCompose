@@ -1,12 +1,6 @@
 package com.joshrose.common.ui.axes.guidelines
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -14,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.joshrose.common.components.DecButton
+import com.joshrose.common.components.IncButton
 
 @Composable
 fun StrokeWidth(
@@ -32,25 +28,19 @@ fun StrokeWidth(
             color = colorScheme.primary,
             fontSize = typography.labelLarge.fontSize
         )
+
+        Spacer(Modifier.height(5.dp))
+
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FilledTonalIconButton(
-                enabled = width < 5f,
-                onClick = incClick,
-                colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = colorScheme.primaryContainer,
-                    contentColor = colorScheme.primary,
-                    disabledContainerColor = colorScheme.secondaryContainer,
-                    disabledContentColor = colorScheme.onSecondaryContainer
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowUp,
-                    contentDescription = "Increase Stroke Width"
-                )
-            }
+            IncButton(
+                width = width,
+                limit = 5f,
+                contentDescription = "Increase Stroke Width",
+                onClick = incClick
+            )
 
             Spacer(Modifier.width(10.dp))
 
@@ -62,21 +52,12 @@ fun StrokeWidth(
 
             Spacer(Modifier.width(10.dp))
 
-            FilledTonalIconButton(
-                enabled = width > 1f,
-                onClick = decClick,
-                colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = colorScheme.primaryContainer,
-                    contentColor = colorScheme.primary,
-                    disabledContainerColor = colorScheme.secondaryContainer,
-                    disabledContentColor = colorScheme.onSecondaryContainer
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowDown,
-                    contentDescription = "Decrease Stroke Width"
-                )
-            }
+            DecButton(
+                width = width,
+                limit = 1f,
+                contentDescription = "Decrease Stroke Width",
+                onClick = decClick
+            )
         }
     }
 }
