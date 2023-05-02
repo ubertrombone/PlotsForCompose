@@ -157,8 +157,14 @@ class AxesComponent(
 
     private val _guidelinesAlphaX = MutableStateFlow(Multiplier(0.5f))
     val guidelinesAlphaX = _guidelinesAlphaX.asStateFlow()
+    fun incGuidelinesAlphaX() = _guidelinesAlphaX.update { it.plus(.1f) }
+    fun decGuidelinesAlphaX() = _guidelinesAlphaX.update { it.minus(.1f) }
+
     private val _guidelinesAlphaY = MutableStateFlow(Multiplier(0.5f))
     val guidelinesAlphaY = _guidelinesAlphaY.asStateFlow()
+    fun incGuidelinesAlphaY() = _guidelinesAlphaY.update { it.plus(.1f) }
+    fun decGuidelinesAlphaY() = _guidelinesAlphaY.update { it.minus(.1f) }
+
     private val _guidelinesPaddingX = MutableStateFlow(0.dp)
     val guidelinesPaddingX = _guidelinesPaddingX.asStateFlow()
     private val _guidelinesPaddingY = MutableStateFlow(0.dp)
@@ -166,6 +172,9 @@ class AxesComponent(
 
     private val _xRotation = MutableStateFlow(0f)
     val xRotation = _xRotation.asStateFlow()
+    fun updateXRotation(value: Float) = _xRotation.update { value }
+
     private val _yRotation = MutableStateFlow(0f)
     val yRotation = _yRotation.asStateFlow()
+    fun updateYRotation(value: Float) = _yRotation.update { value }
 }

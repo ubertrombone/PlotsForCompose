@@ -17,4 +17,6 @@ value class Multiplier(val factor: Float) {
 
     operator fun plus(increment: Float): Multiplier = Multiplier(factor + increment)
     operator fun minus(decrement: Float): Multiplier = Multiplier(factor - decrement)
+    operator fun times(value: Float): Multiplier = Multiplier(factor * value)
+    operator fun div(value: Float): Multiplier = Multiplier(factor / value)
 }

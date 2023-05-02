@@ -1,4 +1,4 @@
-package com.joshrose.common.components
+package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DecButton(
-    width: Float,
+    value: Float,
     limit: Float,
     contentDescription: String?,
     onClick: () -> Unit,
     onLongClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
-    val enabled = width > limit
+    val enabled = value > limit
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowDown,
         contentDescription = contentDescription,

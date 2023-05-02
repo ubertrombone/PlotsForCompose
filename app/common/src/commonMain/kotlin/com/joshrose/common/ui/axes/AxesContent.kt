@@ -4,6 +4,7 @@ package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -26,6 +27,7 @@ fun AxesContent(
 ) {
     // TODO: Move these states to component?
     // TODO: Add a reset function when doing the above
+    // TODO: Why don't these respond to state changes?
     val showXAxis by component.showXAxis.collectAsState()
     val showYAxis by component.showYAxis.collectAsState()
     val showXAxisLine by component.showXAxisLine.collectAsState()
@@ -37,13 +39,13 @@ fun AxesContent(
 
     val guidelinesStrokeWidthX by component.guidelinesStrokeWidthX.collectAsState()
     val guidelinesStrokeWidthY by component.guidelinesStrokeWidthY.collectAsState()
-    var guidelinesAlphaX by remember { mutableStateOf(Multiplier(0.5f)) }
-    var guidelinesAlphaY by remember { mutableStateOf(Multiplier(0.5f)) }
-    var guidelinesPaddingX by remember { mutableStateOf(0.dp) }
-    var guidelinesPaddingY by remember { mutableStateOf(0.dp) }
+    val guidelinesAlphaX by component.guidelinesAlphaX.collectAsState()
+    val guidelinesAlphaY by component.guidelinesAlphaY.collectAsState()
+    val guidelinesPaddingX by remember { mutableStateOf(0.dp) }
+    val guidelinesPaddingY by remember { mutableStateOf(0.dp) }
 
-    var xRotation by remember { mutableStateOf(0f) }
-    var yRotation by remember { mutableStateOf(0f) }
+    val xRotation by component.xRotation.collectAsState()
+    val yRotation by component.yRotation.collectAsState()
 
     // TODO: Build out the sample
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -54,7 +56,7 @@ fun AxesContent(
             showGuidelines = showXGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = guidelinesStrokeWidthX,
-                lineColor = MaterialTheme.colorScheme.onBackground,
+                lineColor = colorScheme.onBackground,
                 alpha = guidelinesAlphaX,
                 padding = guidelinesPaddingX
             ),
@@ -65,7 +67,7 @@ fun AxesContent(
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
                 ticks = true,
-                lineColor = MaterialTheme.colorScheme.primary
+                lineColor = colorScheme.primary
             )
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -76,7 +78,7 @@ fun AxesContent(
             showGuidelines = showYGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = guidelinesStrokeWidthY,
-                lineColor = MaterialTheme.colorScheme.onBackground,
+                lineColor = colorScheme.onBackground,
                 alpha = guidelinesAlphaY,
                 padding = guidelinesPaddingY
             ),
@@ -87,7 +89,7 @@ fun AxesContent(
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
                 ticks = true,
-                lineColor = MaterialTheme.colorScheme.primary
+                lineColor = colorScheme.primary
             )
         )
 
@@ -111,8 +113,8 @@ fun AxesContent(
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = colorScheme.primaryContainer,
+                    contentColor = colorScheme.onPrimaryContainer
                 )
             ) {
                 Text(
@@ -177,7 +179,7 @@ fun AxesContent(
             Spacer(modifier.height(2.5.dp))
             Slider(
                 value = xRotation,
-                onValueChange = { xRotation = it },
+                onValueChange = component::updateXRotation,
                 valueRange = -90f..90f
             )
         }
@@ -189,7 +191,7 @@ fun AxesContent(
             Spacer(modifier.height(2.5.dp))
             Slider(
                 value = yRotation,
-                onValueChange = { yRotation = it },
+                onValueChange = component::updateYRotation,
                 valueRange = -90f..90f
             )
         }

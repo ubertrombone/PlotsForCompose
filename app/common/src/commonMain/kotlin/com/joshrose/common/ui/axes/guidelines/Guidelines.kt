@@ -22,6 +22,8 @@ fun Guidelines(
 ) {
     val xStrokeWidth by component.guidelinesStrokeWidthX.collectAsState()
     val yStrokeWidth by component.guidelinesStrokeWidthY.collectAsState()
+    val xAlpha by component.guidelinesAlphaX.collectAsState()
+    val yAlpha by component.guidelinesAlphaY.collectAsState()
 
     Row(
         modifier = modifier,
@@ -31,8 +33,11 @@ fun Guidelines(
         GuidelinesColumn(
             label = "X Guidelines",
             strokeWidth = xStrokeWidth.value,
+            alpha = xAlpha,
             incStrokeWidthClick = component::incGuidelinesStrokeWidthX,
             decStrokeWidthClick = component::decGuidelinesStrokeWidthX,
+            incAlphaClick = component::incGuidelinesAlphaX,
+            decAlphaClick = component::decGuidelinesAlphaX,
             modifier = Modifier
                 .fillMaxHeight()
                 .border(
@@ -45,8 +50,11 @@ fun Guidelines(
         GuidelinesColumn(
             label = "Y Guidelines",
             strokeWidth = yStrokeWidth.value,
+            alpha = yAlpha,
             incStrokeWidthClick = component::incGuidelinesStrokeWidthY,
             decStrokeWidthClick = component::decGuidelinesStrokeWidthY,
+            incAlphaClick = component::incGuidelinesAlphaY,
+            decAlphaClick = component::decGuidelinesAlphaY,
             modifier = Modifier
                 .fillMaxHeight()
                 .border(

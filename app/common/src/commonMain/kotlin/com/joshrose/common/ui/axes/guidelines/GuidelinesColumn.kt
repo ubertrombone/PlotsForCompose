@@ -10,11 +10,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Composable
 fun GuidelinesColumn(
     label: String,
     strokeWidth: Float,
+    alpha: Multiplier,
+    incAlphaClick: () -> Unit,
+    decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
     decStrokeWidthClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -33,7 +37,16 @@ fun GuidelinesColumn(
             incClick = incStrokeWidthClick,
             decClick = decStrokeWidthClick
         )
-        // TODO: Alpha
+
+        Spacer(Modifier.height(10.dp))
+
+        Alpha(
+            alpha = alpha,
+            incClick = incAlphaClick,
+            decClick = decAlphaClick
+        )
+
+        Spacer(Modifier.height(10.dp))
         // TODO: Padding
     }
 }
