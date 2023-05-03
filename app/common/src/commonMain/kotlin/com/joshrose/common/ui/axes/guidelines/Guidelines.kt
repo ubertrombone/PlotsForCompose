@@ -30,12 +30,15 @@ fun Guidelines(
     ) {
         GuidelinesColumn(
             label = "X Guidelines",
-            strokeWidth = xGuidelinesStates.strokeWidth.value,
             alpha = xGuidelinesStates.alpha,
-            incStrokeWidthClick = component::incGuidelinesStrokeWidthX,
-            decStrokeWidthClick = component::decGuidelinesStrokeWidthX,
+            strokeWidth = xGuidelinesStates.strokeWidth.value,
+            padding = xGuidelinesStates.padding.value,
             incAlphaClick = component::incGuidelinesAlphaX,
             decAlphaClick = component::decGuidelinesAlphaX,
+            incStrokeWidthClick = component::incGuidelinesStrokeWidthX,
+            decStrokeWidthClick = component::decGuidelinesStrokeWidthX,
+            incPaddingClick = component::incGuidelinesPaddingX,
+            decPaddingClick = component::decGuidelinesPaddingX,
             modifier = Modifier
                 .fillMaxHeight()
                 .border(
@@ -47,12 +50,15 @@ fun Guidelines(
         )
         GuidelinesColumn(
             label = "Y Guidelines",
-            strokeWidth = yGuidelinesStates.strokeWidth.value,
             alpha = yGuidelinesStates.alpha,
-            incStrokeWidthClick = component::incGuidelinesStrokeWidthY,
-            decStrokeWidthClick = component::decGuidelinesStrokeWidthY,
+            strokeWidth = yGuidelinesStates.strokeWidth.value,
+            padding = yGuidelinesStates.padding.value,
             incAlphaClick = component::incGuidelinesAlphaY,
             decAlphaClick = component::decGuidelinesAlphaY,
+            incStrokeWidthClick = component::incGuidelinesStrokeWidthY,
+            decStrokeWidthClick = component::decGuidelinesStrokeWidthY,
+            incPaddingClick = component::incGuidelinesPaddingY,
+            decPaddingClick = component::decGuidelinesPaddingY,
             modifier = Modifier
                 .fillMaxHeight()
                 .border(

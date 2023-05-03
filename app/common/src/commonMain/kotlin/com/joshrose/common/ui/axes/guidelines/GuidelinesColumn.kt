@@ -15,12 +15,15 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 @Composable
 fun GuidelinesColumn(
     label: String,
-    strokeWidth: Float,
     alpha: Multiplier,
+    strokeWidth: Float,
+    padding: Float,
     incAlphaClick: () -> Unit,
     decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
     decStrokeWidthClick: () -> Unit,
+    incPaddingClick: () -> Unit,
+    decPaddingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -47,6 +50,11 @@ fun GuidelinesColumn(
         )
 
         Spacer(Modifier.height(10.dp))
-        // TODO: Padding
+
+        Padding(
+            padding = padding,
+            incClick = incPaddingClick,
+            decClick = decPaddingClick
+        )
     }
 }
