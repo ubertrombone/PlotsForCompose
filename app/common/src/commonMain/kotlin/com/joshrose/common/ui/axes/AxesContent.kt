@@ -27,22 +27,10 @@ fun AxesContent(
 ) {
     // TODO: Move these states to component?
     // TODO: Add a reset function when doing the above
-    // TODO: Why don't these respond to state changes?
-    val showXAxis by component.showXAxis.collectAsState()
-    val showYAxis by component.showYAxis.collectAsState()
-    val showXAxisLine by component.showXAxisLine.collectAsState()
-    val showYAxisLine by component.showYAxisLine.collectAsState()
-    val showXGuidelines by component.showXGuidelines.collectAsState()
-    val showYGuidelines by component.showYGuidelines.collectAsState()
-    val showXLabels by component.showXLabels.collectAsState()
-    val showYLabels by component.showYLabels.collectAsState()
-
-    val guidelinesStrokeWidthX by component.guidelinesStrokeWidthX.collectAsState()
-    val guidelinesStrokeWidthY by component.guidelinesStrokeWidthY.collectAsState()
-    val guidelinesAlphaX by component.guidelinesAlphaX.collectAsState()
-    val guidelinesAlphaY by component.guidelinesAlphaY.collectAsState()
-    val guidelinesPaddingX by remember { mutableStateOf(0.dp) }
-    val guidelinesPaddingY by remember { mutableStateOf(0.dp) }
+    val xAxisShowStates by component.showXAxisStates.collectAsState()
+    val yAxisShowStates by component.showYAxisStates.collectAsState()
+    val xGuidelinesStates by component.showXGuidelines.collectAsState()
+    val yGuidelinesStates by component.showYGuidelines.collectAsState()
 
     val xRotation by component.xRotation.collectAsState()
     val yRotation by component.yRotation.collectAsState()
@@ -50,15 +38,15 @@ fun AxesContent(
     // TODO: Build out the sample
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
-            showAxis = showXAxis,
-            showLabels = showXLabels,
-            showAxisLine = showXAxisLine,
-            showGuidelines = showXGuidelines,
+            showAxis = xAxisShowStates.showAxis,
+            showLabels = xAxisShowStates.showLabels,
+            showAxisLine = xAxisShowStates.showAxisLine,
+            showGuidelines = xAxisShowStates.showGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
-                strokeWidth = guidelinesStrokeWidthX,
+                strokeWidth = xGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
-                alpha = guidelinesAlphaX,
-                padding = guidelinesPaddingX
+                alpha = xGuidelinesStates.alpha,
+                padding = xGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = xRotation,
@@ -72,15 +60,15 @@ fun AxesContent(
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
-            showAxis = showYAxis,
-            showLabels = showYLabels,
-            showAxisLine = showYAxisLine,
-            showGuidelines = showYGuidelines,
+            showAxis = yAxisShowStates.showAxis,
+            showLabels = yAxisShowStates.showLabels,
+            showAxisLine = yAxisShowStates.showAxisLine,
+            showGuidelines = yAxisShowStates.showGuidelines,
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
-                strokeWidth = guidelinesStrokeWidthY,
+                strokeWidth = yGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
-                alpha = guidelinesAlphaY,
-                padding = guidelinesPaddingY
+                alpha = yGuidelinesStates.alpha,
+                padding = yGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
                 rotation = yRotation,
@@ -127,10 +115,10 @@ fun AxesContent(
         item {
             AxisChipRow(
                 label = "X-Axis:",
-                axisSelected = showXAxis,
-                axisLineSelected = showXAxisLine,
-                guidelinesSelected = showXGuidelines,
-                labelsSelected = showXLabels,
+                axisSelected = xAxisShowStates.showAxis,
+                axisLineSelected = xAxisShowStates.showAxisLine,
+                guidelinesSelected = xAxisShowStates.showGuidelines,
+                labelsSelected = xAxisShowStates.showLabels,
                 axisOnClick = component::updateShowXAxis,
                 axisLineOnClick = component::updateShowXAxisLine,
                 guidelinesOnClick = component::updateShowXGuidelines,
@@ -142,10 +130,10 @@ fun AxesContent(
         item {
             AxisChipRow(
                 label = "Y-Axis:",
-                axisSelected = showYAxis,
-                axisLineSelected = showYAxisLine,
-                guidelinesSelected = showYGuidelines,
-                labelsSelected = showYLabels,
+                axisSelected = yAxisShowStates.showAxis,
+                axisLineSelected = yAxisShowStates.showAxisLine,
+                guidelinesSelected = yAxisShowStates.showGuidelines,
+                labelsSelected = yAxisShowStates.showLabels,
                 axisOnClick = component::updateShowYAxis,
                 axisLineOnClick = component::updateShowYAxisLine,
                 guidelinesOnClick = component::updateShowYGuidelines,

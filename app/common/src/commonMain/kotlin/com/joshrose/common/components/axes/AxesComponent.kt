@@ -2,6 +2,8 @@ package com.joshrose.common.components.axes
 
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.ComponentContext
+import com.joshrose.common.components.axes.models.AxesShowStates
+import com.joshrose.common.components.axes.models.GuidelinesStates
 import com.joshrose.common.components.graph.GraphComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
@@ -113,63 +115,6 @@ class AxesComponent(
         _loading.update { COMPLETE }
     }
 
-    private val _showXAxis = MutableStateFlow(true)
-    val showXAxis = _showXAxis.asStateFlow()
-    fun updateShowXAxis() = _showXAxis.update { !it }
-
-    private val _showYAxis = MutableStateFlow(true)
-    val showYAxis = _showYAxis.asStateFlow()
-    fun updateShowYAxis() = _showYAxis.update { !it }
-
-    private val _showXAxisLine = MutableStateFlow(true)
-    val showXAxisLine = _showXAxisLine.asStateFlow()
-    fun updateShowXAxisLine() = _showXAxisLine.update { !it }
-
-    private val _showYAxisLine = MutableStateFlow(true)
-    val showYAxisLine = _showYAxisLine.asStateFlow()
-    fun updateShowYAxisLine() = _showYAxisLine.update { !it }
-
-    private val _showXGuidelines = MutableStateFlow(true)
-    val showXGuidelines = _showXGuidelines.asStateFlow()
-    fun updateShowXGuidelines() = _showXGuidelines.update { !it }
-
-    private val _showYGuidelines = MutableStateFlow(true)
-    val showYGuidelines = _showYGuidelines.asStateFlow()
-    fun updateShowYGuidelines() = _showYGuidelines.update { !it }
-
-    private val _showXLabels = MutableStateFlow(true)
-    val showXLabels = _showXLabels.asStateFlow()
-    fun updateShowXLabels() = _showXLabels.update { !it }
-
-    private val _showYLabels = MutableStateFlow(true)
-    val showYLabels = _showYLabels.asStateFlow()
-    fun updateShowYLabels() = _showYLabels.update { !it }
-
-    private val _guidelinesStrokeWidthX = MutableStateFlow(1.dp)
-    val guidelinesStrokeWidthX = _guidelinesStrokeWidthX.asStateFlow()
-    fun incGuidelinesStrokeWidthX() = _guidelinesStrokeWidthX.update { it.plus(1.dp) }
-    fun decGuidelinesStrokeWidthX() = _guidelinesStrokeWidthX.update { it.minus(1.dp) }
-
-    private val _guidelinesStrokeWidthY = MutableStateFlow(1.dp)
-    val guidelinesStrokeWidthY = _guidelinesStrokeWidthY.asStateFlow()
-    fun incGuidelinesStrokeWidthY() = _guidelinesStrokeWidthY.update { it.plus(1.dp) }
-    fun decGuidelinesStrokeWidthY() = _guidelinesStrokeWidthY.update { it.minus(1.dp) }
-
-    private val _guidelinesAlphaX = MutableStateFlow(Multiplier(0.5f))
-    val guidelinesAlphaX = _guidelinesAlphaX.asStateFlow()
-    fun incGuidelinesAlphaX() = _guidelinesAlphaX.update { it.plus(.1f) }
-    fun decGuidelinesAlphaX() = _guidelinesAlphaX.update { it.minus(.1f) }
-
-    private val _guidelinesAlphaY = MutableStateFlow(Multiplier(0.5f))
-    val guidelinesAlphaY = _guidelinesAlphaY.asStateFlow()
-    fun incGuidelinesAlphaY() = _guidelinesAlphaY.update { it.plus(.1f) }
-    fun decGuidelinesAlphaY() = _guidelinesAlphaY.update { it.minus(.1f) }
-
-    private val _guidelinesPaddingX = MutableStateFlow(0.dp)
-    val guidelinesPaddingX = _guidelinesPaddingX.asStateFlow()
-    private val _guidelinesPaddingY = MutableStateFlow(0.dp)
-    val guidelinesPaddingY = _guidelinesPaddingY.asStateFlow()
-
     private val _xRotation = MutableStateFlow(0f)
     val xRotation = _xRotation.asStateFlow()
     fun updateXRotation(value: Float) = _xRotation.update { value }
@@ -177,4 +122,40 @@ class AxesComponent(
     private val _yRotation = MutableStateFlow(0f)
     val yRotation = _yRotation.asStateFlow()
     fun updateYRotation(value: Float) = _yRotation.update { value }
+
+    private val _showXAxisStates = MutableStateFlow(AxesShowStates())
+    val showXAxisStates = _showXAxisStates.asStateFlow()
+
+    fun updateShowXAxis() = _showXAxisStates.update { it.copy(showAxis = !it.showAxis) }
+    fun updateShowXAxisLine() = _showXAxisStates.update { it.copy(showAxisLine = !it.showAxisLine) }
+    fun updateShowXGuidelines() = _showXAxisStates.update { it.copy(showGuidelines = !it.showGuidelines) }
+    fun updateShowXLabels() = _showXAxisStates.update { it.copy(showLabels = !it.showLabels) }
+
+    private val _showYAxisStates = MutableStateFlow(AxesShowStates())
+    val showYAxisStates = _showYAxisStates.asStateFlow()
+
+    fun updateShowYAxis() = _showYAxisStates.update { it.copy(showAxis = !it.showAxis) }
+    fun updateShowYAxisLine() = _showYAxisStates.update { it.copy(showAxisLine = !it.showAxisLine) }
+    fun updateShowYGuidelines() = _showYAxisStates.update { it.copy(showGuidelines = !it.showGuidelines) }
+    fun updateShowYLabels() = _showYAxisStates.update { it.copy(showLabels = !it.showLabels) }
+
+    private val _showXGuidelines = MutableStateFlow(GuidelinesStates())
+    val showXGuidelines = _showXGuidelines.asStateFlow()
+
+    fun incGuidelinesStrokeWidthX() = _showXGuidelines.update { it.copy(strokeWidth = it.strokeWidth.plus(1.dp)) }
+    fun decGuidelinesStrokeWidthX() = _showXGuidelines.update { it.copy(strokeWidth = it.strokeWidth.minus(1.dp)) }
+    fun incGuidelinesAlphaX() = _showXGuidelines.update { it.copy(alpha = it.alpha.plus(.1f)) }
+    fun decGuidelinesAlphaX() = _showXGuidelines.update { it.copy(alpha = it.alpha.minus(.1f)) }
+    fun incGuidelinesPaddingX() = _showXGuidelines.update { it.copy(padding = it.padding.plus(5.dp)) }
+    fun decGuidelinesPaddingX() = _showXGuidelines.update { it.copy(padding = it.padding.minus(5.dp)) }
+
+    private val _showYGuidelines = MutableStateFlow(GuidelinesStates())
+    val showYGuidelines = _showYGuidelines.asStateFlow()
+
+    fun incGuidelinesStrokeWidthY() = _showYGuidelines.update { it.copy(strokeWidth = it.strokeWidth.plus(1.dp)) }
+    fun decGuidelinesStrokeWidthY() = _showYGuidelines.update { it.copy(strokeWidth = it.strokeWidth.minus(1.dp)) }
+    fun incGuidelinesAlphaY() = _showYGuidelines.update { it.copy(alpha = it.alpha.plus(.1f)) }
+    fun decGuidelinesAlphaY() = _showYGuidelines.update { it.copy(alpha = it.alpha.minus(.1f)) }
+    fun incGuidelinesPaddingY() = _showYGuidelines.update { it.copy(padding = it.padding.plus(5.dp)) }
+    fun decGuidelinesPaddingY() = _showYGuidelines.update { it.copy(padding = it.padding.minus(5.dp)) }
 }
