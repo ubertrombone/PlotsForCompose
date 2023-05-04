@@ -38,11 +38,6 @@ fun Guidelines(
             decPaddingClick = component::decGuidelinesPaddingX,
             modifier = Modifier
                 .fillMaxHeight()
-//                .border(
-//                    width = 2.dp,
-//                    color = MaterialTheme.colorScheme.primaryContainer,
-//                    shape = RoundedCornerShape(8.dp)
-//                )
                 .padding(10.dp)
         )
         GuidelinesColumn(
@@ -58,11 +53,6 @@ fun Guidelines(
             decPaddingClick = component::decGuidelinesPaddingY,
             modifier = Modifier
                 .fillMaxHeight()
-//                .border(
-//                    width = 2.dp,
-//                    color = MaterialTheme.colorScheme.primaryContainer,
-//                    shape = RoundedCornerShape(8.dp)
-//                )
                 .padding(10.dp)
         )
     }
