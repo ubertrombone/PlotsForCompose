@@ -1,12 +1,9 @@
 package com.joshrose.common.ui.axes.guidelines
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -41,11 +38,11 @@ fun Guidelines(
             decPaddingClick = component::decGuidelinesPaddingX,
             modifier = Modifier
                 .fillMaxHeight()
-                .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = RoundedCornerShape(8.dp)
-                )
+//                .border(
+//                    width = 2.dp,
+//                    color = MaterialTheme.colorScheme.primaryContainer,
+//                    shape = RoundedCornerShape(8.dp)
+//                )
                 .padding(10.dp)
         )
         GuidelinesColumn(
@@ -61,11 +58,11 @@ fun Guidelines(
             decPaddingClick = component::decGuidelinesPaddingY,
             modifier = Modifier
                 .fillMaxHeight()
-                .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = RoundedCornerShape(8.dp)
-                )
+//                .border(
+//                    width = 2.dp,
+//                    color = MaterialTheme.colorScheme.primaryContainer,
+//                    shape = RoundedCornerShape(8.dp)
+//                )
                 .padding(10.dp)
         )
     }

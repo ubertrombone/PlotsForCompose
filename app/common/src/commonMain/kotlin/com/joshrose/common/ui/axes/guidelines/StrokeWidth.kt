@@ -21,7 +21,7 @@ fun StrokeWidth(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
             text = "Stroke Width",

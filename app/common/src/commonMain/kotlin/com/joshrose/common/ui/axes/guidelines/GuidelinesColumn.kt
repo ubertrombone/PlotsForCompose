@@ -1,10 +1,11 @@
 package com.joshrose.common.ui.axes.guidelines
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,35 +27,76 @@ fun GuidelinesColumn(
     decPaddingClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    Card(
         modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceEvenly
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(2.dp, color = colorScheme.primaryContainer),
+        colors = CardDefaults.cardColors(
+            contentColor = colorScheme.primary,
+            containerColor = colorScheme.background
+        )
     ) {
-        Text(label, color = MaterialTheme.colorScheme.primary)
+        Column(
+            modifier = Modifier.padding(15.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(label, color = colorScheme.primary)
 
-        Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(10.dp))
 
-        StrokeWidth(
-            width = strokeWidth,
-            incClick = incStrokeWidthClick,
-            decClick = decStrokeWidthClick
-        )
+            StrokeWidth(
+                width = strokeWidth,
+                incClick = incStrokeWidthClick,
+                decClick = decStrokeWidthClick
+            )
 
-        Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(10.dp))
 
-        Alpha(
-            alpha = alpha,
-            incClick = incAlphaClick,
-            decClick = decAlphaClick
-        )
+            Alpha(
+                alpha = alpha,
+                incClick = incAlphaClick,
+                decClick = decAlphaClick
+            )
 
-        Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(10.dp))
 
-        Padding(
-            padding = padding,
-            incClick = incPaddingClick,
-            decClick = decPaddingClick
-        )
+            Padding(
+                padding = padding,
+                incClick = incPaddingClick,
+                decClick = decPaddingClick
+            )
+        }
     }
+//    Column(
+//        modifier = modifier,
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.SpaceEvenly
+//    ) {
+//        Text(label, color = colorScheme.primary)
+//
+//        Spacer(Modifier.height(10.dp))
+//
+//        StrokeWidth(
+//            width = strokeWidth,
+//            incClick = incStrokeWidthClick,
+//            decClick = decStrokeWidthClick
+//        )
+//
+//        Spacer(Modifier.height(10.dp))
+//
+//        Alpha(
+//            alpha = alpha,
+//            incClick = incAlphaClick,
+//            decClick = decAlphaClick
+//        )
+//
+//        Spacer(Modifier.height(10.dp))
+//
+//        Padding(
+//            padding = padding,
+//            incClick = incPaddingClick,
+//            decClick = decPaddingClick
+//        )
+//    }
 }
