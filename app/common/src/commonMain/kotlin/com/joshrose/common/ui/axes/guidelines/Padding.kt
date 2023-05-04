@@ -1,15 +1,18 @@
 package com.joshrose.common.ui.axes.guidelines
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.DecButton
 import com.joshrose.common.ui.axes.IncButton
+import com.joshrose.common.util.repeatingClickable
 import com.joshrose.plotsforcompose.axis.util.formatToString
 
 @Composable
@@ -57,7 +60,12 @@ fun Padding(
                 value = padding,
                 limit = 0f,
                 contentDescription = "Decrease Padding",
-                onClick = decClick
+                onClick = decClick,
+                modifier = Modifier.repeatingClickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    enabled = padding > 0f,
+                    onClick = decClick
+                )
             )
         }
     }
