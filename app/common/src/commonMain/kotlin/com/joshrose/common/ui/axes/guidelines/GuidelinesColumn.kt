@@ -68,35 +68,4 @@ fun GuidelinesColumn(
             )
         }
     }
-//    Column(
-//        modifier = modifier,
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        verticalArrangement = Arrangement.SpaceEvenly
-//    ) {
-//        Text(label, color = colorScheme.primary)
-//
-//        Spacer(Modifier.height(10.dp))
-//
-//        StrokeWidth(
-//            width = strokeWidth,
-//            incClick = incStrokeWidthClick,
-//            decClick = decStrokeWidthClick
-//        )
-//
-//        Spacer(Modifier.height(10.dp))
-//
-//        Alpha(
-//            alpha = alpha,
-//            incClick = incAlphaClick,
-//            decClick = decAlphaClick
-//        )
-//
-//        Spacer(Modifier.height(10.dp))
-//
-//        Padding(
-//            padding = padding,
-//            incClick = incPaddingClick,
-//            decClick = decPaddingClick
-//        )
-//    }
 }
