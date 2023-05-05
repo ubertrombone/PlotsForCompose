@@ -30,8 +30,8 @@ fun AxesContent(
     // TODO: Add a reset function when doing the above
     // TODO: Tackle long press puzzle
     // TODO: Get the cards to be evenly sized with proper spacing
-    val xAxisShowStates by component.showXAxisStates.collectAsState()
-    val yAxisShowStates by component.showYAxisStates.collectAsState()
+    val xAxisShowStates by component.xShowAxesState.subscribeAsState()
+    val yAxisShowStates by component.yShowAxesState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
     val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
 

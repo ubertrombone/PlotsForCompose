@@ -7,6 +7,7 @@ import com.arkivanov.essenty.statekeeper.consume
 import com.joshrose.common.components.axes.guidelines.GuidelinesModelImpl
 import com.joshrose.common.components.axes.models.AxesShowStates
 import com.joshrose.common.components.axes.models.GuidelinesStates
+import com.joshrose.common.components.axes.showaxes.ShowAxesModelImpl
 import com.joshrose.common.components.graph.GraphComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
@@ -126,21 +127,31 @@ class AxesComponent(
     val yRotation = _yRotation.asStateFlow()
     fun updateYRotation(value: Float) = _yRotation.update { value }
 
-    private val _showXAxisStates = MutableStateFlow(AxesShowStates())
-    val showXAxisStates = _showXAxisStates.asStateFlow()
+    private val _xShowAxesState = instanceKeeper.getOrCreate(KEY_X_SHOW_AXES) {
+        ShowAxesModelImpl(
+            initialState = stateKeeper.consume(KEY_X_SHOW_AXES) ?: AxesShowStates()
+        )
+    }
 
-    fun updateShowXAxis() = _showXAxisStates.update { it.copy(showAxis = !it.showAxis) }
-    fun updateShowXAxisLine() = _showXAxisStates.update { it.copy(showAxisLine = !it.showAxisLine) }
-    fun updateShowXGuidelines() = _showXAxisStates.update { it.copy(showGuidelines = !it.showGuidelines) }
-    fun updateShowXLabels() = _showXAxisStates.update { it.copy(showLabels = !it.showLabels) }
+    val xShowAxesState: Value<AxesShowStates> = _xShowAxesState.showAxesState
 
-    private val _showYAxisStates = MutableStateFlow(AxesShowStates())
-    val showYAxisStates = _showYAxisStates.asStateFlow()
+    fun updateShowXAxis() = _xShowAxesState.showAxis()
+    fun updateShowXAxisLine() = _xShowAxesState.showAxisLine()
+    fun updateShowXGuidelines() = _xShowAxesState.showGuidelines()
+    fun updateShowXLabels() = _xShowAxesState.showLabels()
 
-    fun updateShowYAxis() = _showYAxisStates.update { it.copy(showAxis = !it.showAxis) }
-    fun updateShowYAxisLine() = _showYAxisStates.update { it.copy(showAxisLine = !it.showAxisLine) }
-    fun updateShowYGuidelines() = _showYAxisStates.update { it.copy(showGuidelines = !it.showGuidelines) }
-    fun updateShowYLabels() = _showYAxisStates.update { it.copy(showLabels = !it.showLabels) }
+    private val _yShowAxesState = instanceKeeper.getOrCreate(KEY_Y_SHOW_AXES) {
+        ShowAxesModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_SHOW_AXES) ?: AxesShowStates()
+        )
+    }
+
+    val yShowAxesState: Value<AxesShowStates> = _yShowAxesState.showAxesState
+
+    fun updateShowYAxis() = _yShowAxesState.showAxis()
+    fun updateShowYAxisLine() = _yShowAxesState.showAxisLine()
+    fun updateShowYGuidelines() = _yShowAxesState.showGuidelines()
+    fun updateShowYLabels() = _yShowAxesState.showLabels()
 
     private val _xGuidelinesState = instanceKeeper.getOrCreate(KEY_X_GUIDELINES) {
         GuidelinesModelImpl(
@@ -173,11 +184,15 @@ class AxesComponent(
     fun decGuidelinesPaddingY() = _yGuidelinesState.decPadding()
 
     init {
+        stateKeeper.register(KEY_X_SHOW_AXES) { _xShowAxesState.showAxesState.value }
+        stateKeeper.register(KEY_Y_SHOW_AXES) { _yShowAxesState.showAxesState.value }
         stateKeeper.register(KEY_X_GUIDELINES) { _xGuidelinesState.guidelinesState.value }
         stateKeeper.register(KEY_Y_GUIDELINES) { _yGuidelinesState.guidelinesState.value }
     }
 
     private companion object {
+        private const val KEY_X_SHOW_AXES = "X_SHOW_AXES"
+        private const val KEY_Y_SHOW_AXES = "Y_SHOW_AXES"
         private const val KEY_X_GUIDELINES = "X_GUIDELINES"
         private const val KEY_Y_GUIDELINES = "Y_GUIDELINES"
     }
