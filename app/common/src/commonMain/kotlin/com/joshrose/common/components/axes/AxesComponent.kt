@@ -174,7 +174,7 @@ class AxesComponent(
 
     init {
         stateKeeper.register(KEY_X_GUIDELINES) { _xGuidelinesState.guidelinesState.value }
-        stateKeeper.register(KEY_Y_GUIDELINES) { TODO() }
+        stateKeeper.register(KEY_Y_GUIDELINES) { _yGuidelinesState.guidelinesState.value }
     }
 
     private companion object {
