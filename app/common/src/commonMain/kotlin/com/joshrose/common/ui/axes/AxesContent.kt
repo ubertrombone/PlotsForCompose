@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.ui.axes.guidelines.Guidelines
 import com.joshrose.common.util.ScrollLazyColumn
@@ -17,6 +18,7 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.config.util.toMultiplier
 import com.joshrose.plotsforcompose.util.Coordinates
 
 @OptIn(ExperimentalTextApi::class)
@@ -25,11 +27,10 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Move these states to component?
     // TODO: Add a reset function when doing the above
     val xAxisShowStates by component.showXAxisStates.collectAsState()
     val yAxisShowStates by component.showYAxisStates.collectAsState()
-    val xGuidelinesStates by component.showXGuidelines.collectAsState()
+    val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
     val yGuidelinesStates by component.showYGuidelines.collectAsState()
 
     val xRotation by component.xRotation.collectAsState()
@@ -45,7 +46,7 @@ fun AxesContent(
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = xGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
-                alpha = xGuidelinesStates.alpha,
+                alpha = xGuidelinesStates.alpha.toMultiplier(),
                 padding = xGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
@@ -68,7 +69,7 @@ fun AxesContent(
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = yGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
-                alpha = yGuidelinesStates.alpha,
+                alpha = yGuidelinesStates.alpha.toMultiplier(),
                 padding = yGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
