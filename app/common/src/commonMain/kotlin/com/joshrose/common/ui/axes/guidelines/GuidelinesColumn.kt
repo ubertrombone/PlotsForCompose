@@ -11,12 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Composable
 fun GuidelinesColumn(
     label: String,
-    alpha: Multiplier,
+    alpha: Float,
     strokeWidth: Float,
     padding: Float,
     incAlphaClick: () -> Unit,

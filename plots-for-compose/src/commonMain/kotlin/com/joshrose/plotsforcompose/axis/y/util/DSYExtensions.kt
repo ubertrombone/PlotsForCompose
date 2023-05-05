@@ -22,8 +22,8 @@ fun DrawScope.drawYGuideline(
     y: Float,
     yAxisPosition: YAxisPosition
 ) {
-    val lineLength = size.width.minus(guidelineConfig.padding.toPx())
-    val startX = if (yAxisPosition == START) guidelineConfig.padding.toPx() else 0f
+    val lineLength = size.width.minus(guidelineConfig.padding)
+    val startX = if (yAxisPosition == START) guidelineConfig.padding else 0f
     val endX = if (yAxisPosition == CENTER) size.width else startX.plus(lineLength)
 
     drawLine(
@@ -32,7 +32,7 @@ fun DrawScope.drawYGuideline(
         color = guidelineConfig.lineColor,
         alpha = guidelineConfig.alpha.factor,
         pathEffect = guidelineConfig.pathEffect,
-        strokeWidth = guidelineConfig.strokeWidth.toPx()
+        strokeWidth = guidelineConfig.strokeWidth
     )
 }
 

@@ -2,8 +2,6 @@ package com.joshrose.plotsforcompose.axis.config.guidelines
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 
@@ -21,9 +19,9 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 data class GuidelinesConfig(
     val lineColor: Color,
     val alpha: Multiplier,
-    val strokeWidth: Dp,
+    val strokeWidth: Float,
     val pathEffect: PathEffect?,
-    val padding: Dp
+    val padding: Float
 )
 
 /** Contains default values used for implementations of [GuidelinesConfig] */
@@ -42,9 +40,9 @@ object GuidelinesConfigDefaults {
     fun guidelinesConfigDefaults(
         lineColor: Color = md_theme_dark_onBackground,
         alpha: Multiplier = Multiplier(factor = .1f),
-        strokeWidth: Dp = 2.dp,
+        strokeWidth: Float = 2f,
         pathEffect: PathEffect? = null,
-        padding: Dp = 25.dp
+        padding: Float = 25f
     ): GuidelinesConfig =
         GuidelinesConfig(
             lineColor = lineColor,

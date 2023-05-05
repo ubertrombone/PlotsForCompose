@@ -20,8 +20,8 @@ fun DrawScope.drawXGuideline(
     x: Float,
     xAxisPosition: XAxisPosition
 ) {
-    val lineLength = size.height.minus(guidelineConfig.padding.toPx())
-    val startY = if (xAxisPosition == TOP) guidelineConfig.padding.toPx() else 0f
+    val lineLength = size.height.minus(guidelineConfig.padding)
+    val startY = if (xAxisPosition == TOP) guidelineConfig.padding else 0f
     val endY = if (xAxisPosition == CENTER) size.height else startY.plus(lineLength)
 
     drawLine(
@@ -30,7 +30,7 @@ fun DrawScope.drawXGuideline(
         color = guidelineConfig.lineColor,
         alpha = guidelineConfig.alpha.factor,
         pathEffect = guidelineConfig.pathEffect,
-        strokeWidth = guidelineConfig.strokeWidth.toPx()
+        strokeWidth = guidelineConfig.strokeWidth
     )
 }
 

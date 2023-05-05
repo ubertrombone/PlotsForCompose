@@ -10,12 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.DecButton
 import com.joshrose.common.ui.axes.IncButton
-import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.formatToString
 
 @Composable
 fun Alpha(
-    alpha: Multiplier,
+    alpha: Float,
     incClick: () -> Unit,
     decClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -38,7 +37,7 @@ fun Alpha(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IncButton(
-                value = alpha.factor,
+                value = alpha,
                 limit = .9f,
                 contentDescription = "Increase Alpha",
                 onClick = incClick
@@ -47,7 +46,7 @@ fun Alpha(
             Spacer(Modifier.width(10.dp))
 
             Text(
-                text = alpha.factor.formatToString("#.#"),
+                text = alpha.formatToString("#.#"),
                 color = colorScheme.primary,
                 fontSize = typography.labelLarge.fontSize
             )
@@ -55,7 +54,7 @@ fun Alpha(
             Spacer(Modifier.width(10.dp))
 
             DecButton(
-                value = alpha.factor,
+                value = alpha,
                 limit = 0.1f,
                 contentDescription = "Decrease Alpha",
                 onClick = decClick

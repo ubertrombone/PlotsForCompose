@@ -20,3 +20,5 @@ value class Multiplier(val factor: Float) {
     operator fun times(value: Float): Multiplier = Multiplier(factor * value)
     operator fun div(value: Float): Multiplier = Multiplier(factor / value)
 }
+
+fun Float.toMultiplier() = Multiplier(this)
