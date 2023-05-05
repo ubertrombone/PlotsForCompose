@@ -28,10 +28,12 @@ fun AxesContent(
     modifier: Modifier = Modifier
 ) {
     // TODO: Add a reset function when doing the above
+    // TODO: Tackle long press puzzle
+    // TODO: Get the cards to be evenly sized with proper spacing
     val xAxisShowStates by component.showXAxisStates.collectAsState()
     val yAxisShowStates by component.showYAxisStates.collectAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
-    val yGuidelinesStates by component.showYGuidelines.collectAsState()
+    val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
 
     val xRotation by component.xRotation.collectAsState()
     val yRotation by component.yRotation.collectAsState()

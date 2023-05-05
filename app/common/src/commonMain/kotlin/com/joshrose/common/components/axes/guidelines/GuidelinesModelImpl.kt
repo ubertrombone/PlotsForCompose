@@ -6,7 +6,7 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.axes.models.GuidelinesStates
 import kotlinx.coroutines.*
 
-class XGuidelinesModel(initialState: GuidelinesStates): InstanceKeeper.Instance, GuidelinesModel {
+class GuidelinesModelImpl(initialState: GuidelinesStates): InstanceKeeper.Instance, GuidelinesModel {
     override val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     override val guidelinesState: MutableValue<GuidelinesStates> = MutableValue(initialState)
 

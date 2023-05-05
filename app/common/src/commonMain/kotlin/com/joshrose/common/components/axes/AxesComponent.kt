@@ -4,7 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.statekeeper.consume
-import com.joshrose.common.components.axes.guidelines.XGuidelinesModel
+import com.joshrose.common.components.axes.guidelines.GuidelinesModelImpl
 import com.joshrose.common.components.axes.models.AxesShowStates
 import com.joshrose.common.components.axes.models.GuidelinesStates
 import com.joshrose.common.components.graph.GraphComponent
@@ -143,7 +143,7 @@ class AxesComponent(
     fun updateShowYLabels() = _showYAxisStates.update { it.copy(showLabels = !it.showLabels) }
 
     private val _xGuidelinesState = instanceKeeper.getOrCreate(KEY_X_GUIDELINES) {
-        XGuidelinesModel(
+        GuidelinesModelImpl(
             initialState = stateKeeper.consume(KEY_X_GUIDELINES) ?: GuidelinesStates()
         )
     }
@@ -157,15 +157,20 @@ class AxesComponent(
     fun incGuidelinesPaddingX() = _xGuidelinesState.incPadding()
     fun decGuidelinesPaddingX() = _xGuidelinesState.decPadding()
 
-    private val _showYGuidelines = MutableStateFlow(GuidelinesStates())
-    val showYGuidelines = _showYGuidelines.asStateFlow()
+    private val _yGuidelinesState = instanceKeeper.getOrCreate(KEY_Y_GUIDELINES) {
+        GuidelinesModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_GUIDELINES) ?: GuidelinesStates()
+        )
+    }
 
-    fun incGuidelinesStrokeWidthY() = _showYGuidelines.update { it.copy(strokeWidth = it.strokeWidth.plus(1f)) }
-    fun decGuidelinesStrokeWidthY() = _showYGuidelines.update { it.copy(strokeWidth = it.strokeWidth.minus(1f)) }
-    fun incGuidelinesAlphaY() = _showYGuidelines.update { it.copy(alpha = it.alpha.plus(.1f)) }
-    fun decGuidelinesAlphaY() = _showYGuidelines.update { it.copy(alpha = it.alpha.minus(.1f)) }
-    fun incGuidelinesPaddingY() = _showYGuidelines.update { it.copy(padding = it.padding.plus(5f)) }
-    fun decGuidelinesPaddingY() = _showYGuidelines.update { it.copy(padding = it.padding.minus(5f)) }
+    val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
+
+    fun incGuidelinesStrokeWidthY() = _yGuidelinesState.incStrokeWidth()
+    fun decGuidelinesStrokeWidthY() = _yGuidelinesState.decStrokeWidth()
+    fun incGuidelinesAlphaY() = _yGuidelinesState.incAlpha()
+    fun decGuidelinesAlphaY() = _yGuidelinesState.decAlpha()
+    fun incGuidelinesPaddingY() = _yGuidelinesState.incPadding()
+    fun decGuidelinesPaddingY() = _yGuidelinesState.decPadding()
 
     init {
         stateKeeper.register(KEY_X_GUIDELINES) { _xGuidelinesState.guidelinesState.value }
