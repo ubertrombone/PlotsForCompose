@@ -31,7 +31,8 @@ fun AxesContent(
     // TODO: Add a reset function when doing the above
     // TODO: Tackle long press puzzle
     // TODO: Get the cards to be evenly sized with proper spacing
-    // TODO: Fix padding at top of screen
+    // TODO: Add nested navigation
+    // TODO: Flatten guidelines composable
     val xAxisShowStates by component.xShowAxesState.subscribeAsState()
     val yAxisShowStates by component.yShowAxesState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
@@ -90,7 +91,7 @@ fun AxesContent(
 
     // TODO: Force set axis min and max -- For later
 
-    ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 10.dp)) {
+    ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(horizontal = 20.dp)) {
         item {
             Button(
                 onClick = {
@@ -102,7 +103,8 @@ fun AxesContent(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorScheme.primaryContainer,
                     contentColor = colorScheme.onPrimaryContainer
-                )
+                ),
+                modifier = Modifier.padding(top = 10.dp)
             ) {
                 Text(
                     text = "Generate New Axes",
