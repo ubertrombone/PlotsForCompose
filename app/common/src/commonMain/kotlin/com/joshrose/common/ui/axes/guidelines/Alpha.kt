@@ -1,12 +1,15 @@
 package com.joshrose.common.ui.axes.guidelines
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.DecButton
 import com.joshrose.common.ui.axes.IncButton
@@ -40,7 +43,9 @@ fun Alpha(
                 value = alpha,
                 limit = .9f,
                 contentDescription = "Increase Alpha",
-                onClick = incClick
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(enabled = alpha < .9f) { incClick() }
             )
 
             Spacer(Modifier.width(10.dp))
@@ -57,7 +62,9 @@ fun Alpha(
                 value = alpha,
                 limit = 0.1f,
                 contentDescription = "Decrease Alpha",
-                onClick = decClick
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(enabled = alpha > .1f) { decClick() }
             )
         }
     }
