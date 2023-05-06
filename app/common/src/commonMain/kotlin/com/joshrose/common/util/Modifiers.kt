@@ -17,13 +17,14 @@ fun Modifier.repeatingClickable(
     onClick: () -> Unit
 ): Modifier = composed {
     val currentClickListener by rememberUpdatedState(onClick)
+    val isEnabled by rememberUpdatedState(enabled)
 
     pointerInput(interactionSource, enabled) {
         awaitEachGesture {
             val down = awaitFirstDown(requireUnconsumed = false)
             val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
             val heldButtonJob = scope.launch {
-                while (enabled && down.pressed) {
+                while (isEnabled && down.pressed) {
                     currentClickListener()
                     delay(100)
                 }
