@@ -36,7 +36,7 @@ fun GuidelinesColumn(
         )
     ) {
         Column(
-            modifier = Modifier.padding(15.dp),
+            modifier = Modifier.fillMaxWidth().padding(15.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {

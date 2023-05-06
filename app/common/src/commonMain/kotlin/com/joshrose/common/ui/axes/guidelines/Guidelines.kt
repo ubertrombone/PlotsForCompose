@@ -1,9 +1,6 @@
 package com.joshrose.common.ui.axes.guidelines
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -38,6 +35,7 @@ fun Guidelines(
             decPaddingClick = component::decGuidelinesPaddingX,
             modifier = Modifier
                 .fillMaxHeight()
+                .width(IntrinsicSize.Max)
                 .padding(10.dp)
         )
         GuidelinesColumn(
@@ -53,6 +51,7 @@ fun Guidelines(
             decPaddingClick = component::decGuidelinesPaddingY,
             modifier = Modifier
                 .fillMaxHeight()
+                .width(IntrinsicSize.Max)
                 .padding(10.dp)
         )
     }

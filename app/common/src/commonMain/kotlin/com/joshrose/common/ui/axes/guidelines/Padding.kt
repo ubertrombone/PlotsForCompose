@@ -38,7 +38,8 @@ fun Padding(
         Spacer(Modifier.height(5.dp))
 
         Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IncButton(
@@ -54,15 +55,11 @@ fun Padding(
                     )
             )
 
-            Spacer(Modifier.width(10.dp))
-
             Text(
                 text = padding.formatToString("#"),
                 color = colorScheme.primary,
                 fontSize = typography.labelLarge.fontSize
             )
-
-            Spacer(Modifier.width(10.dp))
 
             DecButton(
                 value = padding,

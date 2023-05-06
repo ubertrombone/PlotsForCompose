@@ -30,9 +30,7 @@ fun AxesContent(
 ) {
     // TODO: Add a reset function when doing the above
     // TODO: Tackle long press puzzle
-    // TODO: Get the cards to be evenly sized with proper spacing
     // TODO: Add nested navigation
-    // TODO: Flatten guidelines composable
     val xAxisShowStates by component.xShowAxesState.subscribeAsState()
     val yAxisShowStates by component.yShowAxesState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()

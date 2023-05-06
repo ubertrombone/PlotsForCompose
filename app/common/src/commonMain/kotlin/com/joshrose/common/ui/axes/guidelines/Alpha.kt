@@ -36,6 +36,7 @@ fun Alpha(
         Spacer(Modifier.height(5.dp))
 
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {

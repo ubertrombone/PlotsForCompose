@@ -29,12 +29,13 @@ fun StrokeWidth(
         Text(
             text = "Stroke Width",
             color = colorScheme.primary,
-            fontSize = typography.labelLarge.fontSize
+            fontSize = typography.labelLarge.fontSize,
         )
 
         Spacer(Modifier.height(5.dp))
 
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
