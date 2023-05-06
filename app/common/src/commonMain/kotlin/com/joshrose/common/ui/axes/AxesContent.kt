@@ -29,7 +29,6 @@ fun AxesContent(
     modifier: Modifier = Modifier
 ) {
     // TODO: Add a reset function when doing the above
-    // TODO: Tackle long press puzzle
     // TODO: Add nested navigation
     val xAxisShowStates by component.xShowAxesState.subscribeAsState()
     val yAxisShowStates by component.yShowAxesState.subscribeAsState()
