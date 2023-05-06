@@ -4,119 +4,50 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.instancekeeper.getOrCreate
 import com.arkivanov.essenty.statekeeper.consume
+import com.joshrose.common.components.axes.data.DataModelImpl
 import com.joshrose.common.components.axes.guidelines.GuidelinesModelImpl
+import com.joshrose.common.components.axes.loading.LoadingModelImp
 import com.joshrose.common.components.axes.models.AxesShowStates
+import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.common.components.axes.models.GuidelinesStates
+import com.joshrose.common.components.axes.models.LoadingState
+import com.joshrose.common.components.axes.models.LoadingState.Loading
 import com.joshrose.common.components.axes.showaxes.ShowAxesModelImpl
 import com.joshrose.common.components.graph.GraphComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.util.*
-import com.joshrose.plotsforcompose.util.LoadingState.COMPLETE
-import com.joshrose.plotsforcompose.util.LoadingState.LOADING
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlin.math.abs
 
 class AxesComponent(
     componentContext: ComponentContext
 ): GraphComponent, ComponentContext by componentContext {
     override val screenProperties: ScreenNames = AXES
 
-    private val _minYValue = MutableStateFlow<Float?>(null)
-    val minYValue = _minYValue.asStateFlow()
-
-    private val _maxYValue = MutableStateFlow<Float?>(null)
-    val maxYValue = _maxYValue.asStateFlow()
-
-    private val _minXValue = MutableStateFlow<Float?>(null)
-    val minXValue = _minXValue.asStateFlow()
-
-    private val _maxXValue = MutableStateFlow<Float?>(null)
-    val maxXValue = _maxXValue.asStateFlow()
-
-    private val _xRange = MutableStateFlow<Float?>(null)
-    val xRange = _xRange.asStateFlow()
-
-    private val _yRange = MutableStateFlow<Float?>(null)
-    val yRange = _yRange.asStateFlow()
-
-    private val _loading = MutableStateFlow(LOADING)
-    val loading = _loading.asStateFlow()
-
-    private fun maxValues(
-        yMaxValue: Float,
-        yMaxValueAdjustment: Multiplier,
-        xMaxValue: Float,
-        xMaxValueAdjustment: Multiplier
-    ) {
-        _maxYValue.update { yMaxValue.plus(yMaxValue.times(yMaxValueAdjustment.factor)) }
-        _maxXValue.update { xMaxValue.plus(xMaxValue.times(xMaxValueAdjustment.factor)) }
+    private val _dataValuesState = instanceKeeper.getOrCreate(KEY_DATA_VALUES) {
+        DataModelImpl(
+            initialState = stateKeeper.consume(KEY_DATA_VALUES) ?: DataValueStates()
+        )
     }
+    val dataValueStates: Value<DataValueStates> = _dataValuesState.dataValueStates
 
-    private fun minValues(
-        yMinValue: Float,
-        yMinValueAdjustment: Multiplier,
-        xMinValue: Float,
-        xMinValueAdjustment: Multiplier,
-    ) {
-        val adjustedMinYValue = yMinValue.minus(abs(yMinValue.times(yMinValueAdjustment.factor)))
-        val finalYValue = if (yMinValue < 0 && _maxYValue.value!! > 0) _maxYValue.value?.times(-1) ?: 100f else adjustedMinYValue
-        _minYValue.update { finalYValue }
-
-        val adjustedMinXValue = xMinValue.minus(abs(xMinValue.times(xMinValueAdjustment.factor)))
-        val finalXValue = if (xMinValue < 0 && _maxXValue.value!! > 0) _maxXValue.value?.times(-1) ?: 100f else adjustedMinXValue
-        _minXValue.update { finalXValue }
+    private var _loadingState = instanceKeeper.getOrCreate(KEY_LOADING_STATE) {
+        LoadingModelImp(
+            initialState = stateKeeper.consume(KEY_LOADING_STATE) ?: Loading
+        )
     }
+    val loadingState: Value<LoadingState> = _loadingState.loadingState
 
-    private fun ranges(
-        yRangeAdjustment: Multiplier,
-        xRangeAdjustment: Multiplier
-    ) {
-        val xRange = _maxXValue.value?.minus(_minXValue.value ?: 0f) ?: 0f
-        _xRange.update {
-            when {
-                _minXValue.value!! <= 0 && _maxXValue.value!! >= 0 -> xRange
-                _minXValue.value!! == 0f || _maxXValue.value == 0f -> xRange
-                else -> xRange.plus(xRange.times(xRangeAdjustment.factor))
-            }
-        }
-
-        val yRange = _maxYValue.value?.minus(_minYValue.value ?: 0f) ?: 0f
-        _yRange.update {
-            when {
-                _minYValue.value!! <= 0 && _maxYValue.value!! >= 0 -> yRange
-                _minYValue.value!! == 0f || _maxYValue.value!! == 0f -> yRange
-                else -> yRange.plus(yRange.times(yRangeAdjustment.factor))
-            }
-        }
-    }
+    fun updateData(xList: List<Float>, yList: List<Float>) = _dataValuesState.updateData(xList, yList)
 
     fun calculateData(
         xConfig: ContinuousLabelsConfig,
-        yConfig: ContinuousLabelsConfig,
-        data: List<Coordinates>
+        yConfig: ContinuousLabelsConfig
     ) {
-        maxValues(
-            yMaxValue = data.maxYValue(),
-            yMaxValueAdjustment = yConfig.maxValueAdjustment,
-            xMaxValue = data.maxXValue(),
-            xMaxValueAdjustment = xConfig.maxValueAdjustment
-        )
-
-        minValues(
-            yMinValue = data.minYValue(),
-            yMinValueAdjustment = yConfig.minValueAdjustment,
-            xMinValue = data.minXValue(),
-            xMinValueAdjustment = xConfig.minValueAdjustment
-        )
-
-        ranges(yRangeAdjustment = yConfig.rangeAdjustment, xRangeAdjustment = xConfig.rangeAdjustment)
-
-        _loading.update { COMPLETE }
+        _dataValuesState.calculateData(xConfig, yConfig)
+        _loadingState.updateState(LoadingState.Complete)
     }
 
     private val _xRotation = MutableStateFlow(0f)
@@ -132,7 +63,6 @@ class AxesComponent(
             initialState = stateKeeper.consume(KEY_X_SHOW_AXES) ?: AxesShowStates()
         )
     }
-
     val xShowAxesState: Value<AxesShowStates> = _xShowAxesState.showAxesState
 
     fun updateShowXAxis() = _xShowAxesState.showAxis()
@@ -145,7 +75,6 @@ class AxesComponent(
             initialState = stateKeeper.consume(KEY_Y_SHOW_AXES) ?: AxesShowStates()
         )
     }
-
     val yShowAxesState: Value<AxesShowStates> = _yShowAxesState.showAxesState
 
     fun updateShowYAxis() = _yShowAxesState.showAxis()
@@ -158,7 +87,6 @@ class AxesComponent(
             initialState = stateKeeper.consume(KEY_X_GUIDELINES) ?: GuidelinesStates()
         )
     }
-
     val xGuidelinesState: Value<GuidelinesStates> = _xGuidelinesState.guidelinesState
 
     fun incGuidelinesStrokeWidthX() = _xGuidelinesState.incStrokeWidth()
@@ -173,7 +101,6 @@ class AxesComponent(
             initialState = stateKeeper.consume(KEY_Y_GUIDELINES) ?: GuidelinesStates()
         )
     }
-
     val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
 
     fun incGuidelinesStrokeWidthY() = _yGuidelinesState.incStrokeWidth()
@@ -184,6 +111,8 @@ class AxesComponent(
     fun decGuidelinesPaddingY() = _yGuidelinesState.decPadding()
 
     init {
+        stateKeeper.register(KEY_DATA_VALUES) { _dataValuesState.dataValueStates.value }
+        stateKeeper.register(KEY_LOADING_STATE) { _loadingState.loadingState.value }
         stateKeeper.register(KEY_X_SHOW_AXES) { _xShowAxesState.showAxesState.value }
         stateKeeper.register(KEY_Y_SHOW_AXES) { _yShowAxesState.showAxesState.value }
         stateKeeper.register(KEY_X_GUIDELINES) { _xGuidelinesState.guidelinesState.value }
@@ -191,6 +120,8 @@ class AxesComponent(
     }
 
     private companion object {
+        private const val KEY_DATA_VALUES = "DATA_VALUES"
+        private const val KEY_LOADING_STATE = "LOADING_STATE"
         private const val KEY_X_SHOW_AXES = "X_SHOW_AXES"
         private const val KEY_Y_SHOW_AXES = "Y_SHOW_AXES"
         private const val KEY_X_GUIDELINES = "X_GUIDELINES"

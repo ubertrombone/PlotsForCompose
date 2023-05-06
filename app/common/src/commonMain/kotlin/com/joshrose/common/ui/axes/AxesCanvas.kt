@@ -2,15 +2,16 @@ package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
+import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.AxesComponent
+import com.joshrose.common.components.axes.models.LoadingState
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toXAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toYAxisPosition
@@ -20,8 +21,6 @@ import com.joshrose.plotsforcompose.axis.util.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
-import com.joshrose.plotsforcompose.util.Coordinates
-import com.joshrose.plotsforcompose.util.LoadingState.LOADING
 
 @ExperimentalTextApi
 @Composable
@@ -29,36 +28,29 @@ fun AxesCanvas(
     component: AxesComponent,
     xConfig: ContinuousAxisConfig,
     yConfig: ContinuousAxisConfig,
-    data: List<Coordinates>,
     modifier: Modifier = Modifier
 ) {
-    val xMaxValue by component.maxXValue.collectAsState()
-    val yMaxValue by component.maxYValue.collectAsState()
-    val xMinValue by component.minXValue.collectAsState()
-    val yMinValue by component.minYValue.collectAsState()
-    val xRangeValue by component.xRange.collectAsState()
-    val yRangeValue by component.yRange.collectAsState()
-    val loading by component.loading.collectAsState()
+    val dataValues by component.dataValueStates.subscribeAsState()
+    val loading by component.loadingState.subscribeAsState()
 
-    LaunchedEffect(data) {
+    LaunchedEffect(dataValues.data) {
         component.calculateData(
             xConfig = xConfig.labels,
-            yConfig = yConfig.labels,
-            data = data
+            yConfig = yConfig.labels
         )
     }
 
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
 
-    if (loading == LOADING) CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
+    if (loading == LoadingState.Loading) CircularProgressIndicator(color = colorScheme.primary)
     else {
-        val xMax = xMaxValue ?: 100f
-        val yMax = yMaxValue ?: 100f
-        val xMin = xMinValue ?: 0f
-        val yMin = yMinValue ?: 0f
-        val xRange = xRangeValue ?: 100f
-        val yRange = yRangeValue ?: 100f
+        val xMax = dataValues.maxXValue ?: 100f
+        val yMax = dataValues.maxYValue ?: 100f
+        val xMin = dataValues.minXValue ?: 0f
+        val yMin = dataValues.minYValue ?: 0f
+        val xRange = dataValues.xRange ?: 100f
+        val yRange = dataValues.yRange ?: 100f
 
         // TODO: Test what happens when min and max are equal -- Nothing -- prevent this!
         val xLabels = floatLabels(

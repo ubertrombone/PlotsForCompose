@@ -5,7 +5,9 @@ package com.joshrose.common.ui.axes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
@@ -19,7 +21,6 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefau
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.config.util.toMultiplier
-import com.joshrose.plotsforcompose.util.Coordinates
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -30,6 +31,7 @@ fun AxesContent(
     // TODO: Add a reset function when doing the above
     // TODO: Tackle long press puzzle
     // TODO: Get the cards to be evenly sized with proper spacing
+    // TODO: Fix padding at top of screen
     val xAxisShowStates by component.xShowAxesState.subscribeAsState()
     val yAxisShowStates by component.yShowAxesState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
@@ -88,22 +90,14 @@ fun AxesContent(
 
     // TODO: Force set axis min and max -- For later
 
-    var data by remember {
-        mutableStateOf(
-            listOf(Coordinates(0f, 100f), Coordinates(2000f, 2000f), Coordinates(3000f, 3000f))
-        )
-    }
-
     ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(horizontal = 20.dp, vertical = 10.dp)) {
         item {
             Button(
                 onClick = {
-                    data = List(2) {
-                        Coordinates(
-                            x = (-10_000..10_000).random().toFloat(),
-                            y = (-10_000..10_000).random().toFloat()
-                        )
-                    }
+                    component.updateData(
+                        xList = List(2) { (-10_000..10_000).random().toFloat() },
+                        yList = List(2) { (-10_000..10_000).random().toFloat() }
+                    )
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = colorScheme.primaryContainer,
@@ -152,7 +146,6 @@ fun AxesContent(
                 component = component,
                 xConfig = xConfig,
                 yConfig = yConfig,
-                data = data,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
