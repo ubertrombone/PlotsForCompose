@@ -1,5 +1,6 @@
 package com.joshrose.common.ui.axes
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.outlined.CheckCircle
@@ -16,7 +17,7 @@ fun ElevatedFilterChip(
     onClick: () -> Unit
 ) {
     ElevatedFilterChip(
-        modifier = modifier,
+        modifier = modifier.fillMaxWidth(),
         selected = selected,
         label = { Text(text = label) },
         onClick = onClick,

@@ -20,14 +20,14 @@ import com.joshrose.common.components.axes.guidelines.GuidelinesModelImpl
 import com.joshrose.common.components.axes.labels.DefaultLabelsComponent
 import com.joshrose.common.components.axes.labels.LabelsComponent
 import com.joshrose.common.components.axes.loading.LoadingModelImp
-import com.joshrose.common.components.axes.models.AxesShowStates
 import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.common.components.axes.models.GuidelinesStates
 import com.joshrose.common.components.axes.models.LoadingState
 import com.joshrose.common.components.axes.models.LoadingState.Loading
-import com.joshrose.common.components.axes.showaxes.ShowAxesModelImpl
+import com.joshrose.common.components.axes.models.VisibilityStates
 import com.joshrose.common.components.axes.visibility.DefaultVisibilityComponent
 import com.joshrose.common.components.axes.visibility.VisibilityComponent
+import com.joshrose.common.components.axes.visibility.VisibilityModelImpl
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
@@ -74,29 +74,19 @@ class DefaultAxesComponent(
     val yRotation = _yRotation.asStateFlow()
     fun updateYRotation(value: Float) = _yRotation.update { value }
 
-    private val _xShowAxesState = instanceKeeper.getOrCreate(KEY_X_SHOW_AXES) {
-        ShowAxesModelImpl(
-            initialState = stateKeeper.consume(KEY_X_SHOW_AXES) ?: AxesShowStates()
+    private val _xVisibilityState = instanceKeeper.getOrCreate(KEY_X_VISIBILITY) {
+        VisibilityModelImpl(
+            initialState = stateKeeper.consume(KEY_X_VISIBILITY) ?: VisibilityStates()
         )
     }
-    val xShowAxesState: Value<AxesShowStates> = _xShowAxesState.showAxesState
+    val xVisibilityState: Value<VisibilityStates> = _xVisibilityState.visibilityState
 
-    fun updateShowXAxis() = _xShowAxesState.showAxis()
-    fun updateShowXAxisLine() = _xShowAxesState.showAxisLine()
-    fun updateShowXGuidelines() = _xShowAxesState.showGuidelines()
-    fun updateShowXLabels() = _xShowAxesState.showLabels()
-
-    private val _yShowAxesState = instanceKeeper.getOrCreate(KEY_Y_SHOW_AXES) {
-        ShowAxesModelImpl(
-            initialState = stateKeeper.consume(KEY_Y_SHOW_AXES) ?: AxesShowStates()
+    private val _yVisibilityState = instanceKeeper.getOrCreate(KEY_Y_VISIBILITY) {
+        VisibilityModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_VISIBILITY) ?: VisibilityStates()
         )
     }
-    val yShowAxesState: Value<AxesShowStates> = _yShowAxesState.showAxesState
-
-    fun updateShowYAxis() = _yShowAxesState.showAxis()
-    fun updateShowYAxisLine() = _yShowAxesState.showAxisLine()
-    fun updateShowYGuidelines() = _yShowAxesState.showGuidelines()
-    fun updateShowYLabels() = _yShowAxesState.showLabels()
+    val yVisibilityState: Value<VisibilityStates> = _yVisibilityState.visibilityState
 
     private val _xGuidelinesState = instanceKeeper.getOrCreate(KEY_X_GUIDELINES) {
         GuidelinesModelImpl(
@@ -133,7 +123,11 @@ class DefaultAxesComponent(
         }
 
     private fun visibility(componentContext: ComponentContext): VisibilityComponent =
-        DefaultVisibilityComponent(componentContext = componentContext)
+        DefaultVisibilityComponent(
+            componentContext = componentContext,
+            xVisibility = _xVisibilityState,
+            yVisibility = _yVisibilityState
+        )
 
     private fun guidelines(componentContext: ComponentContext): GuidelinesComponent =
         DefaultGuidelinesComponent(
@@ -156,8 +150,8 @@ class DefaultAxesComponent(
     init {
         stateKeeper.register(KEY_DATA_VALUES) { _dataValuesState.dataValueStates.value }
         stateKeeper.register(KEY_LOADING_STATE) { _loadingState.loadingState.value }
-        stateKeeper.register(KEY_X_SHOW_AXES) { _xShowAxesState.showAxesState.value }
-        stateKeeper.register(KEY_Y_SHOW_AXES) { _yShowAxesState.showAxesState.value }
+        stateKeeper.register(KEY_X_VISIBILITY) { _xVisibilityState.visibilityState.value }
+        stateKeeper.register(KEY_Y_VISIBILITY) { _yVisibilityState.visibilityState.value }
         stateKeeper.register(KEY_X_GUIDELINES) { _xGuidelinesState.guidelinesState.value }
         stateKeeper.register(KEY_Y_GUIDELINES) { _yGuidelinesState.guidelinesState.value }
     }
@@ -165,8 +159,8 @@ class DefaultAxesComponent(
     private companion object {
         private const val KEY_DATA_VALUES = "DATA_VALUES"
         private const val KEY_LOADING_STATE = "LOADING_STATE"
-        private const val KEY_X_SHOW_AXES = "X_SHOW_AXES"
-        private const val KEY_Y_SHOW_AXES = "Y_SHOW_AXES"
+        private const val KEY_X_VISIBILITY = "X_VISIBILITY"
+        private const val KEY_Y_VISIBILITY = "Y_VISIBILITY"
         private const val KEY_X_GUIDELINES = "X_GUIDELINES"
         private const val KEY_Y_GUIDELINES = "Y_GUIDELINES"
     }

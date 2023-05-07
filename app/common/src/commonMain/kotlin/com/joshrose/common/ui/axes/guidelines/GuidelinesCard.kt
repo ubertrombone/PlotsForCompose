@@ -10,10 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun GuidelinesColumn(
+fun GuidelinesCard(
     label: String,
     alpha: Float,
     strokeWidth: Float,
@@ -40,7 +41,7 @@ fun GuidelinesColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(label, color = colorScheme.primary)
+            Text(label, color = colorScheme.primary, fontWeight = FontWeight.Bold)
 
             Spacer(Modifier.height(10.dp))
 

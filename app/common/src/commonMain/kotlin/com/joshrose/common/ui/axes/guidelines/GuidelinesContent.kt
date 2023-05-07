@@ -22,7 +22,7 @@ fun GuidelinesContent(
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        GuidelinesColumn(
+        GuidelinesCard(
             label = "X Guidelines",
             alpha = xGuidelinesStates.alpha,
             strokeWidth = xGuidelinesStates.strokeWidth,
@@ -38,7 +38,7 @@ fun GuidelinesContent(
                 .width(IntrinsicSize.Max)
                 .padding(10.dp)
         )
-        GuidelinesColumn(
+        GuidelinesCard(
             label = "Y Guidelines",
             alpha = yGuidelinesStates.alpha,
             strokeWidth = yGuidelinesStates.strokeWidth,

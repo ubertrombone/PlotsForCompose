@@ -41,8 +41,8 @@ fun AxesContent(
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
 
-    val xAxisShowStates by component.xShowAxesState.subscribeAsState()
-    val yAxisShowStates by component.yShowAxesState.subscribeAsState()
+    val xAxisShowStates by component.xVisibilityState.subscribeAsState()
+    val yAxisShowStates by component.yVisibilityState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
     val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
 
@@ -168,36 +168,36 @@ fun AxesContent(
                 }
                 Spacer(Modifier.height(20.dp))
             }
-            item {
-                AxisChipRow(
-                    label = "X-Axis:",
-                    axisSelected = xAxisShowStates.showAxis,
-                    axisLineSelected = xAxisShowStates.showAxisLine,
-                    guidelinesSelected = xAxisShowStates.showGuidelines,
-                    labelsSelected = xAxisShowStates.showLabels,
-                    axisOnClick = component::updateShowXAxis,
-                    axisLineOnClick = component::updateShowXAxisLine,
-                    guidelinesOnClick = component::updateShowXGuidelines,
-                    labelsOnClick = component::updateShowXLabels,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier.height(10.dp))
-            }
-            item {
-                AxisChipRow(
-                    label = "Y-Axis:",
-                    axisSelected = yAxisShowStates.showAxis,
-                    axisLineSelected = yAxisShowStates.showAxisLine,
-                    guidelinesSelected = yAxisShowStates.showGuidelines,
-                    labelsSelected = yAxisShowStates.showLabels,
-                    axisOnClick = component::updateShowYAxis,
-                    axisLineOnClick = component::updateShowYAxisLine,
-                    guidelinesOnClick = component::updateShowYGuidelines,
-                    labelsOnClick = component::updateShowYLabels,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Spacer(Modifier.height(10.dp))
-            }
+//            item {
+//                AxisChipRow(
+//                    label = "X-Axis:",
+//                    axisSelected = xAxisShowStates.showAxis,
+//                    axisLineSelected = xAxisShowStates.showAxisLine,
+//                    guidelinesSelected = xAxisShowStates.showGuidelines,
+//                    labelsSelected = xAxisShowStates.showLabels,
+//                    axisOnClick = component::updateShowXAxis,
+//                    axisLineOnClick = component::updateShowXAxisLine,
+//                    guidelinesOnClick = component::updateShowXGuidelines,
+//                    labelsOnClick = component::updateShowXLabels,
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//                Spacer(Modifier.height(10.dp))
+//            }
+//            item {
+//                AxisChipRow(
+//                    label = "Y-Axis:",
+//                    axisSelected = yAxisShowStates.showAxis,
+//                    axisLineSelected = yAxisShowStates.showAxisLine,
+//                    guidelinesSelected = yAxisShowStates.showGuidelines,
+//                    labelsSelected = yAxisShowStates.showLabels,
+//                    axisOnClick = component::updateShowYAxis,
+//                    axisLineOnClick = component::updateShowYAxisLine,
+//                    guidelinesOnClick = component::updateShowYGuidelines,
+//                    labelsOnClick = component::updateShowYLabels,
+//                    modifier = Modifier.fillMaxWidth()
+//                )
+//                Spacer(Modifier.height(10.dp))
+//            }
             item {
                 AxesCanvas(
                     component = component,

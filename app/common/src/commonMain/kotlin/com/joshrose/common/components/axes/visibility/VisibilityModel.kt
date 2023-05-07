@@ -1,12 +1,12 @@
-package com.joshrose.common.components.axes.showaxes
+package com.joshrose.common.components.axes.visibility
 
 import com.arkivanov.decompose.value.MutableValue
-import com.joshrose.common.components.axes.models.AxesShowStates
+import com.joshrose.common.components.axes.models.VisibilityStates
 import kotlinx.coroutines.CoroutineScope
 
-interface ShowAxesModel {
+interface VisibilityModel {
     val scope: CoroutineScope
-    val showAxesState: MutableValue<AxesShowStates>
+    val visibilityState: MutableValue<VisibilityStates>
 
     fun showAxis()
     fun showAxisLine()
