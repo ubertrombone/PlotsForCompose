@@ -2,8 +2,6 @@ package com.joshrose.plotsforcompose.axis.config.axisline
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
@@ -23,7 +21,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 data class AxisLineConfig(
     val lineColor: Color,
     val alpha: Multiplier,
-    val strokeWidth: Dp,
+    val strokeWidth: Float,
     val pathEffect: PathEffect?,
     val ticks: Boolean,
     val axisPosition: AxisPosition?
@@ -47,7 +45,7 @@ object AxisLineConfigDefaults {
     fun axisLineConfigDefaults(
         lineColor: Color = md_theme_dark_onBackground,
         alpha: Multiplier = Multiplier(1f),
-        strokeWidth: Dp = 2.dp,
+        strokeWidth: Float = 2f,
         pathEffect: PathEffect? = null,
         ticks: Boolean = true,
         axisPosition: AxisPosition? = null

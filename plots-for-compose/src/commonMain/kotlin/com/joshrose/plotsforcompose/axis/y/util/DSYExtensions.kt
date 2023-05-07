@@ -56,7 +56,7 @@ fun DrawScope.drawYTick(
         end = Offset(x = tickEnd, y = y),
         color = axisLineConfig.lineColor,
         alpha = axisLineConfig.alpha.factor,
-        strokeWidth = axisLineConfig.strokeWidth.toPx()
+        strokeWidth = axisLineConfig.strokeWidth
     )
 }
 
@@ -76,7 +76,7 @@ fun DrawScope.drawYAxis(
         color = axisLineConfig.lineColor,
         alpha = axisLineConfig.alpha.factor,
         pathEffect = axisLineConfig.pathEffect,
-        strokeWidth = axisLineConfig.strokeWidth.toPx()
+        strokeWidth = axisLineConfig.strokeWidth
     )
 }
 
