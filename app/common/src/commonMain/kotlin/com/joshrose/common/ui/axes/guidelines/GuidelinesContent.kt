@@ -1,17 +1,33 @@
 package com.joshrose.common.ui.axes.guidelines
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.joshrose.common.components.axes.AxesComponent
+import com.joshrose.common.components.axes.DefaultAxesComponent
+import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
+
+@Composable
+fun GuidelinesContent(
+    component: GuidelinesComponent,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = "Guidelines Placeholder")
+    }
+}
 
 @Composable
 fun Guidelines(
-    component: AxesComponent,
+    component: DefaultAxesComponent,
     modifier: Modifier = Modifier
 ) {
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()

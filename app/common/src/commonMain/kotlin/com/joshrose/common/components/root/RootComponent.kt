@@ -2,9 +2,9 @@ package com.joshrose.common.components.root
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import com.joshrose.common.components.axes.AxesComponent
-import com.joshrose.common.components.home.HomeComponent
+import com.joshrose.common.components.axes.DefaultAxesComponent
 import com.joshrose.common.components.graph.LineGraphComponent
+import com.joshrose.common.components.home.HomeComponent
 
 interface RootComponent {
     val childStack: Value<ChildStack<*, Child>>
@@ -13,7 +13,7 @@ interface RootComponent {
 
     sealed class Child {
         class HomeChild(val component: HomeComponent) : Child()
-        class AxesChild(val component: AxesComponent) : Child()
+        class AxesChild(val component: DefaultAxesComponent) : Child()
         class LineGraphChild(val component: LineGraphComponent) : Child()
     }
 }

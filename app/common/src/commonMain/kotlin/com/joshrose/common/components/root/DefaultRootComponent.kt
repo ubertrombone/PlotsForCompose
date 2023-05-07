@@ -5,7 +5,7 @@ import com.arkivanov.decompose.router.stack.*
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.joshrose.common.components.axes.AxesComponent
+import com.joshrose.common.components.axes.DefaultAxesComponent
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.components.home.DefaultHomeComponent
 import com.joshrose.common.components.home.HomeComponent
@@ -32,7 +32,7 @@ class DefaultRootComponent(
     ): RootComponent.Child =
         when (config) {
             is Config.Home -> HomeChild(home(componentContext))
-            is Config.Axes -> AxesChild(AxesComponent(componentContext))
+            is Config.Axes -> AxesChild(DefaultAxesComponent(componentContext))
             is Config.LineGraph -> LineGraphChild(LineGraphComponent(componentContext))
         }
 
