@@ -33,9 +33,9 @@ actual fun PlotsForComposeTheme(
             ?: throw Exception("Not in an activity - unable to get Window reference")
 
         SideEffect {
-            (view.context as Activity).window.statusBarColor = colorScheme.primaryContainer.toArgb()
+            (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars = !darkTheme
-            (view.context as Activity).window.navigationBarColor = colorScheme.primaryContainer.toArgb()
+            (view.context as Activity).window.navigationBarColor = colorScheme.primary.toArgb()
             WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightNavigationBars = !darkTheme
         }
     }
