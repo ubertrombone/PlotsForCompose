@@ -47,21 +47,18 @@ class DefaultAxesComponent(
             initialState = stateKeeper.consume(KEY_DATA_VALUES) ?: DataValueStates()
         )
     }
-    val dataValueStates: Value<DataValueStates> = _dataValuesState.dataValueStates
+    override val dataValueStates: Value<DataValueStates> = _dataValuesState.dataValueStates
 
     private var _loadingState = instanceKeeper.getOrCreate(KEY_LOADING_STATE) {
         LoadingModelImp(
             initialState = stateKeeper.consume(KEY_LOADING_STATE) ?: Loading
         )
     }
-    val loadingState: Value<LoadingState> = _loadingState.loadingState
+    override val loadingState: Value<LoadingState> = _loadingState.loadingState
 
-    fun updateData(xList: List<Float>, yList: List<Float>) = _dataValuesState.updateData(xList, yList)
+    override fun updateData(xList: List<Float>, yList: List<Float>) = _dataValuesState.updateData(xList, yList)
 
-    fun calculateData(
-        xConfig: ContinuousLabelsConfig,
-        yConfig: ContinuousLabelsConfig
-    ) {
+    override fun calculateData(xConfig: ContinuousLabelsConfig, yConfig: ContinuousLabelsConfig) {
         _dataValuesState.calculateData(xConfig, yConfig)
         _loadingState.updateState(LoadingState.Complete)
     }
@@ -79,28 +76,28 @@ class DefaultAxesComponent(
             initialState = stateKeeper.consume(KEY_X_VISIBILITY) ?: VisibilityStates()
         )
     }
-    val xVisibilityState: Value<VisibilityStates> = _xVisibilityState.visibilityState
+    override val xVisibilityState: Value<VisibilityStates> = _xVisibilityState.visibilityState
 
     private val _yVisibilityState = instanceKeeper.getOrCreate(KEY_Y_VISIBILITY) {
         VisibilityModelImpl(
             initialState = stateKeeper.consume(KEY_Y_VISIBILITY) ?: VisibilityStates()
         )
     }
-    val yVisibilityState: Value<VisibilityStates> = _yVisibilityState.visibilityState
+    override val yVisibilityState: Value<VisibilityStates> = _yVisibilityState.visibilityState
 
     private val _xGuidelinesState = instanceKeeper.getOrCreate(KEY_X_GUIDELINES) {
         GuidelinesModelImpl(
             initialState = stateKeeper.consume(KEY_X_GUIDELINES) ?: GuidelinesStates()
         )
     }
-    val xGuidelinesState: Value<GuidelinesStates> = _xGuidelinesState.guidelinesState
+    override val xGuidelinesState: Value<GuidelinesStates> = _xGuidelinesState.guidelinesState
 
     private val _yGuidelinesState = instanceKeeper.getOrCreate(KEY_Y_GUIDELINES) {
         GuidelinesModelImpl(
             initialState = stateKeeper.consume(KEY_Y_GUIDELINES) ?: GuidelinesStates()
         )
     }
-    val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
+    override val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
 
     private val _childStack = childStack(
         source = navigation,

@@ -2,14 +2,16 @@
 
 package com.joshrose.common.ui.axes
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -17,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.AxesComponent
-import com.joshrose.common.components.axes.DefaultAxesComponent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.ScrollLazyColumn
@@ -32,12 +33,10 @@ import com.joshrose.plotsforcompose.axis.config.util.toMultiplier
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AxesContent(
-    // TODO: This needs to be changed to the interface implementation once ready
-    component: DefaultAxesComponent,
+    component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
     // TODO: Add a reset function when doing the above
-    // TODO: Add nested navigation
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
 
@@ -46,8 +45,8 @@ fun AxesContent(
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
     val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
 
-    val xRotation by component.xRotation.collectAsState()
-    val yRotation by component.yRotation.collectAsState()
+//    val xRotation by component.xRotation.collectAsState()
+//    val yRotation by component.yRotation.collectAsState()
 
     // TODO: Build out the sample
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -63,7 +62,7 @@ fun AxesContent(
                 padding = xGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
-                rotation = xRotation,
+                rotation = 0f,
                 axisOffset = 20.dp,
                 rangeAdjustment = Multiplier(.1f),
                 fontColor = colorScheme.primary
@@ -86,7 +85,7 @@ fun AxesContent(
                 padding = yGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
-                rotation = yRotation,
+                rotation = 0f,
                 axisOffset = 20.dp,
                 rangeAdjustment = Multiplier(.1f),
                 fontColor = colorScheme.primary
@@ -166,38 +165,7 @@ fun AxesContent(
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
-                Spacer(Modifier.height(20.dp))
             }
-//            item {
-//                AxisChipRow(
-//                    label = "X-Axis:",
-//                    axisSelected = xAxisShowStates.showAxis,
-//                    axisLineSelected = xAxisShowStates.showAxisLine,
-//                    guidelinesSelected = xAxisShowStates.showGuidelines,
-//                    labelsSelected = xAxisShowStates.showLabels,
-//                    axisOnClick = component::updateShowXAxis,
-//                    axisLineOnClick = component::updateShowXAxisLine,
-//                    guidelinesOnClick = component::updateShowXGuidelines,
-//                    labelsOnClick = component::updateShowXLabels,
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//                Spacer(Modifier.height(10.dp))
-//            }
-//            item {
-//                AxisChipRow(
-//                    label = "Y-Axis:",
-//                    axisSelected = yAxisShowStates.showAxis,
-//                    axisLineSelected = yAxisShowStates.showAxisLine,
-//                    guidelinesSelected = yAxisShowStates.showGuidelines,
-//                    labelsSelected = yAxisShowStates.showLabels,
-//                    axisOnClick = component::updateShowYAxis,
-//                    axisLineOnClick = component::updateShowYAxisLine,
-//                    guidelinesOnClick = component::updateShowYGuidelines,
-//                    labelsOnClick = component::updateShowYLabels,
-//                    modifier = Modifier.fillMaxWidth()
-//                )
-//                Spacer(Modifier.height(10.dp))
-//            }
             item {
                 AxesCanvas(
                     component = component,

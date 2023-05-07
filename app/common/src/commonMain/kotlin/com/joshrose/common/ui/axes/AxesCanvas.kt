@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.joshrose.common.components.axes.DefaultAxesComponent
+import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.components.axes.models.LoadingState
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toXAxisPosition
@@ -25,7 +25,7 @@ import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
 @ExperimentalTextApi
 @Composable
 fun AxesCanvas(
-    component: DefaultAxesComponent,
+    component: AxesComponent,
     xConfig: ContinuousAxisConfig,
     yConfig: ContinuousAxisConfig,
     modifier: Modifier = Modifier
