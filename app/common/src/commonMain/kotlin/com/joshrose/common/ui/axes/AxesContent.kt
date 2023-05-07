@@ -21,6 +21,7 @@ import com.joshrose.common.components.axes.DefaultAxesComponent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.ScrollLazyColumn
+import com.joshrose.common.util.paddingBottomBar
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
@@ -31,6 +32,7 @@ import com.joshrose.plotsforcompose.axis.config.util.toMultiplier
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AxesContent(
+    // TODO: This needs to be changed to the interface implementation once ready
     component: DefaultAxesComponent,
     modifier: Modifier = Modifier
 ) {
@@ -98,6 +100,7 @@ fun AxesContent(
     // TODO: Force set axis min and max -- For later
 
     Scaffold(
+        modifier = modifier,
         bottomBar = {
             NavigationBar(containerColor = colorScheme.primary) {
                 NavigationBarItem(
@@ -139,8 +142,11 @@ fun AxesContent(
                 )
             }
         }
-    ) {
-        ScrollLazyColumn(modifier = modifier.fillMaxSize().padding(horizontal = 20.dp)) {
+    ) { padding ->
+        ScrollLazyColumn(modifier = Modifier
+            .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
+            .fillMaxSize()
+        ) {
             item {
                 Button(
                     onClick = {
@@ -207,19 +213,13 @@ fun AxesContent(
                 Children(stack = childStack) {
                     when (val child = it.instance) {
                         is AxesComponent.Child.AxisLinesChild -> TODO()
-                        is AxesComponent.Child.GuidelinesChild -> {
+                        is AxesComponent.Child.GuidelinesChild ->
                             GuidelinesContent(component = child.component, modifier = Modifier.fillMaxSize())
-                        }
                         is AxesComponent.Child.LabelsChild -> TODO()
-                        is AxesComponent.Child.VisibilityChild -> {
+                        is AxesComponent.Child.VisibilityChild ->
                             VisibilityContent(component = child.component, modifier = Modifier.fillMaxSize())
-                        }
                     }
                 }
-//                Guidelines(
-//                    component = component,
-//                    modifier = Modifier.fillMaxSize().padding(10.dp).background(Color.Red)
-//                )
             }
         }
     }

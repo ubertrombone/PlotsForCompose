@@ -4,11 +4,14 @@ import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.*
 
 fun Modifier.repeatingClickable(
@@ -34,3 +37,10 @@ fun Modifier.repeatingClickable(
         }
     }
 }
+
+expect fun Modifier.paddingBottomBar(
+    paddingValues: PaddingValues,
+    top: Dp = 0.dp,
+    start: Dp = 0.dp,
+    end: Dp = 0.dp,
+): Modifier

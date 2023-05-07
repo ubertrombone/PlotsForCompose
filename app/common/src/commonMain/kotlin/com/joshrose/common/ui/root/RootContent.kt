@@ -1,6 +1,6 @@
 package com.joshrose.common.ui.root
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -54,7 +54,7 @@ fun RootContent(
             )
         }
     ) { padding ->
-        Column(modifier = modifier.padding(padding)) {
+        Box(modifier = modifier.padding(padding)) {
             Children(
                 stack = childStack
             ) {

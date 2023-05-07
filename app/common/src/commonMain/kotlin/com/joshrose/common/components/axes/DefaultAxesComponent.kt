@@ -42,43 +42,6 @@ class DefaultAxesComponent(
 
     private val navigation = StackNavigation<Config>()
 
-    private val _childStack = childStack(
-        source = navigation,
-        initialConfiguration = Config.Visibility,
-        handleBackButton = false,
-        childFactory = ::createChild
-    )
-
-    override val childStack: Value<ChildStack<*, Child>> get() = _childStack
-
-    private fun createChild(
-        config: Config,
-        componentContext: ComponentContext
-    ): Child =
-        when (config) {
-            is Config.Visibility -> Child.VisibilityChild(visibility(componentContext))
-            is Config.Guidelines -> Child.GuidelinesChild(guidelines(componentContext))
-            is Config.AxisLine -> Child.AxisLinesChild(axisLine(componentContext))
-            is Config.Labels -> Child.LabelsChild(labels(componentContext))
-        }
-
-    private fun visibility(componentContext: ComponentContext): VisibilityComponent =
-        DefaultVisibilityComponent(componentContext = componentContext)
-
-    private fun guidelines(componentContext: ComponentContext): GuidelinesComponent =
-        DefaultGuidelinesComponent(componentContext = componentContext)
-
-    private fun axisLine(componentContext: ComponentContext): AxisLineComponent =
-        DefaultAxisLineComponent(componentContext = componentContext)
-
-    private fun labels(componentContext: ComponentContext): LabelsComponent =
-        DefaultLabelsComponent(componentContext = componentContext)
-
-    override fun onVisibilityTabClicked() { navigation.bringToFront(Config.Visibility) }
-    override fun onGuidelinesTabClicked() { navigation.bringToFront(Config.Guidelines) }
-    override fun onAxisLinesTabClicked() { navigation.bringToFront(Config.AxisLine) }
-    override fun onLabelsTabClicked() { navigation.bringToFront(Config.Labels) }
-
     private val _dataValuesState = instanceKeeper.getOrCreate(KEY_DATA_VALUES) {
         DataModelImpl(
             initialState = stateKeeper.consume(KEY_DATA_VALUES) ?: DataValueStates()
@@ -142,13 +105,6 @@ class DefaultAxesComponent(
     }
     val xGuidelinesState: Value<GuidelinesStates> = _xGuidelinesState.guidelinesState
 
-    fun incGuidelinesStrokeWidthX() = _xGuidelinesState.incStrokeWidth()
-    fun decGuidelinesStrokeWidthX() = _xGuidelinesState.decStrokeWidth()
-    fun incGuidelinesAlphaX() = _xGuidelinesState.incAlpha()
-    fun decGuidelinesAlphaX() = _xGuidelinesState.decAlpha()
-    fun incGuidelinesPaddingX() = _xGuidelinesState.incPadding()
-    fun decGuidelinesPaddingX() = _xGuidelinesState.decPadding()
-
     private val _yGuidelinesState = instanceKeeper.getOrCreate(KEY_Y_GUIDELINES) {
         GuidelinesModelImpl(
             initialState = stateKeeper.consume(KEY_Y_GUIDELINES) ?: GuidelinesStates()
@@ -156,12 +112,46 @@ class DefaultAxesComponent(
     }
     val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
 
-    fun incGuidelinesStrokeWidthY() = _yGuidelinesState.incStrokeWidth()
-    fun decGuidelinesStrokeWidthY() = _yGuidelinesState.decStrokeWidth()
-    fun incGuidelinesAlphaY() = _yGuidelinesState.incAlpha()
-    fun decGuidelinesAlphaY() = _yGuidelinesState.decAlpha()
-    fun incGuidelinesPaddingY() = _yGuidelinesState.incPadding()
-    fun decGuidelinesPaddingY() = _yGuidelinesState.decPadding()
+    private val _childStack = childStack(
+        source = navigation,
+        initialConfiguration = Config.Visibility,
+        handleBackButton = false,
+        childFactory = ::createChild
+    )
+
+    override val childStack: Value<ChildStack<*, Child>> get() = _childStack
+
+    private fun createChild(
+        config: Config,
+        componentContext: ComponentContext
+    ): Child =
+        when (config) {
+            is Config.Visibility -> Child.VisibilityChild(visibility(componentContext))
+            is Config.Guidelines -> Child.GuidelinesChild(guidelines(componentContext))
+            is Config.AxisLine -> Child.AxisLinesChild(axisLine(componentContext))
+            is Config.Labels -> Child.LabelsChild(labels(componentContext))
+        }
+
+    private fun visibility(componentContext: ComponentContext): VisibilityComponent =
+        DefaultVisibilityComponent(componentContext = componentContext)
+
+    private fun guidelines(componentContext: ComponentContext): GuidelinesComponent =
+        DefaultGuidelinesComponent(
+            componentContext = componentContext,
+            xGuidelinesValues = _xGuidelinesState,
+            yGuidelinesValues = _yGuidelinesState
+        )
+
+    private fun axisLine(componentContext: ComponentContext): AxisLineComponent =
+        DefaultAxisLineComponent(componentContext = componentContext)
+
+    private fun labels(componentContext: ComponentContext): LabelsComponent =
+        DefaultLabelsComponent(componentContext = componentContext)
+
+    override fun onVisibilityTabClicked() { navigation.bringToFront(Config.Visibility) }
+    override fun onGuidelinesTabClicked() { navigation.bringToFront(Config.Guidelines) }
+    override fun onAxisLinesTabClicked() { navigation.bringToFront(Config.AxisLine) }
+    override fun onLabelsTabClicked() { navigation.bringToFront(Config.Labels) }
 
     init {
         stateKeeper.register(KEY_DATA_VALUES) { _dataValuesState.dataValueStates.value }
