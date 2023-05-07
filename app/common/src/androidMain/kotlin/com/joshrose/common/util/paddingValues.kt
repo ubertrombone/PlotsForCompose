@@ -10,4 +10,4 @@ actual fun Modifier.paddingBottomBar(
     top: Dp,
     start: Dp,
     end: Dp,
-): Modifier = this.padding(paddingValues)
+): Modifier = this.padding(paddingValues).padding(top = top, start = start, end = end)

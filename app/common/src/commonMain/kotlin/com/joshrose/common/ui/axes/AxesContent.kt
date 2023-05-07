@@ -144,8 +144,8 @@ fun AxesContent(
         }
     ) { padding ->
         ScrollLazyColumn(modifier = Modifier
-            .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
             .fillMaxSize()
+            .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
         ) {
             item {
                 Button(
