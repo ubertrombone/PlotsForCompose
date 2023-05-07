@@ -45,9 +45,6 @@ fun AxesContent(
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
     val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
 
-//    val xRotation by component.xRotation.collectAsState()
-//    val yRotation by component.yRotation.collectAsState()
-
     // TODO: Build out the sample
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
