@@ -66,7 +66,10 @@ fun AxesContent(
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
                 ticks = true,
-                lineColor = colorScheme.primary
+                lineColor = colorScheme.primary,
+                strokeWidth = 2f,
+                alpha = Multiplier(.5f),
+                axisPosition = null
             )
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -89,7 +92,10 @@ fun AxesContent(
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
                 ticks = true,
-                lineColor = colorScheme.primary
+                lineColor = colorScheme.primary,
+                strokeWidth = 2f,
+                alpha = Multiplier(.5f),
+                axisPosition = null
             )
         )
 
