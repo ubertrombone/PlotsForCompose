@@ -4,6 +4,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
+    id("kotlin-parcelize")
 }
 
 group = "com.joshrose"
@@ -23,6 +24,8 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
+                api(deps.decompose.decompose)
+                api(deps.decompose.extensionsComposeJetbrains)
             }
         }
         val commonTest by getting {
