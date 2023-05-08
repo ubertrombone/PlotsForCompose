@@ -38,7 +38,6 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Fix status bar color
     // TODO: Fix desktop scrollbar?
     // TODO: Add a reset function when doing the above
     val childStack by component.childStack.subscribeAsState()

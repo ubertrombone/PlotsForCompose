@@ -34,9 +34,9 @@ actual fun PlotsForComposeTheme(
 
         SideEffect {
             (view.context as Activity).window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars = !darkTheme
+            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightStatusBars = darkTheme
             (view.context as Activity).window.navigationBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightNavigationBars = !darkTheme
+            WindowCompat.getInsetsController(currentWindow, view).isAppearanceLightNavigationBars = darkTheme
         }
     }
 
