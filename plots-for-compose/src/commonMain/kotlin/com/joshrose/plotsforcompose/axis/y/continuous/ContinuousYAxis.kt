@@ -81,7 +81,7 @@ fun DrawScope.continuousYAxis(
             )
         }
 
-        if (config.showAxisLine) {
+        if (config.showAxisLine && config.axisLine.ticks) {
             drawYTick(
                 axisLineConfig = config.axisLine,
                 y = y,

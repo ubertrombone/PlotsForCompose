@@ -94,7 +94,7 @@ fun DrawScope.continuousXAxis(
             )
         }
 
-        if (config.showAxisLine) {
+        if (config.showAxisLine && config.axisLine.ticks) {
             drawXTick(
                 axisLineConfig = config.axisLine,
                 x = x,

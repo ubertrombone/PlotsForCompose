@@ -38,7 +38,6 @@ fun AxisLineCard(
             containerColor = colorScheme.background
         )
     ) {
-        // TODO: Figure out why Ticks isn't working
         // TODO: Figure out how to do Axis Position
         Column(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
