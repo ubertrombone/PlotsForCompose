@@ -1,6 +1,8 @@
 package com.joshrose.plotsforcompose.axis.util
 
-interface AxisPosition {
+import com.arkivanov.essenty.parcelable.Parcelable
+
+interface AxisPosition: Parcelable {
     companion object {
         fun AxisPosition.toXAxisPosition(): XAxisPosition {
             return when (this) {
