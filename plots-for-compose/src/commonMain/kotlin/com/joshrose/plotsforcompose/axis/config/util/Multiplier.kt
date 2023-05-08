@@ -1,7 +1,5 @@
 package com.joshrose.plotsforcompose.axis.config.util
 
-import com.arkivanov.essenty.parcelable.Parcelable
-
 /**
  * A wrapper for [Float].
  *
@@ -10,7 +8,7 @@ import com.arkivanov.essenty.parcelable.Parcelable
  * @property factor a [Float] value that must be between 0f and 1f.
  */
 @JvmInline
-value class Multiplier(val factor: Float): Parcelable {
+value class Multiplier(val factor: Float) {
     init {
         require(factor in 0f..1f) {
             "factor must be greater than equal to 0 and less than or equal to 1: $factor"

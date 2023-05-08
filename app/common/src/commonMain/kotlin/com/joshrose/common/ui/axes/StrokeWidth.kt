@@ -1,4 +1,4 @@
-package com.joshrose.common.ui.axes.guidelines
+package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,8 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.ui.axes.DecButton
-import com.joshrose.common.ui.axes.IncButton
 
 @Composable
 fun StrokeWidth(
@@ -29,7 +27,7 @@ fun StrokeWidth(
         Text(
             text = "Stroke Width",
             color = colorScheme.primary,
-            fontSize = typography.labelLarge.fontSize,
+            fontSize = typography.titleMedium.fontSize,
         )
 
         Spacer(Modifier.height(5.dp))

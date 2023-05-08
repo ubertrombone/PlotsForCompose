@@ -1,4 +1,4 @@
-package com.joshrose.common.ui.axes.guidelines
+package com.joshrose.common.ui.axes.axisline
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -17,17 +17,16 @@ import com.joshrose.common.ui.axes.StrokeWidth
 
 @Suppress("DuplicatedCode")
 @Composable
-fun GuidelinesCard(
+fun AxisLineCard(
     label: String,
     alpha: Float,
     strokeWidth: Float,
-    padding: Float,
+    checked: Boolean,
     incAlphaClick: () -> Unit,
     decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
     decStrokeWidthClick: () -> Unit,
-    incPaddingClick: () -> Unit,
-    decPaddingClick: () -> Unit,
+    onCheckClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -39,6 +38,8 @@ fun GuidelinesCard(
             containerColor = colorScheme.background
         )
     ) {
+        // TODO: Figure out why Ticks isn't working
+        // TODO: Figure out how to do Axis Position
         Column(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,10 +65,9 @@ fun GuidelinesCard(
 
             Spacer(Modifier.height(10.dp))
 
-            Padding(
-                padding = padding,
-                incClick = incPaddingClick,
-                decClick = decPaddingClick
+            Ticks(
+                checked = checked,
+                onClick = onCheckClick
             )
         }
     }

@@ -12,6 +12,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.essenty.statekeeper.consume
 import com.joshrose.common.components.axes.AxesComponent.Child
 import com.joshrose.common.components.axes.axisline.AxisLineComponent
+import com.joshrose.common.components.axes.axisline.AxisLineModelImpl
 import com.joshrose.common.components.axes.axisline.DefaultAxisLineComponent
 import com.joshrose.common.components.axes.data.DataModelImpl
 import com.joshrose.common.components.axes.guidelines.DefaultGuidelinesComponent
@@ -20,11 +21,8 @@ import com.joshrose.common.components.axes.guidelines.GuidelinesModelImpl
 import com.joshrose.common.components.axes.labels.DefaultLabelsComponent
 import com.joshrose.common.components.axes.labels.LabelsComponent
 import com.joshrose.common.components.axes.loading.LoadingModelImp
-import com.joshrose.common.components.axes.models.DataValueStates
-import com.joshrose.common.components.axes.models.GuidelinesStates
-import com.joshrose.common.components.axes.models.LoadingState
+import com.joshrose.common.components.axes.models.*
 import com.joshrose.common.components.axes.models.LoadingState.Loading
-import com.joshrose.common.components.axes.models.VisibilityStates
 import com.joshrose.common.components.axes.visibility.DefaultVisibilityComponent
 import com.joshrose.common.components.axes.visibility.VisibilityComponent
 import com.joshrose.common.components.axes.visibility.VisibilityModelImpl
@@ -99,6 +97,20 @@ class DefaultAxesComponent(
     }
     override val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
 
+    private val _xAxisLineState = instanceKeeper.getOrCreate(KEY_X_AXIS_LINE) {
+        AxisLineModelImpl(
+            initialState = stateKeeper.consume(KEY_X_AXIS_LINE) ?: AxisLineStates()
+        )
+    }
+    override val xAxisLineState: Value<AxisLineStates> = _xAxisLineState.axisLineState
+
+    private val _yAxisLineState = instanceKeeper.getOrCreate(KEY_Y_AXIS_LINE) {
+        AxisLineModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_AXIS_LINE) ?: AxisLineStates()
+        )
+    }
+    override val yAxisLineState: Value<AxisLineStates> = _yAxisLineState.axisLineState
+
     private val _childStack = childStack(
         source = navigation,
         initialConfiguration = Config.Visibility,
@@ -134,7 +146,11 @@ class DefaultAxesComponent(
         )
 
     private fun axisLine(componentContext: ComponentContext): AxisLineComponent =
-        DefaultAxisLineComponent(componentContext = componentContext)
+        DefaultAxisLineComponent(
+            componentContext = componentContext,
+            xAxisLineValues = _xAxisLineState,
+            yAxisLineValues = _yAxisLineState
+        )
 
     private fun labels(componentContext: ComponentContext): LabelsComponent =
         DefaultLabelsComponent(componentContext = componentContext)
@@ -151,6 +167,8 @@ class DefaultAxesComponent(
         stateKeeper.register(KEY_Y_VISIBILITY) { _yVisibilityState.visibilityState.value }
         stateKeeper.register(KEY_X_GUIDELINES) { _xGuidelinesState.guidelinesState.value }
         stateKeeper.register(KEY_Y_GUIDELINES) { _yGuidelinesState.guidelinesState.value }
+        stateKeeper.register(KEY_X_AXIS_LINE) { _xAxisLineState.axisLineState.value }
+        stateKeeper.register(KEY_Y_AXIS_LINE) { _yAxisLineState.axisLineState.value }
     }
 
     private companion object {
@@ -160,6 +178,8 @@ class DefaultAxesComponent(
         private const val KEY_Y_VISIBILITY = "Y_VISIBILITY"
         private const val KEY_X_GUIDELINES = "X_GUIDELINES"
         private const val KEY_Y_GUIDELINES = "Y_GUIDELINES"
+        private const val KEY_X_AXIS_LINE = "X_AXIS_LINE"
+        private const val KEY_Y_AXIS_LINE = "Y_AXIS_LINE"
     }
 
     private sealed class Config : Parcelable {

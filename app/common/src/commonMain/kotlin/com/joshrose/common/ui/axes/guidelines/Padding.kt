@@ -32,7 +32,7 @@ fun Padding(
         Text(
             text = "Padding",
             color = colorScheme.primary,
-            fontSize = typography.labelLarge.fontSize
+            fontSize = typography.titleMedium.fontSize
         )
 
         Spacer(Modifier.height(5.dp))

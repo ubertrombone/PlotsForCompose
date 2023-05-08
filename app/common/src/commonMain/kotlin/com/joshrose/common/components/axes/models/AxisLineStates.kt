@@ -6,8 +6,8 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Parcelize
 data class AxisLineStates(
-    val alpha: Float = Multiplier(0.5f).factor,
-    val strokeWidth: Float = 1f,
+    val alpha: Float = Multiplier(1f).factor,
+    val strokeWidth: Float = 2f,
     val ticks: Boolean = true,
     //val axisPosition: AxisPosition? = null
 ) : Parcelable

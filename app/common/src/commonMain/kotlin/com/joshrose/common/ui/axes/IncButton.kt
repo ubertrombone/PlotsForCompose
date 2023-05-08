@@ -24,7 +24,7 @@ fun IncButton(
         contentDescription = contentDescription,
         tint = if (enabled) colorScheme.primary else colorScheme.secondary,
         modifier = modifier
-            .size(25.dp)
+            .size(28.dp)
             .background(
                 color = if (enabled) colorScheme.primaryContainer else colorScheme.secondaryContainer,
                 shape = CircleShape

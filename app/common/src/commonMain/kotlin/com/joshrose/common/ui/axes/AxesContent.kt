@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.*
@@ -19,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.AxesComponent
+import com.joshrose.common.ui.axes.axisline.AxisLineContent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.ScrollLazyColumn
@@ -36,6 +38,8 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
+    // TODO: Fix status bar color
+    // TODO: Fix desktop scrollbar?
     // TODO: Add a reset function when doing the above
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
@@ -44,8 +48,9 @@ fun AxesContent(
     val yAxisShowStates by component.yVisibilityState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
     val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
+    val xAxisLineStates by component.xAxisLineState.subscribeAsState()
+    val yAxisLineStates by component.yAxisLineState.subscribeAsState()
 
-    // TODO: Build out the sample
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
             showAxis = xAxisShowStates.showAxis,
@@ -65,10 +70,10 @@ fun AxesContent(
                 fontColor = colorScheme.primary
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
-                ticks = true,
+                ticks = xAxisLineStates.ticks,
                 lineColor = colorScheme.primary,
-                strokeWidth = 2f,
-                alpha = Multiplier(.5f),
+                strokeWidth = xAxisLineStates.strokeWidth,
+                alpha = xAxisLineStates.alpha.toMultiplier(),
                 axisPosition = null
             )
         )
@@ -91,56 +96,40 @@ fun AxesContent(
                 fontColor = colorScheme.primary
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
-                ticks = true,
+                ticks = yAxisLineStates.ticks,
                 lineColor = colorScheme.primary,
-                strokeWidth = 2f,
-                alpha = Multiplier(.5f),
+                strokeWidth = yAxisLineStates.strokeWidth,
+                alpha = yAxisLineStates.alpha.toMultiplier(),
                 axisPosition = null
             )
         )
 
     // TODO: Force set axis min and max -- For later
+    // TODO: Add custom icons
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
             NavigationBar(containerColor = colorScheme.primary) {
-                NavigationBarItem(
-                    colors = NavigationBarItemDefaults.colors(
-                        unselectedIconColor = colorScheme.onPrimary,
-                        unselectedTextColor = colorScheme.onPrimary,
-                        selectedIconColor = colorScheme.onPrimaryContainer,
-                        selectedTextColor = colorScheme.primaryContainer,
-                        indicatorColor = colorScheme.primaryContainer
-                    ),
+                BottomBarItems(
+                    label = "Visibility",
                     selected = activeComponent is AxesComponent.Child.VisibilityChild,
-                    onClick = component::onVisibilityTabClicked,
-                    label = { Text(text = "Visibility", softWrap = false) },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.Face,
-                            contentDescription = "Visibility Options"
-                        )
-                    }
+                    icon = { Icon(imageVector = Icons.Default.Face, contentDescription = "Visibility Options") },
+                    onClick = component::onVisibilityTabClicked
                 )
 
-                NavigationBarItem(
-                    colors = NavigationBarItemDefaults.colors(
-                        unselectedIconColor = colorScheme.onPrimary,
-                        unselectedTextColor = colorScheme.onPrimary,
-                        selectedIconColor = colorScheme.onPrimaryContainer,
-                        selectedTextColor = colorScheme.primaryContainer,
-                        indicatorColor = colorScheme.primaryContainer
-                    ),
+                BottomBarItems(
+                    label = "Guidelines",
                     selected = activeComponent is AxesComponent.Child.GuidelinesChild,
-                    onClick = component::onGuidelinesTabClicked,
-                    label = { Text(text = "Guidelines", softWrap = false) },
-                    icon = {
-                        Icon(
-                            imageVector = Icons.Default.DateRange,
-                            contentDescription = "Guidelines"
-                        )
-                    }
+                    icon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "Guidelines") },
+                    onClick = component::onGuidelinesTabClicked
+                )
+
+                BottomBarItems(
+                    label = "Axis Lines",
+                    selected = activeComponent is AxesComponent.Child.AxisLinesChild,
+                    icon = { Icon(imageVector = Icons.Default.Build, contentDescription = "Axis Lines") },
+                    onClick = component::onAxisLinesTabClicked
                 )
             }
         }
@@ -183,7 +172,7 @@ fun AxesContent(
             item {
                 Children(stack = childStack) {
                     when (val child = it.instance) {
-                        is AxesComponent.Child.AxisLinesChild -> TODO()
+                        is AxesComponent.Child.AxisLinesChild -> AxisLineContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is AxesComponent.Child.GuidelinesChild ->
                             GuidelinesContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is AxesComponent.Child.LabelsChild -> TODO()

@@ -5,10 +5,7 @@ import com.arkivanov.decompose.value.Value
 import com.joshrose.common.components.axes.axisline.AxisLineComponent
 import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
 import com.joshrose.common.components.axes.labels.LabelsComponent
-import com.joshrose.common.components.axes.models.DataValueStates
-import com.joshrose.common.components.axes.models.GuidelinesStates
-import com.joshrose.common.components.axes.models.LoadingState
-import com.joshrose.common.components.axes.models.VisibilityStates
+import com.joshrose.common.components.axes.models.*
 import com.joshrose.common.components.axes.visibility.VisibilityComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
@@ -22,6 +19,8 @@ interface AxesComponent {
     val yVisibilityState: Value<VisibilityStates>
     val xGuidelinesState: Value<GuidelinesStates>
     val yGuidelinesState: Value<GuidelinesStates>
+    val xAxisLineState: Value<AxisLineStates>
+    val yAxisLineState: Value<AxisLineStates>
     val childStack: Value<ChildStack<*, Child>>
 
     fun updateData(xList: List<Float>, yList: List<Float>)
