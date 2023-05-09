@@ -14,12 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.Alpha
 import com.joshrose.common.ui.axes.StrokeWidth
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Suppress("DuplicatedCode")
 @Composable
 fun GuidelinesCard(
     label: String,
-    alpha: Float,
+    alpha: Multiplier,
     strokeWidth: Float,
     padding: Float,
     incAlphaClick: () -> Unit,

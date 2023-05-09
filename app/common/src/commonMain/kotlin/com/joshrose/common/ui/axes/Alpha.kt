@@ -11,11 +11,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.formatToString
 
 @Composable
 fun Alpha(
-    alpha: Float,
+    alpha: Multiplier,
     incClick: () -> Unit,
     decClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -39,18 +40,18 @@ fun Alpha(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IncButton(
-                value = alpha,
+                value = alpha.factor,
                 limit = .9f,
                 contentDescription = "Increase Alpha",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = alpha < .9f) { incClick() }
+                    .clickable(enabled = alpha.factor < .9f) { incClick() }
             )
 
             Spacer(Modifier.width(10.dp))
 
             Text(
-                text = alpha.formatToString("#.#"),
+                text = alpha.factor.formatToString("#.#"),
                 color = colorScheme.primary,
                 fontSize = typography.labelLarge.fontSize
             )
@@ -58,12 +59,12 @@ fun Alpha(
             Spacer(Modifier.width(10.dp))
 
             DecButton(
-                value = alpha,
+                value = alpha.factor,
                 limit = 0.1f,
                 contentDescription = "Decrease Alpha",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = alpha > .1f) { decClick() }
+                    .clickable(enabled = alpha.factor > .1f) { decClick() }
             )
         }
     }

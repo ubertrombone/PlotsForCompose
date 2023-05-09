@@ -1,5 +1,8 @@
 package com.joshrose.plotsforcompose.axis.config.util
 
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
+
 /**
  * A wrapper for [Float].
  *
@@ -7,8 +10,9 @@ package com.joshrose.plotsforcompose.axis.config.util
  *
  * @property factor a [Float] value that must be between 0f and 1f.
  */
+@Parcelize
 @JvmInline
-value class Multiplier(val factor: Float) {
+value class Multiplier(val factor: Float): Parcelable {
     init {
         require(factor in 0f..1f) {
             "factor must be greater than equal to 0 and less than or equal to 1: $factor"
@@ -20,5 +24,3 @@ value class Multiplier(val factor: Float) {
     operator fun times(value: Float): Multiplier = Multiplier(factor * value)
     operator fun div(value: Float): Multiplier = Multiplier(factor / value)
 }
-
-fun Float.toMultiplier() = Multiplier(this)

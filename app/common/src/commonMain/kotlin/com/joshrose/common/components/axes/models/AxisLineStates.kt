@@ -7,7 +7,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition
 
 @Parcelize
 data class AxisLineStates(
-    val alpha: Float = Multiplier(1f).factor,
+    val alpha: Multiplier = Multiplier(.9f),
     val strokeWidth: Float = 2f,
     val ticks: Boolean = true,
     val axisPosition: AxisPosition? = null

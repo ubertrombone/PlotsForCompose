@@ -7,6 +7,6 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 @Parcelize
 data class GuidelinesStates(
     val strokeWidth: Float = 1f,
-    val alpha: Float = Multiplier(0.5f).factor,
+    val alpha: Multiplier = Multiplier(0.5f),
     val padding: Float = 0f
 ): Parcelable

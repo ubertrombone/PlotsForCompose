@@ -30,7 +30,6 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.config.util.toMultiplier
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -59,7 +58,7 @@ fun AxesContent(
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = xGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
-                alpha = xGuidelinesStates.alpha.toMultiplier(),
+                alpha = xGuidelinesStates.alpha,
                 padding = xGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
@@ -72,7 +71,7 @@ fun AxesContent(
                 ticks = xAxisLineStates.ticks,
                 lineColor = colorScheme.primary,
                 strokeWidth = xAxisLineStates.strokeWidth,
-                alpha = xAxisLineStates.alpha.toMultiplier(),
+                alpha = xAxisLineStates.alpha,
                 axisPosition = null
             )
         )
@@ -85,7 +84,7 @@ fun AxesContent(
             guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
                 strokeWidth = yGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
-                alpha = yGuidelinesStates.alpha.toMultiplier(),
+                alpha = yGuidelinesStates.alpha,
                 padding = yGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
@@ -98,7 +97,7 @@ fun AxesContent(
                 ticks = yAxisLineStates.ticks,
                 lineColor = colorScheme.primary,
                 strokeWidth = yAxisLineStates.strokeWidth,
-                alpha = yAxisLineStates.alpha.toMultiplier(),
+                alpha = yAxisLineStates.alpha,
                 axisPosition = null
             )
         )

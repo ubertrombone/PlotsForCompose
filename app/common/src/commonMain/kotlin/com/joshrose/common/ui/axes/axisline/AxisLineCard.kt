@@ -14,12 +14,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.Alpha
 import com.joshrose.common.ui.axes.StrokeWidth
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Suppress("DuplicatedCode")
 @Composable
 fun AxisLineCard(
     label: String,
-    alpha: Float,
+    alpha: Multiplier,
     strokeWidth: Float,
     checked: Boolean,
     incAlphaClick: () -> Unit,
@@ -39,6 +40,7 @@ fun AxisLineCard(
         )
     ) {
         // TODO: Figure out how to do Axis Position
+        // TODO: Change Switch colors
         Column(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
