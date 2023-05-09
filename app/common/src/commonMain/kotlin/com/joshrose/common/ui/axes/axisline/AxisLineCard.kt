@@ -40,7 +40,6 @@ fun AxisLineCard(
         )
     ) {
         // TODO: Figure out how to do Axis Position
-        // TODO: Change Switch colors
         Column(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
