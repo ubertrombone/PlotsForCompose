@@ -47,11 +47,13 @@ fun Ticks(
             } else null,
             colors = SwitchDefaults.colors(
                 checkedThumbColor = colorScheme.primaryContainer,
-                checkedTrackColor = colorScheme.onPrimaryContainer,
+                checkedTrackColor = colorScheme.tertiary,
                 checkedIconColor = colorScheme.onPrimaryContainer,
+                checkedBorderColor = colorScheme.background,
                 uncheckedThumbColor = colorScheme.secondaryContainer,
-                uncheckedTrackColor = colorScheme.onSecondaryContainer,
-                uncheckedIconColor = colorScheme.onSecondaryContainer
+                uncheckedTrackColor = colorScheme.tertiary,
+                uncheckedIconColor = colorScheme.onSecondaryContainer,
+                uncheckedBorderColor = colorScheme.background
             )
         )
     }
