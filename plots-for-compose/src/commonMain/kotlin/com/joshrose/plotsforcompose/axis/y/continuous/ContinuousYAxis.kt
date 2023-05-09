@@ -8,9 +8,9 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.util.XAxisPosition
-import com.joshrose.plotsforcompose.axis.util.YAxisPosition
 import com.joshrose.plotsforcompose.axis.y.util.drawYAxis
 import com.joshrose.plotsforcompose.axis.y.util.drawYFloatLabel
 import com.joshrose.plotsforcompose.axis.y.util.drawYGuideline

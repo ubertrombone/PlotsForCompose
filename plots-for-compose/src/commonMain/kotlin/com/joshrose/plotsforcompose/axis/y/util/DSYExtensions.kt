@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.center
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.util.YAxisPosition
-import com.joshrose.plotsforcompose.axis.util.YAxisPosition.*
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 fun DrawScope.drawYGuideline(

@@ -1,6 +1,25 @@
 package com.joshrose.plotsforcompose.axis.util
 
-interface AxisPosition {
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
+
+@Parcelize
+sealed interface AxisPosition : Parcelable {
+
+    @Parcelize
+    enum class XAxisPosition: AxisPosition {
+        BOTTOM,
+        CENTER,
+        TOP
+    }
+
+    @Parcelize
+    enum class YAxisPosition: AxisPosition {
+        START,
+        CENTER,
+        END
+    }
+
     companion object {
         fun AxisPosition.toXAxisPosition(): XAxisPosition {
             return when (this) {
@@ -20,16 +39,4 @@ interface AxisPosition {
             }
         }
     }
-}
-
-enum class XAxisPosition: AxisPosition {
-    BOTTOM,
-    CENTER,
-    TOP
-}
-
-enum class YAxisPosition: AxisPosition {
-    START,
-    CENTER,
-    END
 }

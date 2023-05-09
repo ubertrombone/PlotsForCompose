@@ -15,9 +15,9 @@ import com.joshrose.common.components.axes.models.LoadingState
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toXAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toYAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.util.XAxisPosition
-import com.joshrose.plotsforcompose.axis.util.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
