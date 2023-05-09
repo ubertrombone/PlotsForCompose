@@ -4,6 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.axes.models.AxisLineStates
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import kotlinx.coroutines.*
 
 class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, AxisLineModel {
@@ -40,11 +41,11 @@ class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, 
         }
     }
 
-//    override fun updateAxisPosition(position: AxisPosition?) {
-//        scope.launch {
-//            axisLineState.update { it.copy(axisPosition = position) }
-//        }
-//    }
+    override fun updateAxisPosition(position: AxisPosition?) {
+        scope.launch {
+            axisLineState.update { it.copy(axisPosition = position) }
+        }
+    }
 
     override fun onDestroy() {
         scope.cancel()

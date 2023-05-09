@@ -6,10 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
@@ -23,7 +19,10 @@ import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.ui.axes.axisline.AxisLineContent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
+import com.joshrose.common.util.ImageResources.*
+import com.joshrose.common.util.MPIcon
 import com.joshrose.common.util.ScrollLazyColumn
+import com.joshrose.common.util.createPainter
 import com.joshrose.common.util.paddingBottomBar
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
@@ -103,7 +102,6 @@ fun AxesContent(
         )
 
     // TODO: Force set axis min and max -- For later
-    // TODO: Add custom icons
 
     Scaffold(
         modifier = modifier,
@@ -112,21 +110,21 @@ fun AxesContent(
                 BottomBarItems(
                     label = "Visibility",
                     selected = activeComponent is AxesComponent.Child.VisibilityChild,
-                    icon = { Icon(imageVector = Icons.Default.Face, contentDescription = "Visibility Options") },
+                    icon = { MPIcon(painter = createPainter(VISIBILITY), contentDescription = "Visibility Options") },
                     onClick = component::onVisibilityTabClicked
                 )
 
                 BottomBarItems(
                     label = "Guidelines",
                     selected = activeComponent is AxesComponent.Child.GuidelinesChild,
-                    icon = { Icon(imageVector = Icons.Default.DateRange, contentDescription = "Guidelines") },
+                    icon = { MPIcon(painter = createPainter(GUIDELINES), contentDescription = "Guidelines") },
                     onClick = component::onGuidelinesTabClicked
                 )
 
                 BottomBarItems(
                     label = "Axis Lines",
                     selected = activeComponent is AxesComponent.Child.AxisLinesChild,
-                    icon = { Icon(imageVector = Icons.Default.Build, contentDescription = "Axis Lines") },
+                    icon = { MPIcon(painter = createPainter(AXIS_LINES), contentDescription = "Axis Lines") },
                     onClick = component::onAxisLinesTabClicked
                 )
             }
