@@ -2,10 +2,7 @@
 
 package com.joshrose.common.ui.axes
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
@@ -135,26 +132,6 @@ fun AxesContent(
             .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
         ) {
             item {
-                Button(
-                    onClick = {
-                        component.updateData(
-                            xList = List(2) { (-10_000..10_000).random().toFloat() },
-                            yList = List(2) { (-10_000..10_000).random().toFloat() }
-                        )
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorScheme.primaryContainer,
-                        contentColor = colorScheme.onPrimaryContainer
-                    ),
-                    modifier = Modifier.padding(top = 10.dp)
-                ) {
-                    Text(
-                        text = "Generate New Axes",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
-            }
-            item {
                 AxesCanvas(
                     component = component,
                     xConfig = xConfig,
@@ -176,6 +153,28 @@ fun AxesContent(
                             VisibilityContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
                 }
+            }
+            item {
+                Button(
+                    onClick = {
+                        component.updateData(
+                            xList = List(2) { (-10_000..10_000).random().toFloat() },
+                            yList = List(2) { (-10_000..10_000).random().toFloat() }
+                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.primaryContainer,
+                        contentColor = colorScheme.onPrimaryContainer
+                    ),
+                    modifier = Modifier.padding(top = 10.dp)
+                ) {
+                    Text(
+                        text = "Generate New Axes",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+
+                Spacer(Modifier.height(10.dp))
             }
         }
     }
