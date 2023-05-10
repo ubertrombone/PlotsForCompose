@@ -38,5 +38,10 @@ sealed interface AxisPosition : Parcelable {
                 else -> throw NoSuchElementException("Element must be of type YAxisPosition.")
             }
         }
+
+        enum class Orientation {
+            X,
+            Y
+        }
     }
 }

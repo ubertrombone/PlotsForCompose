@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.axisline.AxisLineComponent
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
 
 @Composable
 fun AxisLineContent(
@@ -27,11 +28,14 @@ fun AxisLineContent(
             alpha = xAxisLineStates.alpha,
             strokeWidth = xAxisLineStates.strokeWidth,
             checked = xAxisLineStates.ticks,
+            orientation = AxisPosition.Companion.Orientation.X,
+            axisPosition = xAxisLineStates.axisPosition,
             incAlphaClick = component::incAlphaX,
             decAlphaClick = component::decAlphaX,
             incStrokeWidthClick = component::incStrokeWidthX,
             decStrokeWidthClick = component::decStrokeWidthX,
             onCheckClick = component::updateShowTicksX,
+            onAlignmentClick = component::updateAxisPositionX,
             modifier = Modifier
                 .fillMaxHeight()
                 .width(IntrinsicSize.Max)
@@ -42,11 +46,14 @@ fun AxisLineContent(
             alpha = yAxisLineStates.alpha,
             strokeWidth = yAxisLineStates.strokeWidth,
             checked = yAxisLineStates.ticks,
+            orientation = AxisPosition.Companion.Orientation.Y,
+            axisPosition = yAxisLineStates.axisPosition,
             incAlphaClick = component::incAlphaY,
             decAlphaClick = component::decAlphaY,
             incStrokeWidthClick = component::incStrokeWidthY,
             decStrokeWidthClick = component::decStrokeWidthY,
             onCheckClick = component::updateShowTicksY,
+            onAlignmentClick = component::updateAxisPositionY,
             modifier = Modifier
                 .fillMaxHeight()
                 .width(IntrinsicSize.Max)

@@ -71,7 +71,7 @@ fun AxesContent(
                 lineColor = colorScheme.primary,
                 strokeWidth = xAxisLineStates.strokeWidth,
                 alpha = xAxisLineStates.alpha,
-                axisPosition = null
+                axisPosition = xAxisLineStates.axisPosition
             )
         )
     val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
@@ -97,7 +97,7 @@ fun AxesContent(
                 lineColor = colorScheme.primary,
                 strokeWidth = yAxisLineStates.strokeWidth,
                 alpha = yAxisLineStates.alpha,
-                axisPosition = null
+                axisPosition = yAxisLineStates.axisPosition
             )
         )
 

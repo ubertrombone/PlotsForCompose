@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.Alpha
 import com.joshrose.common.ui.axes.StrokeWidth
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.Orientation
 
 @Suppress("DuplicatedCode")
 @Composable
@@ -23,11 +25,14 @@ fun AxisLineCard(
     alpha: Multiplier,
     strokeWidth: Float,
     checked: Boolean,
+    orientation: Orientation,
+    axisPosition: AxisPosition?,
     incAlphaClick: () -> Unit,
     decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
     decStrokeWidthClick: () -> Unit,
     onCheckClick: (Boolean) -> Unit,
+    onAlignmentClick: (AxisPosition?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -39,7 +44,6 @@ fun AxisLineCard(
             containerColor = colorScheme.background
         )
     ) {
-        // TODO: Figure out how to do Axis Position
         Column(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -69,6 +73,13 @@ fun AxisLineCard(
                 checked = checked,
                 onClick = onCheckClick
             )
+
+            Spacer(Modifier.height(10.dp))
+
+            when (orientation) {
+                Orientation.X -> XAxisAlignment(currentSelected = axisPosition, onClick = { onAlignmentClick(it) })
+                Orientation.Y -> YAxisAlignment(currentSelected = axisPosition, onClick = { onAlignmentClick(it) })
+            }
         }
     }
 }
