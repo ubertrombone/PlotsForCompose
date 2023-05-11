@@ -20,6 +20,7 @@ import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
 import com.joshrose.common.components.axes.guidelines.GuidelinesModelImpl
 import com.joshrose.common.components.axes.labels.DefaultLabelsComponent
 import com.joshrose.common.components.axes.labels.LabelsComponent
+import com.joshrose.common.components.axes.labels.LabelsModelImpl
 import com.joshrose.common.components.axes.loading.LoadingModelImp
 import com.joshrose.common.components.axes.models.*
 import com.joshrose.common.components.axes.models.LoadingState.Loading
@@ -29,9 +30,6 @@ import com.joshrose.common.components.axes.visibility.VisibilityModelImpl
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 
 class DefaultAxesComponent(
     componentContext: ComponentContext
@@ -60,14 +58,6 @@ class DefaultAxesComponent(
         _dataValuesState.calculateData(xConfig, yConfig)
         _loadingState.updateState(LoadingState.Complete)
     }
-
-    private val _xRotation = MutableStateFlow(0f)
-    val xRotation = _xRotation.asStateFlow()
-    fun updateXRotation(value: Float) = _xRotation.update { value }
-
-    private val _yRotation = MutableStateFlow(0f)
-    val yRotation = _yRotation.asStateFlow()
-    fun updateYRotation(value: Float) = _yRotation.update { value }
 
     private val _xVisibilityState = instanceKeeper.getOrCreate(KEY_X_VISIBILITY) {
         VisibilityModelImpl(
@@ -111,6 +101,22 @@ class DefaultAxesComponent(
     }
     override val yAxisLineState: Value<AxisLineStates> = _yAxisLineState.axisLineState
 
+    private val _xLabelsState = instanceKeeper.getOrCreate(KEY_X_LABELS) {
+        LabelsModelImpl(
+            initialState = stateKeeper.consume(KEY_X_LABELS) ?: LabelsStates()
+        )
+    }
+
+    override val xLabelsState: Value<LabelsStates> = _xLabelsState.labelsState
+
+    private val _yLabelsState = instanceKeeper.getOrCreate(KEY_Y_LABELS) {
+        LabelsModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_LABELS) ?: LabelsStates()
+        )
+    }
+
+    override val yLabelsState: Value<LabelsStates> = _yLabelsState.labelsState
+
     private val _childStack = childStack(
         source = navigation,
         initialConfiguration = Config.Visibility,
@@ -153,7 +159,11 @@ class DefaultAxesComponent(
         )
 
     private fun labels(componentContext: ComponentContext): LabelsComponent =
-        DefaultLabelsComponent(componentContext = componentContext)
+        DefaultLabelsComponent(
+            componentContext = componentContext,
+            xLabelsValues = _xLabelsState,
+            yLabelsValues = _yLabelsState
+        )
 
     override fun onVisibilityTabClicked() { navigation.bringToFront(Config.Visibility) }
     override fun onGuidelinesTabClicked() { navigation.bringToFront(Config.Guidelines) }
@@ -169,6 +179,8 @@ class DefaultAxesComponent(
         stateKeeper.register(KEY_Y_GUIDELINES) { _yGuidelinesState.guidelinesState.value }
         stateKeeper.register(KEY_X_AXIS_LINE) { _xAxisLineState.axisLineState.value }
         stateKeeper.register(KEY_Y_AXIS_LINE) { _yAxisLineState.axisLineState.value }
+        stateKeeper.register(KEY_X_LABELS) { _xLabelsState.labelsState.value }
+        stateKeeper.register(KEY_Y_LABELS) { _yLabelsState.labelsState.value }
     }
 
     private companion object {
@@ -180,6 +192,8 @@ class DefaultAxesComponent(
         private const val KEY_Y_GUIDELINES = "Y_GUIDELINES"
         private const val KEY_X_AXIS_LINE = "X_AXIS_LINE"
         private const val KEY_Y_AXIS_LINE = "Y_AXIS_LINE"
+        private const val KEY_X_LABELS = "X_LABELS"
+        private const val KEY_Y_LABELS = "Y_LABELS"
     }
 
     private sealed class Config : Parcelable {

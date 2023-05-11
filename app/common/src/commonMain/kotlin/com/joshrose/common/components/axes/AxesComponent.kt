@@ -21,6 +21,8 @@ interface AxesComponent {
     val yGuidelinesState: Value<GuidelinesStates>
     val xAxisLineState: Value<AxisLineStates>
     val yAxisLineState: Value<AxisLineStates>
+    val xLabelsState: Value<LabelsStates>
+    val yLabelsState: Value<LabelsStates>
     val childStack: Value<ChildStack<*, Child>>
 
     fun updateData(xList: List<Float>, yList: List<Float>)

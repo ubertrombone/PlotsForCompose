@@ -24,7 +24,6 @@ import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -43,6 +42,8 @@ fun AxesContent(
     val yGuidelinesStates by component.yGuidelinesState.subscribeAsState()
     val xAxisLineStates by component.xAxisLineState.subscribeAsState()
     val yAxisLineStates by component.yAxisLineState.subscribeAsState()
+    val xLabelsStates by component.xLabelsState.subscribeAsState()
+    val yLabelsStates by component.yLabelsState.subscribeAsState()
 
     val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
         .copy(
@@ -57,10 +58,13 @@ fun AxesContent(
                 padding = xGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
-                rotation = 0f,
-                axisOffset = 20.dp,
-                rangeAdjustment = Multiplier(.1f),
-                fontColor = colorScheme.primary
+                rotation = xLabelsStates.rotation,
+                axisOffset = xLabelsStates.axisOffset.dp,
+                rangeAdjustment = xLabelsStates.rangeAdjustment,
+                minValueAdjustment = xLabelsStates.minValueAdjustment,
+                maxValueAdjustment = xLabelsStates.maxValueAdjustment,
+                breaks = xLabelsStates.breaks,
+                fontColor = colorScheme.primary,
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
                 ticks = xAxisLineStates.ticks,
@@ -83,9 +87,12 @@ fun AxesContent(
                 padding = yGuidelinesStates.padding
             ),
             labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
-                rotation = 0f,
-                axisOffset = 20.dp,
-                rangeAdjustment = Multiplier(.1f),
+                rotation = yLabelsStates.rotation,
+                axisOffset = yLabelsStates.axisOffset.dp,
+                rangeAdjustment = yLabelsStates.rangeAdjustment,
+                minValueAdjustment = yLabelsStates.minValueAdjustment,
+                maxValueAdjustment = yLabelsStates.maxValueAdjustment,
+                breaks = yLabelsStates.breaks,
                 fontColor = colorScheme.primary
             ),
             axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
@@ -144,7 +151,8 @@ fun AxesContent(
             item {
                 Children(stack = childStack) {
                     when (val child = it.instance) {
-                        is AxesComponent.Child.AxisLinesChild -> AxisLineContent(component = child.component, modifier = Modifier.fillMaxSize())
+                        is AxesComponent.Child.AxisLinesChild ->
+                            AxisLineContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is AxesComponent.Child.GuidelinesChild ->
                             GuidelinesContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is AxesComponent.Child.LabelsChild -> TODO()
