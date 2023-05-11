@@ -17,7 +17,6 @@ import com.joshrose.common.ui.axes.axisline.AxisLineContent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.ImageResources.*
-import com.joshrose.common.util.MPIcon
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.common.util.createPainter
 import com.joshrose.common.util.paddingBottomBar
@@ -107,21 +106,21 @@ fun AxesContent(
                 BottomBarItems(
                     label = "Visibility",
                     selected = activeComponent is AxesComponent.Child.VisibilityChild,
-                    icon = { MPIcon(painter = createPainter(VISIBILITY), contentDescription = "Visibility Options") },
+                    icon = { Icon(painter = createPainter(VISIBILITY), contentDescription = "Visibility Options") },
                     onClick = component::onVisibilityTabClicked
                 )
 
                 BottomBarItems(
                     label = "Guidelines",
                     selected = activeComponent is AxesComponent.Child.GuidelinesChild,
-                    icon = { MPIcon(painter = createPainter(GUIDELINES), contentDescription = "Guidelines") },
+                    icon = { Icon(painter = createPainter(GUIDELINES), contentDescription = "Guidelines") },
                     onClick = component::onGuidelinesTabClicked
                 )
 
                 BottomBarItems(
                     label = "Axis Lines",
                     selected = activeComponent is AxesComponent.Child.AxisLinesChild,
-                    icon = { MPIcon(painter = createPainter(AXIS_LINES), contentDescription = "Axis Lines") },
+                    icon = { Icon(painter = createPainter(AXIS_LINES), contentDescription = "Axis Lines") },
                     onClick = component::onAxisLinesTabClicked
                 )
             }
