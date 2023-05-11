@@ -12,13 +12,13 @@ class GuidelinesModelImpl(initialState: GuidelinesStates): InstanceKeeper.Instan
 
     override fun incStrokeWidth() {
         scope.launch {
-            guidelinesState.update { it.copy(strokeWidth = it.strokeWidth.plus(1f)) }
+            guidelinesState.update { it.copy(strokeWidth = it.strokeWidth.inc()) }
         }
     }
 
     override fun decStrokeWidth() {
         scope.launch {
-            guidelinesState.update { it.copy(strokeWidth = it.strokeWidth.minus(1f)) }
+            guidelinesState.update { it.copy(strokeWidth = it.strokeWidth.dec()) }
         }
     }
 

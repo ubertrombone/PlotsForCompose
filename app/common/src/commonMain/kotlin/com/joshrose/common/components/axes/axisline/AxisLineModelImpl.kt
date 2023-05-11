@@ -25,13 +25,13 @@ class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, 
 
     override fun incStrokeWidth() {
         scope.launch {
-            axisLineState.update { it.copy(strokeWidth = it.strokeWidth.plus(1f)) }
+            axisLineState.update { it.copy(strokeWidth = it.strokeWidth.inc()) }
         }
     }
 
     override fun decStrokeWidth() {
         scope.launch {
-            axisLineState.update { it.copy(strokeWidth = it.strokeWidth.minus(1f)) }
+            axisLineState.update { it.copy(strokeWidth = it.strokeWidth.dec()) }
         }
     }
 
