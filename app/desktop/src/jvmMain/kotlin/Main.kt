@@ -83,8 +83,6 @@ fun main() {
     }
 }
 
-// TODO: Style this!
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun SaveStateDialog(
