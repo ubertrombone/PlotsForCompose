@@ -21,7 +21,7 @@ fun ChildCard(
     Card(
         onClick = onClick,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
         modifier = modifier.fillMaxWidth().padding(16.dp)
     ) {
         Row(
