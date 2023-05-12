@@ -12,8 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.ui.axes.Alpha
-import com.joshrose.common.ui.axes.StrokeWidth
+import com.joshrose.common.util.ShortClickButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.Orientation
@@ -53,16 +52,22 @@ fun AxisLineCard(
 
             Spacer(Modifier.height(10.dp))
 
-            StrokeWidth(
-                width = strokeWidth,
+            ShortClickButton(
+                label = "Stroke Width",
+                value = strokeWidth,
+                upperLimit = 5f,
+                lowerLimit = 1f,
                 incClick = incStrokeWidthClick,
                 decClick = decStrokeWidthClick
             )
 
             Spacer(Modifier.height(10.dp))
 
-            Alpha(
-                alpha = alpha,
+            ShortClickButton(
+                label = "Alpha",
+                value = alpha,
+                upperLimit = .9f,
+                lowerLimit = .1f,
                 incClick = incAlphaClick,
                 decClick = decAlphaClick
             )

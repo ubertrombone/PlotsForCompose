@@ -91,10 +91,10 @@ fun LabelsCard(
             Spacer(Modifier.height(10.dp))
 
             ShortClickButton(
-                label = "Range\nAdjustment",
+                label = "Range Adj",
                 value = rangeAdjustment,
                 upperLimit = .9f,
-                lowerLimit = 0f,
+                lowerLimit = .1f,
                 incClick = incRangeAdjClick,
                 decClick = decRangeAdjClick
             )
@@ -102,10 +102,10 @@ fun LabelsCard(
             Spacer(Modifier.height(10.dp))
 
             ShortClickButton(
-                label = "Max\nAdjustment",
+                label = "Max Adj",
                 value = maxAdjustment,
                 upperLimit = .9f,
-                lowerLimit = 0f,
+                lowerLimit = .1f,
                 incClick = incMaxAdjClick,
                 decClick = decMaxAdjClick
             )
@@ -113,10 +113,10 @@ fun LabelsCard(
             Spacer(Modifier.height(10.dp))
 
             ShortClickButton(
-                label = "Min\nAdjustment",
+                label = "Min Adj",
                 value = minAdjustment,
                 upperLimit = .9f,
-                lowerLimit = 0f,
+                lowerLimit = .1f,
                 incClick = incMinAdjClick,
                 decClick = decMinAdjClick
             )

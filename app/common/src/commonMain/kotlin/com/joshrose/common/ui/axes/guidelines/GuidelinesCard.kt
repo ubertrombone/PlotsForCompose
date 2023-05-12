@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.ui.axes.Alpha
-import com.joshrose.common.ui.axes.StrokeWidth
+import com.joshrose.common.util.RepeatableButton
+import com.joshrose.common.util.ShortClickButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Suppress("DuplicatedCode")
@@ -49,24 +49,33 @@ fun GuidelinesCard(
 
             Spacer(Modifier.height(10.dp))
 
-            StrokeWidth(
-                width = strokeWidth,
+            ShortClickButton(
+                label = "Stroke Width",
+                value = strokeWidth,
+                upperLimit = 5f,
+                lowerLimit = 1f,
                 incClick = incStrokeWidthClick,
                 decClick = decStrokeWidthClick
             )
 
             Spacer(Modifier.height(10.dp))
 
-            Alpha(
-                alpha = alpha,
+            ShortClickButton(
+                label = "Alpha",
+                value = alpha,
+                upperLimit = .9f,
+                lowerLimit = .1f,
                 incClick = incAlphaClick,
                 decClick = decAlphaClick
             )
 
             Spacer(Modifier.height(10.dp))
 
-            Padding(
-                padding = padding,
+            RepeatableButton(
+                label = "Padding",
+                value = padding,
+                upperLimit = 100f,
+                lowerLimit = 0f,
                 incClick = incPaddingClick,
                 decClick = decPaddingClick
             )
