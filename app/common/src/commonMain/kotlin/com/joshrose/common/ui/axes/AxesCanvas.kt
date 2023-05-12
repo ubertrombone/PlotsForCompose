@@ -32,8 +32,10 @@ fun AxesCanvas(
 ) {
     val dataValues by component.dataValueStates.subscribeAsState()
     val loading by component.loadingState.subscribeAsState()
+    val xLabelState by component.xLabelsState.subscribeAsState()
+    val yLabelState by component.yLabelsState.subscribeAsState()
 
-    LaunchedEffect(dataValues.data) {
+    LaunchedEffect(dataValues.data, xLabelState, yLabelState) {
         component.calculateData(
             xConfig = xConfig.labels,
             yConfig = yConfig.labels
