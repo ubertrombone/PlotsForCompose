@@ -32,7 +32,6 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Fix desktop scrollbar?
     // TODO: Add a reset function when doing the above
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
@@ -141,9 +140,11 @@ fun AxesContent(
             }
         }
     ) { padding ->
-        ScrollLazyColumn(modifier = Modifier
-            .fillMaxSize()
-            .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
+        ScrollLazyColumn(
+            paddingValues = padding,
+            modifier = Modifier
+                .fillMaxSize()
+                .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
         ) {
             item {
                 AxesCanvas(

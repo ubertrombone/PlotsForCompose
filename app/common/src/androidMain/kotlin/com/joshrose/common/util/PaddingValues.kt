@@ -10,9 +10,5 @@ actual fun Modifier.paddingBottomBar(
     top: Dp,
     start: Dp,
     end: Dp,
-): Modifier = this.padding(
-    start = start,
-    end = end,
-    top = top,
-    bottom = paddingValues.calculateBottomPadding().div(2f)
-)
+    bottom: Dp
+): Modifier = this.padding(paddingValues).padding(top = top, start = start, end = end, bottom = bottom)

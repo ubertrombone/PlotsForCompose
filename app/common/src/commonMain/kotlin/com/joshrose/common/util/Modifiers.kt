@@ -43,4 +43,5 @@ expect fun Modifier.paddingBottomBar(
     top: Dp = 0.dp,
     start: Dp = 0.dp,
     end: Dp = 0.dp,
+    bottom: Dp = 0.dp
 ): Modifier
