@@ -12,13 +12,13 @@ class LabelsModelImpl(initialState: LabelsStates): InstanceKeeper.Instance, Labe
 
     override fun incRotation() {
         scope.launch {
-            labelsState.update { it.copy(rotation = it.rotation.inc()) }
+            labelsState.update { it.copy(rotation = it.rotation.plus(5f)) }
         }
     }
 
     override fun decRotation() {
         scope.launch {
-            labelsState.update { it.copy(rotation = it.rotation.dec()) }
+            labelsState.update { it.copy(rotation = it.rotation.minus(5f)) }
         }
     }
 

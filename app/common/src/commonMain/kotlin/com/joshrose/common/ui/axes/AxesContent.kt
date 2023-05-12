@@ -15,6 +15,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.ui.axes.axisline.AxisLineContent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
+import com.joshrose.common.ui.axes.labels.LabelsContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.ImageResources.*
 import com.joshrose.common.util.ScrollLazyColumn
@@ -130,6 +131,13 @@ fun AxesContent(
                     icon = { Icon(painter = createPainter(AXIS_LINES), contentDescription = "Axis Lines") },
                     onClick = component::onAxisLinesTabClicked
                 )
+
+                BottomBarItems(
+                    label = "Labels",
+                    selected = activeComponent is AxesComponent.Child.LabelsChild,
+                    icon = { Icon(painter = createPainter(LABELS), contentDescription = "Labels") },
+                    onClick = component::onLabelsTabClicked
+                )
             }
         }
     ) { padding ->
@@ -155,7 +163,8 @@ fun AxesContent(
                             AxisLineContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is AxesComponent.Child.GuidelinesChild ->
                             GuidelinesContent(component = child.component, modifier = Modifier.fillMaxSize())
-                        is AxesComponent.Child.LabelsChild -> TODO()
+                        is AxesComponent.Child.LabelsChild ->
+                            LabelsContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is AxesComponent.Child.VisibilityChild ->
                             VisibilityContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
