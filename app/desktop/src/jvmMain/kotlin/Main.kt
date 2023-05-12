@@ -1,11 +1,18 @@
+
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -63,20 +70,21 @@ fun main() {
                 dynamicColor = false
             ) {
                 PlotsForComposeApp(root)
-            }
 
-            if (isCloseRequested) {
-                SaveStateDialog(
-                    onSaveState = { saveStateToFile(stateKeeper.save()) },
-                    onExitApplication = ::exitApplication,
-                    onDismiss = { isCloseRequested = false },
-                )
+                if (isCloseRequested) {
+                    SaveStateDialog(
+                        onSaveState = { saveStateToFile(stateKeeper.save()) },
+                        onExitApplication = ::exitApplication,
+                        onDismiss = { isCloseRequested = false },
+                    )
+                }
             }
         }
     }
 }
 
 // TODO: Style this!
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun SaveStateDialog(
@@ -86,17 +94,19 @@ private fun SaveStateDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        buttons = {
+        title = { Text(text = "Plots for Compose Sample", style = typography.headlineMedium, fontWeight = FontWeight.Bold) },
+        text = { Text(text = "Do you want to save the application's state?") },
+        buttons ={
             Row(
                 modifier = Modifier.fillMaxWidth().padding(8.dp),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.End
             ) {
                 TextButton(onClick = onDismiss) {
-                    Text(text = "Cancel")
+                    Text(text = "Cancel", color = colorScheme.primary)
                 }
 
                 TextButton(onClick = onExitApplication) {
-                    Text(text = "No")
+                    Text(text = "No", color = colorScheme.primary)
                 }
 
                 TextButton(
@@ -105,13 +115,12 @@ private fun SaveStateDialog(
                         onExitApplication()
                     }
                 ) {
-                    Text(text = "Yes")
+                    Text(text = "Yes", color = colorScheme.primary)
                 }
             }
         },
-        title = { Text(text = "Plots for Compose Sample") },
-        text = { Text(text = "Do you want to save the application's state?") },
-        modifier = Modifier.width(400.dp),
+        backgroundColor = colorScheme.primaryContainer,
+        contentColor = colorScheme.primary
     )
 }
 
