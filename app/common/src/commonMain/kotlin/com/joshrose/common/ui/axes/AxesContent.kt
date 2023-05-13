@@ -34,7 +34,6 @@ fun AxesContent(
     component: AxesComponent,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Add a reset function when doing the above
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
 
