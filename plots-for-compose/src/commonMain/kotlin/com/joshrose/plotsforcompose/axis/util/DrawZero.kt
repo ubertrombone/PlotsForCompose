@@ -7,9 +7,10 @@ import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.BOTTOM
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.TOP
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.END
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.*
 
 @OptIn(ExperimentalTextApi::class)
 fun DrawScope.drawZero(
@@ -26,8 +27,16 @@ fun DrawScope.drawZero(
         labelConfig = labelConfig
     )
 
-    val x = if (yAxisPosition == END) size.width else 0f
-    val y = if (xAxisPosition == TOP) 0f else size.height
+    val x = when (yAxisPosition) {
+        END -> size.width
+        START -> 0f
+        CENTER -> size.width.div(2f)
+    }
+    val y = when (xAxisPosition) {
+        TOP -> 0f
+        BOTTOM -> size.height
+        XAxisPosition.CENTER -> size.height.div(2f)
+    }
 
     // Use yAxisOffset because this is the offset from the yAxis to the label.
     val xOffset =

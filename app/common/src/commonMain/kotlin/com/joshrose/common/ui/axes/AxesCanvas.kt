@@ -16,6 +16,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toYAxisPosi
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.END
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.START
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.drawZero
 import com.joshrose.plotsforcompose.axis.util.floatLabels
@@ -68,8 +69,8 @@ fun AxesCanvas(
             )
         } catch (e: InvalidRangeException) {
             component.updateData(
-                xList = List(2) { (-10_000..10_000).random().toFloat() },
-                yList = List(2) { (-10_000..10_000).random().toFloat() }
+                xList = List(2) { (-100..100).random().toFloat() },
+                yList = List(2) { (-100..100).random().toFloat() }
             )
         }
 
@@ -81,8 +82,8 @@ fun AxesCanvas(
             )
         } catch (e: InvalidRangeException) {
             component.updateData(
-                xList = List(2) { (-10_000..10_000).random().toFloat() },
-                yList = List(2) { (-10_000..10_000).random().toFloat() }
+                xList = List(2) { (-100..100).random().toFloat() },
+                yList = List(2) { (-100..100).random().toFloat() }
             )
         }
 
@@ -95,11 +96,22 @@ fun AxesCanvas(
         val yAxisPosition = yConfig.axisLine.axisPosition?.toYAxisPosition() ?: when {
             xMax <= 0 -> END
             xMin < 0 -> YAxisPosition.CENTER
-            else -> YAxisPosition.START
+            else -> START
         }
 
         Canvas(modifier = modifier) {
             if ((xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f)) {
+                drawZero(
+                    xAxisPosition = xAxisPosition,
+                    yAxisPosition = yAxisPosition,
+                    xAxisOffset = yConfig.labels.axisOffset.toPx(),
+                    yAxisOffset = xConfig.labels.axisOffset.toPx(),
+                    textMeasurer = zeroTextMeasurer,
+                    labelConfig = yConfig.labels
+                )
+            }
+
+            if (xAxisPosition == CENTER && yAxisPosition == YAxisPosition.CENTER) {
                 drawZero(
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,

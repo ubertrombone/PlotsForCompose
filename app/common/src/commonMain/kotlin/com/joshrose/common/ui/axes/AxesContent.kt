@@ -175,8 +175,8 @@ fun AxesContent(
                 Button(
                     onClick = {
                         component.updateData(
-                            xList = List(2) { (-10_000..10_000).random().toFloat() },
-                            yList = List(2) { (-10_000..10_000).random().toFloat() }
+                            xList = List(2) { (-100..100).random().toFloat() },
+                            yList = List(2) { (-100..100).random().toFloat() }
                         )
                     },
                     colors = ButtonDefaults.buttonColors(
