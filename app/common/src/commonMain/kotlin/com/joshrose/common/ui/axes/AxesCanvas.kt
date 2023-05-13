@@ -130,7 +130,7 @@ fun AxesCanvas(
                     xAxisPosition = xAxisPosition,
                     yRangeValues = Range(min = yMin, max = yMax),
                     yAxisPosition = yAxisPosition,
-                    drawYAxis = yConfig.showAxis,
+                    drawYAxis = yConfig.showAxis && yConfig.showAxisLine,
                     range = xRange,
                     textMeasurer = xTextMeasurer
                 )
@@ -144,7 +144,7 @@ fun AxesCanvas(
                     yAxisPosition = yAxisPosition,
                     xRangeValues = Range(min = xMin, max = xMax),
                     xAxisPosition = xAxisPosition,
-                    drawXAxis = xConfig.showAxis,
+                    drawXAxis = xConfig.showAxis && xConfig.showAxisLine,
                     range = yRange,
                     textMeasurer = yTextMeasurer
                 )

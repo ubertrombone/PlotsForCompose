@@ -30,9 +30,6 @@ fun DrawScope.continuousYAxis(
     textMeasurer: TextMeasurer
 ) {
     labels.reversed().forEachIndexed { index, label ->
-        if (xAxisPosition == XAxisPosition.CENTER && yAxisPosition == YAxisPosition.CENTER && label == 0f) return@forEachIndexed
-        if ((xRangeValues.min == 0f || xRangeValues.max == 0f) && label == 0f) return@forEachIndexed
-
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
         val y = getY(
@@ -51,17 +48,6 @@ fun DrawScope.continuousYAxis(
             YAxisPosition.CENTER -> size.width.div(2f)
         }
 
-        if (config.showLabels) {
-            drawYFloatLabel(
-                y = y,
-                x = x,
-                label = label,
-                textMeasurer = textMeasurer,
-                labelConfig = config.labels,
-                yAxisPosition = yAxisPosition
-            )
-        }
-
         val xAxisPositionYValue = if (drawXAxis) {
             when (xAxisPosition) {
                 XAxisPosition.BOTTOM -> size.height
@@ -70,10 +56,32 @@ fun DrawScope.continuousYAxis(
             }
         } else null
 
-        if (config.showGuidelines && xAxisPositionYValue != y) {
-            drawYGuideline(
-                guidelineConfig = config.guidelines,
+        if (config.showGuidelines) {
+            if (drawXAxis && xAxisPositionYValue != y) {
+                drawYGuideline(
+                    guidelineConfig = config.guidelines,
+                    y = y,
+                    yAxisPosition = yAxisPosition
+                )
+            } else {
+                drawYGuideline(
+                    guidelineConfig = config.guidelines,
+                    y = y,
+                    yAxisPosition = yAxisPosition
+                )
+            }
+        }
+
+        if (xAxisPosition == XAxisPosition.CENTER && yAxisPosition == YAxisPosition.CENTER && label == 0f) return@forEachIndexed
+        if ((xRangeValues.min == 0f || xRangeValues.max == 0f) && label == 0f) return@forEachIndexed
+
+        if (config.showLabels) {
+            drawYFloatLabel(
                 y = y,
+                x = x,
+                label = label,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels,
                 yAxisPosition = yAxisPosition
             )
         }

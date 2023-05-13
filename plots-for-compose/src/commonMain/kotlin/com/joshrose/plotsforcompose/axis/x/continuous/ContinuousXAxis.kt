@@ -29,9 +29,6 @@ fun DrawScope.continuousXAxis(
     textMeasurer: TextMeasurer
 ) {
     labels.forEachIndexed { index, label ->
-        if (yAxisPosition == YAxisPosition.CENTER && xAxisPosition == XAxisPosition.CENTER && label == 0f) return@forEachIndexed
-        if ((yRangeValues.min == 0f || yRangeValues.max == 0f) && label == 0f) return@forEachIndexed
-
         val x = getX(
             width = size.width,
             xMax = xRangeValues.max,
@@ -48,17 +45,6 @@ fun DrawScope.continuousXAxis(
             XAxisPosition.CENTER -> size.height.div(2f)
         }
 
-        if (config.showLabels) {
-            drawXFloatLabel(
-                y = y,
-                x = x,
-                label = label,
-                xAxisPosition = xAxisPosition,
-                textMeasurer = textMeasurer,
-                labelConfig = config.labels
-            )
-        }
-
         val yAxisPositionXValue = if (drawYAxis) {
             when (yAxisPosition) {
                 YAxisPosition.START -> 0f
@@ -67,11 +53,33 @@ fun DrawScope.continuousXAxis(
             }
         } else null
 
-        if (config.showGuidelines && yAxisPositionXValue != x) {
-            drawXGuideline(
-                guidelineConfig = config.guidelines,
+        if (config.showGuidelines) {
+            if (drawYAxis && yAxisPositionXValue != x) {
+                drawXGuideline(
+                    guidelineConfig = config.guidelines,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            } else {
+                drawXGuideline(
+                    guidelineConfig = config.guidelines,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            }
+        }
+
+        if (yAxisPosition == YAxisPosition.CENTER && xAxisPosition == XAxisPosition.CENTER && label == 0f) return@forEachIndexed
+        if ((yRangeValues.min == 0f || yRangeValues.max == 0f) && label == 0f) return@forEachIndexed
+
+        if (config.showLabels) {
+            drawXFloatLabel(
+                y = y,
                 x = x,
-                xAxisPosition = xAxisPosition
+                label = label,
+                xAxisPosition = xAxisPosition,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels
             )
         }
 
