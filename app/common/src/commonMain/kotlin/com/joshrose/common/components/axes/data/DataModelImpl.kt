@@ -6,15 +6,18 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlin.math.abs
 
 class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, DataModel {
     override val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     override val dataValueStates: MutableValue<DataValueStates> = MutableValue(initialState)
+
+    override fun updateData(xList: List<Float>, yList: List<Float>) {
+        scope.launch {
+            dataValueStates.update { it.copy(data = listOf(xList, yList)) }
+        }
+    }
 
     override fun maxValues(
         yMaxValue: Float,

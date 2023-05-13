@@ -3,9 +3,7 @@ package com.joshrose.common.ui.axes
 import androidx.compose.foundation.Canvas
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -21,7 +19,9 @@ import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
+import com.joshrose.plotsforcompose.exception.InvalidRangeException
 
+@Suppress("DuplicatedCode")
 @ExperimentalTextApi
 @Composable
 fun AxesCanvas(
@@ -54,18 +54,34 @@ fun AxesCanvas(
         val xRange = dataValues.xRange ?: 100f
         val yRange = dataValues.yRange ?: 100f
 
-        // TODO: Test what happens when min and max are equal -- Nothing -- prevent this!
-        val xLabels = floatLabels(
-            breaks = xConfig.labels.breaks,
-            minValue = xMin,
-            maxValue = xMax
-        )
+        var xLabels by remember { mutableStateOf(listOf(0f, 100f)) }
+        var yLabels by remember { mutableStateOf(listOf(0f, 100f)) }
 
-        val yLabels = floatLabels(
-            breaks = yConfig.labels.breaks,
-            minValue = yMin,
-            maxValue = yMax
-        )
+        try {
+            xLabels = floatLabels(
+                breaks = xConfig.labels.breaks,
+                minValue = xMin,
+                maxValue = xMax
+            )
+        } catch (e: InvalidRangeException) {
+            component.updateData(
+                xList = List(2) { (-10_000..10_000).random().toFloat() },
+                yList = List(2) { (-10_000..10_000).random().toFloat() }
+            )
+        }
+
+        try {
+            yLabels = floatLabels(
+                breaks = yConfig.labels.breaks,
+                minValue = yMin,
+                maxValue = yMax
+            )
+        } catch (e: InvalidRangeException) {
+            component.updateData(
+                xList = List(2) { (-10_000..10_000).random().toFloat() },
+                yList = List(2) { (-10_000..10_000).random().toFloat() }
+            )
+        }
 
         val xAxisPosition = xConfig.axisLine.axisPosition?.toXAxisPosition() ?: when {
             yMax <= 0 -> XAxisPosition.TOP
