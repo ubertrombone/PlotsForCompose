@@ -29,8 +29,6 @@ fun DrawScope.continuousYAxis(
     range: Float,
     textMeasurer: TextMeasurer
 ) {
-    if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
-
     labels.reversed().forEachIndexed { index, label ->
         if (xAxisPosition == XAxisPosition.CENTER && yAxisPosition == YAxisPosition.CENTER && label == 0f) return@forEachIndexed
         if ((xRangeValues.min == 0f || xRangeValues.max == 0f) && label == 0f) return@forEachIndexed

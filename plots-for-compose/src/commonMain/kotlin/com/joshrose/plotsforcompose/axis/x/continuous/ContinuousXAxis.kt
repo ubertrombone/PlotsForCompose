@@ -28,8 +28,6 @@ fun DrawScope.continuousXAxis(
     range: Float,
     textMeasurer: TextMeasurer
 ) {
-    if (!config.showAxisLine && !config.showGuidelines && !config.showLabels) return
-
     labels.forEachIndexed { index, label ->
         if (yAxisPosition == YAxisPosition.CENTER && xAxisPosition == XAxisPosition.CENTER && label == 0f) return@forEachIndexed
         if ((yRangeValues.min == 0f || yRangeValues.max == 0f) && label == 0f) return@forEachIndexed
