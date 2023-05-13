@@ -16,6 +16,7 @@ fun AlignmentButton(
     icon: Painter,
     contentDescription: String?,
     axisPosition: AxisPosition?,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier,
     onClick: (AxisPosition?) -> Unit,
 ) {
@@ -26,6 +27,7 @@ fun AlignmentButton(
     }
     IconButton(
         modifier = modifier,
+        enabled = enabled,
         colors = IconButtonDefaults.iconButtonColors(contentColor = contentColor),
         onClick = { onClick(axisPosition) }
     ) {

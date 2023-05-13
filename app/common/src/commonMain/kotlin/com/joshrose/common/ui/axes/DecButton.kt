@@ -13,12 +13,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun DecButton(
-    value: Float,
-    limit: Float,
+    enabled: Boolean = true,
     contentDescription: String?,
     modifier: Modifier = Modifier
 ) {
-    val enabled = value > limit
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowDown,
         contentDescription = contentDescription,

@@ -23,6 +23,7 @@ fun RepeatableButton(
     lowerLimit: Float,
     incClick: () -> Unit,
     decClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -43,15 +44,15 @@ fun RepeatableButton(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val incEnabled = value < upperLimit && enabled
             IncButton(
-                value = value,
-                limit = upperLimit,
+                enabled = incEnabled,
                 contentDescription = "Increase $label",
                 modifier = Modifier
                     .clip(CircleShape)
                     .repeatingClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        enabled = value < upperLimit,
+                        enabled = incEnabled,
                         onClick = incClick
                     )
             )
@@ -66,15 +67,15 @@ fun RepeatableButton(
 
             Spacer(Modifier.width(10.dp))
 
+            val decEnabled = value > lowerLimit && enabled
             DecButton(
-                value = value,
-                limit = lowerLimit,
+                enabled = decEnabled,
                 contentDescription = "Decrease $label",
                 modifier = Modifier
                     .clip(CircleShape)
                     .repeatingClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        enabled = value > lowerLimit,
+                        enabled = decEnabled,
                         onClick = decClick
                     )
             )

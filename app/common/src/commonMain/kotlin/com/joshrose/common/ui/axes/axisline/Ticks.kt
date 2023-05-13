@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 fun Ticks(
     checked: Boolean,
     onClick: (Boolean) -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -36,6 +37,7 @@ fun Ticks(
         Switch(
             checked = checked,
             onCheckedChange = onClick,
+            enabled = enabled,
             thumbContent = if (checked) {
                 {
                     Icon(

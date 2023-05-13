@@ -16,6 +16,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.*
 @Composable
 fun XAxisAlignment(
     currentSelected: AxisPosition?,
+    enabled: Boolean = true,
     onClick: (AxisPosition?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -42,6 +43,7 @@ fun XAxisAlignment(
                 icon = createPainter(file = ALIGN_AUTO),
                 contentDescription = "Automatic Alignment",
                 axisPosition = null,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
 
@@ -50,6 +52,7 @@ fun XAxisAlignment(
                 icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
                 contentDescription = "Align center",
                 axisPosition = CENTER,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
         }
@@ -64,6 +67,7 @@ fun XAxisAlignment(
                 icon = createPainter(file = ALIGN_TOP),
                 contentDescription = "Align top",
                 axisPosition = TOP,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
 
@@ -72,6 +76,7 @@ fun XAxisAlignment(
                 icon = createPainter(file = ALIGN_BOTTOM),
                 contentDescription = "Align bottom",
                 axisPosition = BOTTOM,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
         }

@@ -13,12 +13,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun IncButton(
-    value: Float,
-    limit: Float,
+    enabled: Boolean = true,
     contentDescription: String?,
     modifier: Modifier = Modifier
 ) {
-    val enabled = value < limit
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowUp,
         contentDescription = contentDescription,

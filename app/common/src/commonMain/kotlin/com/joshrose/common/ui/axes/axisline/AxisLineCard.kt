@@ -26,6 +26,7 @@ fun AxisLineCard(
     checked: Boolean,
     orientation: Orientation,
     axisPosition: AxisPosition?,
+    enabled: Boolean = true,
     incAlphaClick: () -> Unit,
     decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
@@ -58,7 +59,8 @@ fun AxisLineCard(
                 upperLimit = 5f,
                 lowerLimit = 1f,
                 incClick = incStrokeWidthClick,
-                decClick = decStrokeWidthClick
+                decClick = decStrokeWidthClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -69,21 +71,31 @@ fun AxisLineCard(
                 upperLimit = .9f,
                 lowerLimit = .1f,
                 incClick = incAlphaClick,
-                decClick = decAlphaClick
+                decClick = decAlphaClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
 
             Ticks(
                 checked = checked,
-                onClick = onCheckClick
+                onClick = onCheckClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
 
             when (orientation) {
-                Orientation.X -> XAxisAlignment(currentSelected = axisPosition, onClick = { onAlignmentClick(it) })
-                Orientation.Y -> YAxisAlignment(currentSelected = axisPosition, onClick = { onAlignmentClick(it) })
+                Orientation.X -> XAxisAlignment(
+                    currentSelected = axisPosition,
+                    enabled = enabled,
+                    onClick = { onAlignmentClick(it) }
+                )
+                Orientation.Y -> YAxisAlignment(
+                    currentSelected = axisPosition,
+                    enabled = enabled,
+                    onClick = { onAlignmentClick(it) }
+                )
             }
         }
     }

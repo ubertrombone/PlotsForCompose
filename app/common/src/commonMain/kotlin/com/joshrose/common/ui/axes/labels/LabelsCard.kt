@@ -23,8 +23,10 @@ fun LabelsCard(
     axisOffset: Float,
     breaks: Int,
     rangeAdjustment: Multiplier,
+    rangeEnabled: Boolean = true,
     maxAdjustment: Multiplier,
     minAdjustment: Multiplier,
+    enabled: Boolean = true,
     incRotationClick: () -> Unit,
     decRotationClick: () -> Unit,
     incAxisOffsetClick: () -> Unit,
@@ -63,7 +65,8 @@ fun LabelsCard(
                 upperLimit = 90f,
                 lowerLimit = -90f,
                 incClick = incRotationClick,
-                decClick = decRotationClick
+                decClick = decRotationClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -74,7 +77,8 @@ fun LabelsCard(
                 upperLimit = 50f,
                 lowerLimit = -50f,
                 incClick = incAxisOffsetClick,
-                decClick = decAxisOffsetClick
+                decClick = decAxisOffsetClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -85,7 +89,8 @@ fun LabelsCard(
                 upperLimit = 10,
                 lowerLimit = 2,
                 incClick = incBreaksClick,
-                decClick = decBreaksClick
+                decClick = decBreaksClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -96,7 +101,8 @@ fun LabelsCard(
                 upperLimit = .9f,
                 lowerLimit = .1f,
                 incClick = incRangeAdjClick,
-                decClick = decRangeAdjClick
+                decClick = decRangeAdjClick,
+                enabled = rangeEnabled && enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -107,7 +113,8 @@ fun LabelsCard(
                 upperLimit = .9f,
                 lowerLimit = .1f,
                 incClick = incMaxAdjClick,
-                decClick = decMaxAdjClick
+                decClick = decMaxAdjClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -118,7 +125,8 @@ fun LabelsCard(
                 upperLimit = .9f,
                 lowerLimit = .1f,
                 incClick = incMinAdjClick,
-                decClick = decMinAdjClick
+                decClick = decMinAdjClick,
+                enabled = enabled
             )
         }
     }

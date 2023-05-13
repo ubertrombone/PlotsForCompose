@@ -12,6 +12,8 @@ import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
 @Composable
 fun GuidelinesContent(
     component: GuidelinesComponent,
+    xEnabled: Boolean = true,
+    yEnabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val xGuidelinesStates by component.xGuidelinesStates.subscribeAsState()
@@ -27,6 +29,7 @@ fun GuidelinesContent(
             alpha = xGuidelinesStates.alpha,
             strokeWidth = xGuidelinesStates.strokeWidth,
             padding = xGuidelinesStates.padding,
+            enabled = xEnabled,
             incAlphaClick = component::incGuidelinesAlphaX,
             decAlphaClick = component::decGuidelinesAlphaX,
             incStrokeWidthClick = component::incGuidelinesStrokeWidthX,
@@ -43,6 +46,7 @@ fun GuidelinesContent(
             alpha = yGuidelinesStates.alpha,
             strokeWidth = yGuidelinesStates.strokeWidth,
             padding = yGuidelinesStates.padding,
+            enabled = yEnabled,
             incAlphaClick = component::incGuidelinesAlphaY,
             decAlphaClick = component::decGuidelinesAlphaY,
             incStrokeWidthClick = component::incGuidelinesStrokeWidthY,

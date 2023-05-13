@@ -24,6 +24,7 @@ fun ShortClickButton(
     lowerLimit: Float,
     incClick: () -> Unit,
     decClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -44,13 +45,13 @@ fun ShortClickButton(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val incEnabled = value < upperLimit && enabled
             IncButton(
-                value = value,
-                limit = upperLimit,
+                enabled = incEnabled,
                 contentDescription = "Increase $label",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = value < upperLimit, onClick = incClick)
+                    .clickable(enabled = incEnabled, onClick = incClick)
             )
 
             Spacer(Modifier.width(10.dp))
@@ -63,13 +64,13 @@ fun ShortClickButton(
 
             Spacer(Modifier.width(10.dp))
 
+            val decEnabled = value > lowerLimit && enabled
             DecButton(
-                value = value,
-                limit = lowerLimit,
+                enabled = decEnabled,
                 contentDescription = "Decrease $label",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = value > lowerLimit, onClick = decClick)
+                    .clickable(enabled = decEnabled, onClick = decClick)
             )
         }
     }
@@ -83,6 +84,7 @@ fun ShortClickButton(
     lowerLimit: Int,
     incClick: () -> Unit,
     decClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -103,13 +105,13 @@ fun ShortClickButton(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val incEnabled = value < upperLimit && enabled
             IncButton(
-                value = value.toFloat(),
-                limit = upperLimit.toFloat(),
+                enabled = incEnabled,
                 contentDescription = "Increase $label",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = value < upperLimit, onClick = incClick)
+                    .clickable(enabled = incEnabled, onClick = incClick)
             )
 
             Spacer(Modifier.width(10.dp))
@@ -122,13 +124,13 @@ fun ShortClickButton(
 
             Spacer(Modifier.width(10.dp))
 
+            val decEnabled = value > lowerLimit && enabled
             DecButton(
-                value = value.toFloat(),
-                limit = lowerLimit.toFloat(),
+                enabled = decEnabled,
                 contentDescription = "Decrease $label",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = value > lowerLimit, onClick = decClick)
+                    .clickable(enabled = decEnabled, onClick = decClick)
             )
         }
     }
@@ -142,6 +144,7 @@ fun ShortClickButton(
     lowerLimit: Float,
     incClick: () -> Unit,
     decClick: () -> Unit,
+    enabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -162,13 +165,13 @@ fun ShortClickButton(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            val incEnabled = value.factor < upperLimit && enabled
             IncButton(
-                value = value.factor,
-                limit = upperLimit,
+                enabled = incEnabled,
                 contentDescription = "Increase $label",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = value.factor < upperLimit, onClick = incClick)
+                    .clickable(enabled = incEnabled, onClick = incClick)
             )
 
             Spacer(Modifier.width(10.dp))
@@ -181,13 +184,13 @@ fun ShortClickButton(
 
             Spacer(Modifier.width(10.dp))
 
+            val decEnabled = value.factor > lowerLimit && enabled
             DecButton(
-                value = value.factor,
-                limit = lowerLimit,
+                enabled = decEnabled,
                 contentDescription = "Decrease $label",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .clickable(enabled = value.factor > lowerLimit, onClick = decClick)
+                    .clickable(enabled = decEnabled, onClick = decClick)
             )
         }
     }

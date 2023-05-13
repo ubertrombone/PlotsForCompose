@@ -37,6 +37,8 @@ fun AxesContent(
     val childStack by component.childStack.subscribeAsState()
     val activeComponent = childStack.active.instance
 
+    val xVisibilityStates by component.xVisibilityState.subscribeAsState()
+    val yVisibilityStates by component.yVisibilityState.subscribeAsState()
     val xAxisShowStates by component.xVisibilityState.subscribeAsState()
     val yAxisShowStates by component.yVisibilityState.subscribeAsState()
     val xGuidelinesStates by component.xGuidelinesState.subscribeAsState()
@@ -162,11 +164,27 @@ fun AxesContent(
                 Children(stack = childStack) {
                     when (val child = it.instance) {
                         is AxesComponent.Child.AxisLinesChild ->
-                            AxisLineContent(component = child.component, modifier = Modifier.fillMaxSize())
+                            AxisLineContent(
+                                component = child.component,
+                                xEnabled = !(!xVisibilityStates.showAxis || !xVisibilityStates.showAxisLine),
+                                yEnabled = !(!yVisibilityStates.showAxis || !yVisibilityStates.showAxisLine),
+                                modifier = Modifier.fillMaxSize()
+                            )
                         is AxesComponent.Child.GuidelinesChild ->
-                            GuidelinesContent(component = child.component, modifier = Modifier.fillMaxSize())
+                            GuidelinesContent(
+                                component = child.component,
+                                xEnabled = !(!xVisibilityStates.showAxis || !xVisibilityStates.showGuidelines),
+                                yEnabled = !(!yVisibilityStates.showAxis || !yVisibilityStates.showGuidelines),
+                                modifier = Modifier.fillMaxSize()
+                            )
                         is AxesComponent.Child.LabelsChild ->
-                            LabelsContent(component = child.component, modifier = Modifier.fillMaxSize())
+                            LabelsContent(
+                                component = child.component,
+                                data = component.dataValueStates,
+                                xEnabled = !(!xVisibilityStates.showAxis || !xVisibilityStates.showLabels),
+                                yEnabled = !(!yVisibilityStates.showAxis || !yVisibilityStates.showLabels),
+                                modifier = Modifier.fillMaxSize()
+                            )
                         is AxesComponent.Child.VisibilityChild ->
                             VisibilityContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }

@@ -23,6 +23,7 @@ fun GuidelinesCard(
     alpha: Multiplier,
     strokeWidth: Float,
     padding: Float,
+    enabled: Boolean = true,
     incAlphaClick: () -> Unit,
     decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
@@ -55,7 +56,8 @@ fun GuidelinesCard(
                 upperLimit = 5f,
                 lowerLimit = 1f,
                 incClick = incStrokeWidthClick,
-                decClick = decStrokeWidthClick
+                decClick = decStrokeWidthClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -66,7 +68,8 @@ fun GuidelinesCard(
                 upperLimit = .9f,
                 lowerLimit = .1f,
                 incClick = incAlphaClick,
-                decClick = decAlphaClick
+                decClick = decAlphaClick,
+                enabled = enabled
             )
 
             Spacer(Modifier.height(10.dp))
@@ -77,7 +80,8 @@ fun GuidelinesCard(
                 upperLimit = 100f,
                 lowerLimit = 0f,
                 incClick = incPaddingClick,
-                decClick = decPaddingClick
+                decClick = decPaddingClick,
+                enabled = enabled
             )
         }
     }

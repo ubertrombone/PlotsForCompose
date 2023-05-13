@@ -16,6 +16,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.*
 @Composable
 fun YAxisAlignment(
     currentSelected: AxisPosition?,
+    enabled: Boolean = true,
     onClick: (AxisPosition?) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -42,6 +43,7 @@ fun YAxisAlignment(
                 icon = createPainter(file = ALIGN_AUTO),
                 contentDescription = "Automatic Alignment",
                 axisPosition = null,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
 
@@ -50,6 +52,7 @@ fun YAxisAlignment(
                 icon = createPainter(file = ALIGN_CENTER_VERTICAL),
                 contentDescription = "Align center",
                 axisPosition = CENTER,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
         }
@@ -64,6 +67,7 @@ fun YAxisAlignment(
                 icon = createPainter(file = ALIGN_LEFT),
                 contentDescription = "Align start",
                 axisPosition = START,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
 
@@ -72,6 +76,7 @@ fun YAxisAlignment(
                 icon = createPainter(file = ALIGN_RIGHT),
                 contentDescription = "Align end",
                 axisPosition = END,
+                enabled = enabled,
                 onClick = { onClick(it) }
             )
         }

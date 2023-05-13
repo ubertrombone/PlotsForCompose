@@ -13,6 +13,8 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition
 @Composable
 fun AxisLineContent(
     component: AxisLineComponent,
+    xEnabled: Boolean = true,
+    yEnabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val xAxisLineStates by component.xAxisLineState.subscribeAsState()
@@ -30,6 +32,7 @@ fun AxisLineContent(
             checked = xAxisLineStates.ticks,
             orientation = AxisPosition.Companion.Orientation.X,
             axisPosition = xAxisLineStates.axisPosition,
+            enabled = xEnabled,
             incAlphaClick = component::incAlphaX,
             decAlphaClick = component::decAlphaX,
             incStrokeWidthClick = component::incStrokeWidthX,
@@ -48,6 +51,7 @@ fun AxisLineContent(
             checked = yAxisLineStates.ticks,
             orientation = AxisPosition.Companion.Orientation.Y,
             axisPosition = yAxisLineStates.axisPosition,
+            enabled = yEnabled,
             incAlphaClick = component::incAlphaY,
             decAlphaClick = component::decAlphaY,
             incStrokeWidthClick = component::incStrokeWidthY,
