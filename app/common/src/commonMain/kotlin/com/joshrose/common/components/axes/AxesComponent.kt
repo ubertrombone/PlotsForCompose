@@ -32,6 +32,7 @@ interface AxesComponent {
     fun onGuidelinesTabClicked()
     fun onAxisLinesTabClicked()
     fun onLabelsTabClicked()
+    fun resetAxis()
 
     sealed class Child {
         class VisibilityChild(val component: VisibilityComponent): Child()

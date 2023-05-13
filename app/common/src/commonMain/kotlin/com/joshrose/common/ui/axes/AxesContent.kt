@@ -5,8 +5,10 @@ package com.joshrose.common.ui.axes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
@@ -172,26 +174,42 @@ fun AxesContent(
                 }
             }
             item {
-                Button(
-                    onClick = {
-                        component.updateData(
-                            xList = List(2) { (-100..100).random().toFloat() },
-                            yList = List(2) { (-100..100).random().toFloat() }
-                        )
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = colorScheme.primaryContainer,
-                        contentColor = colorScheme.onPrimaryContainer
-                    ),
-                    modifier = Modifier.padding(top = 10.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(
-                        text = "Generate New Axes",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                }
+                    Button(
+                        onClick = {
+                            component.updateData(
+                                xList = List(2) { (-100..100).random().toFloat() },
+                                yList = List(2) { (-100..100).random().toFloat() }
+                            )
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorScheme.primaryContainer,
+                            contentColor = colorScheme.onPrimaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Generate New Axes",
+                            style = typography.bodyMedium
+                        )
+                    }
 
-                Spacer(Modifier.height(10.dp))
+                    Button(
+                        onClick = component::resetAxis,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorScheme.primaryContainer,
+                            contentColor = colorScheme.onPrimaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Reset",
+                            style = typography.bodyMedium
+                        )
+                    }
+                }
             }
         }
     }

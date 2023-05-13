@@ -82,6 +82,12 @@ class LabelsModelImpl(initialState: LabelsStates): InstanceKeeper.Instance, Labe
         }
     }
 
+    override fun resetLabels() {
+        scope.launch {
+            labelsState.update { LabelsStates() }
+        }
+    }
+
     override fun onDestroy() {
         scope.cancel()
     }

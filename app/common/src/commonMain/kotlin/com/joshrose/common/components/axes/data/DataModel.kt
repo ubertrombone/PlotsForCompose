@@ -32,4 +32,6 @@ interface DataModel {
         xConfig: ContinuousLabelsConfig,
         yConfig: ContinuousLabelsConfig
     )
+
+    fun resetData()
 }

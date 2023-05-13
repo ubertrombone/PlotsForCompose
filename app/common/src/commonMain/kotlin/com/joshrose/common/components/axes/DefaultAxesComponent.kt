@@ -169,6 +169,17 @@ class DefaultAxesComponent(
     override fun onGuidelinesTabClicked() { navigation.bringToFront(Config.Guidelines) }
     override fun onAxisLinesTabClicked() { navigation.bringToFront(Config.AxisLine) }
     override fun onLabelsTabClicked() { navigation.bringToFront(Config.Labels) }
+    override fun resetAxis() {
+        _dataValuesState.resetData()
+        _xVisibilityState.resetVisibility()
+        _yVisibilityState.resetVisibility()
+        _xGuidelinesState.resetGuidelines()
+        _yGuidelinesState.resetGuidelines()
+        _xAxisLineState.resetAxisLine()
+        _yAxisLineState.resetAxisLine()
+        _xLabelsState.resetLabels()
+        _yLabelsState.resetLabels()
+    }
 
     init {
         stateKeeper.register(KEY_DATA_VALUES) { _dataValuesState.dataValueStates.value }

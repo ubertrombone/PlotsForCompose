@@ -14,4 +14,5 @@ interface GuidelinesModel {
     fun decAlpha()
     fun incPadding()
     fun decPadding()
+    fun resetGuidelines()
 }

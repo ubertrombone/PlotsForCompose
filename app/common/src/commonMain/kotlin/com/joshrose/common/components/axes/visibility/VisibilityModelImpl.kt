@@ -16,6 +16,12 @@ class VisibilityModelImpl(initialState: VisibilityStates): InstanceKeeper.Instan
         }
     }
 
+    override fun resetVisibility() {
+        scope.launch {
+            visibilityState.update { VisibilityStates() }
+        }
+    }
+
     override fun showAxisLine() {
         scope.launch {
             visibilityState.update { it.copy(showAxisLine = !it.showAxisLine) }

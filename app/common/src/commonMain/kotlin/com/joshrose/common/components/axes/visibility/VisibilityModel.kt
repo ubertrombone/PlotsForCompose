@@ -12,4 +12,5 @@ interface VisibilityModel {
     fun showAxisLine()
     fun showGuidelines()
     fun showLabels()
+    fun resetVisibility()
 }

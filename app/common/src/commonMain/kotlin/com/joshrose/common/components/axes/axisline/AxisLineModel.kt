@@ -15,4 +15,5 @@ interface AxisLineModel {
     fun decStrokeWidth()
     fun updateShowTicks(checked: Boolean)
     fun updateAxisPosition(position: AxisPosition?)
+    fun resetAxisLine()
 }

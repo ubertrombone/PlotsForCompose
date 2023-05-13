@@ -93,6 +93,12 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
         ranges(yRangeAdjustment = yConfig.rangeAdjustment, xRangeAdjustment = xConfig.rangeAdjustment)
     }
 
+    override fun resetData() {
+        scope.launch {
+            dataValueStates.update { DataValueStates() }
+        }
+    }
+
     override fun onDestroy() {
         scope.cancel()
     }

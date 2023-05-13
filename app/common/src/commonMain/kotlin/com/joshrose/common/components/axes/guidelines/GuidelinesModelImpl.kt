@@ -46,6 +46,12 @@ class GuidelinesModelImpl(initialState: GuidelinesStates): InstanceKeeper.Instan
         }
     }
 
+    override fun resetGuidelines() {
+        scope.launch {
+            guidelinesState.update { GuidelinesStates() }
+        }
+    }
+
     override fun onDestroy() {
         scope.cancel()
     }

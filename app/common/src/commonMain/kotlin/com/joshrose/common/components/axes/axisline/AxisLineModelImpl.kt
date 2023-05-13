@@ -47,6 +47,12 @@ class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, 
         }
     }
 
+    override fun resetAxisLine() {
+        scope.launch {
+            axisLineState.update { AxisLineStates() }
+        }
+    }
+
     override fun onDestroy() {
         scope.cancel()
     }
