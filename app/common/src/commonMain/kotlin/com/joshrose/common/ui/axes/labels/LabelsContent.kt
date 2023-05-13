@@ -30,7 +30,7 @@ fun LabelsContent(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         LabelsCard(
-            label = "X Labels",
+            label = "X Axis Labels",
             rotation = xLabelsStates.rotation,
             axisOffset = xLabelsStates.axisOffset,
             breaks = xLabelsStates.breaks,
@@ -59,13 +59,13 @@ fun LabelsContent(
                 .padding(10.dp)
         )
         LabelsCard(
-            label = "Y Labels",
+            label = "Y Axis Labels",
             rotation = yLabelsStates.rotation,
             axisOffset = yLabelsStates.axisOffset,
             breaks = yLabelsStates.breaks,
             rangeAdjustment =
                 if (allData.minYValue == 0f || allData.maxYValue == 0f) Multiplier(0f)
-                else xLabelsStates.rangeAdjustment,
+                else yLabelsStates.rangeAdjustment,
             rangeEnabled = allData.minYValue != 0f && allData.maxYValue != 0f,
             maxAdjustment = yLabelsStates.maxValueAdjustment,
             minAdjustment = yLabelsStates.minValueAdjustment,

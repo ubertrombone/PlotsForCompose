@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.DecButton
 import com.joshrose.common.ui.axes.IncButton
@@ -36,6 +37,7 @@ fun ShortClickButton(
             text = label,
             color = colorScheme.primary,
             fontSize = typography.titleMedium.fontSize,
+            textAlign = TextAlign.Center
         )
 
         Spacer(Modifier.height(5.dp))
@@ -96,6 +98,7 @@ fun ShortClickButton(
             text = label,
             color = colorScheme.primary,
             fontSize = typography.titleMedium.fontSize,
+            textAlign = TextAlign.Center
         )
 
         Spacer(Modifier.height(5.dp))
@@ -156,6 +159,7 @@ fun ShortClickButton(
             text = label,
             color = colorScheme.primary,
             fontSize = typography.titleMedium.fontSize,
+            textAlign = TextAlign.Center
         )
 
         Spacer(Modifier.height(5.dp))
