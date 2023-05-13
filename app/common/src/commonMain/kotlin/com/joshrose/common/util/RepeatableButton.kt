@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.ui.axes.DecButton
-import com.joshrose.common.ui.axes.IncButton
+import com.joshrose.common.ui.axes.RepeatableDecButton
+import com.joshrose.common.ui.axes.RepeatableIncButton
 
 @Composable
 fun RepeatableButton(
@@ -47,7 +47,7 @@ fun RepeatableButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val incEnabled = value < upperLimit && enabled
-            IncButton(
+            RepeatableIncButton(
                 enabled = incEnabled,
                 contentDescription = "Increase $label",
                 modifier = Modifier
@@ -70,7 +70,7 @@ fun RepeatableButton(
             Spacer(Modifier.width(10.dp))
 
             val decEnabled = value > lowerLimit && enabled
-            DecButton(
+            RepeatableDecButton(
                 enabled = decEnabled,
                 contentDescription = "Decrease $label",
                 modifier = Modifier
