@@ -45,7 +45,7 @@ class DefaultAxesComponent(
     }
     override val dataValueStates: Value<DataValueStates> = _dataValuesState.dataValueStates
 
-    private var _loadingState = instanceKeeper.getOrCreate(KEY_LOADING_STATE) {
+    private val _loadingState = instanceKeeper.getOrCreate(KEY_LOADING_STATE) {
         LoadingModelImp(
             initialState = stateKeeper.consume(KEY_LOADING_STATE) ?: Loading
         )

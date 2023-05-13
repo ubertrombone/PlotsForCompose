@@ -1,10 +1,21 @@
 package com.joshrose.plotsforcompose.axis.util
 
+import com.joshrose.plotsforcompose.exception.InvalidRangeException
+
+@Throws(InvalidRangeException::class)
 fun floatLabels(
     breaks: Int,
     minValue: Float,
     maxValue: Float
 ): List<Float> {
+    if (minValue == maxValue) throw InvalidRangeException(
+        """
+        minValue and maxValue cannot be equal.
+        - minValue: $minValue
+        - maxValue: $maxValue
+        """.trimIndent()
+    )
+
     // if finalMinValue is less than 0 and an even number, increase breaks by 1 to ensure the center break is 0
     val centeredBreaks = if (breaks.mod(2) == 0) breaks.plus(1) else breaks
 
