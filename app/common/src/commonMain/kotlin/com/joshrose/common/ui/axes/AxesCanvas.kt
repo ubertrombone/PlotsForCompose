@@ -100,7 +100,6 @@ fun AxesCanvas(
 
         Canvas(modifier = modifier) {
             if ((xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f)) {
-                println("TRUE")
                 drawZero(
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
