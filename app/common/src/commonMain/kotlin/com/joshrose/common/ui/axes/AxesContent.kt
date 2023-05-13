@@ -107,8 +107,6 @@ fun AxesContent(
             )
         )
 
-    // TODO: Force set axis min and max -- For later
-
     Scaffold(
         modifier = modifier,
         bottomBar = {
