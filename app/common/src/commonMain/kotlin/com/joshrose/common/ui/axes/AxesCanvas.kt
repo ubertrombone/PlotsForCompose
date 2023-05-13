@@ -13,9 +13,11 @@ import com.joshrose.common.components.axes.models.LoadingState
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toXAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toYAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.END
 import com.joshrose.plotsforcompose.axis.util.Range
+import com.joshrose.plotsforcompose.axis.util.drawZero
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
@@ -44,6 +46,7 @@ fun AxesCanvas(
 
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
+    val zeroTextMeasurer = rememberTextMeasurer()
 
     if (loading == LoadingState.Loading) CircularProgressIndicator(color = colorScheme.primary)
     else {
@@ -84,18 +87,30 @@ fun AxesCanvas(
         }
 
         val xAxisPosition = xConfig.axisLine.axisPosition?.toXAxisPosition() ?: when {
-            yMax <= 0 -> XAxisPosition.TOP
-            yMin < 0 -> XAxisPosition.CENTER
-            else -> XAxisPosition.BOTTOM
+            yMax <= 0 -> TOP
+            yMin < 0 -> CENTER
+            else -> BOTTOM
         }
 
         val yAxisPosition = yConfig.axisLine.axisPosition?.toYAxisPosition() ?: when {
-            xMax <= 0 -> YAxisPosition.END
+            xMax <= 0 -> END
             xMin < 0 -> YAxisPosition.CENTER
             else -> YAxisPosition.START
         }
 
         Canvas(modifier = modifier) {
+            if ((xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f)) {
+                println("TRUE")
+                drawZero(
+                    xAxisPosition = xAxisPosition,
+                    yAxisPosition = yAxisPosition,
+                    xAxisOffset = yConfig.labels.axisOffset.toPx(),
+                    yAxisOffset = xConfig.labels.axisOffset.toPx(),
+                    textMeasurer = zeroTextMeasurer,
+                    labelConfig = yConfig.labels
+                )
+            }
+
             if (xConfig.showAxis) {
                 continuousXAxis(
                     config = xConfig,

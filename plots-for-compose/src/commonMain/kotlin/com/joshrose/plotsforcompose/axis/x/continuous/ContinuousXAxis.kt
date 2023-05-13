@@ -32,6 +32,7 @@ fun DrawScope.continuousXAxis(
 
     labels.forEachIndexed { index, label ->
         if (yAxisPosition == YAxisPosition.CENTER && xAxisPosition == XAxisPosition.CENTER && label == 0f) return@forEachIndexed
+        if ((yRangeValues.min == 0f || yRangeValues.max == 0f) && label == 0f) return@forEachIndexed
 
         val x = getX(
             width = size.width,
@@ -50,32 +51,14 @@ fun DrawScope.continuousXAxis(
         }
 
         if (config.showLabels) {
-            if ((xRangeValues.min == 0f || xRangeValues.max ==0f) &&
-                (yRangeValues.min == 0f || yRangeValues.max == 0f) &&
-                label == 0f) {
-                drawXFloatLabel(
-                    y = y,
-                    x = when (yAxisPosition) {
-                        YAxisPosition.START -> 0f
-                        YAxisPosition.END -> size.width
-                        YAxisPosition.CENTER -> size.width.div(2f)
-                    },
-                    label = label,
-                    xAxisPosition = xAxisPosition,
-                    textMeasurer = textMeasurer,
-                    labelConfig = config.labels.copy(rotation = 0f)
-                )
-                return@forEachIndexed
-            } else {
-                drawXFloatLabel(
-                    y = y,
-                    x = x,
-                    label = label,
-                    xAxisPosition = xAxisPosition,
-                    textMeasurer = textMeasurer,
-                    labelConfig = config.labels
-                )
-            }
+            drawXFloatLabel(
+                y = y,
+                x = x,
+                label = label,
+                xAxisPosition = xAxisPosition,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels
+            )
         }
 
         val yAxisPositionXValue = if (drawYAxis) {

@@ -33,6 +33,7 @@ fun DrawScope.continuousYAxis(
 
     labels.reversed().forEachIndexed { index, label ->
         if (xAxisPosition == XAxisPosition.CENTER && yAxisPosition == YAxisPosition.CENTER && label == 0f) return@forEachIndexed
+        if ((xRangeValues.min == 0f || xRangeValues.max == 0f) && label == 0f) return@forEachIndexed
 
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
@@ -53,8 +54,6 @@ fun DrawScope.continuousYAxis(
         }
 
         if (config.showLabels) {
-            if ((xRangeValues.min == 0f || xRangeValues.max ==0f) && label == 0f) return@forEachIndexed
-
             drawYFloatLabel(
                 y = y,
                 x = x,

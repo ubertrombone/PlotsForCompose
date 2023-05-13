@@ -5,7 +5,7 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 @Parcelize
 data class DataValueStates(
-    val data: List<List<Float>> = listOf(listOf(0f, 3000f), listOf(100f, 3000f)),
+    val data: List<List<Float>> = listOf(listOf(0f, 3000f), listOf(100f, 30000f)),
     val maxXValue: Float? = null,
     val minXValue: Float? = null,
     val maxYValue: Float? = null,
