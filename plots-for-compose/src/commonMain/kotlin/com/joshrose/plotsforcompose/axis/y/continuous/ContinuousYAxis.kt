@@ -23,9 +23,9 @@ fun DrawScope.continuousYAxis(
     labels: List<Float>,
     yRangeValues: Range,
     yAxisPosition: YAxisPosition,
-    xRangeValues: Range,
     xAxisPosition: XAxisPosition,
     drawXAxis: Boolean,
+    drawZero: Boolean = true,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
@@ -34,7 +34,7 @@ fun DrawScope.continuousYAxis(
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
         val y = getY(
             height = size.height,
-            yMax = yRangeValues.max,
+            yValues = yRangeValues,
             label = label,
             range = range,
             rangeAdj = config.labels.rangeAdjustment,
@@ -72,8 +72,7 @@ fun DrawScope.continuousYAxis(
             }
         }
 
-        if (xAxisPosition == XAxisPosition.CENTER && yAxisPosition == YAxisPosition.CENTER && label == 0f) return@forEachIndexed
-        if ((xRangeValues.min == 0f || xRangeValues.max == 0f) && label == 0f) return@forEachIndexed
+        if (!drawZero && label == 0f) return@forEachIndexed
 
         if (config.showLabels) {
             drawYFloatLabel(
@@ -101,19 +100,20 @@ fun DrawScope.continuousYAxis(
 
 fun getY(
     height: Float,
-    yMax: Float,
+    yValues: Range,
     label: Float,
     range: Float,
     rangeAdj: Multiplier,
     index: Int,
     labelsSize: Int
 ): Float {
-    val rangeDiff = calculateOffset(maxValue = yMax, offsetValue = label, range = range)
-    return if (yMax <= 0) {
+    val rangeDiff = calculateOffset(maxValue = yValues.max, offsetValue = label, range = range)
+    val rangeAdjustment = if (yValues.min == 0f || yValues.max == 0f) 0f else rangeAdj.factor
+    return if (yValues.max <= 0) {
         height
-            .times(1f.minus(rangeAdj.factor))
+            .times(1f.minus(rangeAdjustment))
             .div(labelsSize.minus(1))
             .times(index)
-            .plus(height.times(rangeAdj.factor))
+            .plus(height.times(rangeAdjustment))
     } else height.minus(rangeDiff.div(range).times(height))
 }

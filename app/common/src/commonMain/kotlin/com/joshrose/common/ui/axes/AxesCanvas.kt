@@ -109,26 +109,15 @@ fun AxesCanvas(
         }
 
         Canvas(modifier = modifier) {
-            if ((xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f)) {
-                drawZero(
-                    xAxisPosition = xAxisPosition,
-                    yAxisPosition = yAxisPosition,
-                    xAxisOffset = yConfig.labels.axisOffset.toPx(),
-                    yAxisOffset = xConfig.labels.axisOffset.toPx(),
-                    textMeasurer = zeroTextMeasurer,
-                    labelConfig = yConfig.labels
-                )
-            }
-
-            if (xAxisPosition == CENTER && yAxisPosition == YAxisPosition.CENTER) {
-                drawZero(
-                    xAxisPosition = xAxisPosition,
-                    yAxisPosition = yAxisPosition,
-                    xAxisOffset = yConfig.labels.axisOffset.toPx(),
-                    yAxisOffset = xConfig.labels.axisOffset.toPx(),
-                    textMeasurer = zeroTextMeasurer,
-                    labelConfig = yConfig.labels
-                )
+            val drawXZero = when {
+                (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == END -> true
+                (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
+                (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == START -> true
+                (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
+                yMin == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == TOP -> true
+                yMax == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == BOTTOM -> true
+                (yMax == 0f || yMin == 0f) && (xMax == 0f || xMin == 0f) && !yConfig.showAxis -> true
+                else -> false
             }
 
             if (xConfig.showAxis) {
@@ -137,12 +126,23 @@ fun AxesCanvas(
                     labels = xLabels,
                     xRangeValues = Range(min = xMin, max = xMax),
                     xAxisPosition = xAxisPosition,
-                    yRangeValues = Range(min = yMin, max = yMax),
                     yAxisPosition = yAxisPosition,
                     drawYAxis = yConfig.showAxis && yConfig.showAxisLine,
+                    drawZero = drawXZero,
                     range = xRange,
                     textMeasurer = xTextMeasurer
                 )
+            }
+
+            val drawYZero = when {
+                (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == TOP -> true
+                (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == CENTER -> true
+                (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == BOTTOM -> true
+                (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == CENTER -> true
+                xMin == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == END -> true
+                xMax == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == START -> true
+                (xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f) && !xConfig.showAxis -> true
+                else -> false
             }
 
             if (yConfig.showAxis) {
@@ -151,11 +151,22 @@ fun AxesCanvas(
                     labels = yLabels,
                     yRangeValues = Range(min = yMin, max = yMax),
                     yAxisPosition = yAxisPosition,
-                    xRangeValues = Range(min = xMin, max = xMax),
                     xAxisPosition = xAxisPosition,
                     drawXAxis = xConfig.showAxis && xConfig.showAxisLine,
+                    drawZero = drawYZero,
                     range = yRange,
                     textMeasurer = yTextMeasurer
+                )
+            }
+
+            if (!drawXZero && !drawYZero) {
+                drawZero(
+                    xAxisPosition = xAxisPosition,
+                    yAxisPosition = yAxisPosition,
+                    xAxisOffset = yConfig.labels.axisOffset.toPx(),
+                    yAxisOffset = xConfig.labels.axisOffset.toPx(),
+                    textMeasurer = zeroTextMeasurer,
+                    labelConfig = yConfig.labels
                 )
             }
         }

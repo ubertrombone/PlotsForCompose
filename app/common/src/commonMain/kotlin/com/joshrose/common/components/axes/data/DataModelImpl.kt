@@ -54,7 +54,7 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
         dataValueStates.update {
             it.copy(
                 yRange = when {
-                    dataValueStates.value.minYValue!! <= 0 && dataValueStates.value.maxYValue!! >= 0 -> yRange
+                    dataValueStates.value.minYValue!! <= 0f && dataValueStates.value.maxYValue!! >= 0f -> yRange
                     dataValueStates.value.minYValue!! == 0f || dataValueStates.value.maxYValue!! == 0f -> yRange
                     else -> yRange.plus(yRange.times(yRangeAdjustment.factor))
                 }
@@ -65,7 +65,7 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
         dataValueStates.update {
             it.copy(
                 xRange = when {
-                    dataValueStates.value.minXValue!! <= 0 && dataValueStates.value.maxXValue!! >= 0 -> xRange
+                    dataValueStates.value.minXValue!! <= 0f && dataValueStates.value.maxXValue!! >= 0f -> xRange
                     dataValueStates.value.minXValue!! == 0f || dataValueStates.value.maxXValue == 0f -> xRange
                     else -> xRange.plus(xRange.times(xRangeAdjustment.factor))
                 }

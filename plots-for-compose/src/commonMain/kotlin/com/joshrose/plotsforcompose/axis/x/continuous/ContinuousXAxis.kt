@@ -22,16 +22,16 @@ fun DrawScope.continuousXAxis(
     labels: List<Float>,
     xRangeValues: Range,
     xAxisPosition: XAxisPosition,
-    yRangeValues: Range,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
+    drawZero: Boolean = true,
     range: Float,
     textMeasurer: TextMeasurer
 ) {
     labels.forEachIndexed { index, label ->
         val x = getX(
             width = size.width,
-            xMax = xRangeValues.max,
+            xValues = xRangeValues,
             label = label,
             range = range,
             rangeAdj = config.labels.rangeAdjustment,
@@ -69,8 +69,7 @@ fun DrawScope.continuousXAxis(
             }
         }
 
-        if (yAxisPosition == YAxisPosition.CENTER && xAxisPosition == XAxisPosition.CENTER && label == 0f) return@forEachIndexed
-        if ((yRangeValues.min == 0f || yRangeValues.max == 0f) && label == 0f) return@forEachIndexed
+        if (!drawZero && label == 0f) return@forEachIndexed
 
         if (config.showLabels) {
             drawXFloatLabel(
@@ -98,17 +97,18 @@ fun DrawScope.continuousXAxis(
 
 fun getX(
     width: Float,
-    xMax: Float,
+    xValues: Range,
     label: Float,
     range: Float,
     rangeAdj: Multiplier,
     index: Int,
     labelsSize: Int
 ): Float {
-    val rangeDiff = calculateOffset(maxValue = xMax, offsetValue = label, range = range)
-    return if (xMax <= 0) {
+    val rangeDiff = calculateOffset(maxValue = xValues.max, offsetValue = label, range = range)
+    val rangeAdjustment = if (xValues.min == 0f || xValues.max == 0f) 0f else rangeAdj.factor
+    return if (xValues.max <= 0) {
         width
-            .times(1f.minus(if (xMax == 0f) 0f else rangeAdj.factor))
+            .times(1f.minus(if (xValues.max == 0f) 0f else rangeAdjustment))
             .div(labelsSize.minus(1))
             .times(index)
     } else rangeDiff.div(range).times(width)
