@@ -27,6 +27,7 @@ import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
+import com.joshrose.plotsforcompose.util.Coordinates
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -197,8 +198,12 @@ fun AxesContent(
                     Button(
                         onClick = {
                             component.updateData(
-                                xList = List(2) { (-100..100).random().toFloat() },
-                                yList = List(2) { (-100..100).random().toFloat() }
+                                data = List(2) {
+                                    Coordinates(
+                                        x = (-100..100).random().toFloat(),
+                                        y = (-100..100).random().toFloat()
+                                    )
+                                }
                             )
                         },
                         colors = ButtonDefaults.buttonColors(

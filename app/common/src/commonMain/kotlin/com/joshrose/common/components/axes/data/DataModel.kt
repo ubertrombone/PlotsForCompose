@@ -4,13 +4,14 @@ import com.arkivanov.decompose.value.MutableValue
 import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.util.Coordinates
 import kotlinx.coroutines.CoroutineScope
 
 interface DataModel {
     val scope: CoroutineScope
     val dataValueStates: MutableValue<DataValueStates>
 
-    fun updateData(xList: List<Float>, yList: List<Float>)
+    fun updateData(data: List<Coordinates>)
 
     fun maxValues(
         yMaxValue: Float,

@@ -6,6 +6,7 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.util.*
 import kotlinx.coroutines.*
 import kotlin.math.abs
 
@@ -13,9 +14,9 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
     override val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     override val dataValueStates: MutableValue<DataValueStates> = MutableValue(initialState)
 
-    override fun updateData(xList: List<Float>, yList: List<Float>) {
+    override fun updateData(data: List<Coordinates>) {
         scope.launch {
-            dataValueStates.update { it.copy(data = listOf(xList, yList)) }
+            dataValueStates.update { it.copy(data = data) }
         }
     }
 
@@ -77,16 +78,16 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
         yConfig: ContinuousLabelsConfig
     ) {
         maxValues(
-            yMaxValue = dataValueStates.value.data.last().max(),
+            yMaxValue = dataValueStates.value.data.maxYValue(),
             yMaxValueAdjustment = yConfig.maxValueAdjustment,
-            xMaxValue = dataValueStates.value.data.first().max(),
+            xMaxValue = dataValueStates.value.data.maxXValue(),
             xMaxValueAdjustment = xConfig.maxValueAdjustment
         )
 
         minValues(
-            yMinValue = dataValueStates.value.data.last().min(),
+            yMinValue = dataValueStates.value.data.minYValue(),
             yMinValueAdjustment = yConfig.minValueAdjustment,
-            xMinValue = dataValueStates.value.data.first().min(),
+            xMinValue = dataValueStates.value.data.minXValue(),
             xMinValueAdjustment = xConfig.minValueAdjustment
         )
 

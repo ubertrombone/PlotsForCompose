@@ -1,6 +1,10 @@
 package com.joshrose.plotsforcompose.util
 
-data class Coordinates(val x: Float, val y: Float)
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
+
+@Parcelize
+data class Coordinates(val x: Float, val y: Float): Parcelable
 
 fun List<Coordinates>.maxXValue() = maxOf { it.x }
 fun List<Coordinates>.maxYValue() = maxOf { it.y }

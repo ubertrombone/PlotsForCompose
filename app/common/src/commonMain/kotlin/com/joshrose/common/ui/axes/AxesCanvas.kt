@@ -23,6 +23,7 @@ import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
+import com.joshrose.plotsforcompose.util.Coordinates
 
 @Suppress("DuplicatedCode")
 @ExperimentalTextApi
@@ -69,8 +70,12 @@ fun AxesCanvas(
             )
         } catch (e: InvalidRangeException) {
             component.updateData(
-                xList = List(2) { (-100..100).random().toFloat() },
-                yList = List(2) { (-100..100).random().toFloat() }
+                data = List(2) {
+                    Coordinates(
+                        x = (-100..100).random().toFloat(),
+                        y = (-100..100).random().toFloat()
+                    )
+                }
             )
         }
 
@@ -82,8 +87,12 @@ fun AxesCanvas(
             )
         } catch (e: InvalidRangeException) {
             component.updateData(
-                xList = List(2) { (-100..100).random().toFloat() },
-                yList = List(2) { (-100..100).random().toFloat() }
+                data = List(2) {
+                    Coordinates(
+                        x = (-100..100).random().toFloat(),
+                        y = (-100..100).random().toFloat()
+                    )
+                }
             )
         }
 
