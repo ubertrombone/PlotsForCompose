@@ -116,6 +116,7 @@ fun AxesCanvas(
             yMin == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == TOP -> true
             yMax == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == BOTTOM -> true
             (yMax == 0f || yMin == 0f) && (xMax == 0f || xMin == 0f) && !yConfig.showAxis -> true
+            (yMax != 0f || yMin != 0f) && (xMax == 0f || xMin == 0f) -> true
             else -> false
         }
 
@@ -127,6 +128,7 @@ fun AxesCanvas(
             xMin == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == END -> true
             xMax == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == START -> true
             (xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f) && !xConfig.showAxis -> true
+            (xMin != 0f || xMax != 0f) && (yMax == 0f || yMin == 0f) -> true
             else -> false
         }
 
