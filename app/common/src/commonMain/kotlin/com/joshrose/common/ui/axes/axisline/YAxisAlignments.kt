@@ -49,7 +49,7 @@ fun YAxisAlignment(
 
             AlignmentButton(
                 selected = currentSelected == CENTER,
-                icon = createPainter(file = ALIGN_CENTER_VERTICAL),
+                icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
                 contentDescription = "Align center",
                 axisPosition = CENTER,
                 enabled = enabled,

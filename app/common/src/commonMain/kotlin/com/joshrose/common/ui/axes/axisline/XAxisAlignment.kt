@@ -49,7 +49,7 @@ fun XAxisAlignment(
 
             AlignmentButton(
                 selected = currentSelected == CENTER,
-                icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
+                icon = createPainter(file = ALIGN_CENTER_VERTICAL),
                 contentDescription = "Align center",
                 axisPosition = CENTER,
                 enabled = enabled,
