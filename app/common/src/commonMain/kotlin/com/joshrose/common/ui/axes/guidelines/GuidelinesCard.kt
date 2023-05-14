@@ -65,8 +65,8 @@ fun GuidelinesCard(
             ShortClickButton(
                 label = "Alpha",
                 value = alpha,
-                upperLimit = .9f,
-                lowerLimit = .1f,
+                upperLimit = 1f,
+                lowerLimit = 0f,
                 incClick = incAlphaClick,
                 decClick = decAlphaClick,
                 enabled = enabled

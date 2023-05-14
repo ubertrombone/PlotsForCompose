@@ -98,8 +98,8 @@ fun LabelsCard(
             ShortClickButton(
                 label = "Range\nAdjustment",
                 value = rangeAdjustment,
-                upperLimit = .9f,
-                lowerLimit = .1f,
+                upperLimit = 1f,
+                lowerLimit = 0f,
                 incClick = incRangeAdjClick,
                 decClick = decRangeAdjClick,
                 enabled = rangeEnabled && enabled
@@ -110,8 +110,8 @@ fun LabelsCard(
             ShortClickButton(
                 label = "Max\nAdjustment",
                 value = maxAdjustment,
-                upperLimit = .9f,
-                lowerLimit = .1f,
+                upperLimit = 1f,
+                lowerLimit = 0f,
                 incClick = incMaxAdjClick,
                 decClick = decMaxAdjClick,
                 enabled = enabled
@@ -122,8 +122,8 @@ fun LabelsCard(
             ShortClickButton(
                 label = "Min\nAdjustment",
                 value = minAdjustment,
-                upperLimit = .9f,
-                lowerLimit = .1f,
+                upperLimit = 1f,
+                lowerLimit = 0f,
                 incClick = incMinAdjClick,
                 decClick = decMinAdjClick,
                 enabled = enabled

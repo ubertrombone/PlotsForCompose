@@ -15,12 +15,12 @@ import com.arkivanov.essenty.parcelable.Parcelize
 value class Multiplier(val factor: Float): Parcelable {
     init {
         require(factor in 0f..1f) {
-            "factor must be greater than equal to 0 and less than or equal to 1: $factor"
+            "factor must be greater than or equal to 0 and less than or equal to 1: $factor"
         }
     }
 
-    operator fun plus(increment: Float): Multiplier = Multiplier(factor + increment)
-    operator fun minus(decrement: Float): Multiplier = Multiplier(factor - decrement)
-    operator fun times(value: Float): Multiplier = Multiplier(factor * value)
-    operator fun div(value: Float): Multiplier = Multiplier(factor / value)
+    operator fun plus(increment: Float): Multiplier = Multiplier(factor.plus(increment).coerceAtMost(1f))
+    operator fun minus(decrement: Float): Multiplier = Multiplier(factor.minus(decrement).coerceAtLeast(0f))
+//    operator fun times(value: Float): Multiplier = Multiplier(factor * value)
+//    operator fun div(value: Float): Multiplier = Multiplier(factor / value)
 }
