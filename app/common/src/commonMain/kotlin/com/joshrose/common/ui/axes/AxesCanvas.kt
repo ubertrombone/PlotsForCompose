@@ -108,18 +108,29 @@ fun AxesCanvas(
             else -> START
         }
 
-        Canvas(modifier = modifier) {
-            val drawXZero = when {
-                (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == END -> true
-                (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
-                (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == START -> true
-                (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
-                yMin == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == TOP -> true
-                yMax == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == BOTTOM -> true
-                (yMax == 0f || yMin == 0f) && (xMax == 0f || xMin == 0f) && !yConfig.showAxis -> true
-                else -> false
-            }
+        val drawXZero = when {
+            (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == END -> true
+            (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
+            (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == START -> true
+            (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
+            yMin == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == TOP -> true
+            yMax == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == BOTTOM -> true
+            (yMax == 0f || yMin == 0f) && (xMax == 0f || xMin == 0f) && !yConfig.showAxis -> true
+            else -> false
+        }
 
+        val drawYZero = when {
+            (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == TOP -> true
+            (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == CENTER -> true
+            (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == BOTTOM -> true
+            (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == CENTER -> true
+            xMin == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == END -> true
+            xMax == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == START -> true
+            (xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f) && !xConfig.showAxis -> true
+            else -> false
+        }
+
+        Canvas(modifier = modifier) {
             if (xConfig.showAxis) {
                 continuousXAxis(
                     config = xConfig,
@@ -132,17 +143,6 @@ fun AxesCanvas(
                     range = xRange,
                     textMeasurer = xTextMeasurer
                 )
-            }
-
-            val drawYZero = when {
-                (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == TOP -> true
-                (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == CENTER -> true
-                (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == BOTTOM -> true
-                (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == CENTER -> true
-                xMin == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == END -> true
-                xMax == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == START -> true
-                (xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f) && !xConfig.showAxis -> true
-                else -> false
             }
 
             if (yConfig.showAxis) {
