@@ -108,28 +108,29 @@ fun AxesCanvas(
             else -> START
         }
 
-        val drawXZero = when {
-            (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == END -> true
-            (yMax == 0f || yMin == 0f) && xMin == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
-            (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == START -> true
-            (yMax == 0f || yMin == 0f) && xMax == 0f && yConfig.axisLine.axisPosition == YAxisPosition.CENTER -> true
-            yMin == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == TOP -> true
-            yMax == 0f && (xMin == 0f || xMax == 0f) && xConfig.axisLine.axisPosition == BOTTOM -> true
-            (yMax == 0f || yMin == 0f) && (xMax == 0f || xMin == 0f) && !yConfig.showAxis -> true
-            (yMax != 0f || yMin != 0f) && (xMax == 0f || xMin == 0f) -> true
-            else -> false
-        }
-
-        val drawYZero = when {
-            (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == TOP -> true
-            (xMin == 0f || xMax == 0f) && yMin == 0f && xConfig.axisLine.axisPosition == CENTER -> true
-            (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == BOTTOM -> true
-            (xMin == 0f || xMax == 0f) && yMax == 0f && xConfig.axisLine.axisPosition == CENTER -> true
-            xMin == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == END -> true
-            xMax == 0f && (yMin == 0f || yMax == 0f) && yConfig.axisLine.axisPosition == START -> true
-            (xMax == 0f || xMin == 0f) && (yMax == 0f || yMin == 0f) && !xConfig.showAxis -> true
-            (xMin != 0f || xMax != 0f) && (yMax == 0f || yMin == 0f) -> true
-            else -> false
+        val drawZero = when {
+            yMin == 0f && xMin == 0f &&
+                xAxisPosition == BOTTOM && yAxisPosition == START &&
+                xConfig.showAxis && yConfig.showAxis &&
+                xConfig.showLabels && yConfig.showLabels -> false
+            yMax == 0f && xMin == 0f &&
+                xAxisPosition == TOP && yAxisPosition == START &&
+                xConfig.showAxis && yConfig.showAxis &&
+                xConfig.showLabels && yConfig.showLabels -> false
+            yMin == 0f && xMax == 0f &&
+                xAxisPosition == BOTTOM && yAxisPosition == END &&
+                xConfig.showAxis && yConfig.showAxis &&
+                xConfig.showLabels && yConfig.showLabels -> false
+            yMax == 0f && xMax == 0f &&
+                xAxisPosition == TOP && yAxisPosition == END &&
+                xConfig.showAxis && yConfig.showAxis &&
+                xConfig.showLabels && yConfig.showLabels -> false
+            (xLabels.min() != 0f && xLabels.max() != 0f && xLabels.contains(0f)) &&
+                (yLabels.min() != 0f && yLabels.max() != 0f && yLabels.contains(0f)) &&
+                xAxisPosition == CENTER && yAxisPosition == YAxisPosition.CENTER &&
+                xConfig.showAxis && yConfig.showAxis &&
+                (xConfig.showLabels || yConfig.showLabels) -> false
+            else -> true
         }
 
         Canvas(modifier = modifier) {
@@ -141,7 +142,7 @@ fun AxesCanvas(
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
                     drawYAxis = yConfig.showAxis && yConfig.showAxisLine,
-                    drawZero = drawXZero,
+                    drawZero = drawZero,
                     range = xRange,
                     textMeasurer = xTextMeasurer
                 )
@@ -155,13 +156,13 @@ fun AxesCanvas(
                     yAxisPosition = yAxisPosition,
                     xAxisPosition = xAxisPosition,
                     drawXAxis = xConfig.showAxis && xConfig.showAxisLine,
-                    drawZero = drawYZero,
+                    drawZero = drawZero,
                     range = yRange,
                     textMeasurer = yTextMeasurer
                 )
             }
 
-            if (!drawXZero && !drawYZero) {
+            if (!drawZero) {
                 drawZero(
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
