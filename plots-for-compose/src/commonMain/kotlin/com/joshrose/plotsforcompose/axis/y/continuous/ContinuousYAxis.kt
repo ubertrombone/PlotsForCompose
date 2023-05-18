@@ -21,7 +21,7 @@ import com.joshrose.plotsforcompose.util.calculateOffset
 fun DrawScope.continuousYAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
-    yRangeValues: Range,
+    yRangeValues: Range<Float>,
     yAxisPosition: YAxisPosition,
     xAxisPosition: XAxisPosition,
     drawXAxis: Boolean,
@@ -100,7 +100,7 @@ fun DrawScope.continuousYAxis(
 
 fun getY(
     height: Float,
-    yValues: Range,
+    yValues: Range<Float>,
     label: Float,
     range: Float,
     rangeAdj: Multiplier,
