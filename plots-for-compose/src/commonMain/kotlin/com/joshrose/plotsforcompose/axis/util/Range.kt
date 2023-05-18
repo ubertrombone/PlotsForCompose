@@ -1,3 +1,3 @@
 package com.joshrose.plotsforcompose.axis.util
 
-data class Range(val min: Float, val max: Float)
+data class Range<T>(val min: T, val max: T)

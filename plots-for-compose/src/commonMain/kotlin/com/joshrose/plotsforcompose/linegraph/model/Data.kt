@@ -2,9 +2,8 @@ package com.joshrose.plotsforcompose.linegraph.model
 
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import kotlin.time.Duration
 
-sealed class Data<T: Comparable<T>>(open val x: T, open val y: Float): Parcelable {
+sealed class Data<T>(open val x: T, open val y: Float): Parcelable {
     @Parcelize
     data class FloatData(override val x: Float, override val y: Float): Data<Float>(x, y)
 
@@ -26,13 +25,11 @@ sealed class Data<T: Comparable<T>>(open val x: T, open val y: Float): Parcelabl
     @Parcelize
     data class CharData(override val x: Char, override val y: Float): Data<Char>(x, y)
 
-    @Parcelize
-    data class DurationData(override val x: Duration, override val y: Float): Data<Duration>(x, y)
-
+    open fun List<Data<T>>.test() = last().x
     companion object {
-        fun List<Data<*>>.lastXValue() = last().x
-        fun List<Data<*>>.maxYValue() = maxOf { it.y }
-        fun List<Data<*>>.firstXValue() = first().x
-        fun List<Data<*>>.minYValue() = minOf { it.y }
+        fun <T> List<Data<T>>.lastXValue() = last().x
+        fun <T> List<Data<T>>.maxYValue() = maxOf { it.y }
+        fun <T> List<Data<T>>.firstXValue() = first().x
+        fun <T> List<Data<T>>.minYValue() = minOf { it.y }
     }
 }
