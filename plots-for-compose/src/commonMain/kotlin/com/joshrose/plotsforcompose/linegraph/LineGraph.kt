@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTextApi::class)
+
 package com.joshrose.plotsforcompose.linegraph
 
 import androidx.compose.foundation.Canvas
@@ -13,6 +15,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
+import com.joshrose.plotsforcompose.axis.x.continuous.drawXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
 import com.joshrose.plotsforcompose.common.maxValue
 import com.joshrose.plotsforcompose.common.minValue
@@ -20,26 +23,28 @@ import com.joshrose.plotsforcompose.common.range
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfig
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfigDefaults
-import com.joshrose.plotsforcompose.linegraph.model.Coordinates
-import com.joshrose.plotsforcompose.linegraph.model.Coordinates.Companion.firstXValue
-import com.joshrose.plotsforcompose.linegraph.model.Coordinates.Companion.lastXValue
-import com.joshrose.plotsforcompose.linegraph.model.Coordinates.Companion.maxYValue
-import com.joshrose.plotsforcompose.linegraph.model.Coordinates.Companion.minYValue
+import com.joshrose.plotsforcompose.linegraph.model.Data
+import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.firstXValue
+import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.lastXValue
+import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.maxYValue
+import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.minYValue
 import com.joshrose.plotsforcompose.util.LoadingState
 import com.joshrose.plotsforcompose.util.LoadingState.*
 
 // TODO: User should be able to only draw a subset of the labels leaving the rest as guidelines, etc.
-@OptIn(ExperimentalTextApi::class)
+// TODO: How does adding drawscope functions directly into the function work? Will it draw normally?
+
 @Composable
-fun LineGraph(
-    data: List<Coordinates<*>>,
+fun <T: Comparable<T>> LineGraph(
+    data: List<Data<T>>,
     modifier: Modifier = Modifier,
     xAxisConfig: ContinuousAxisConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults(),
     yAxisConfig: ContinuousAxisConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults(),
-    lineGraphConfig: LineGraphConfig = LineGraphConfigDefaults.lineGraphConfigDefaults()
+    lineGraphConfig: LineGraphConfig = LineGraphConfigDefaults.lineGraphConfigDefaults(),
 ) {
     var state by remember { mutableStateOf<LoadingState>(Success) }
     val yTextMeasurer = rememberTextMeasurer()
+    val xTextMeasurer = rememberTextMeasurer()
 
     if (data.isEmpty()) state = Empty
 
@@ -51,6 +56,12 @@ fun LineGraph(
 
     println("First X: ${firstXValue}, Last X: $lastXValue")
 
+    when (data.map { it.x }.first()) {
+        is Number -> println("Number")
+        is String -> println("String")
+        else -> println("Other")
+    }
+
     var yLabels by remember { mutableStateOf(listOf(0f, 100f)) }
     try {
         yLabels = floatLabels(
@@ -59,6 +70,8 @@ fun LineGraph(
             maxValue = maxYValue
         )
     } catch (e: InvalidRangeException) { state = Error }
+
+    val xLabels by remember { mutableStateOf(data.map { it.x }) }
 
     val xAxisPosition = xAxisConfig.axisLine.axisPosition?.toXAxisPosition() ?: when {
         maxYValue <= 0 -> XAxisPosition.TOP
@@ -81,6 +94,21 @@ fun LineGraph(
                 drawZero = true,
                 textMeasurer = yTextMeasurer
             )
+        }
+
+        if (xAxisConfig.showAxis) {
+            if (firstXValue is Number) {
+                drawXAxis(
+                    config = xAxisConfig,
+                    labels = xLabels,
+                    xRangeValues = Range(firstXValue, lastXValue),
+                    xAxisPosition = xAxisPosition,
+                    yAxisPosition = yAxisPosition,
+                    drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
+                    range = 10f,
+                    textMeasurer = xTextMeasurer
+                )
+            }
         }
     }
 }
