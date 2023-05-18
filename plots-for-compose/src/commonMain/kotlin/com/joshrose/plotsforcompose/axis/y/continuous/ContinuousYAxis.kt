@@ -57,12 +57,14 @@ fun DrawScope.continuousYAxis(
         } else null
 
         if (config.showGuidelines) {
-            if (drawXAxis && xAxisPositionYValue != y) {
-                drawYGuideline(
-                    guidelineConfig = config.guidelines,
-                    y = y,
-                    yAxisPosition = yAxisPosition
-                )
+            if (drawXAxis) {
+                if (xAxisPositionYValue != y) {
+                    drawYGuideline(
+                        guidelineConfig = config.guidelines,
+                        y = y,
+                        yAxisPosition = yAxisPosition
+                    )
+                }
             } else {
                 drawYGuideline(
                     guidelineConfig = config.guidelines,
