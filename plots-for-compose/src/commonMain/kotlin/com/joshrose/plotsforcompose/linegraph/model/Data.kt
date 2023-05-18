@@ -25,7 +25,6 @@ sealed class Data<T>(open val x: T, open val y: Float): Parcelable {
     @Parcelize
     data class CharData(override val x: Char, override val y: Float): Data<Char>(x, y)
 
-    open fun List<Data<T>>.test() = last().x
     companion object {
         fun <T> List<Data<T>>.lastXValue() = last().x
         fun <T> List<Data<T>>.maxYValue() = maxOf { it.y }
