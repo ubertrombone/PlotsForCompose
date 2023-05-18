@@ -1,4 +1,5 @@
 @file:Suppress("DuplicatedCode")
+@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.x.continuous
 
@@ -16,11 +17,10 @@ import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
 import com.joshrose.plotsforcompose.axis.x.util.drawXTick
 import com.joshrose.plotsforcompose.util.calculateOffset
 
-@OptIn(ExperimentalTextApi::class)
 fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
-    xRangeValues: Range,
+    xRangeValues: Range<Float>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
@@ -95,9 +95,23 @@ fun DrawScope.continuousXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
+fun <T> DrawScope.drawXAxis(
+    config: ContinuousAxisConfig,
+    labels: List<T>,
+    xRangeValues: Range<T>,
+    xAxisPosition: XAxisPosition,
+    yAxisPosition: YAxisPosition,
+    drawYAxis: Boolean,
+    drawZero: Boolean = true,
+    range: T? = null,
+    textMeasurer: TextMeasurer
+) {
+
+}
+
 fun getX(
     width: Float,
-    xValues: Range,
+    xValues: Range<Float>,
     label: Float,
     range: Float,
     rangeAdj: Multiplier,
