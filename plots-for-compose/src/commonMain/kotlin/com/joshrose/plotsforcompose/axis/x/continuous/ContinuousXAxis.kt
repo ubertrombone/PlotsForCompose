@@ -232,12 +232,14 @@ fun <T> DrawScope.zeroBoundXAxis(
         (0 until totalXValues).forEachIndexed { index, _ ->
             val x = index.times(guidelinesFactor)
 
-            if (drawYAxis && yAxisPositionXValue != x) {
-                drawXGuideline(
-                    guidelineConfig = config.guidelines,
-                    x = x,
-                    xAxisPosition = xAxisPosition
-                )
+            if (drawYAxis) {
+                if (yAxisPositionXValue != x) {
+                    drawXGuideline(
+                        guidelineConfig = config.guidelines,
+                        x = x,
+                        xAxisPosition = xAxisPosition
+                    )
+                }
             } else {
                 drawXGuideline(
                     guidelineConfig = config.guidelines,
