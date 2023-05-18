@@ -95,10 +95,193 @@ fun DrawScope.continuousXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
-fun <T> DrawScope.drawXAxis(
+fun <T> DrawScope.boundXAxis(
+    config: ContinuousAxisConfig,
+    totalXValues: Int,
+    labels: List<T>,
+    xAxisPosition: XAxisPosition,
+    yAxisPosition: YAxisPosition,
+    drawYAxis: Boolean,
+    drawZero: Boolean = true,
+    textMeasurer: TextMeasurer
+) {
+    val guidelinesFactor = size.width.div(totalXValues.toFloat())
+    val labelsFactor = size.width.div(labels.size.toFloat())
+    val numberLabel = labels.map { it.toString().toFloat() }
+
+    val y = when (xAxisPosition) {
+        XAxisPosition.TOP -> 0f
+        XAxisPosition.BOTTOM -> size.height
+        XAxisPosition.CENTER -> size.height.div(2f)
+    }
+
+    val yAxisPositionXValue = if (drawYAxis) {
+        when (yAxisPosition) {
+            YAxisPosition.START -> 0f
+            YAxisPosition.CENTER -> size.width.div(2f)
+            YAxisPosition.END -> size.width
+        }
+    } else null
+
+    numberLabel.forEachIndexed { index, label ->
+        val x = index.plus(1).times(labelsFactor)
+
+        if (!drawZero && label == 0f) return@forEachIndexed
+
+        if (config.showLabels) {
+            drawXFloatLabel(
+                y = y,
+                x = x,
+                label = label,
+                xAxisPosition = xAxisPosition,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels
+            )
+        }
+
+        if (config.showAxisLine && config.axisLine.ticks) {
+            drawXTick(
+                axisLineConfig = config.axisLine,
+                x = x,
+                xAxisPosition = xAxisPosition,
+                axisOffset = config.labels.axisOffset.toPx()
+            )
+        }
+
+    }
+
+    if (config.showGuidelines) {
+        (0 until totalXValues).forEachIndexed { index, _ ->
+            val x = index.plus(1).times(guidelinesFactor)
+
+            if (drawYAxis && yAxisPositionXValue != x) {
+                drawXGuideline(
+                    guidelineConfig = config.guidelines,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            } else {
+                drawXGuideline(
+                    guidelineConfig = config.guidelines,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            }
+        }
+    }
+
+    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
+}
+
+fun <T> DrawScope.zeroBoundXAxis(
+    config: ContinuousAxisConfig,
+    totalXValues: Int,
+    labels: List<T>,
+    xAxisPosition: XAxisPosition,
+    yAxisPosition: YAxisPosition,
+    drawYAxis: Boolean,
+    drawZero: Boolean = true,
+    textMeasurer: TextMeasurer
+) {
+    val guidelinesFactor = size.width.div(totalXValues.minus(1).toFloat())
+    val labelsFactor = size.width.div(labels.size.minus(1).toFloat())
+    val numberLabel = labels.map { it.toString().toFloat() }
+
+    val y = when (xAxisPosition) {
+        XAxisPosition.TOP -> 0f
+        XAxisPosition.BOTTOM -> size.height
+        XAxisPosition.CENTER -> size.height.div(2f)
+    }
+
+    val yAxisPositionXValue = if (drawYAxis) {
+        when (yAxisPosition) {
+            YAxisPosition.START -> 0f
+            YAxisPosition.CENTER -> size.width.div(2f)
+            YAxisPosition.END -> size.width
+        }
+    } else null
+
+    numberLabel.forEachIndexed { index, label ->
+        val x = index.times(labelsFactor)
+
+        if (!drawZero && label == 0f) return@forEachIndexed
+
+        if (config.showLabels) {
+            drawXFloatLabel(
+                y = y,
+                x = x,
+                label = label,
+                xAxisPosition = xAxisPosition,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels
+            )
+        }
+
+        if (config.showAxisLine && config.axisLine.ticks) {
+            drawXTick(
+                axisLineConfig = config.axisLine,
+                x = x,
+                xAxisPosition = xAxisPosition,
+                axisOffset = config.labels.axisOffset.toPx()
+            )
+        }
+
+    }
+
+    if (config.showGuidelines) {
+        (0 until totalXValues).forEachIndexed { index, _ ->
+            val x = index.times(guidelinesFactor)
+
+            if (drawYAxis && yAxisPositionXValue != x) {
+                drawXGuideline(
+                    guidelineConfig = config.guidelines,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            } else {
+                drawXGuideline(
+                    guidelineConfig = config.guidelines,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            }
+        }
+    }
+
+    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
+}
+
+fun <T> DrawScope.boundXAxis(
+    config: ContinuousAxisConfig,
+    totalXValues: Int,
+    labels: List<T>,
+    xAxisPosition: XAxisPosition,
+    yAxisPosition: YAxisPosition,
+    drawYAxis: Boolean,
+    drawZero: Boolean = true,
+    range: T? = null,
+    textMeasurer: TextMeasurer
+) {
+
+}
+
+fun <T> DrawScope.unboundXAxis(
     config: ContinuousAxisConfig,
     labels: List<T>,
     xRangeValues: Range<T>,
+    xAxisPosition: XAxisPosition,
+    yAxisPosition: YAxisPosition,
+    drawYAxis: Boolean,
+    drawZero: Boolean = true,
+    range: T? = null,
+    textMeasurer: TextMeasurer
+) {
+
+}
+
+fun <T> DrawScope.unboundXAxis(
+    config: ContinuousAxisConfig,
+    labels: List<T>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,

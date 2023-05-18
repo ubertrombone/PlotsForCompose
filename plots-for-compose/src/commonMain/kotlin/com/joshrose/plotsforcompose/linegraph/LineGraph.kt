@@ -15,7 +15,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.x.continuous.drawXAxis
+import com.joshrose.plotsforcompose.axis.x.continuous.zeroBoundXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
 import com.joshrose.plotsforcompose.common.maxValue
 import com.joshrose.plotsforcompose.common.minValue
@@ -79,8 +79,10 @@ fun <T: Comparable<T>> LineGraph(
         else -> XAxisPosition.BOTTOM
     }
 
+    // TODO: When number and axisPosition is null, calculate
     val yAxisPosition = yAxisConfig.axisLine.axisPosition?.toYAxisPosition() ?: YAxisPosition.START
 
+    // TODO: Prepare all of the new x and y axes.
     Canvas(modifier = modifier) {
         if (yAxisConfig.showAxis) {
             continuousYAxis(
@@ -98,14 +100,13 @@ fun <T: Comparable<T>> LineGraph(
 
         if (xAxisConfig.showAxis) {
             if (firstXValue is Number) {
-                drawXAxis(
+                zeroBoundXAxis(
                     config = xAxisConfig,
+                    totalXValues = xLabels.size,
                     labels = xLabels,
-                    xRangeValues = Range(firstXValue, lastXValue),
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
                     drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
-                    range = 10f,
                     textMeasurer = xTextMeasurer
                 )
             }
