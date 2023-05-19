@@ -15,6 +15,7 @@ import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
 import com.joshrose.plotsforcompose.axis.x.util.drawXFloatLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
 import com.joshrose.plotsforcompose.axis.x.util.drawXTick
+import com.joshrose.plotsforcompose.linegraph.model.StringData
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 fun DrawScope.continuousXAxis(
@@ -95,10 +96,10 @@ fun DrawScope.continuousXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
-fun <T> DrawScope.boundXAxis(
+fun DrawScope.boundXAxis(
     config: ContinuousAxisConfig,
     totalXValues: Int,
-    labels: List<T>,
+    labels: List<Number>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
@@ -175,10 +176,10 @@ fun <T> DrawScope.boundXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
-fun <T> DrawScope.zeroBoundXAxis(
+fun DrawScope.zeroBoundXAxis(
     config: ContinuousAxisConfig,
     totalXValues: Int,
-    labels: List<T>,
+    labels: List<Number>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
@@ -255,42 +256,43 @@ fun <T> DrawScope.zeroBoundXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
-fun <T> DrawScope.boundXAxis(
+// TODO: Maybe range isn't needed at all? Then labels can take List<T> where T: Parcelable?
+fun DrawScope.boundXAxis(
     config: ContinuousAxisConfig,
     totalXValues: Int,
-    labels: List<T>,
+    labels: List<StringData>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
-    range: T? = null,
+    range: Number,
     textMeasurer: TextMeasurer
 ) {
 
 }
 
-fun <T> DrawScope.unboundXAxis(
+fun DrawScope.unboundXAxis(
     config: ContinuousAxisConfig,
-    labels: List<T>,
-    xRangeValues: Range<T>,
+    labels: List<Number>,
+    xRangeValues: Range<Number>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
-    range: T? = null,
+    range: Number,
     textMeasurer: TextMeasurer
 ) {
 
 }
 
-fun <T> DrawScope.unboundXAxis(
+fun DrawScope.unboundXAxis(
     config: ContinuousAxisConfig,
-    labels: List<T>,
+    labels: List<StringData>,
     xAxisPosition: XAxisPosition,
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
-    range: T? = null,
+    range: StringData,
     textMeasurer: TextMeasurer
 ) {
 

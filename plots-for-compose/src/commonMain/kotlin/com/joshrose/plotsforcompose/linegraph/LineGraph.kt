@@ -23,11 +23,7 @@ import com.joshrose.plotsforcompose.common.range
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfig
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfigDefaults
-import com.joshrose.plotsforcompose.linegraph.model.Data
-import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.firstXValue
-import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.lastXValue
-import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.maxYValue
-import com.joshrose.plotsforcompose.linegraph.model.Data.Companion.minYValue
+import com.joshrose.plotsforcompose.linegraph.model.*
 import com.joshrose.plotsforcompose.util.LoadingState
 import com.joshrose.plotsforcompose.util.LoadingState.*
 
@@ -35,8 +31,19 @@ import com.joshrose.plotsforcompose.util.LoadingState.*
 // TODO: How does adding drawscope functions directly into the function work? Will it draw normally?
 
 @Composable
-fun <T: Comparable<T>> LineGraph(
-    data: List<Data<T>>,
+fun LineGraph(
+    data: List<StringData>,
+    modifier: Modifier = Modifier,
+    xAxisConfig: ContinuousAxisConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults(),
+    yAxisConfig: ContinuousAxisConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults(),
+    lineGraphConfig: LineGraphConfig = LineGraphConfigDefaults.lineGraphConfigDefaults(),
+) {
+
+}
+
+@Composable
+fun LineGraph(
+    data: List<NumberData>,
     modifier: Modifier = Modifier,
     xAxisConfig: ContinuousAxisConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults(),
     yAxisConfig: ContinuousAxisConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults(),
@@ -48,19 +55,13 @@ fun <T: Comparable<T>> LineGraph(
 
     if (data.isEmpty()) state = Empty
 
-    val firstXValue by remember { derivedStateOf { data.firstXValue() } }
-    val lastXValue by remember { derivedStateOf { data.lastXValue() } }
+    val minXValue by remember { derivedStateOf { data.minXValue() } }
+    val maxXValue by remember { derivedStateOf { data.maxXValue() } }
     val maxYValue by remember { derivedStateOf { maxValue(data.maxYValue(), yAxisConfig.labels.maxValueAdjustment) } }
     val minYValue by remember { derivedStateOf { minValue(data.minYValue(), maxYValue, yAxisConfig.labels.minValueAdjustment) } }
     val yRange by remember { derivedStateOf { range(minYValue, maxYValue, yAxisConfig.labels.rangeAdjustment) } }
 
-    println("First X: ${firstXValue}, Last X: $lastXValue")
-
-    when (data.map { it.x }.first()) {
-        is Number -> println("Number")
-        is String -> println("String")
-        else -> println("Other")
-    }
+    println("First X: ${minXValue}, Last X: $maxXValue")
 
     var yLabels by remember { mutableStateOf(listOf(0f, 100f)) }
     try {
@@ -99,17 +100,15 @@ fun <T: Comparable<T>> LineGraph(
         }
 
         if (xAxisConfig.showAxis) {
-            if (firstXValue is Number) {
-                zeroBoundXAxis(
-                    config = xAxisConfig,
-                    totalXValues = xLabels.size,
-                    labels = xLabels,
-                    xAxisPosition = xAxisPosition,
-                    yAxisPosition = yAxisPosition,
-                    drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
-                    textMeasurer = xTextMeasurer
-                )
-            }
+            zeroBoundXAxis(
+                config = xAxisConfig,
+                totalXValues = xLabels.size,
+                labels = xLabels,
+                xAxisPosition = xAxisPosition,
+                yAxisPosition = yAxisPosition,
+                drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
+                textMeasurer = xTextMeasurer
+            )
         }
     }
 }
