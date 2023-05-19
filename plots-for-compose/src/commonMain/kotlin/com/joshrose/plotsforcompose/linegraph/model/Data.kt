@@ -3,6 +3,10 @@ package com.joshrose.plotsforcompose.linegraph.model
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
+// TODO: Remove generics, have data class NumberData(val x: Number, val y: Float)... and data class StringData(val x: String, val y: Float)...
+// TODO: Make overload LineGraph to deal with these two types.
+// TODO: Remove generics for DrawScope functions, use Number or String instead.
+
 sealed class Data<T>(open val x: T, open val y: Float): Parcelable {
     @Parcelize
     data class FloatData(override val x: Float, override val y: Float): Data<Float>(x, y)
