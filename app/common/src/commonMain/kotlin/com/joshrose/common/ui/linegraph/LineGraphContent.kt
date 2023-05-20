@@ -8,33 +8,48 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
-import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
+import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.linegraph.LineGraph
-import com.joshrose.plotsforcompose.linegraph.model.Coordinates.IntData
+import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
 @Composable
 fun LineGraphContent(
     component: LineGraphComponent,
     modifier: Modifier = Modifier
 ) {
-
-    val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
+    val xConfig = AxisConfiguration.xAxisConfigurationDefaults()
         .copy(
             showGuidelines = true,
-            guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
+            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
                 lineColor = MaterialTheme.colorScheme.onBackground,
                 alpha = Multiplier(.5f),
                 padding = 0f
             ),
-            labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
+            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
                 axisOffset = 20.dp,
                 fontColor = MaterialTheme.colorScheme.primary
             ),
-            axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
+            axisLine = AxisLineConfiguration.xAxisLineConfigurationDefaults().copy(
+                lineColor = MaterialTheme.colorScheme.primary,
+            )
+        )
+    val yConfig = AxisConfiguration.yAxisConfigurationDefaults()
+        .copy(
+            showGuidelines = true,
+            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
+                lineColor = MaterialTheme.colorScheme.onBackground,
+                alpha = Multiplier(.5f),
+                padding = 0f
+            ),
+            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
+                axisOffset = 20.dp,
+                fontColor = MaterialTheme.colorScheme.primary
+            ),
+            axisLine = AxisLineConfiguration.yAxisLineConfigurationDefaults().copy(
                 lineColor = MaterialTheme.colorScheme.primary,
             )
         )
@@ -50,7 +65,8 @@ fun LineGraphContent(
         ) {
             item {
                 LineGraph(
-                    data = listOf(IntData(1, 1f), IntData(4, 4f), IntData(3, 3f), IntData(11, 11f)),
+                    data = listOf(NumberData(1, 1f), NumberData(4, 4f), NumberData(3, 3f), NumberData(11, 11f)).sortedBy { it.x.toFloat() },
+                    xAxisConfig = xConfig,
                     yAxisConfig = yConfig,
                     modifier = Modifier
                         .fillMaxWidth()
