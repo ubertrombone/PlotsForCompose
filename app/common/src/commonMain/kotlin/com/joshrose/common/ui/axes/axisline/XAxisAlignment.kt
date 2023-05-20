@@ -10,14 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.util.ImageResources.*
 import com.joshrose.common.util.createPainter
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.*
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 
 @Composable
 fun XAxisAlignment(
-    currentSelected: AxisPosition?,
+    currentSelected: XAxis?,
     enabled: Boolean = true,
-    onClick: (AxisPosition?) -> Unit,
+    onClick: (XAxis?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,7 +37,7 @@ fun XAxisAlignment(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AlignmentButton(
+            XAlignmentButton(
                 selected = currentSelected == null,
                 icon = createPainter(file = ALIGN_AUTO),
                 contentDescription = "Automatic Alignment",
@@ -47,11 +46,11 @@ fun XAxisAlignment(
                 onClick = { onClick(it) }
             )
 
-            AlignmentButton(
-                selected = currentSelected == CENTER,
+            XAlignmentButton(
+                selected = currentSelected == Center,
                 icon = createPainter(file = ALIGN_CENTER_VERTICAL),
                 contentDescription = "Align center",
-                axisPosition = CENTER,
+                axisPosition = Center,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
@@ -62,20 +61,20 @@ fun XAxisAlignment(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AlignmentButton(
-                selected = currentSelected == TOP,
+            XAlignmentButton(
+                selected = currentSelected == Top,
                 icon = createPainter(file = ALIGN_TOP),
                 contentDescription = "Align top",
-                axisPosition = TOP,
+                axisPosition = Top,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
 
-            AlignmentButton(
-                selected = currentSelected == BOTTOM,
+            XAlignmentButton(
+                selected = currentSelected == Bottom,
                 icon = createPainter(file = ALIGN_BOTTOM),
                 contentDescription = "Align bottom",
-                axisPosition = BOTTOM,
+                axisPosition = Bottom,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )

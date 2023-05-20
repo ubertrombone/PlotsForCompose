@@ -7,9 +7,9 @@ import com.joshrose.common.components.axes.models.AxisLineStates
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import kotlinx.coroutines.*
 
-class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, AxisLineModel {
+class YAxisLineModelImpl(initialState: AxisLineStates.YState): InstanceKeeper.Instance, YAxisLineModel {
     override val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    override val axisLineState: MutableValue<AxisLineStates> = MutableValue(initialState)
+    override val axisLineState: MutableValue<AxisLineStates.YState> = MutableValue(initialState)
 
     override fun incAlpha() {
         scope.launch {
@@ -41,7 +41,7 @@ class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, 
         }
     }
 
-    override fun updateAxisPosition(position: AxisPosition?) {
+    override fun updateAxisPosition(position: AxisPosition.YAxis?) {
         scope.launch {
             axisLineState.update { it.copy(axisPosition = position) }
         }
@@ -49,7 +49,7 @@ class AxisLineModelImpl(initialState: AxisLineStates): InstanceKeeper.Instance, 
 
     override fun resetAxisLine() {
         scope.launch {
-            axisLineState.update { AxisLineStates() }
+            axisLineState.update { AxisLineStates.YState() }
         }
     }
 

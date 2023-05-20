@@ -8,21 +8,20 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.drawText
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.*
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 fun DrawScope.drawXGuideline(
-    guidelineConfig: GuidelinesConfig,
+    guidelineConfig: GuidelinesConfiguration,
     x: Float,
-    xAxisPosition: XAxisPosition
+    xAxisPosition: XAxis
 ) {
     val lineLength = size.height.minus(guidelineConfig.padding)
-    val startY = if (xAxisPosition == TOP) guidelineConfig.padding else 0f
-    val endY = if (xAxisPosition == CENTER) size.height else startY.plus(lineLength)
+    val startY = if (xAxisPosition == Top) guidelineConfig.padding else 0f
+    val endY = if (xAxisPosition == Center) size.height else startY.plus(lineLength)
 
     drawLine(
         start = Offset(x = x, y = startY),
@@ -35,18 +34,19 @@ fun DrawScope.drawXGuideline(
 }
 
 fun DrawScope.drawXTick(
-    axisLineConfig: AxisLineConfig,
+    axisLineConfig: AxisLineConfiguration.XConfiguration,
     x: Float,
-    xAxisPosition: XAxisPosition,
+    xAxisPosition: XAxis,
     axisOffset: Float
 ) {
     val tickStart = when (xAxisPosition) {
-        TOP -> 0f.minus(axisOffset.div(2f))
-        BOTTOM -> size.height
-        CENTER -> size.height.div(2f).minus(axisOffset.div(2f))
+        Top -> 0f.minus(axisOffset.div(2f))
+        Bottom -> size.height
+        Center -> size.height.div(2f).minus(axisOffset.div(2f))
+        else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
     }
     val tickEnd =
-        if (xAxisPosition == CENTER) tickStart.plus(axisOffset)
+        if (xAxisPosition == Center) tickStart.plus(axisOffset)
         else tickStart.plus(axisOffset.div(2f))
 
     drawLine(
@@ -59,13 +59,14 @@ fun DrawScope.drawXTick(
 }
 
 fun DrawScope.drawXAxis(
-    axisLineConfig: AxisLineConfig,
-    xAxisPosition: XAxisPosition
+    axisLineConfig: AxisLineConfiguration.XConfiguration,
+    xAxisPosition: XAxis
 ) {
     val y = when (xAxisPosition) {
-        TOP -> 0f
-        BOTTOM -> size.height
-        CENTER -> size.height.div(2f)
+        Top -> 0f
+        Bottom -> size.height
+        Center -> size.height.div(2f)
+        else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
     }
 
     drawLine(
@@ -82,10 +83,10 @@ fun DrawScope.drawXAxis(
 fun DrawScope.drawXFloatLabel(
     y: Float,
     x: Float,
-    xAxisPosition: XAxisPosition,
+    xAxisPosition: XAxis,
     label: Float,
     textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig
+    labelConfig: LabelsConfiguration
 ) {
     val labelDimensions = makeTextLayout(
         label = label,
@@ -94,7 +95,7 @@ fun DrawScope.drawXFloatLabel(
     )
 
     val offsetY =
-        if (xAxisPosition == TOP) y.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.axisOffset.toPx())
+        if (xAxisPosition == Top) y.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.axisOffset.toPx())
         else y.plus(labelDimensions.size.height.div(2f)).plus(labelConfig.axisOffset.toPx())
 
     val (xAdjusted, yAdjusted, xPivot) = adjustXLabelCoordinates(
@@ -105,7 +106,7 @@ fun DrawScope.drawXFloatLabel(
         xOffset = labelDimensions.size.width.toFloat()
     )
 
-    val degrees = labelConfig.rotation.times(if (xAxisPosition == TOP) -1 else 1)
+    val degrees = labelConfig.rotation.times(if (xAxisPosition == Top) -1 else 1)
     rotate(degrees = degrees, pivot = Offset(x = xPivot, y = offsetY)) {
         drawText(
             textLayoutResult = labelDimensions,

@@ -6,11 +6,11 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
 @Immutable
-object AxisPosition {
+sealed interface AxisPosition {
     @Stable
-    interface XAxis : Parcelable
+    interface XAxis : AxisPosition, Parcelable
     @Stable
-    interface YAxis: Parcelable
+    interface YAxis: AxisPosition, Parcelable
     @Stable
     interface XOrYAxis: XAxis, YAxis, Parcelable
 
@@ -26,18 +26,27 @@ object AxisPosition {
         override fun toString() = "AxisPosition#End"
     }
 
+    @Parcelize
     @Stable
     object Top : XAxis {
         override fun toString() = "AxisPosition#Top"
     }
 
+    @Parcelize
     @Stable
     object Bottom : XAxis {
         override fun toString() = "AxisPosition#Bottom"
     }
 
+    @Parcelize
     @Stable
     object Center : XOrYAxis {
         override fun toString() = "AxisPosition#Center"
+    }
+
+    @Stable
+    enum class Orientation {
+        X,
+        Y
     }
 }

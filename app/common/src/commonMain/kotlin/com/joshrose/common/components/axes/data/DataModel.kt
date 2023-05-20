@@ -2,7 +2,7 @@ package com.joshrose.common.components.axes.data
 
 import com.arkivanov.decompose.value.MutableValue
 import com.joshrose.common.components.axes.models.DataValueStates
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.util.Coordinates
 import kotlinx.coroutines.CoroutineScope
@@ -30,8 +30,8 @@ interface DataModel {
     fun ranges(yRangeAdjustment: Multiplier, xRangeAdjustment: Multiplier)
 
     fun calculateData(
-        xConfig: ContinuousLabelsConfig,
-        yConfig: ContinuousLabelsConfig
+        xConfig: LabelsConfiguration,
+        yConfig: LabelsConfiguration
     )
 
     fun resetData()

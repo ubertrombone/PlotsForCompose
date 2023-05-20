@@ -5,15 +5,15 @@ import com.joshrose.common.components.axes.models.AxisLineStates
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import kotlinx.coroutines.CoroutineScope
 
-interface AxisLineModel {
+interface YAxisLineModel {
     val scope: CoroutineScope
-    val axisLineState: MutableValue<AxisLineStates>
+    val axisLineState: MutableValue<AxisLineStates.YState>
 
     fun incAlpha()
     fun decAlpha()
     fun incStrokeWidth()
     fun decStrokeWidth()
     fun updateShowTicks(checked: Boolean)
-    fun updateAxisPosition(position: AxisPosition?)
+    fun updateAxisPosition(position: AxisPosition.YAxis?)
     fun resetAxisLine()
 }

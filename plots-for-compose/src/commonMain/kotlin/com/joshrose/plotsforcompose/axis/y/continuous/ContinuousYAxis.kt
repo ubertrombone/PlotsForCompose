@@ -6,10 +6,9 @@ package com.joshrose.plotsforcompose.axis.y.continuous
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
-import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
+import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.y.util.drawYAxis
 import com.joshrose.plotsforcompose.axis.y.util.drawYFloatLabel
@@ -19,11 +18,11 @@ import com.joshrose.plotsforcompose.util.calculateOffset
 
 @ExperimentalTextApi
 fun DrawScope.continuousYAxis(
-    config: ContinuousAxisConfig,
+    config: AxisConfiguration.YConfiguration,
     labels: List<Float>,
     yRangeValues: Range<Float>,
-    yAxisPosition: YAxisPosition,
-    xAxisPosition: XAxisPosition,
+    yAxisPosition: YAxis,
+    xAxisPosition: XAxis,
     drawXAxis: Boolean,
     drawZero: Boolean = true,
     range: Float,
@@ -43,16 +42,18 @@ fun DrawScope.continuousYAxis(
         )
 
         val x = when (yAxisPosition) {
-            YAxisPosition.START -> 0f
-            YAxisPosition.END -> size.width
-            YAxisPosition.CENTER -> size.width.div(2f)
+            Start -> 0f
+            End -> size.width
+            Center -> size.width.div(2f)
+            else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
         }
 
         val xAxisPositionYValue = if (drawXAxis) {
             when (xAxisPosition) {
-                XAxisPosition.BOTTOM -> size.height
-                XAxisPosition.CENTER -> size.height.div(2f)
-                XAxisPosition.TOP -> 0f
+                Bottom -> size.height
+                Center -> size.height.div(2f)
+                Top -> 0f
+                else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
             }
         } else null
 

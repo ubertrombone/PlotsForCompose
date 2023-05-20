@@ -6,16 +6,13 @@ package com.joshrose.plotsforcompose.axis.x.continuous
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
-import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
+import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.Start
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Bottom
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Center
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.End
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Top
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
 import com.joshrose.plotsforcompose.axis.x.util.drawXFloatLabel
@@ -25,11 +22,11 @@ import com.joshrose.plotsforcompose.linegraph.model.StringData
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 fun DrawScope.continuousXAxis(
-    config: ContinuousAxisConfig,
+    config: AxisConfiguration.XConfiguration,
     labels: List<Float>,
     xRangeValues: Range<Float>,
-    xAxisPosition: AxisPosition.XAxis,
-    yAxisPosition: AxisPosition.YAxis,
+    xAxisPosition: XAxis,
+    yAxisPosition: YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Float,
@@ -106,11 +103,11 @@ fun DrawScope.continuousXAxis(
 
 // TODO: Make totalXValues have some meaning
 fun DrawScope.boundXAxis(
-    config: ContinuousAxisConfig,
+    config: AxisConfiguration.XConfiguration,
     totalXValues: Int,
     labels: List<Number>,
-    xAxisPosition: AxisPosition.XAxis,
-    yAxisPosition: AxisPosition.YAxis,
+    xAxisPosition: XAxis,
+    yAxisPosition: YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     axisAlignment: AxisAlignment.XAxis,
@@ -182,11 +179,11 @@ fun DrawScope.boundXAxis(
 
 // TODO: Maybe range isn't needed at all? Then labels can take List<T> where T: Parcelable?
 fun DrawScope.boundXAxis(
-    config: ContinuousAxisConfig,
+    config: AxisConfiguration.XConfiguration,
     totalXValues: Int,
     labels: List<StringData>,
-    xAxisPosition: AxisPosition.XAxis,
-    yAxisPosition: AxisPosition.YAxis,
+    xAxisPosition: XAxis,
+    yAxisPosition: YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Number,
@@ -196,11 +193,11 @@ fun DrawScope.boundXAxis(
 }
 
 fun DrawScope.unboundXAxis(
-    config: ContinuousAxisConfig,
+    config: AxisConfiguration.XConfiguration,
     labels: List<Number>,
     xRangeValues: Range<Number>,
-    xAxisPosition: AxisPosition.XAxis,
-    yAxisPosition: AxisPosition.YAxis,
+    xAxisPosition: XAxis,
+    yAxisPosition: YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Number,
@@ -210,10 +207,10 @@ fun DrawScope.unboundXAxis(
 }
 
 fun DrawScope.unboundXAxis(
-    config: ContinuousAxisConfig,
+    config: AxisConfiguration.XConfiguration,
     labels: List<StringData>,
-    xAxisPosition: AxisPosition.XAxis,
-    yAxisPosition: AxisPosition.YAxis,
+    xAxisPosition: XAxis,
+    yAxisPosition: YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: StringData,
@@ -242,7 +239,7 @@ fun getX(
 }
 
 fun getY(
-    xAxisPosition: AxisPosition.XAxis,
+    xAxisPosition: XAxis,
     height: Float
 ): Float {
     return when (xAxisPosition) {
@@ -255,7 +252,7 @@ fun getY(
 
 fun getYAxisXPosition(
     drawYAxis: Boolean,
-    yAxisPosition: AxisPosition.YAxis,
+    yAxisPosition: YAxis,
     width: Float
 ): Float? {
     return if (drawYAxis) {

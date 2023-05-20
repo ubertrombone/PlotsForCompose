@@ -10,13 +10,8 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.axes.AxesComponent
 import com.joshrose.common.components.axes.models.LoadingState
-import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toXAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.toYAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition.*
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.END
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.START
+import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.drawZero
 import com.joshrose.plotsforcompose.axis.util.floatLabels
@@ -30,8 +25,8 @@ import com.joshrose.plotsforcompose.util.Coordinates
 @Composable
 fun AxesCanvas(
     component: AxesComponent,
-    xConfig: ContinuousAxisConfig,
-    yConfig: ContinuousAxisConfig,
+    xConfig: AxisConfiguration.XConfiguration,
+    yConfig: AxisConfiguration.YConfiguration,
     modifier: Modifier = Modifier
 ) {
     val dataValues by component.dataValueStates.subscribeAsState()
@@ -96,38 +91,38 @@ fun AxesCanvas(
             )
         }
 
-        val xAxisPosition = xConfig.axisLine.axisPosition?.toXAxisPosition() ?: when {
-            yMax <= 0 -> TOP
-            yMin < 0 -> CENTER
-            else -> BOTTOM
+        val xAxisPosition = xConfig.axisLine.axisPosition ?: when {
+            yMax <= 0 -> Top
+            yMin < 0 -> Center
+            else -> Bottom
         }
 
-        val yAxisPosition = yConfig.axisLine.axisPosition?.toYAxisPosition() ?: when {
-            xMax <= 0 -> END
-            xMin < 0 -> YAxisPosition.CENTER
-            else -> START
+        val yAxisPosition = yConfig.axisLine.axisPosition ?: when {
+            xMax <= 0 -> End
+            xMin < 0 -> Center
+            else -> Start
         }
 
         val drawZero = when {
             yMin == 0f && xMin == 0f &&
-                xAxisPosition == BOTTOM && yAxisPosition == START &&
+                xAxisPosition == Bottom && yAxisPosition == Start &&
                 xConfig.showAxis && yConfig.showAxis &&
                 xConfig.showLabels && yConfig.showLabels -> false
             yMax == 0f && xMin == 0f &&
-                xAxisPosition == TOP && yAxisPosition == START &&
+                xAxisPosition == Top && yAxisPosition == Start &&
                 xConfig.showAxis && yConfig.showAxis &&
                 xConfig.showLabels && yConfig.showLabels -> false
             yMin == 0f && xMax == 0f &&
-                xAxisPosition == BOTTOM && yAxisPosition == END &&
+                xAxisPosition == Bottom && yAxisPosition == End &&
                 xConfig.showAxis && yConfig.showAxis &&
                 xConfig.showLabels && yConfig.showLabels -> false
             yMax == 0f && xMax == 0f &&
-                xAxisPosition == TOP && yAxisPosition == END &&
+                xAxisPosition == Top && yAxisPosition == End &&
                 xConfig.showAxis && yConfig.showAxis &&
                 xConfig.showLabels && yConfig.showLabels -> false
             (xLabels.min() != 0f && xLabels.max() != 0f && xLabels.contains(0f)) &&
                 (yLabels.min() != 0f && yLabels.max() != 0f && yLabels.contains(0f)) &&
-                xAxisPosition == CENTER && yAxisPosition == YAxisPosition.CENTER &&
+                xAxisPosition == Center && yAxisPosition == Center &&
                 xConfig.showAxis && yConfig.showAxis &&
                 (xConfig.showLabels || yConfig.showLabels) -> false
             else -> true

@@ -10,14 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.util.ImageResources.*
 import com.joshrose.common.util.createPainter
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition.*
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 
 @Composable
 fun YAxisAlignment(
-    currentSelected: AxisPosition?,
+    currentSelected: YAxis?,
     enabled: Boolean = true,
-    onClick: (AxisPosition?) -> Unit,
+    onClick: (YAxis?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -38,7 +37,7 @@ fun YAxisAlignment(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AlignmentButton(
+            YAlignmentButton(
                 selected = currentSelected == null,
                 icon = createPainter(file = ALIGN_AUTO),
                 contentDescription = "Automatic Alignment",
@@ -47,11 +46,11 @@ fun YAxisAlignment(
                 onClick = { onClick(it) }
             )
 
-            AlignmentButton(
-                selected = currentSelected == CENTER,
+            YAlignmentButton(
+                selected = currentSelected == Center,
                 icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
                 contentDescription = "Align center",
-                axisPosition = CENTER,
+                axisPosition = Center,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
@@ -62,20 +61,20 @@ fun YAxisAlignment(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AlignmentButton(
-                selected = currentSelected == START,
+            YAlignmentButton(
+                selected = currentSelected == Start,
                 icon = createPainter(file = ALIGN_LEFT),
                 contentDescription = "Align start",
-                axisPosition = START,
+                axisPosition = Start,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
 
-            AlignmentButton(
-                selected = currentSelected == END,
+            YAlignmentButton(
+                selected = currentSelected == End,
                 icon = createPainter(file = ALIGN_RIGHT),
                 contentDescription = "Align end",
-                axisPosition = END,
+                axisPosition = End,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )

@@ -5,13 +5,13 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 
 @OptIn(ExperimentalTextApi::class)
 fun makeTextLayout(
     label: Float,
     textMeasurer: TextMeasurer,
-    labelConfig: ContinuousLabelsConfig,
+    labelConfig: LabelsConfiguration,
 ): TextLayoutResult {
     val labelString = AnnotatedString(label.formatToString(labelConfig.format))
     return textMeasurer.measure(

@@ -4,7 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.axes.models.DataValueStates
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.util.*
 import kotlinx.coroutines.*
@@ -74,8 +74,8 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
     }
 
     override fun calculateData(
-        xConfig: ContinuousLabelsConfig,
-        yConfig: ContinuousLabelsConfig
+        xConfig: LabelsConfiguration,
+        yConfig: LabelsConfiguration
     ) {
         maxValues(
             yMaxValue = dataValueStates.value.data.maxYValue(),

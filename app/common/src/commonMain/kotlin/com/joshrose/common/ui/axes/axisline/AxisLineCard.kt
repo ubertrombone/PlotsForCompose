@@ -15,7 +15,9 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.util.ShortClickButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.Companion.Orientation
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Orientation
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Orientation.X
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Orientation.Y
 
 @Suppress("DuplicatedCode")
 @Composable
@@ -25,14 +27,16 @@ fun AxisLineCard(
     strokeWidth: Float,
     checked: Boolean,
     orientation: Orientation,
-    axisPosition: AxisPosition?,
+    xAxisPosition: AxisPosition.XAxis?,
+    yAxisPosition: AxisPosition.YAxis?,
     enabled: Boolean = true,
     incAlphaClick: () -> Unit,
     decAlphaClick: () -> Unit,
     incStrokeWidthClick: () -> Unit,
     decStrokeWidthClick: () -> Unit,
     onCheckClick: (Boolean) -> Unit,
-    onAlignmentClick: (AxisPosition?) -> Unit,
+    onXAlignmentClick: (AxisPosition.XAxis?) -> Unit,
+    onYAlignmentClick: (AxisPosition.YAxis?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -86,15 +90,15 @@ fun AxisLineCard(
             Spacer(Modifier.height(10.dp))
 
             when (orientation) {
-                Orientation.X -> XAxisAlignment(
-                    currentSelected = axisPosition,
+                X -> XAxisAlignment(
+                    currentSelected = xAxisPosition,
                     enabled = enabled,
-                    onClick = { onAlignmentClick(it) }
+                    onClick = { onXAlignmentClick(it) }
                 )
-                Orientation.Y -> YAxisAlignment(
-                    currentSelected = axisPosition,
+                Y -> YAxisAlignment(
+                    currentSelected = yAxisPosition,
                     enabled = enabled,
-                    onClick = { onAlignmentClick(it) }
+                    onClick = { onYAlignmentClick(it) }
                 )
             }
         }

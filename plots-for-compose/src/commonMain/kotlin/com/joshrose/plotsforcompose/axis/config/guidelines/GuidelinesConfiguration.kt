@@ -16,7 +16,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  * @property padding the padding to be applied to the end of the guidelines closest to the axis.
  * @constructor Creates a configuration for axis guidelines.
  */
-data class GuidelinesConfig(
+data class GuidelinesConfiguration(
     val lineColor: Color,
     val alpha: Multiplier,
     val strokeWidth: Float,
@@ -24,27 +24,27 @@ data class GuidelinesConfig(
     val padding: Float
 )
 
-/** Contains default values used for implementations of [GuidelinesConfig] */
-object GuidelinesConfigDefaults {
+/** Contains default values used for implementations of [GuidelinesConfiguration] */
+object GuidelinesConfigurationDefaults {
 
     /**
-     * Creates a [GuidelinesConfig] for basic guideline implementations.
+     * Creates a [GuidelinesConfiguration] for basic guideline implementations.
      *
      * @param lineColor the guideline color.
      * @param alpha the guideline alpha.
      * @param strokeWidth the guideline line width.
      * @param pathEffect the pathEffect to apply to the guidelines.
      * @param padding the padding to offset the start of the guideline from the axis.
-     * @return the resulting [GuidelinesConfig] to be used with an axis configuration.
+     * @return the resulting [GuidelinesConfiguration] to be used with an axis configuration.
      */
-    fun guidelinesConfigDefaults(
+    fun guidelinesConfigurationDefaults(
         lineColor: Color = md_theme_dark_onBackground,
         alpha: Multiplier = Multiplier(factor = .1f),
         strokeWidth: Float = 2f,
         pathEffect: PathEffect? = null,
         padding: Float = 25f
-    ): GuidelinesConfig =
-        GuidelinesConfig(
+    ): GuidelinesConfiguration =
+        GuidelinesConfiguration(
             lineColor = lineColor,
             alpha = alpha,
             strokeWidth = strokeWidth,

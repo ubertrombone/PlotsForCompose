@@ -12,8 +12,9 @@ import com.arkivanov.essenty.parcelable.Parcelize
 import com.arkivanov.essenty.statekeeper.consume
 import com.joshrose.common.components.axes.AxesComponent.Child
 import com.joshrose.common.components.axes.axisline.AxisLineComponent
-import com.joshrose.common.components.axes.axisline.AxisLineModelImpl
 import com.joshrose.common.components.axes.axisline.DefaultAxisLineComponent
+import com.joshrose.common.components.axes.axisline.XAxisLineModelImpl
+import com.joshrose.common.components.axes.axisline.YAxisLineModelImpl
 import com.joshrose.common.components.axes.data.DataModelImpl
 import com.joshrose.common.components.axes.guidelines.DefaultGuidelinesComponent
 import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
@@ -29,7 +30,7 @@ import com.joshrose.common.components.axes.visibility.VisibilityComponent
 import com.joshrose.common.components.axes.visibility.VisibilityModelImpl
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.util.Coordinates
 
 class DefaultAxesComponent(
@@ -55,7 +56,7 @@ class DefaultAxesComponent(
 
     override fun updateData(data: List<Coordinates>) = _dataValuesState.updateData(data)
 
-    override fun calculateData(xConfig: ContinuousLabelsConfig, yConfig: ContinuousLabelsConfig) {
+    override fun calculateData(xConfig: LabelsConfiguration, yConfig: LabelsConfiguration) {
         _dataValuesState.calculateData(xConfig, yConfig)
         _loadingState.updateState(LoadingState.Complete)
     }
@@ -89,18 +90,18 @@ class DefaultAxesComponent(
     override val yGuidelinesState: Value<GuidelinesStates> = _yGuidelinesState.guidelinesState
 
     private val _xAxisLineState = instanceKeeper.getOrCreate(KEY_X_AXIS_LINE) {
-        AxisLineModelImpl(
-            initialState = stateKeeper.consume(KEY_X_AXIS_LINE) ?: AxisLineStates()
+        XAxisLineModelImpl(
+            initialState = stateKeeper.consume(KEY_X_AXIS_LINE) ?: AxisLineStates.XState()
         )
     }
-    override val xAxisLineState: Value<AxisLineStates> = _xAxisLineState.axisLineState
+    override val xAxisLineState: Value<AxisLineStates.XState> = _xAxisLineState.axisLineState
 
     private val _yAxisLineState = instanceKeeper.getOrCreate(KEY_Y_AXIS_LINE) {
-        AxisLineModelImpl(
-            initialState = stateKeeper.consume(KEY_Y_AXIS_LINE) ?: AxisLineStates()
+        YAxisLineModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_AXIS_LINE) ?: AxisLineStates.YState()
         )
     }
-    override val yAxisLineState: Value<AxisLineStates> = _yAxisLineState.axisLineState
+    override val yAxisLineState: Value<AxisLineStates.YState> = _yAxisLineState.axisLineState
 
     private val _xLabelsState = instanceKeeper.getOrCreate(KEY_X_LABELS) {
         LabelsModelImpl(

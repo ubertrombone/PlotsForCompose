@@ -23,10 +23,10 @@ import com.joshrose.common.util.ImageResources.*
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.common.util.createPainter
 import com.joshrose.common.util.paddingBottomBar
-import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfigDefaults
+import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
 import com.joshrose.plotsforcompose.util.Coordinates
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
@@ -49,19 +49,19 @@ fun AxesContent(
     val xLabelsStates by component.xLabelsState.subscribeAsState()
     val yLabelsStates by component.yLabelsState.subscribeAsState()
 
-    val xConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
+    val xConfig = AxisConfiguration.xAxisConfigurationDefaults()
         .copy(
             showAxis = xAxisShowStates.showAxis,
             showLabels = xAxisShowStates.showLabels,
             showAxisLine = xAxisShowStates.showAxisLine,
             showGuidelines = xAxisShowStates.showGuidelines,
-            guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
+            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
                 strokeWidth = xGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
                 alpha = xGuidelinesStates.alpha,
                 padding = xGuidelinesStates.padding
             ),
-            labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
+            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
                 rotation = xLabelsStates.rotation,
                 axisOffset = xLabelsStates.axisOffset.dp,
                 rangeAdjustment = xLabelsStates.rangeAdjustment,
@@ -70,7 +70,7 @@ fun AxesContent(
                 breaks = xLabelsStates.breaks,
                 fontColor = colorScheme.primary,
             ),
-            axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
+            axisLine = AxisLineConfiguration.xAxisLineConfigurationDefaults().copy(
                 ticks = xAxisLineStates.ticks,
                 lineColor = colorScheme.primary,
                 strokeWidth = xAxisLineStates.strokeWidth,
@@ -78,19 +78,19 @@ fun AxesContent(
                 axisPosition = xAxisLineStates.axisPosition
             )
         )
-    val yConfig = ContinuousAxisConfigDefaults.continuousAxisConfigDefaults()
+    val yConfig = AxisConfiguration.yAxisConfigurationDefaults()
         .copy(
             showAxis = yAxisShowStates.showAxis,
             showLabels = yAxisShowStates.showLabels,
             showAxisLine = yAxisShowStates.showAxisLine,
             showGuidelines = yAxisShowStates.showGuidelines,
-            guidelines = GuidelinesConfigDefaults.guidelinesConfigDefaults().copy(
+            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
                 strokeWidth = yGuidelinesStates.strokeWidth,
                 lineColor = colorScheme.onBackground,
                 alpha = yGuidelinesStates.alpha,
                 padding = yGuidelinesStates.padding
             ),
-            labels = ContinuousLabelsConfigDefaults.continuousLabelsConfigDefaults().copy(
+            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
                 rotation = yLabelsStates.rotation,
                 axisOffset = yLabelsStates.axisOffset.dp,
                 rangeAdjustment = yLabelsStates.rangeAdjustment,
@@ -99,7 +99,7 @@ fun AxesContent(
                 breaks = yLabelsStates.breaks,
                 fontColor = colorScheme.primary
             ),
-            axisLine = AxisLineConfigDefaults.axisLineConfigDefaults().copy(
+            axisLine = AxisLineConfiguration.yAxisLineConfigurationDefaults().copy(
                 ticks = yAxisLineStates.ticks,
                 lineColor = colorScheme.primary,
                 strokeWidth = yAxisLineStates.strokeWidth,

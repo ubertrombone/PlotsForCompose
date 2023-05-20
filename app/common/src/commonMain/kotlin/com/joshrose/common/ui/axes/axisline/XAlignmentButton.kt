@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.common.ui.axes.axisline
 
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -11,14 +13,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 
 @Composable
-fun AlignmentButton(
+fun XAlignmentButton(
     selected: Boolean,
     icon: Painter,
     contentDescription: String?,
-    axisPosition: AxisPosition?,
+    axisPosition: AxisPosition.XAxis?,
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
-    onClick: (AxisPosition?) -> Unit,
+    onClick: (AxisPosition.XAxis?) -> Unit,
 ) {
     val contentColor = if (selected) {
         if (isSystemInDarkTheme()) colorScheme.primary else colorScheme.primaryContainer

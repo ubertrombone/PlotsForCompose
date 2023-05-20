@@ -2,9 +2,9 @@ package com.joshrose.plotsforcompose.axis.config
 
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfig
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfig
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigDefaults
-import com.joshrose.plotsforcompose.axis.config.labels.ContinuousLabelsConfig
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.DiscreteLabelsConfig
 import com.joshrose.plotsforcompose.axis.config.labels.DiscreteLabelsConfigDefaults
 
@@ -15,8 +15,8 @@ import com.joshrose.plotsforcompose.axis.config.labels.DiscreteLabelsConfigDefau
  * @property showLabels if true, labels for the axis will be drawn.
  * @property showGuidelines if true, guidelines will be drawn.
  * @property showAxisLine if true, a line will be drawn along the axis.
- * @property guidelines provides [GuidelinesConfig].
- * @property labels provides [ContinuousLabelsConfig].
+ * @property guidelines provides [GuidelinesConfiguration].
+ * @property labels provides [LabelsConfiguration].
  * @property axisLine provides [AxisLineConfig].
  * @constructor Creates a configuration for a continuous axis.
  */
@@ -25,7 +25,7 @@ data class DiscreteAxisConfig(
     val showLabels: Boolean,
     val showGuidelines: Boolean,
     val showAxisLine: Boolean,
-    val guidelines: GuidelinesConfig,
+    val guidelines: GuidelinesConfiguration,
     val labels: DiscreteLabelsConfig,
     val axisLine: AxisLineConfig
 )
@@ -40,7 +40,7 @@ object DiscreteAxisConfigDefaults {
      * @param showLabels true if labels should be drawn. Defaults to true.
      * @param showGuidelines true if guidelines should be drawn. Defaults to false.
      * @param showAxisLine true if a line should be drawn along the axis. Defaults to true.
-     * @param guidelines provides [GuidelinesConfig].
+     * @param guidelines provides [GuidelinesConfiguration].
      * @param labels provides [DiscreteLabelsConfig].
      * @param axisLine provides [AxisLineConfig].
      * @return the resulting [DiscreteAxisConfig] to be applied to a chart.
@@ -50,7 +50,7 @@ object DiscreteAxisConfigDefaults {
         showLabels: Boolean = true,
         showGuidelines: Boolean = false,
         showAxisLine: Boolean = true,
-        guidelines: GuidelinesConfig = GuidelinesConfigDefaults.guidelinesConfigDefaults(),
+        guidelines: GuidelinesConfiguration = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults(),
         labels: DiscreteLabelsConfig = DiscreteLabelsConfigDefaults.discreteLabelsConfigDefaults(),
         axisLine: AxisLineConfig = AxisLineConfigDefaults.axisLineConfigDefaults()
     ): DiscreteAxisConfig =

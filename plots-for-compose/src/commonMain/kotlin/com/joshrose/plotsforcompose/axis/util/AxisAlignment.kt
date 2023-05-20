@@ -6,14 +6,14 @@ import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
 @Immutable
-object AxisAlignment {
+sealed interface AxisAlignment {
     @Stable
-    interface XAxis : Parcelable {
+    interface XAxis : AxisAlignment, Parcelable {
         val offset get() = 0
     }
 
     @Stable
-    interface YAxis : Parcelable {
+    interface YAxis : AxisAlignment, Parcelable {
         val offset get() = 0
     }
 
