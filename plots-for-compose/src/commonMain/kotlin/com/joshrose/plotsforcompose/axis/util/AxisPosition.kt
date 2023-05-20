@@ -1,47 +1,43 @@
 package com.joshrose.plotsforcompose.axis.util
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 
-@Parcelize
-sealed interface AxisPosition : Parcelable {
+@Immutable
+object AxisPosition {
+    @Stable
+    interface XAxis : Parcelable
+    @Stable
+    interface YAxis: Parcelable
+    @Stable
+    interface XOrYAxis: XAxis, YAxis, Parcelable
 
     @Parcelize
-    enum class XAxisPosition: AxisPosition {
-        BOTTOM,
-        CENTER,
-        TOP
+    @Stable
+    object Start : YAxis {
+        override fun toString() = "AxisPosition#Start"
     }
 
     @Parcelize
-    enum class YAxisPosition: AxisPosition {
-        START,
-        CENTER,
-        END
+    @Stable
+    object End : YAxis {
+        override fun toString() = "AxisPosition#End"
     }
 
-    companion object {
-        fun AxisPosition.toXAxisPosition(): XAxisPosition {
-            return when (this) {
-                XAxisPosition.BOTTOM -> XAxisPosition.BOTTOM
-                XAxisPosition.CENTER -> XAxisPosition.CENTER
-                XAxisPosition.TOP -> XAxisPosition.TOP
-                else -> throw NoSuchElementException("Element must be of type XAxisPosition.")
-            }
-        }
+    @Stable
+    object Top : XAxis {
+        override fun toString() = "AxisPosition#Top"
+    }
 
-        fun AxisPosition.toYAxisPosition(): YAxisPosition {
-            return when (this) {
-                YAxisPosition.START -> YAxisPosition.START
-                YAxisPosition.CENTER -> YAxisPosition.CENTER
-                YAxisPosition.END -> YAxisPosition.END
-                else -> throw NoSuchElementException("Element must be of type YAxisPosition.")
-            }
-        }
+    @Stable
+    object Bottom : XAxis {
+        override fun toString() = "AxisPosition#Bottom"
+    }
 
-        enum class Orientation {
-            X,
-            Y
-        }
+    @Stable
+    object Center : XOrYAxis {
+        override fun toString() = "AxisPosition#Center"
     }
 }

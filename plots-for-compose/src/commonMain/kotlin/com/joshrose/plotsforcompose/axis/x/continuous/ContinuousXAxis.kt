@@ -11,8 +11,11 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.Start
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Bottom
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Center
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.End
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.Top
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
 import com.joshrose.plotsforcompose.axis.x.util.drawXFloatLabel
@@ -25,8 +28,8 @@ fun DrawScope.continuousXAxis(
     config: ContinuousAxisConfig,
     labels: List<Float>,
     xRangeValues: Range<Float>,
-    xAxisPosition: XAxisPosition,
-    yAxisPosition: YAxisPosition,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Float,
@@ -44,16 +47,18 @@ fun DrawScope.continuousXAxis(
         )
 
         val y = when (xAxisPosition) {
-            XAxisPosition.TOP -> 0f
-            XAxisPosition.BOTTOM -> size.height
-            XAxisPosition.CENTER -> size.height.div(2f)
+            Top -> 0f
+            Bottom -> size.height
+            Center -> size.height.div(2f)
+            else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
         }
 
         val yAxisPositionXValue = if (drawYAxis) {
             when (yAxisPosition) {
-                YAxisPosition.START -> 0f
-                YAxisPosition.CENTER -> size.width.div(2f)
-                YAxisPosition.END -> size.width
+                AxisPosition.Start -> 0f
+                Center -> size.width.div(2f)
+                End -> size.width
+                else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
             }
         } else null
 
@@ -104,8 +109,8 @@ fun DrawScope.boundXAxis(
     config: ContinuousAxisConfig,
     totalXValues: Int,
     labels: List<Number>,
-    xAxisPosition: XAxisPosition,
-    yAxisPosition: YAxisPosition,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     axisAlignment: AxisAlignment.XAxis,
@@ -175,82 +180,13 @@ fun DrawScope.boundXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
-//fun DrawScope.zeroBoundXAxis(
-//    config: ContinuousAxisConfig,
-//    totalXValues: Int,
-//    labels: List<Number>,
-//    xAxisPosition: XAxisPosition,
-//    yAxisPosition: YAxisPosition,
-//    drawYAxis: Boolean,
-//    drawZero: Boolean = true,
-//    textMeasurer: TextMeasurer
-//) {
-//    val guidelinesFactor = size.width.div(totalXValues.minus(1).toFloat())
-//    val labelsFactor = size.width.div(labels.size.minus(1).toFloat())
-//    val numberLabel = labels.map { it.toString().toFloat() }
-//
-//    val y = getY(xAxisPosition = xAxisPosition, height = size.height)
-//    val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
-//
-//    numberLabel.forEachIndexed { index, label ->
-//        val x = index.times(labelsFactor)
-//
-//        if (!drawZero && label == 0f) return@forEachIndexed
-//
-//        if (config.showLabels) {
-//            drawXFloatLabel(
-//                y = y,
-//                x = x,
-//                label = label,
-//                xAxisPosition = xAxisPosition,
-//                textMeasurer = textMeasurer,
-//                labelConfig = config.labels
-//            )
-//        }
-//
-//        if (config.showAxisLine && config.axisLine.ticks) {
-//            drawXTick(
-//                axisLineConfig = config.axisLine,
-//                x = x,
-//                xAxisPosition = xAxisPosition,
-//                axisOffset = config.labels.axisOffset.toPx()
-//            )
-//        }
-//
-//    }
-//
-//    if (config.showGuidelines) {
-//        (0 until totalXValues).forEachIndexed { index, _ ->
-//            val x = index.times(guidelinesFactor)
-//
-//            if (drawYAxis) {
-//                if (yAxisPositionXValue != x) {
-//                    drawXGuideline(
-//                        guidelineConfig = config.guidelines,
-//                        x = x,
-//                        xAxisPosition = xAxisPosition
-//                    )
-//                }
-//            } else {
-//                drawXGuideline(
-//                    guidelineConfig = config.guidelines,
-//                    x = x,
-//                    xAxisPosition = xAxisPosition
-//                )
-//            }
-//        }
-//    }
-//
-//    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
-//}
-
 // TODO: Maybe range isn't needed at all? Then labels can take List<T> where T: Parcelable?
 fun DrawScope.boundXAxis(
     config: ContinuousAxisConfig,
     totalXValues: Int,
     labels: List<StringData>,
-    xAxisPosition: XAxisPosition,
-    yAxisPosition: YAxisPosition,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Number,
@@ -263,8 +199,8 @@ fun DrawScope.unboundXAxis(
     config: ContinuousAxisConfig,
     labels: List<Number>,
     xRangeValues: Range<Number>,
-    xAxisPosition: XAxisPosition,
-    yAxisPosition: YAxisPosition,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Number,
@@ -276,8 +212,8 @@ fun DrawScope.unboundXAxis(
 fun DrawScope.unboundXAxis(
     config: ContinuousAxisConfig,
     labels: List<StringData>,
-    xAxisPosition: XAxisPosition,
-    yAxisPosition: YAxisPosition,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: StringData,
@@ -306,26 +242,28 @@ fun getX(
 }
 
 fun getY(
-    xAxisPosition: XAxisPosition,
+    xAxisPosition: AxisPosition.XAxis,
     height: Float
 ): Float {
     return when (xAxisPosition) {
-        XAxisPosition.TOP -> 0f
-        XAxisPosition.BOTTOM -> height
-        XAxisPosition.CENTER -> height.div(2f)
+        Top -> 0f
+        Bottom -> height
+        Center -> height.div(2f)
+        else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
     }
 }
 
 fun getYAxisXPosition(
     drawYAxis: Boolean,
-    yAxisPosition: YAxisPosition,
+    yAxisPosition: AxisPosition.YAxis,
     width: Float
 ): Float? {
     return if (drawYAxis) {
         when (yAxisPosition) {
-            YAxisPosition.START -> 0f
-            YAxisPosition.CENTER -> width.div(2f)
-            YAxisPosition.END -> width
+            AxisPosition.Start -> 0f
+            Center -> width.div(2f)
+            End -> width
+            else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
         }
     } else null
 }
