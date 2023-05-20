@@ -9,8 +9,8 @@ import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.ContinuousAxisConfig
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
-import com.joshrose.plotsforcompose.axis.util.AxisAlignment.Left
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
+import com.joshrose.plotsforcompose.axis.util.AxisAlignment.Start
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.XAxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.YAxisPosition
 import com.joshrose.plotsforcompose.axis.util.Range
@@ -108,7 +108,7 @@ fun DrawScope.boundXAxis(
     yAxisPosition: YAxisPosition,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
-    axisAlignment: AxisAlignment,
+    axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
     val guidelinesFactor = size.width.div(totalXValues.plus(axisAlignment.offset).toFloat())
@@ -121,7 +121,7 @@ fun DrawScope.boundXAxis(
     // TODO: merge forEach statements and draw label when defined break is reached.
     numberLabel.forEachIndexed { index, label ->
         val x =
-            if (axisAlignment == Left || axisAlignment == SpaceBetween) index.times(labelsFactor)
+            if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(labelsFactor)
             else index.plus(1).times(labelsFactor)
 
         if (!drawZero && label == 0f) return@forEachIndexed
@@ -151,7 +151,7 @@ fun DrawScope.boundXAxis(
     if (config.showGuidelines) {
         (0 until totalXValues).forEachIndexed { index, _ ->
             val x =
-                if (axisAlignment == Left || axisAlignment == SpaceBetween) index.times(guidelinesFactor)
+                if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(guidelinesFactor)
                 else index.plus(1).times(guidelinesFactor)
 
             if (drawYAxis) {
