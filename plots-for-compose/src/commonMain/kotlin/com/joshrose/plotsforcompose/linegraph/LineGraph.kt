@@ -101,7 +101,6 @@ fun LineGraph(
         if (xAxisConfig.showAxis) {
             boundXAxis(
                 config = xAxisConfig,
-                totalXValues = xLabels.size,
                 labels = xLabels,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,

@@ -6,6 +6,7 @@ import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.style.TextOverflow
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
+import java.text.DecimalFormat
 
 @OptIn(ExperimentalTextApi::class)
 fun makeTextLayout(
@@ -21,3 +22,17 @@ fun makeTextLayout(
         softWrap = false
     )
 }
+
+@OptIn(ExperimentalTextApi::class)
+fun makeTextLayout(
+    label: String,
+    textMeasurer: TextMeasurer,
+    labelConfig: LabelsConfiguration
+) = textMeasurer.measure(
+    text = label,
+    style = labelConfig.textStyle.copy(color = labelConfig.fontColor),
+    overflow = TextOverflow.Visible,
+    softWrap = false
+)
+
+fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()

@@ -15,7 +15,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.drawZero
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.x.continuous.continuousXAxis
+import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.util.Coordinates
@@ -130,7 +130,7 @@ fun AxesCanvas(
 
         Canvas(modifier = modifier) {
             if (xConfig.showAxis) {
-                continuousXAxis(
+                unboundXAxis(
                     config = xConfig,
                     labels = xLabels,
                     xRangeValues = Range(min = xMin, max = xMax),

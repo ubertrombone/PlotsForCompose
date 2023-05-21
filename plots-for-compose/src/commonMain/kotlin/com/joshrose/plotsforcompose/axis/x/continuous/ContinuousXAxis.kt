@@ -14,50 +14,37 @@ import com.joshrose.plotsforcompose.axis.util.AxisAlignment.Start
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
+import com.joshrose.plotsforcompose.axis.util.Range.Companion.mapToFloat
 import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
-import com.joshrose.plotsforcompose.axis.x.util.drawXFloatLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
+import com.joshrose.plotsforcompose.axis.x.util.drawXLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXTick
-import com.joshrose.plotsforcompose.linegraph.model.StringData
 import com.joshrose.plotsforcompose.util.calculateOffset
 
-fun DrawScope.continuousXAxis(
+fun DrawScope.unboundXAxis(
     config: AxisConfiguration.XConfiguration,
-    labels: List<Float>,
-    xRangeValues: Range<Float>,
+    labels: List<Number>,
+    xRangeValues: Range<Number>,
     xAxisPosition: XAxis,
     yAxisPosition: YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
-    range: Float,
+    range: Number,
     textMeasurer: TextMeasurer
 ) {
+    val y = getY(xAxisPosition = xAxisPosition, height = size.height)
+    val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
+
     labels.forEachIndexed { index, label ->
         val x = getX(
             width = size.width,
-            xValues = xRangeValues,
-            label = label,
-            range = range,
+            xValues = xRangeValues.mapToFloat(),
+            label = label.toFloat(),
+            range = range.toFloat(),
             rangeAdj = config.labels.rangeAdjustment,
             index = index,
             labelsSize = labels.size
         )
-
-        val y = when (xAxisPosition) {
-            Top -> 0f
-            Bottom -> size.height
-            Center -> size.height.div(2f)
-            else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
-        }
-
-        val yAxisPositionXValue = if (drawYAxis) {
-            when (yAxisPosition) {
-                AxisPosition.Start -> 0f
-                Center -> size.width.div(2f)
-                End -> size.width
-                else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
-            }
-        } else null
 
         if (config.showGuidelines) {
             if (drawYAxis && yAxisPositionXValue != x) {
@@ -78,7 +65,7 @@ fun DrawScope.continuousXAxis(
         if (!drawZero && label == 0f) return@forEachIndexed
 
         if (config.showLabels) {
-            drawXFloatLabel(
+            drawXLabel(
                 y = y,
                 x = x,
                 label = label,
@@ -101,11 +88,11 @@ fun DrawScope.continuousXAxis(
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
 }
 
-// TODO: Make totalXValues have some meaning
+// TODO: Consider how drawing all/some/none guidelines and all/some/none labels might go
+// --> Bound XAxis doesn't need breaks. It needs a list of the labels to be shown.
 fun DrawScope.boundXAxis(
     config: AxisConfiguration.XConfiguration,
-    totalXValues: Int,
-    labels: List<Number>,
+    labels: List<Any>,
     xAxisPosition: XAxis,
     yAxisPosition: YAxis,
     drawYAxis: Boolean,
@@ -113,49 +100,17 @@ fun DrawScope.boundXAxis(
     axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
-    val guidelinesFactor = size.width.div(totalXValues.plus(axisAlignment.offset).toFloat())
-    val labelsFactor = size.width.div(labels.size.plus(axisAlignment.offset).toFloat())
-    val numberLabel = labels.map { it.toString().toFloat() }
+    val factor = size.width.div(labels.size.plus(axisAlignment.offset).toFloat())
 
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
 
-    // TODO: merge forEach statements and draw label when defined break is reached.
-    numberLabel.forEachIndexed { index, label ->
+    labels.forEachIndexed { index, label ->
         val x =
-            if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(labelsFactor)
-            else index.plus(1).times(labelsFactor)
+            if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(factor)
+            else index.plus(1).times(factor)
 
-        if (!drawZero && label == 0f) return@forEachIndexed
-
-        if (config.showLabels) {
-            drawXFloatLabel(
-                y = y,
-                x = x,
-                label = label,
-                xAxisPosition = xAxisPosition,
-                textMeasurer = textMeasurer,
-                labelConfig = config.labels
-            )
-        }
-
-        if (config.showAxisLine && config.axisLine.ticks) {
-            drawXTick(
-                axisLineConfig = config.axisLine,
-                x = x,
-                xAxisPosition = xAxisPosition,
-                axisOffset = config.labels.axisOffset.toPx()
-            )
-        }
-
-    }
-
-    if (config.showGuidelines) {
-        (0 until totalXValues).forEachIndexed { index, _ ->
-            val x =
-                if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(guidelinesFactor)
-                else index.plus(1).times(guidelinesFactor)
-
+        if (config.showGuidelines) {
             if (drawYAxis) {
                 if (yAxisPositionXValue != x) {
                     drawXGuideline(
@@ -172,51 +127,32 @@ fun DrawScope.boundXAxis(
                 )
             }
         }
+
+        if (!drawZero && label == 0f) return@forEachIndexed
+
+        if (config.showLabels) {
+            drawXLabel(
+                y = y,
+                x = x,
+                label = label,
+                xAxisPosition = xAxisPosition,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels
+            )
+        }
+
+        if (config.showAxisLine && config.axisLine.ticks) {
+            drawXTick(
+                axisLineConfig = config.axisLine,
+                x = x,
+                xAxisPosition = xAxisPosition,
+                axisOffset = config.labels.axisOffset.toPx()
+            )
+        }
+
     }
 
     if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
-}
-
-// TODO: Maybe range isn't needed at all? Then labels can take List<T> where T: Parcelable?
-fun DrawScope.boundXAxis(
-    config: AxisConfiguration.XConfiguration,
-    totalXValues: Int,
-    labels: List<StringData>,
-    xAxisPosition: XAxis,
-    yAxisPosition: YAxis,
-    drawYAxis: Boolean,
-    drawZero: Boolean = true,
-    range: Number,
-    textMeasurer: TextMeasurer
-) {
-
-}
-
-fun DrawScope.unboundXAxis(
-    config: AxisConfiguration.XConfiguration,
-    labels: List<Number>,
-    xRangeValues: Range<Number>,
-    xAxisPosition: XAxis,
-    yAxisPosition: YAxis,
-    drawYAxis: Boolean,
-    drawZero: Boolean = true,
-    range: Number,
-    textMeasurer: TextMeasurer
-) {
-
-}
-
-fun DrawScope.unboundXAxis(
-    config: AxisConfiguration.XConfiguration,
-    labels: List<StringData>,
-    xAxisPosition: XAxis,
-    yAxisPosition: YAxis,
-    drawYAxis: Boolean,
-    drawZero: Boolean = true,
-    range: StringData,
-    textMeasurer: TextMeasurer
-) {
-
 }
 
 fun getX(
@@ -238,10 +174,7 @@ fun getX(
     } else rangeDiff.div(range).times(width)
 }
 
-fun getY(
-    xAxisPosition: XAxis,
-    height: Float
-): Float {
+fun getY(xAxisPosition: XAxis, height: Float): Float {
     return when (xAxisPosition) {
         Top -> 0f
         Bottom -> height

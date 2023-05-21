@@ -80,19 +80,27 @@ fun DrawScope.drawXAxis(
 }
 
 @ExperimentalTextApi
-fun DrawScope.drawXFloatLabel(
+fun DrawScope.drawXLabel(
     y: Float,
     x: Float,
     xAxisPosition: XAxis,
-    label: Float,
+    label: Any,
     textMeasurer: TextMeasurer,
     labelConfig: LabelsConfiguration
 ) {
-    val labelDimensions = makeTextLayout(
-        label = label,
-        textMeasurer = textMeasurer,
-        labelConfig = labelConfig
-    )
+    val labelDimensions = if (label is Number) {
+        makeTextLayout(
+            label = label.toFloat(),
+            textMeasurer = textMeasurer,
+            labelConfig = labelConfig
+        )
+    } else {
+        makeTextLayout(
+            label = label.toString(),
+            textMeasurer = textMeasurer,
+            labelConfig = labelConfig
+        )
+    }
 
     val offsetY =
         if (xAxisPosition == Top) y.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.axisOffset.toPx())
