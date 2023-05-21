@@ -1,4 +1,5 @@
 @file:Suppress("DuplicatedCode")
+@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.y.util
 
@@ -35,6 +36,7 @@ fun DrawScope.drawYGuideline(
     )
 }
 
+@Throws(IllegalStateException::class)
 fun DrawScope.drawYTick(
     axisLineConfig: AxisLineConfiguration.YConfiguration,
     y: Float,
@@ -60,6 +62,7 @@ fun DrawScope.drawYTick(
     )
 }
 
+@Throws(IllegalStateException::class)
 fun DrawScope.drawYAxis(
     axisLineConfig: AxisLineConfiguration.YConfiguration,
     yAxisPosition: YAxis
@@ -81,20 +84,29 @@ fun DrawScope.drawYAxis(
     )
 }
 
-@ExperimentalTextApi
-fun DrawScope.drawYFloatLabel(
+fun DrawScope.drawYLabel(
     y: Float,
     x: Float,
-    label: Float,
+    label: Any,
     yAxisPosition: YAxis,
     textMeasurer: TextMeasurer,
     labelConfig: LabelsConfiguration
 ) {
-    val labelDimensions = makeTextLayout(
-        label = label,
-        textMeasurer = textMeasurer,
-        labelConfig = labelConfig
-    )
+    val labelDimensions = if (label is Number) {
+        makeTextLayout(
+            label = label.toFloat(),
+            textMeasurer = textMeasurer,
+            labelConfig = labelConfig
+        )
+    } else {
+        makeTextLayout(
+            label = label.toString(),
+            textMeasurer = textMeasurer,
+            labelConfig = labelConfig
+        )
+    }
+
+
 
     val offsetX =
         if (yAxisPosition == End) x.plus(labelConfig.axisOffset.toPx())

@@ -1,4 +1,5 @@
 @file:Suppress("DuplicatedCode")
+@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.x.util
 
@@ -33,6 +34,7 @@ fun DrawScope.drawXGuideline(
     )
 }
 
+@Throws(IllegalStateException::class)
 fun DrawScope.drawXTick(
     axisLineConfig: AxisLineConfiguration.XConfiguration,
     x: Float,
@@ -58,6 +60,7 @@ fun DrawScope.drawXTick(
     )
 }
 
+@Throws(IllegalStateException::class)
 fun DrawScope.drawXAxis(
     axisLineConfig: AxisLineConfiguration.XConfiguration,
     xAxisPosition: XAxis
@@ -79,7 +82,6 @@ fun DrawScope.drawXAxis(
     )
 }
 
-@ExperimentalTextApi
 fun DrawScope.drawXLabel(
     y: Float,
     x: Float,

@@ -13,7 +13,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.boundXAxis
-import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
+import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.common.maxValue
 import com.joshrose.plotsforcompose.common.minValue
 import com.joshrose.plotsforcompose.common.range
@@ -82,12 +82,11 @@ fun LineGraph(
         else -> Start
     }
 
-    // TODO: Prepare all of the new x and y axes.
     Canvas(modifier = modifier) {
         if (yAxisConfig.showAxis) {
-            continuousYAxis(
+            unboundYAxis(
                 config = yAxisConfig,
-                labels = yLabels,
+                labels = yLabels.reversed(),
                 range = yRange,
                 yRangeValues = Range(min = minYValue, max = maxYValue),
                 yAxisPosition = yAxisPosition,
@@ -105,7 +104,7 @@ fun LineGraph(
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
-                axisAlignment = AxisAlignment.Start,
+                axisAlignment = AxisAlignment.SpaceBetween,
                 textMeasurer = xTextMeasurer
             )
         }

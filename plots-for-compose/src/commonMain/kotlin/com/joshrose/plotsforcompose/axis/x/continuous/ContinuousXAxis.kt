@@ -174,26 +174,24 @@ fun getX(
     } else rangeDiff.div(range).times(width)
 }
 
-fun getY(xAxisPosition: XAxis, height: Float): Float {
-    return when (xAxisPosition) {
-        Top -> 0f
-        Bottom -> height
-        Center -> height.div(2f)
-        else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
-    }
+@Throws(IllegalStateException::class)
+fun getY(xAxisPosition: XAxis, height: Float) = when (xAxisPosition) {
+    Top -> 0f
+    Bottom -> height
+    Center -> height.div(2f)
+    else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
 }
 
+@Throws(IllegalStateException::class)
 fun getYAxisXPosition(
     drawYAxis: Boolean,
     yAxisPosition: YAxis,
     width: Float
-): Float? {
-    return if (drawYAxis) {
-        when (yAxisPosition) {
-            AxisPosition.Start -> 0f
-            Center -> width.div(2f)
-            End -> width
-            else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
-        }
-    } else null
-}
+) = if (drawYAxis) {
+    when (yAxisPosition) {
+        AxisPosition.Start -> 0f
+        Center -> width.div(2f)
+        End -> width
+        else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
+    }
+} else null

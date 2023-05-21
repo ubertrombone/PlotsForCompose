@@ -8,54 +8,39 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.y.util.drawYAxis
-import com.joshrose.plotsforcompose.axis.y.util.drawYFloatLabel
-import com.joshrose.plotsforcompose.axis.y.util.drawYGuideline
-import com.joshrose.plotsforcompose.axis.y.util.drawYTick
+import com.joshrose.plotsforcompose.axis.util.Range.Companion.mapToFloat
+import com.joshrose.plotsforcompose.axis.y.util.*
 import com.joshrose.plotsforcompose.util.calculateOffset
 
-@ExperimentalTextApi
-fun DrawScope.continuousYAxis(
+fun DrawScope.unboundYAxis(
     config: AxisConfiguration.YConfiguration,
-    labels: List<Float>,
-    yRangeValues: Range<Float>,
+    labels: List<Number>,
+    yRangeValues: Range<Number>,
     yAxisPosition: YAxis,
     xAxisPosition: XAxis,
     drawXAxis: Boolean,
     drawZero: Boolean = true,
-    range: Float,
+    range: Number,
     textMeasurer: TextMeasurer
 ) {
+    val x = getX(yAxisPosition = yAxisPosition, width = size.width)
+    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+
     labels.reversed().forEachIndexed { index, label ->
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
         // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
         val y = getY(
             height = size.height,
-            yValues = yRangeValues,
-            label = label,
-            range = range,
+            yValues = yRangeValues.mapToFloat(),
+            label = label.toFloat(),
+            range = range.toFloat(),
             rangeAdj = config.labels.rangeAdjustment,
             index = index,
             labelsSize = labels.size
         )
-
-        val x = when (yAxisPosition) {
-            Start -> 0f
-            End -> size.width
-            Center -> size.width.div(2f)
-            else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
-        }
-
-        val xAxisPositionYValue = if (drawXAxis) {
-            when (xAxisPosition) {
-                Bottom -> size.height
-                Center -> size.height.div(2f)
-                Top -> 0f
-                else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
-            }
-        } else null
 
         if (config.showGuidelines) {
             if (drawXAxis) {
@@ -78,7 +63,71 @@ fun DrawScope.continuousYAxis(
         if (!drawZero && label == 0f) return@forEachIndexed
 
         if (config.showLabels) {
-            drawYFloatLabel(
+            drawYLabel(
+                y = y,
+                x = x,
+                label = label,
+                textMeasurer = textMeasurer,
+                labelConfig = config.labels,
+                yAxisPosition = yAxisPosition
+            )
+        }
+
+        if (config.showAxisLine && config.axisLine.ticks) {
+            drawYTick(
+                axisLineConfig = config.axisLine,
+                y = y,
+                yAxisPosition = yAxisPosition,
+                axisOffset = config.labels.axisOffset.toPx()
+            )
+        }
+    }
+
+    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, yAxisPosition = yAxisPosition)
+}
+
+fun DrawScope.boundYAxis(
+    config: AxisConfiguration.YConfiguration,
+    labels: List<Any>,
+    yAxisPosition: YAxis,
+    xAxisPosition: XAxis,
+    drawXAxis: Boolean,
+    drawZero: Boolean = true,
+    axisAlignment: AxisAlignment.YAxis,
+    textMeasurer: TextMeasurer
+) {
+    val factor = size.height.div(labels.size.plus(axisAlignment.offset).toFloat())
+
+    val x = getX(yAxisPosition = yAxisPosition, width = size.width)
+    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+
+    labels.forEachIndexed { index, label ->
+        val y =
+            if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
+            else index.plus(1).times(factor)
+
+        if (config.showGuidelines) {
+            if (drawXAxis) {
+                if (xAxisPositionYValue != y) {
+                    drawYGuideline(
+                        guidelineConfig = config.guidelines,
+                        y = y,
+                        yAxisPosition = yAxisPosition
+                    )
+                }
+            } else {
+                drawYGuideline(
+                    guidelineConfig = config.guidelines,
+                    y = y,
+                    yAxisPosition = yAxisPosition
+                )
+            }
+        }
+
+        if (!drawZero && label == 0f) return@forEachIndexed
+
+        if (config.showLabels) {
+            drawYLabel(
                 y = y,
                 x = x,
                 label = label,
@@ -120,3 +169,25 @@ fun getY(
             .plus(height.times(rangeAdjustment))
     } else height.minus(rangeDiff.div(range).times(height))
 }
+
+@Throws(IllegalStateException::class)
+fun getX(yAxisPosition: YAxis, width: Float) = when (yAxisPosition) {
+    Start -> 0f
+    End -> width
+    Center -> width.div(2f)
+    else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
+}
+
+@Throws(IllegalStateException::class)
+fun getXAxisXPosition(
+    drawXAxis: Boolean,
+    xAxisPosition: XAxis,
+    height: Float
+)= if (drawXAxis) {
+    when (xAxisPosition) {
+        Bottom -> height
+        Center -> height.div(2f)
+        Top -> 0f
+        else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
+    }
+} else null
