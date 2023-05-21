@@ -16,9 +16,9 @@ import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.drawZero
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
-import com.joshrose.plotsforcompose.axis.y.continuous.continuousYAxis
+import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
-import com.joshrose.plotsforcompose.util.Coordinates
+import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
 @Suppress("DuplicatedCode")
 @ExperimentalTextApi
@@ -66,7 +66,7 @@ fun AxesCanvas(
         } catch (e: InvalidRangeException) {
             component.updateData(
                 data = List(2) {
-                    Coordinates(
+                    NumberData(
                         x = (-100..100).random().toFloat(),
                         y = (-100..100).random().toFloat()
                     )
@@ -83,7 +83,7 @@ fun AxesCanvas(
         } catch (e: InvalidRangeException) {
             component.updateData(
                 data = List(2) {
-                    Coordinates(
+                    NumberData(
                         x = (-100..100).random().toFloat(),
                         y = (-100..100).random().toFloat()
                     )
@@ -144,7 +144,7 @@ fun AxesCanvas(
             }
 
             if (yConfig.showAxis) {
-                continuousYAxis(
+                unboundYAxis(
                     config = yConfig,
                     labels = yLabels,
                     yRangeValues = Range(min = yMin, max = yMax),
