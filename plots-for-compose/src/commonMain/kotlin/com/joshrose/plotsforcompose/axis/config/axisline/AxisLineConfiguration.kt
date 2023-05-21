@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
+import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 
@@ -15,7 +16,7 @@ sealed interface AxisLineConfiguration {
         val pathEffect: PathEffect?
         val ticks: Boolean
         val axisPosition: AxisPosition?
-        val axisAlignment: AxisAlignment?
+        val axisAlignment: AxisAlignment
     }
 
     data class XConfiguration(
@@ -25,7 +26,7 @@ sealed interface AxisLineConfiguration {
         override val pathEffect: PathEffect?,
         override val ticks: Boolean,
         override val axisPosition: AxisPosition.XAxis?,
-        override val axisAlignment: AxisAlignment.XAxis?
+        override val axisAlignment: AxisAlignment.XAxis
     ) : Configuration {
         override fun toString() = "AxisLineConfiguration#XConfiguration"
     }
@@ -37,7 +38,7 @@ sealed interface AxisLineConfiguration {
         override val pathEffect: PathEffect?,
         override val ticks: Boolean,
         override val axisPosition: AxisPosition.YAxis?,
-        override val axisAlignment: AxisAlignment.YAxis?
+        override val axisAlignment: AxisAlignment.YAxis
     ) : Configuration {
         override fun toString() = "AxisLineConfiguration#YConfiguration"
     }
@@ -50,7 +51,7 @@ sealed interface AxisLineConfiguration {
             pathEffect: PathEffect? = null,
             ticks: Boolean = true,
             axisPosition: AxisPosition.XAxis? = null,
-            axisAlignment: AxisAlignment.XAxis? = null
+            axisAlignment: AxisAlignment.XAxis = SpaceBetween
         ) = XConfiguration(
             lineColor = lineColor,
             alpha = alpha,
@@ -68,7 +69,7 @@ sealed interface AxisLineConfiguration {
             pathEffect: PathEffect? = null,
             ticks: Boolean = true,
             axisPosition: AxisPosition.YAxis? = null,
-            axisAlignment: AxisAlignment.YAxis? = null
+            axisAlignment: AxisAlignment.YAxis = SpaceBetween
         ) = YConfiguration(
             lineColor = lineColor,
             alpha = alpha,

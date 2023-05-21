@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
-import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
@@ -104,7 +103,7 @@ fun LineGraph(
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
-                axisAlignment = AxisAlignment.SpaceBetween,
+                axisAlignment = xAxisConfig.axisLine.axisAlignment,
                 textMeasurer = xTextMeasurer
             )
         }
