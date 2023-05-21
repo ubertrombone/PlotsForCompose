@@ -13,7 +13,7 @@ version = "1.0-SNAPSHOT"
 kotlin {
     android()
     jvm("desktop") {
-        jvmToolchain(16)
+        jvmToolchain(17)
         testRuns["test"].executionTask.configure {
             useJUnitPlatform()
         }
