@@ -31,7 +31,7 @@ import com.joshrose.common.components.axes.visibility.VisibilityModelImpl
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.common.util.ScreenNames.AXES
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
-import com.joshrose.plotsforcompose.util.Coordinates
+import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
 class DefaultAxesComponent(
     componentContext: ComponentContext
@@ -54,7 +54,7 @@ class DefaultAxesComponent(
     }
     override val loadingState: Value<LoadingState> = _loadingState.loadingState
 
-    override fun updateData(data: List<Coordinates>) = _dataValuesState.updateData(data)
+    override fun updateData(data: List<NumberData>) = _dataValuesState.updateData(data)
 
     override fun calculateData(xConfig: LabelsConfiguration, yConfig: LabelsConfiguration) {
         _dataValuesState.calculateData(xConfig, yConfig)

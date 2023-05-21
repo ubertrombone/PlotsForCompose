@@ -27,7 +27,7 @@ import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
-import com.joshrose.plotsforcompose.util.Coordinates
+import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
 @OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -199,7 +199,7 @@ fun AxesContent(
                         onClick = {
                             component.updateData(
                                 data = List(2) {
-                                    Coordinates(
+                                    NumberData(
                                         x = (-100..100).random().toFloat(),
                                         y = (-100..100).random().toFloat()
                                     )

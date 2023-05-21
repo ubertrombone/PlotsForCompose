@@ -9,7 +9,7 @@ import com.joshrose.common.components.axes.models.*
 import com.joshrose.common.components.axes.visibility.VisibilityComponent
 import com.joshrose.common.util.ScreenNames
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
-import com.joshrose.plotsforcompose.util.Coordinates
+import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
 interface AxesComponent {
     val screenProperties: ScreenNames
@@ -26,7 +26,7 @@ interface AxesComponent {
     val yLabelsState: Value<LabelsStates>
     val childStack: Value<ChildStack<*, Child>>
 
-    fun updateData(data: List<Coordinates>)
+    fun updateData(data: List<NumberData>)
     fun calculateData(xConfig: LabelsConfiguration, yConfig: LabelsConfiguration)
 
     fun onVisibilityTabClicked()

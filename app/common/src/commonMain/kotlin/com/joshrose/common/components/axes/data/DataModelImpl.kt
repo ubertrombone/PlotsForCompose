@@ -6,7 +6,11 @@ import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.util.*
+import com.joshrose.plotsforcompose.linegraph.model.NumberData
+import com.joshrose.plotsforcompose.linegraph.model.NumberData.Companion.maxXValue
+import com.joshrose.plotsforcompose.linegraph.model.NumberData.Companion.maxYValue
+import com.joshrose.plotsforcompose.linegraph.model.NumberData.Companion.minXValue
+import com.joshrose.plotsforcompose.linegraph.model.NumberData.Companion.minYValue
 import kotlinx.coroutines.*
 import kotlin.math.abs
 
@@ -14,7 +18,7 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
     override val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     override val dataValueStates: MutableValue<DataValueStates> = MutableValue(initialState)
 
-    override fun updateData(data: List<Coordinates>) {
+    override fun updateData(data: List<NumberData>) {
         scope.launch {
             dataValueStates.update { it.copy(data = data) }
         }
