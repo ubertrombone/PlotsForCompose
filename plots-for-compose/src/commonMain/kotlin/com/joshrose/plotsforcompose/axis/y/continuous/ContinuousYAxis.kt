@@ -1,5 +1,4 @@
 @file:Suppress("DuplicatedCode")
-@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.y.continuous
 
@@ -15,6 +14,7 @@ import com.joshrose.plotsforcompose.axis.util.Range.Companion.mapToFloat
 import com.joshrose.plotsforcompose.axis.y.util.*
 import com.joshrose.plotsforcompose.util.calculateOffset
 
+@ExperimentalTextApi
 fun DrawScope.unboundYAxis(
     config: AxisConfiguration.YConfiguration,
     labels: List<Number>,
@@ -86,6 +86,7 @@ fun DrawScope.unboundYAxis(
     if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, yAxisPosition = yAxisPosition)
 }
 
+@ExperimentalTextApi
 fun DrawScope.boundYAxis(
     config: AxisConfiguration.YConfiguration,
     labels: List<Any>,

@@ -1,6 +1,3 @@
-@file:Suppress("DuplicatedCode")
-@file:OptIn(ExperimentalTextApi::class)
-
 package com.joshrose.plotsforcompose.axis.x.util
 
 import androidx.compose.ui.geometry.Offset
@@ -82,6 +79,7 @@ fun DrawScope.drawXAxis(
     )
 }
 
+@ExperimentalTextApi
 fun DrawScope.drawXLabel(
     y: Float,
     x: Float,

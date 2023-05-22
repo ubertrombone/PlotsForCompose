@@ -20,8 +20,8 @@ import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
+@OptIn(ExperimentalTextApi::class)
 @Suppress("DuplicatedCode")
-@ExperimentalTextApi
 @Composable
 fun AxesCanvas(
     component: AxesComponent,

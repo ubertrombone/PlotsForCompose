@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
@@ -16,6 +17,7 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.linegraph.LineGraph
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
+@OptIn(ExperimentalTextApi::class)
 @Composable
 fun LineGraphContent(
     component: LineGraphComponent,

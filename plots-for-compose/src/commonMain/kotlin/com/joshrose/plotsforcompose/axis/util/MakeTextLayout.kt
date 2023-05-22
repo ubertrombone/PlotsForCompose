@@ -8,7 +8,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import java.text.DecimalFormat
 
-@OptIn(ExperimentalTextApi::class)
+@ExperimentalTextApi
 fun makeTextLayout(
     label: Float,
     textMeasurer: TextMeasurer,
@@ -23,7 +23,7 @@ fun makeTextLayout(
     )
 }
 
-@OptIn(ExperimentalTextApi::class)
+@ExperimentalTextApi
 fun makeTextLayout(
     label: String,
     textMeasurer: TextMeasurer,

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalTextApi::class)
-
 package com.joshrose.plotsforcompose.linegraph
 
 import androidx.compose.foundation.Canvas
@@ -38,6 +36,7 @@ import com.joshrose.plotsforcompose.util.LoadingState.*
 //
 //}
 
+@ExperimentalTextApi
 @Composable
 fun LineGraph(
     data: List<NumberData>,

@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
@@ -29,7 +28,7 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurati
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
-@OptIn(ExperimentalTextApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AxesContent(
     component: AxesComponent,

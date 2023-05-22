@@ -1,5 +1,4 @@
 @file:Suppress("DuplicatedCode")
-@file:OptIn(ExperimentalTextApi::class)
 
 package com.joshrose.plotsforcompose.axis.x.continuous
 
@@ -21,6 +20,7 @@ import com.joshrose.plotsforcompose.axis.x.util.drawXLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXTick
 import com.joshrose.plotsforcompose.util.calculateOffset
 
+@ExperimentalTextApi
 fun DrawScope.unboundXAxis(
     config: AxisConfiguration.XConfiguration,
     labels: List<Number>,
@@ -90,6 +90,7 @@ fun DrawScope.unboundXAxis(
 
 // TODO: Consider how drawing all/some/none guidelines and all/some/none labels might go
 // --> Bound XAxis doesn't need breaks. It needs a list of the labels to be shown.
+@ExperimentalTextApi
 fun DrawScope.boundXAxis(
     config: AxisConfiguration.XConfiguration,
     labels: List<Any>,
@@ -100,6 +101,7 @@ fun DrawScope.boundXAxis(
     axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
+    // TODO: This can be hoisted to the graph composable and used for both axis and data.
     val factor = size.width.div(labels.size.plus(axisAlignment.offset).toFloat())
 
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)

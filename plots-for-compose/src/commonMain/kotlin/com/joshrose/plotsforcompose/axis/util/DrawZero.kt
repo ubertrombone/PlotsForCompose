@@ -8,7 +8,7 @@ import androidx.compose.ui.text.drawText
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 
-@OptIn(ExperimentalTextApi::class)
+@ExperimentalTextApi
 fun DrawScope.drawZero(
     xAxisPosition: XAxis,
     yAxisPosition: YAxis,
