@@ -12,7 +12,7 @@ import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
-fun DrawScope.drawXGuideline(
+internal fun DrawScope.drawXGuideline(
     guidelineConfig: GuidelinesConfiguration,
     x: Float,
     xAxisPosition: XAxis
@@ -32,7 +32,7 @@ fun DrawScope.drawXGuideline(
 }
 
 @Throws(IllegalStateException::class)
-fun DrawScope.drawXTick(
+internal fun DrawScope.drawXTick(
     axisLineConfig: AxisLineConfiguration.XConfiguration,
     x: Float,
     xAxisPosition: XAxis,
@@ -58,7 +58,7 @@ fun DrawScope.drawXTick(
 }
 
 @Throws(IllegalStateException::class)
-fun DrawScope.drawXAxis(
+internal fun DrawScope.drawXAxis(
     axisLineConfig: AxisLineConfiguration.XConfiguration,
     xAxisPosition: XAxis
 ) {
@@ -80,7 +80,7 @@ fun DrawScope.drawXAxis(
 }
 
 @ExperimentalTextApi
-fun DrawScope.drawXLabel(
+internal fun DrawScope.drawXLabel(
     y: Float,
     x: Float,
     xAxisPosition: XAxis,

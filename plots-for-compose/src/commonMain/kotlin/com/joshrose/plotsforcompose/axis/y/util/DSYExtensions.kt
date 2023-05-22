@@ -14,7 +14,7 @@ import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
-fun DrawScope.drawYGuideline(
+internal fun DrawScope.drawYGuideline(
     guidelineConfig: GuidelinesConfiguration,
     y: Float,
     yAxisPosition: YAxis
@@ -34,7 +34,7 @@ fun DrawScope.drawYGuideline(
 }
 
 @Throws(IllegalStateException::class)
-fun DrawScope.drawYTick(
+internal fun DrawScope.drawYTick(
     axisLineConfig: AxisLineConfiguration.YConfiguration,
     y: Float,
     yAxisPosition: YAxis,
@@ -60,7 +60,7 @@ fun DrawScope.drawYTick(
 }
 
 @Throws(IllegalStateException::class)
-fun DrawScope.drawYAxis(
+internal fun DrawScope.drawYAxis(
     axisLineConfig: AxisLineConfiguration.YConfiguration,
     yAxisPosition: YAxis
 ) {
@@ -82,7 +82,7 @@ fun DrawScope.drawYAxis(
 }
 
 @ExperimentalTextApi
-fun DrawScope.drawYLabel(
+internal fun DrawScope.drawYLabel(
     y: Float,
     x: Float,
     label: Any,

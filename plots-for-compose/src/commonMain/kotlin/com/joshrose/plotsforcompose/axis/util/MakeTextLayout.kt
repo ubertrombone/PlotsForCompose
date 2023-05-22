@@ -24,7 +24,7 @@ fun makeTextLayout(
 }
 
 @ExperimentalTextApi
-fun makeTextLayout(
+internal fun makeTextLayout(
     label: String,
     textMeasurer: TextMeasurer,
     labelConfig: LabelsConfiguration
@@ -35,4 +35,4 @@ fun makeTextLayout(
     softWrap = false
 )
 
-fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
+internal fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
