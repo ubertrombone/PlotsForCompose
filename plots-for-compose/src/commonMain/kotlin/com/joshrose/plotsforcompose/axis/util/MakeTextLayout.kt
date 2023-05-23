@@ -35,4 +35,4 @@ internal fun makeTextLayout(
     softWrap = false
 )
 
-internal fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
+fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
