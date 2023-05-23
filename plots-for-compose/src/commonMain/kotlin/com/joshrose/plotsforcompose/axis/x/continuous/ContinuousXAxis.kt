@@ -18,7 +18,20 @@ import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
 import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
 import com.joshrose.plotsforcompose.axis.x.util.drawXLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXTick
+import com.joshrose.plotsforcompose.internals.Scale
 import com.joshrose.plotsforcompose.util.calculateOffset
+
+fun unboundXAxis(
+    breaks: List<Number>? = null,
+    labels: List<String>? = null,
+    naValue: Number? = null,
+    reverse: Boolean? = null
+) = Scale(
+    breaks = breaks,
+    labels = labels,
+    naValue = naValue,
+    reverse = reverse
+)
 
 @ExperimentalTextApi
 fun DrawScope.unboundXAxis(

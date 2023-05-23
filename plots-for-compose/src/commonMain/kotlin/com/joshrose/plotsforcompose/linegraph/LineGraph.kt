@@ -10,10 +10,12 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.boundXAxis
+import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.common.maxValue
 import com.joshrose.plotsforcompose.common.minValue
 import com.joshrose.plotsforcompose.common.range
+import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfig
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfigDefaults
@@ -79,6 +81,23 @@ fun LineGraph(
         minXValue < 0 -> Center
         else -> Start
     }
+
+    val plot = composePlot(data = data.associate { it.x to it.y }) {
+        x = data.map { it.x }
+        y = data.map { it.y }
+
+        xMax = maxXValue
+    }
+        .plus(unboundXAxis(
+            breaks = xLabels,
+            labels = xLabels.map { it.toString() },
+            naValue = Float.NaN,
+            reverse = true
+        ))
+        .plus(unboundXAxis())
+
+    println(plot)
+    println(plot.scales())
 
     Canvas(modifier = modifier) {
         if (yAxisConfig.showAxis) {
