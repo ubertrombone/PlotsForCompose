@@ -10,6 +10,7 @@ data class NumberData(val x: Number, val y: Float): Parcelable {
         fun List<NumberData>.maxYValue() = maxOf { it.y }
         fun List<NumberData>.minXValue() = minOf { it.x.toFloat() }
         fun List<NumberData>.minYValue() = minOf { it.y }
+        fun List<NumberData>.toMap() = associate { it.x to it.y }
     }
 }
 

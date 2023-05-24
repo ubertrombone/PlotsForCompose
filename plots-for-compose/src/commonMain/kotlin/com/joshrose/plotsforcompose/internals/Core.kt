@@ -1,5 +1,10 @@
 package com.joshrose.plotsforcompose.internals
 
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.internals.layer.PlotConfigs
+import com.joshrose.plotsforcompose.internals.layer.PosConfigs
+import com.joshrose.plotsforcompose.internals.layer.StatConfigs
+
 class Plot internal constructor(
     val data: Map<*, *>? = null,
     val mapping: Configs = GenericMapping().seal(),
@@ -12,6 +17,7 @@ class Plot internal constructor(
         }
     }
 
+    fun layers(): List<Layer> = features.filterIsInstance<Layer>()
     fun scales(): List<Scale> = features.filterIsInstance<Scale>()
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
@@ -56,6 +62,28 @@ class FeatureList(val elements: List<Feature>) : Feature() {
     }
 }
 
+abstract class Layer(
+    mapping: Configs,
+    val data: Map<*, *>? = null,
+    val plot: PlotConfigs,
+    val stat: StatConfigs,
+    val position: PosConfigs?,
+    val showLegend: Boolean,
+    val markers: Boolean? = null,
+    val orientation: AxisPosition.Orientation? = null
+) : ConfigCapsule, Feature() {
+    val mapping by lazy {
+        plot.mapping + stat.mapping + mapping
+    }
+
+    val parameters by lazy {
+        plot.parameters + stat.parameters + this.seal()
+    }
+
+    override fun toString() =
+        "Layer(data=$data, plot=${plot.kind}, stat=${stat.kind}, position=${position?.kind}, showLegend=$showLegend, markers=$markers, orientation=$orientation)"
+}
+
 class Scale(
     val name: String? = null,
     val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn
@@ -63,7 +91,8 @@ class Scale(
     val limits: Any? = null, // TODO -> Value to limit data. E.g., columnData = listOf("a", "b", "c"), limit = "b", "c" will not be shown.
     val naValue: Any? = null,
     val format: String? = null,
-    val reverse: Boolean? = null
+    val reverse: Boolean? = null,
+    val position: Any? = null
 ) : Feature() {
     override fun toString() =
         "Scale(name=$name, breaks=$breaks, labels=$labels, limits=$limits, naValue=$naValue, format=$format, reverse=$reverse)"
