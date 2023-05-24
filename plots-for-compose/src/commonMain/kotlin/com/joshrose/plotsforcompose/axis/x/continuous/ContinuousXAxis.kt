@@ -19,6 +19,7 @@ import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
 import com.joshrose.plotsforcompose.axis.x.util.drawXLabel
 import com.joshrose.plotsforcompose.axis.x.util.drawXTick
 import com.joshrose.plotsforcompose.internals.Scale
+import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 fun unboundXAxis(
@@ -27,6 +28,7 @@ fun unboundXAxis(
     naValue: Number? = null,
     reverse: Boolean? = null
 ) = Scale(
+    scale = ScaleKind.X,
     breaks = breaks,
     labels = labels,
     naValue = naValue,

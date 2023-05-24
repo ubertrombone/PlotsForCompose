@@ -85,6 +85,7 @@ abstract class Layer(
 }
 
 class Scale(
+    val scale: ScaleKind,
     val name: String? = null,
     val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn
     val labels: List<String>? = null, // TODO -> These are the labels that will be drawn, should be at correct position
@@ -95,7 +96,7 @@ class Scale(
     val position: Any? = null
 ) : Feature() {
     override fun toString() =
-        "Scale(name=$name, breaks=$breaks, labels=$labels, limits=$limits, naValue=$naValue, format=$format, reverse=$reverse)"
+        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, limits=$limits, naValue=$naValue, format=$format, reverse=$reverse)"
 }
 
 open class ConfigsMap internal constructor(
