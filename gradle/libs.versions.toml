@@ -1,5 +1,4 @@
 [versions]
-
 kotlin = "1.8.20"
 androidGradle = "7.4.1"
 compose = "1.4.0"
@@ -8,20 +7,15 @@ androidxCore = "1.10.0"
 androidxActivityCompose = "1.7.1"
 
 [libraries]
-
-androidx-core-coreKtx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCore" }
-androidx-activity-activityCompose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivityCompose" }
-
-decompose-decompose = { group = "com.arkivanov.decompose", name = "decompose", version.ref = "decompose" }
-decompose-extensionsComposeJetbrains = { group = "com.arkivanov.decompose", name = "extensions-compose-jetbrains", version.ref = "decompose" }
+androidx-core-coreKtx = { module = "androidx.core:core-ktx", version.ref = "androidxCore" }
+androidx-activity-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivityCompose" }
+decompose-decompose = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
+decompose-extensionsComposeJetbrains = { module = "com.arkivanov.decompose:extensions-compose-jetbrains", version.ref = "decompose" }
 
 [plugins]
-
 android-application = { id = "com.android.application", version.ref = "androidGradle" }
 android-library = { id = "com.android.library", version.ref = "androidGradle" }
-
 jetbrains-compose = { id = "org.jetbrains.compose", version.ref = "compose" }
-
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
