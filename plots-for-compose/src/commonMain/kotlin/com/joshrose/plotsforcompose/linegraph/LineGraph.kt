@@ -89,12 +89,13 @@ fun LineGraph(
         xMax = maxXValue
     }
         .plus(unboundXAxis(
+            config = xAxisConfig,
             breaks = xLabels,
             labels = xLabels.map { it.toString() },
             naValue = Float.NaN,
             reverse = true
         ))
-        .plus(unboundXAxis())
+        .plus(unboundXAxis(config = xAxisConfig))
 
     println(plot)
     println(plot.scales())

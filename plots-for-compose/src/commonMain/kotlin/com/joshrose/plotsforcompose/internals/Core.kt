@@ -1,5 +1,8 @@
 package com.joshrose.plotsforcompose.internals
 
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.internals.layer.PlotConfigs
 import com.joshrose.plotsforcompose.internals.layer.PosConfigs
@@ -85,6 +88,9 @@ abstract class Layer(
 }
 
 class Scale(
+    val guidelinesConfigs: GuidelinesConfiguration,
+    val labelConfigs: LabelsConfiguration,
+    val axisLineConfiguration: AxisLineConfiguration,
     val scale: ScaleKind,
     val name: String? = null,
     val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn

@@ -23,11 +23,15 @@ import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 fun unboundXAxis(
+    config: AxisConfiguration.XConfiguration,
     breaks: List<Number>? = null,
     labels: List<String>? = null,
     naValue: Number? = null,
     reverse: Boolean? = null
 ) = Scale(
+    labelConfigs = config.labels,
+    guidelinesConfigs = config.guidelines,
+    axisLineConfiguration = config.axisLine,
     scale = ScaleKind.X,
     breaks = breaks,
     labels = labels,
