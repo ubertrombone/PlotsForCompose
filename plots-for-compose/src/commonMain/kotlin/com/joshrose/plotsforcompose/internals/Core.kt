@@ -1,5 +1,6 @@
 package com.joshrose.plotsforcompose.internals
 
+import com.joshrose.plotsforcompose.LayerConfigs
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
@@ -68,6 +69,7 @@ class FeatureList(val elements: List<Feature>) : Feature() {
 abstract class Layer(
     mapping: Configs,
     val data: Map<*, *>? = null,
+    val layerConfigs: LayerConfigs? = null,
     val plot: PlotConfigs,
     val stat: StatConfigs,
     val position: PosConfigs?,
@@ -84,7 +86,7 @@ abstract class Layer(
     }
 
     override fun toString() =
-        "Layer(data=$data, plot=${plot.kind}, stat=${stat.kind}, position=${position?.kind}, showLegend=$showLegend, markers=$markers, orientation=$orientation)"
+        "Layer(data=$data, layerConfigs=${layerConfigs.toString()}, plot=${plot.kind}, stat=${stat.kind}, position=${position?.kind}, showLegend=$showLegend, markers=$markers, orientation=$orientation)"
 }
 
 class Scale(

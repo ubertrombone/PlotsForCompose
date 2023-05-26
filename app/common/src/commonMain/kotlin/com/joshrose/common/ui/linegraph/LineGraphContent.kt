@@ -67,7 +67,7 @@ fun LineGraphContent(
         ) {
             item {
                 LineGraph(
-                    data = listOf(NumberData(1, 1f), NumberData(4, 4f), NumberData(3, 3f), NumberData(11, 11f)).sortedBy { it.x.toFloat() },
+                    data = listOf(NumberData(1, 2f), NumberData(4, 5f), NumberData(3, 4f), NumberData(11, 12f)).sortedBy { it.x.toFloat() },
                     xAxisConfig = xConfig,
                     yAxisConfig = yConfig,
                     modifier = Modifier
