@@ -1,5 +1,10 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 
+buildscript {
+    dependencies {
+        classpath("com.android.tools.build:gradle:7.4.2")
+    }
+}
 group = "com.joshrose"
 version = "1.0-SNAPSHOT"
 
