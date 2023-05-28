@@ -2,6 +2,7 @@
 
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
@@ -26,6 +27,7 @@ kotlin {
                 api(compose.material3)
                 api(deps.decompose.decompose)
                 api(deps.decompose.extensionsComposeJetbrains)
+                api(deps.kotlinx.kotlinxSerialization.json)
             }
         }
         val commonTest by getting {

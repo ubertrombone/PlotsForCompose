@@ -27,7 +27,7 @@ class Plot internal constructor(
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
     @Composable
-    fun show() = toSpec() // TODO: toSpec() should be an argument of a composable function
+    fun show() = ShowPlot(toSpec()) // TODO: toSpec() should be an argument of a composable function
 
     override fun toString() = "Plot(data=$data, mapping=${mapping.map}, features=$features)"
 
