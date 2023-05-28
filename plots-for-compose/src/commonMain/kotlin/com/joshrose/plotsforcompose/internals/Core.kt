@@ -1,5 +1,6 @@
 package com.joshrose.plotsforcompose.internals
 
+import androidx.compose.runtime.Composable
 import com.joshrose.plotsforcompose.LayerConfigs
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
@@ -25,7 +26,8 @@ class Plot internal constructor(
     fun scales(): List<Scale> = features.filterIsInstance<Scale>()
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
-    fun show() = toSpec()
+    @Composable
+    fun show() = toSpec() // TODO: toSpec() should be an argument of a composable function
 
     override fun toString() = "Plot(data=$data, mapping=${mapping.map}, features=$features)"
 

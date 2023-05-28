@@ -27,6 +27,10 @@ fun Plot.toSpec(): MutableMap<String, Any> {
     spec[Specs.Plot.LAYERS] = plot.layers().map(Layer::toSpec)
     spec[Specs.Plot.SCALES] = plot.scales().map(Scale::toSpec)
 
+    plot.otherFeatures().forEach {
+        spec[it.kind] = it.toSpec()
+    }
+
     return spec.also(::println)
 }
 
