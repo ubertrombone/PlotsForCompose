@@ -46,15 +46,7 @@ fun Layer.toSpec(): MutableMap<String, Any> {
     layerConfigs?.let { spec[Specs.Layer.CONFIGS] = it }
     markers?.let { spec[Specs.Layer.MARKERS] = it }
     orientation?.let { spec[Specs.Layer.ORIENTATION] = it }
-    position?.let {
-        spec[Specs.Layer.POS] =
-            if (it.parameters.isEmpty()) it.kind.optionName()
-            else ConfigsMap(
-                name = "pos",
-                kind = position.kind.optionName(),
-                configs = it.parameters.map
-            ).toSpec()
-    }
+    position?.let { spec[Specs.Layer.POS] = it.kind.optionName() }
 
     return spec
 }
