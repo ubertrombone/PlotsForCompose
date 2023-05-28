@@ -31,7 +31,7 @@ fun unboundXAxis(
 ) = Scale(
     labelConfigs = config.labels,
     guidelinesConfigs = config.guidelines,
-    axisLineConfiguration = config.axisLine,
+    axisLineConfigs = config.axisLine,
     scale = ScaleKind.X,
     breaks = breaks,
     labels = labels,

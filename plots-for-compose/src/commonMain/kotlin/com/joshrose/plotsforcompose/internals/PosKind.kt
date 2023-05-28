@@ -3,5 +3,7 @@ package com.joshrose.plotsforcompose.internals
 enum class PosKind {
     IDENTITY,
     STACK,
-    DODGE
+    DODGE;
+
+    open fun optionName() = name.lowercase()
 }

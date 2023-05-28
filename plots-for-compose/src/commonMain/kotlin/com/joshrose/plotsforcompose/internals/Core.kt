@@ -25,7 +25,7 @@ class Plot internal constructor(
     fun scales(): List<Scale> = features.filterIsInstance<Scale>()
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
-    fun show() = println("Show") // TODO
+    fun show() = toSpec()
 
     override fun toString() = "Plot(data=$data, mapping=${mapping.map}, features=$features)"
 
@@ -81,18 +81,24 @@ abstract class Layer(
         plot.mapping + stat.mapping + mapping
     }
 
-    val parameters by lazy {
-        plot.parameters + stat.parameters + this.seal()
-    }
-
-    override fun toString() =
-        "Layer(data=$data, layerConfigs=${layerConfigs.toString()}, plot=${plot.kind}, stat=${stat.kind}, position=${position?.kind}, showLegend=$showLegend, markers=$markers, orientation=$orientation)"
+    override fun toString() = """
+        Layer(
+            data=$data, 
+            layerConfigs=${layerConfigs.toString()}, 
+            plot=${plot.kind}, stat=${stat.kind}, 
+            position=${position?.kind}, 
+            showLegend=$showLegend, 
+            markers=$markers, 
+            orientation=$orientation,
+            mapping=${mapping.map}
+        )
+    """.trimIndent()
 }
 
 class Scale(
-    val guidelinesConfigs: GuidelinesConfiguration,
-    val labelConfigs: LabelsConfiguration,
-    val axisLineConfiguration: AxisLineConfiguration,
+    val guidelinesConfigs: GuidelinesConfiguration?,
+    val labelConfigs: LabelsConfiguration?,
+    val axisLineConfigs: AxisLineConfiguration?,
     val scale: ScaleKind,
     val name: String? = null,
     val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn
@@ -101,7 +107,7 @@ class Scale(
     val naValue: Any? = null,
     val format: String? = null,
     val reverse: Boolean? = null,
-    val position: Any? = null
+    val position: AxisPosition? = null
 ) : Feature() {
     override fun toString() =
         "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, limits=$limits, naValue=$naValue, format=$format, reverse=$reverse)"

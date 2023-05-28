@@ -3,5 +3,7 @@ package com.joshrose.plotsforcompose.internals
 enum class PlotKind {
     BAR,
     LINE,
-    SMOOTH
+    SMOOTH;
+
+    open fun optionName() = name.lowercase()
 }

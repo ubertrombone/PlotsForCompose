@@ -31,9 +31,11 @@ object Specs {
     }
 
     object Scale {
+        const val SCALE = "scale"
         const val GUIDELINE_CONFIGS = "guideline_configs"
         const val LABEL_CONFIGS = "label_configs"
         const val AXIS_LINE_CONFIGS = "axis_line_configs"
+        const val NAME = "name"
         const val BREAKS = "breaks"
         const val LABELS = "labels"
         const val LIMITS = "limits"

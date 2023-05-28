@@ -6,5 +6,7 @@ enum class StatKind {
     DENSITY,
     DOTPLOT,
     BOXPLOT,
-    REGRESSION
+    REGRESSION;
+
+    open fun optionName() = name.lowercase()
 }
