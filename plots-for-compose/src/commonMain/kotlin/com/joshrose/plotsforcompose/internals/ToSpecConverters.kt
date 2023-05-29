@@ -15,6 +15,7 @@ import com.joshrose.plotsforcompose.internals.Specs.Scale.SCALE
 import com.joshrose.plotsforcompose.internals.standardizing.MapStandardizing
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing.toList
 
+// TODO: Maybe return an encoded JSON string
 fun Plot.toSpec(): MutableMap<String, Any> {
     val spec = HashMap<String, Any>()
     val plot = this

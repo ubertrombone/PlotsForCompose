@@ -2,14 +2,12 @@ package com.joshrose.plotsforcompose.internals
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.joshrose.plotsforcompose.util.height
+import com.joshrose.plotsforcompose.util.width
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -26,14 +24,18 @@ fun ShowPlot(specs: Map<String, Any>) {
     println("Width: ${specs[Specs.Plot.WIDTH]}")
     println("Height: ${specs[Specs.Plot.HEIGHT]}")
     println("Size: ${specs[Specs.Plot.SIZE]}")
-    val size = format.decodeFromString<Size>(specs[Specs.Plot.SIZE].toString().replace('=', ':'))
+    val size = try {
+        format.decodeFromString<Size>(specs[Specs.Plot.SIZE].toString().replace('=', ':'))
+    } catch (e: Exception) {
+        Size(null, null)
+    }
     println(size)
 
     Canvas(
         modifier = Modifier
             .background(color = Color.Green)
-            .then(if (width != null) Modifier.width(width) else Modifier.fillMaxWidth())
-            .then(if (height != null) Modifier.height(height) else Modifier.fillMaxHeight())
+            .height(size.height?.dp)
+            .width(size.width?.dp)
             .background(color = Color.Red)
     ) {
 
@@ -41,4 +43,4 @@ fun ShowPlot(specs: Map<String, Any>) {
 }
 
 @Serializable
-data class Size(val width: Double, val height: Double)
+data class Size(val width: Double?, val height: Double?)
