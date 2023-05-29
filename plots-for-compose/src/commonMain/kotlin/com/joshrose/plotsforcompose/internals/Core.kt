@@ -27,7 +27,7 @@ class Plot internal constructor(
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
     @Composable
-    fun show() = ShowPlot(toSpec()) // TODO: toSpec() should be an argument of a composable function
+    fun show() = ShowPlot(toSpec())
 
     override fun toString() = "Plot(data=$data, mapping=${mapping.map}, features=$features)"
 
@@ -117,14 +117,16 @@ class Scale(
 
 open class ConfigsMap internal constructor(
     val kind: String,
-    val configs: Map<String, Any>
+    val configs: ConfigsInterface
 ) : Feature() {
-    internal constructor(
-        kind: String,
-        name: String,
-        configs: Map<String, Any>
-    ) : this(
-        kind = kind,
-        configs = mapOf("name" to name) + configs
-    )
+//    internal constructor(
+//        kind: String,
+//        name: String,
+//        configs: Map<String, Any>
+//    ) : this(
+//        kind = kind,
+//        configs = mapOf("name" to name) + configs
+//    )
 }
+
+interface ConfigsInterface
