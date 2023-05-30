@@ -24,6 +24,8 @@ class Plot internal constructor(
 
     fun layers(): List<Layer> = features.filterIsInstance<Layer>()
     fun scales(): List<Scale> = features.filterIsInstance<Scale>()
+    fun size(): PlotSize? =
+        if (features.filterIsInstance<PlotSize>().isNotEmpty()) features.filterIsInstance<PlotSize>().last() else null
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
     @Composable
@@ -114,6 +116,10 @@ class Scale(
     override fun toString() =
         "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, limits=$limits, naValue=$naValue, format=$format, reverse=$reverse)"
 }
+
+open class PlotSize(val size: Specifications.Size) : Feature()
+// TODO: Maybe this class should be title, subtitle, and caption all together
+open class Title(val title: String) : Feature()
 
 open class ConfigsMap internal constructor(
     val kind: String,
