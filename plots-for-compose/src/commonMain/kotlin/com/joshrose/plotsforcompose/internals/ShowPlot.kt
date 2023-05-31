@@ -1,20 +1,19 @@
 package com.joshrose.plotsforcompose.internals
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import com.joshrose.plotsforcompose.util.width
 
 @Composable
 fun ShowPlot(specs: Specifications.Specs) {
 
     Canvas(
         modifier = Modifier
-            .background(color = Color.Green)
-            //.height(size.height?.dp)
-            //.width(size.width?.dp)
-            .background(color = Color.Red)
+            .height(specs.plot?.size?.height ?: 500.dp)
+            .width(specs.plot?.size?.width)
     ) {
 
     }

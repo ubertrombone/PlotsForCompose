@@ -57,5 +57,5 @@ object Specifications {
     data class Size(
         val width: Dp? = null,
         val height: Dp? = null
-    ) : ConfigsInterface
+    )
 }

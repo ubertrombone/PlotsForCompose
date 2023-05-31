@@ -24,6 +24,7 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurati
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
 import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
 import com.joshrose.plotsforcompose.composePlot
+import com.joshrose.plotsforcompose.plotSize
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -160,7 +161,7 @@ fun AxesContent(
                         labels = data["x"]?.map { it.toString() },
                         reverse = false
                     ))
-                    //.plus(plotSize(width = 500.dp, height = 300.dp))
+                    .plus(plotSize(height = 300.dp))
                 plot.show()
             }
 //            item {
