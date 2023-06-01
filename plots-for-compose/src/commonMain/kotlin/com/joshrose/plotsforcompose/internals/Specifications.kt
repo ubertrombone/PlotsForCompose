@@ -7,6 +7,7 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurati
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 
+// TODO: Aesthetics should be defined. I.e., X for "x".
 object Specifications {
     data class Specs(
         val plotBase: PlotBase? = null,
@@ -43,7 +44,7 @@ object Specifications {
         val scale: String? = null,
         val guidelineConfigs: GuidelinesConfiguration? = null,
         val labelConfigs: LabelsConfiguration? = null,
-        val axisLineConfigs: AxisLineConfiguration? = null,
+        val axisLineConfigs: AxisLineConfiguration.Configuration? = null,
         val name: String? = null,
         val breaks: List<Any>? = null,
         val labels: List<String>? = null,

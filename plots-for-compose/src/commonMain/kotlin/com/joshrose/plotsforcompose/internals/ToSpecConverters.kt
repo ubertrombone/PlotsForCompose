@@ -1,7 +1,5 @@
 package com.joshrose.plotsforcompose.internals
 
-import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing.toList
-
 fun Plot.toSpec() = Specifications.Specs(
         plotBase = Specifications.PlotBase(
             data = data?.let { asPlotData(it) },
@@ -41,11 +39,11 @@ fun Scale.toSpec() = Specifications.Scale(
     position = position
 )
 
-internal fun asPlotData(rawData: Map<*, *>): Map<String, List<Any?>> {
-    val standardizedData = HashMap<String, List<Any?>>()
-    rawData.forEach { (rawKey, rawValue) ->
-        val key = rawKey.toString()
-        standardizedData[key] = toList(rawValue!!, key)
-    }
-    return standardizedData
-}
+//internal fun asPlotData(rawData: Map<*, *>): Map<String, List<Any?>> {
+//    val standardizedData = HashMap<String, List<Any?>>()
+//    rawData.forEach { (rawKey, rawValue) ->
+//        val key = rawKey.toString()
+//        standardizedData[key] = toList(rawValue!!, key)
+//    }
+//    return standardizedData
+//}

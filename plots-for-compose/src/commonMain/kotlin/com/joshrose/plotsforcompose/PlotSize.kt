@@ -1,7 +1,7 @@
 package com.joshrose.plotsforcompose
 
 import androidx.compose.ui.unit.Dp
-import com.joshrose.plotsforcompose.internals.PlotSize
-import com.joshrose.plotsforcompose.internals.Specifications
+import com.joshrose.plotsforcompose.internals.ConfigsMap
 
-fun plotSize(width: Dp? = null, height: Dp? = null) = PlotSize(Specifications.Size(width, height))
+fun plotSize(width: Dp? = null, height: Dp? = null) =
+    ConfigsMap("size", mapOf("width" to width, "height" to height))

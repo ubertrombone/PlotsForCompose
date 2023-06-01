@@ -29,7 +29,7 @@ class Plot internal constructor(
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
     @Composable
-    fun show() = ShowPlot(toSpec())
+    fun show() = ShowPlot(this)
 
     override fun toString() = "Plot(data=$data, mapping=${mapping.map}, features=$features)"
 
@@ -102,7 +102,7 @@ abstract class Layer(
 class Scale(
     val guidelinesConfigs: GuidelinesConfiguration?,
     val labelConfigs: LabelsConfiguration?,
-    val axisLineConfigs: AxisLineConfiguration?,
+    val axisLineConfigs: AxisLineConfiguration.Configuration?,
     val scale: ScaleKind,
     val name: String? = null,
     val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn
@@ -123,7 +123,7 @@ open class Title(val title: String) : Feature()
 
 open class ConfigsMap internal constructor(
     val kind: String,
-    val configs: ConfigsInterface
+    val configs: Map<String, Any?>
 ) : Feature() {
 //    internal constructor(
 //        kind: String,
@@ -133,6 +133,7 @@ open class ConfigsMap internal constructor(
 //        kind = kind,
 //        configs = mapOf("name" to name) + configs
 //    )
+    override fun toString() = "ConfigsMap(kind=$kind, configs=$configs)"
 }
 
 interface ConfigsInterface
