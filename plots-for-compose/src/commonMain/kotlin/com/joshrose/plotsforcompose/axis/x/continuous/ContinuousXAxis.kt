@@ -6,6 +6,9 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
@@ -41,7 +44,9 @@ fun unboundXAxis(
 
 @ExperimentalTextApi
 fun DrawScope.unboundXAxis(
-    config: AxisConfiguration.XConfiguration,
+    labelConfigs: LabelsConfiguration,
+    guidelinesConfigs: GuidelinesConfiguration,
+    axisLineConfigs: AxisLineConfiguration.Configuration,
     labels: List<Number>,
     xRangeValues: Range<Number>,
     xAxisPosition: XAxis,
@@ -60,21 +65,22 @@ fun DrawScope.unboundXAxis(
             xValues = xRangeValues.mapToFloat(),
             label = label.toFloat(),
             range = range.toFloat(),
-            rangeAdj = config.labels.rangeAdjustment,
+            rangeAdj = labelConfigs.rangeAdjustment,
             index = index,
             labelsSize = labels.size
         )
 
-        if (config.showGuidelines) {
+        // TODO: These booleans should be moved to Configs.
+        if (true) {
             if (drawYAxis && yAxisPositionXValue != x) {
                 drawXGuideline(
-                    guidelineConfig = config.guidelines,
+                    guidelineConfig = guidelinesConfigs,
                     x = x,
                     xAxisPosition = xAxisPosition
                 )
             } else {
                 drawXGuideline(
-                    guidelineConfig = config.guidelines,
+                    guidelineConfig = guidelinesConfigs,
                     x = x,
                     xAxisPosition = xAxisPosition
                 )
@@ -83,28 +89,31 @@ fun DrawScope.unboundXAxis(
 
         if (!drawZero && label == 0f) return@forEachIndexed
 
-        if (config.showLabels) {
+        // TODO: Move this to config file
+        if (true) {
             drawXLabel(
                 y = y,
                 x = x,
                 label = label,
                 xAxisPosition = xAxisPosition,
                 textMeasurer = textMeasurer,
-                labelConfig = config.labels
+                labelConfig = labelConfigs
             )
         }
 
-        if (config.showAxisLine && config.axisLine.ticks) {
+        // TODO: Move this to config file
+        if (axisLineConfigs.ticks) {//if (config.showAxisLine && config.axisLine.ticks) {
             drawXTick(
-                axisLineConfig = config.axisLine,
+                axisLineConfig = axisLineConfigs,
                 x = x,
                 xAxisPosition = xAxisPosition,
-                axisOffset = config.labels.axisOffset.toPx()
+                axisOffset = labelConfigs.axisOffset.toPx()
             )
         }
     }
 
-    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
+    // TODO: Move this to config file
+    if (true) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
 // TODO: Consider how drawing all/some/none guidelines and all/some/none labels might go
