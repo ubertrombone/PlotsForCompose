@@ -44,6 +44,12 @@ sealed interface AxisPosition {
         override fun toString() = "AxisPosition#Center"
     }
 
+    @Parcelize
+    @Stable
+    object Both: XOrYAxis {
+        override fun toString() = "AxisPosition#Both"
+    }
+
     @Stable
     enum class Orientation {
         X,
