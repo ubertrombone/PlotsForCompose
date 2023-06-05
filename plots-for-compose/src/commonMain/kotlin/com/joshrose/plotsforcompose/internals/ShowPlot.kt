@@ -9,17 +9,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
 import com.joshrose.plotsforcompose.util.width
+import java.io.InvalidObjectException
 
 @Composable
 fun ShowPlot(plot: Plot) {
     println("Data: ${plot.data}")
+    // TODO: Data doesn't really mean anything...
     val data by remember { mutableStateOf(plot.data?.let { asPlotData(it) } ?: mutableMapOf()) }
+    val mapping by remember { mutableStateOf(plot.mapping.map.toMutableMap()) }
 
     println("Layers: ${plot.layers()}")
 
-    // TODO: Test this...
     plot.layers().filter { it.data != null }.forEach { layer ->
         val layerData = asPlotData(layer.data!!)
         layerData.keys.forEach { key ->
@@ -28,20 +31,57 @@ fun ShowPlot(plot: Plot) {
         }
     }
 
+    plot.layers().filter { it.mapping.map.isNotEmpty() }.forEach { layer ->
+        val layerMap = layer.mapping.map
+        layerMap.keys.forEach { key ->
+            if (!mapping.containsKey(key)) mapping[key] = layerMap[key]!!
+            else mapping[duplicateKeys(mapping.keys, key)] = layerMap[key]!!
+        }
+    }
+
+    println(data)
+    println(mapping)
+
     println("Scales: ${plot.scales()}")
 
-    var xScaleOne: Scale? = null
-    var xScaleTwo: Scale? = null
-    var yScaleOne: Scale? = null
-    var yScaleTwo: Scale? = null
+    var scaleTopX: Scale? = null
+    var scaleCenterX: Scale? = null
+    var scaleBottomX: Scale? = null
+
+    var scaleStartY: Scale? = null
+    var scaleCenterY: Scale? = null
+    var scaleEndY: Scale? = null
 
     plot.scales().filter { it.scale == ScaleKind.X }.forEach { scale ->
-        if (xScaleOne == null) xScaleOne = scale else xScaleTwo = scale
+        when (scale.position) {
+            AxisPosition.Bottom -> scaleBottomX = scale
+            AxisPosition.Top -> scaleTopX = scale
+            AxisPosition.Center -> scaleCenterX = scale
+            AxisPosition.Both -> {
+                scaleBottomX = scale
+                scaleTopX = scale
+            }
+            null -> scaleBottomX = scale
+            else -> throw InvalidObjectException("AxisPosition for ${scale.scale.name} must extend XAxis or XOrYAxis.")
+        }
     }
 
     plot.scales().filter { it.scale == ScaleKind.Y }.forEach { scale ->
-        if (yScaleOne == null) yScaleOne = scale else yScaleTwo = scale
+        when (scale.position) {
+            AxisPosition.Start -> scaleStartY = scale
+            AxisPosition.End -> scaleEndY = scale
+            AxisPosition.Center -> scaleCenterY = scale
+            AxisPosition.Both -> {
+                scaleStartY = scale
+                scaleEndY = scale
+            }
+            null -> scaleStartY = scale
+            else -> throw InvalidObjectException("AxisPosition for ${scale.scale.name} must extend YAxis or XOrYAxis.")
+        }
     }
+
+    println("ScaleX - Top: $scaleTopX, Center: $scaleCenterX, Bottom: $scaleBottomX")
+    println("ScaleY - Start: $scaleStartY, Center: $scaleCenterY, End: $scaleEndY")
 
     println("Other: ${plot.otherFeatures()}")
 
