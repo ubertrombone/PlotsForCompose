@@ -3,13 +3,11 @@ package com.joshrose.plotsforcompose.internals
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.exception.DataFrameSizeException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
 import com.joshrose.plotsforcompose.util.width
 import java.io.InvalidObjectException
@@ -17,30 +15,20 @@ import java.io.InvalidObjectException
 @Composable
 fun ShowPlot(plot: Plot) {
     println("Data: ${plot.data}")
-    // TODO: Data doesn't really mean anything...
-    val data by remember { mutableStateOf(plot.data?.let { asPlotData(it) } ?: mutableMapOf()) }
-    val mapping by remember { mutableStateOf(plot.mapping.map.toMutableMap()) }
-
-    println("Layers: ${plot.layers()}")
-
-    plot.layers().filter { it.data != null }.forEach { layer ->
-        val layerData = asPlotData(layer.data!!)
-        layerData.keys.forEach { key ->
-            if (!data.containsKey(key)) data[key] = layerData[key]!!
-            else data[duplicateKeys(data.keys, key)] = layerData[key]!!
-        }
+    println("Map: ${plot.mapping.map}")
+    val data = plot.data?.let { asPlotData(it) }
+    val dataFrameValueSizes = data?.values?.map { it.size }?.toSet()?.size
+    if (dataFrameValueSizes != 1) {
+        val dataAsString = data?.let { it.map { (key, value) -> "$key: ${value.size}" } }
+        val message = dataAsString?.let {
+            "All data values must have an equal size:\n${it.joinToString("\n")}"
+        } ?: "Data must not be Null."
+        throw DataFrameSizeException(message)
     }
-
-    plot.layers().filter { it.mapping.map.isNotEmpty() }.forEach { layer ->
-        val layerMap = layer.mapping.map
-        layerMap.keys.forEach { key ->
-            if (!mapping.containsKey(key)) mapping[key] = layerMap[key]!!
-            else mapping[duplicateKeys(mapping.keys, key)] = layerMap[key]!!
-        }
-    }
-
-    println(data)
-    println(mapping)
+    // TODO: mapping should take the values and first map them against data or second see if they are a list of length = data[some]
+    // TODO: If not, throw an error.
+    // TODO: Above should only apply to mappings that require that. Some might be single values (i.e., color).
+    //val mapping by remember { mutableStateOf(plot.mapping.map.toMutableMap()) }
 
     println("Scales: ${plot.scales()}")
 
@@ -102,7 +90,7 @@ fun ShowPlot(plot: Plot) {
     }
 }
 
-internal fun asPlotData(rawData: Map<*, *>): MutableMap<String, List<Any?>> {
+internal fun asPlotData(rawData: Map<*, *>): Map<String, List<Any?>> {
     val standardizedData = HashMap<String, List<Any?>>()
     rawData.forEach { (rawKey, rawValue) ->
         val key = rawKey.toString()

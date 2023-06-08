@@ -1,14 +1,10 @@
 package com.joshrose.plotsforcompose.internals
 
 import androidx.compose.runtime.Composable
-import com.joshrose.plotsforcompose.LayerConfigs
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.internals.layer.PlotConfigs
-import com.joshrose.plotsforcompose.internals.layer.PosConfigs
-import com.joshrose.plotsforcompose.internals.layer.StatConfigs
 
 class Plot internal constructor(
     val data: Map<*, *>? = null,
@@ -22,7 +18,7 @@ class Plot internal constructor(
         }
     }
 
-    fun layers(): List<Layer> = features.filterIsInstance<Layer>()
+    //fun layers(): List<Layer> = features.filterIsInstance<Layer>()
     fun scales(): List<Scale> = features.filterIsInstance<Scale>()
     fun size(): PlotSize? =
         if (features.filterIsInstance<PlotSize>().isNotEmpty()) features.filterIsInstance<PlotSize>().last() else null
@@ -70,34 +66,34 @@ class FeatureList(val elements: List<Feature>) : Feature() {
     }
 }
 
-abstract class Layer(
-    mapping: Configs,
-    val data: Map<*, *>? = null,
-    val layerConfigs: LayerConfigs? = null,
-    val plot: PlotConfigs,
-    val stat: StatConfigs,
-    val position: PosConfigs?,
-    val showLegend: Boolean,
-    val markers: Boolean? = null,
-    val orientation: AxisPosition.Orientation? = null
-) : ConfigCapsule, Feature() {
-    val mapping by lazy {
-        plot.mapping + stat.mapping + mapping
-    }
-
-    override fun toString() = """
-        Layer(
-            data=$data, 
-            layerConfigs=${layerConfigs.toString()}, 
-            plot=${plot.kind}, stat=${stat.kind}, 
-            position=${position?.kind}, 
-            showLegend=$showLegend, 
-            markers=$markers, 
-            orientation=$orientation,
-            mapping=${mapping.map}
-        )
-    """.trimIndent()
-}
+//abstract class Layer(
+//    mapping: Configs,
+//    val data: Map<*, *>? = null,
+//    val layerConfigs: LayerConfigs? = null,
+//    val plot: PlotConfigs,
+//    val stat: StatConfigs,
+//    val position: PosConfigs?,
+//    val showLegend: Boolean,
+//    val markers: Boolean? = null,
+//    val orientation: AxisPosition.Orientation? = null
+//) : ConfigCapsule, Feature() {
+//    val mapping by lazy {
+//        plot.mapping + stat.mapping + mapping
+//    }
+//
+//    override fun toString() = """
+//        Layer(
+//            data=$data,
+//            layerConfigs=${layerConfigs.toString()},
+//            plot=${plot.kind}, stat=${stat.kind},
+//            position=${position?.kind},
+//            showLegend=$showLegend,
+//            markers=$markers,
+//            orientation=$orientation,
+//            mapping=${mapping.map}
+//        )
+//    """.trimIndent()
+//}
 
 class Scale(
     val guidelinesConfigs: GuidelinesConfiguration?,

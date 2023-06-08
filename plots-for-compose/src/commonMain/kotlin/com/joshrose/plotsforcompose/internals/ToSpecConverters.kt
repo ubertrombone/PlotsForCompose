@@ -6,23 +6,23 @@ fun Plot.toSpec() = Specifications.Specs(
             mapping = mapping.map
         ),
         plot = Specifications.Plot(
-            layers = layers().map(Layer::toSpec),
+            //layers = layers().map(Layer::toSpec),
             scales = scales().map(Scale::toSpec),
             size = size()?.size
         )
     ).also(::println)
 
-fun Layer.toSpec() = Specifications.Layer(
-    data = data?.let { asPlotData(it) },
-    mapping = mapping.map,
-    plot = plot.kind.optionName(),
-    stat = stat.kind.optionName(),
-    showLegend = showLegend,
-    configs = layerConfigs,
-    markers = markers,
-    orientation = orientation,
-    pos = position?.kind?.optionName()
-)
+//fun Layer.toSpec() = Specifications.Layer(
+//    data = data?.let { asPlotData(it) },
+//    mapping = mapping.map,
+//    plot = plot.kind.optionName(),
+//    stat = stat.kind.optionName(),
+//    showLegend = showLegend,
+//    configs = layerConfigs,
+//    markers = markers,
+//    orientation = orientation,
+//    pos = position?.kind?.optionName()
+//)
 
 fun Scale.toSpec() = Specifications.Scale(
     scale = scale.optionName(),
