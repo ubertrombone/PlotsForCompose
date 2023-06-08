@@ -7,7 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.exception.DataFrameSizeException
+import com.joshrose.plotsforcompose.exception.FigureNotFoundException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
+import com.joshrose.plotsforcompose.plots.PlotBar
 import com.joshrose.plotsforcompose.util.width
 
 @Composable
@@ -31,12 +33,15 @@ fun ShowPlot(plot: Plot) {
 
     println("Other: ${plot.otherFeatures()}")
 
-    var size: Map<String, Dp?>? = null
-    plot.otherFeatures().forEach { feature ->
-        when (feature.kind) {
-            "size" -> size = feature.configs.mapValues { it.value as Dp? }
-            else -> println(feature.kind)
-        }
+    val size: Map<String, Dp?>? =
+        plot.otherFeatures().lastOrNull { it.kind == "size" }?.configs?.mapValues { it.value as Dp? }
+
+    // TODO: These should point to composables where the plots are drawn
+    // TODO: Maybe this should be in the Canvas below and only cover figures while Axes are drawn here?
+    when (plot.mapping.map["figure"]) {
+        is PlotBar -> println("BAR")
+        null -> println("NULL") // TODO: Just draw axes.
+        else -> throw FigureNotFoundException("Figure ${plot.mapping.map["figure"]} does not exist.")
     }
 
     Canvas(
