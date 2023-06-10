@@ -26,6 +26,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  */
 // TODO: Labels cannot be greater than breaks
 data class LabelsConfiguration(
+    val showLabels: Boolean,
     val fontColor: Color,
     val textStyle: TextStyle,
     val axisOffset: Dp,
@@ -59,6 +60,7 @@ object LabelsConfigurationDefaults {
      *  @return the resulting [LabelsConfiguration] to be used with an axis configuration.
      */
     fun labelsConfigurationDefault(
+        showLabels: Boolean = true,
         fontColor: Color = md_theme_dark_primary,
         textStyle: TextStyle = Typography.labelMedium,
         axisOffset: Dp = 0.dp,
@@ -71,6 +73,7 @@ object LabelsConfigurationDefaults {
         format: String = "#.##"
     ): LabelsConfiguration =
         LabelsConfiguration(
+            showLabels = showLabels,
             fontColor = fontColor,
             textStyle = textStyle,
             axisOffset = axisOffset,

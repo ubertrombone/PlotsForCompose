@@ -6,13 +6,111 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.Range.Companion.mapToFloat
 import com.joshrose.plotsforcompose.axis.y.util.*
+import com.joshrose.plotsforcompose.internals.Scale
+import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.calculateOffset
+
+fun unboundYAxis(
+    config: AxisConfiguration.YConfiguration,
+    breaks: List<Number>? = null,
+    labels: List<String>? = null,
+    naValue: Number? = null,
+    reverse: Boolean? = null
+) = Scale(
+    labelConfigs = config.labels,
+    guidelinesConfigs = config.guidelines,
+    axisLineConfigs = config.axisLine,
+    scale = ScaleKind.Y,
+    breaks = breaks,
+    labels = labels,
+    naValue = naValue,
+    reverse = reverse
+)
+
+@ExperimentalTextApi
+fun DrawScope.unboundYAxis(
+    labelConfigs: LabelsConfiguration,
+    guidelinesConfigs: GuidelinesConfiguration,
+    axisLineConfigs: AxisLineConfiguration.Configuration,
+    labels: List<Number>,
+    yRangeValues: Range<Number>,
+    yAxisPosition: YAxis,
+    xAxisPosition: XAxis,
+    drawXAxis: Boolean,
+    drawZero: Boolean = true,
+    range: Number,
+    textMeasurer: TextMeasurer
+) {
+    val x = getX(yAxisPosition = yAxisPosition, width = size.width)
+    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+
+    labels.reversed().forEachIndexed { index, label ->
+        // y - calculates the proportion of the range that rangeDiff occupies and then scales that
+        // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
+        val y = getY(
+            height = size.height,
+            yValues = yRangeValues.mapToFloat(),
+            label = label.toFloat(),
+            range = range.toFloat(),
+            rangeAdj = labelConfigs.rangeAdjustment,
+            index = index,
+            labelsSize = labels.size
+        )
+
+        if (guidelinesConfigs.showGuidelines) {
+            if (drawXAxis) {
+                if (xAxisPositionYValue != y) {
+                    drawYGuideline(
+                        guidelineConfig = guidelinesConfigs,
+                        y = y,
+                        yAxisPosition = yAxisPosition
+                    )
+                }
+            } else {
+                drawYGuideline(
+                    guidelineConfig = guidelinesConfigs,
+                    y = y,
+                    yAxisPosition = yAxisPosition
+                )
+            }
+        }
+
+        if (!drawZero && label == 0f) return@forEachIndexed
+
+        if (labelConfigs.showLabels) {
+            drawYLabel(
+                y = y,
+                x = x,
+                label = label,
+                textMeasurer = textMeasurer,
+                labelConfig = labelConfigs,
+                yAxisPosition = yAxisPosition
+            )
+        }
+
+        // TODO: Make axisLineConfigs axis dependent
+        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+            drawYTick(
+                axisLineConfig = axisLineConfigs,
+                y = y,
+                yAxisPosition = yAxisPosition,
+                axisOffset = labelConfigs.axisOffset.toPx()
+            )
+        }
+    }
+
+    // TODO: Make axisLineConfigs axis dependent
+    if (axisLineConfigs.showAxisLine) drawYAxis(axisLineConfig = axisLineConfigs, yAxisPosition = yAxisPosition)
+}
 
 @ExperimentalTextApi
 fun DrawScope.unboundYAxis(

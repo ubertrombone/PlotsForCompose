@@ -42,6 +42,7 @@ fun unboundXAxis(
     reverse = reverse
 )
 
+// TODO: Change axisLineConfigs to XConfiguration?
 @ExperimentalTextApi
 fun DrawScope.unboundXAxis(
     labelConfigs: LabelsConfiguration,
@@ -70,8 +71,7 @@ fun DrawScope.unboundXAxis(
             labelsSize = labels.size
         )
 
-        // TODO: These booleans should be moved to Configs.
-        if (true) {
+        if (guidelinesConfigs.showGuidelines) {
             if (drawYAxis && yAxisPositionXValue != x) {
                 drawXGuideline(
                     guidelineConfig = guidelinesConfigs,
@@ -89,8 +89,7 @@ fun DrawScope.unboundXAxis(
 
         if (!drawZero && label == 0f) return@forEachIndexed
 
-        // TODO: Move this to config file
-        if (true) {
+        if (labelConfigs.showLabels) {
             drawXLabel(
                 y = y,
                 x = x,
@@ -101,8 +100,7 @@ fun DrawScope.unboundXAxis(
             )
         }
 
-        // TODO: Move this to config file
-        if (axisLineConfigs.ticks) {//if (config.showAxisLine && config.axisLine.ticks) {
+        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
             drawXTick(
                 axisLineConfig = axisLineConfigs,
                 x = x,
@@ -112,8 +110,7 @@ fun DrawScope.unboundXAxis(
         }
     }
 
-    // TODO: Move this to config file
-    if (true) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
+    if (axisLineConfigs.showAxisLine) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
 // TODO: Consider how drawing all/some/none guidelines and all/some/none labels might go

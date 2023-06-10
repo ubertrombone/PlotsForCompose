@@ -51,3 +51,4 @@ internal fun asMappingData(
     }
 
 fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
+fun Scale?.isNotNull() = this != null

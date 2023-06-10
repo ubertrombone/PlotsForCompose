@@ -9,7 +9,9 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 
 sealed interface AxisLineConfiguration {
+    // TODO: use builder syntax for this and other configs
     interface Configuration : AxisLineConfiguration {
+        val showAxisLine: Boolean
         val lineColor: Color
         val alpha: Multiplier
         val strokeWidth: Float
@@ -20,6 +22,7 @@ sealed interface AxisLineConfiguration {
     }
 
     data class XConfiguration(
+        override val showAxisLine: Boolean,
         override val lineColor: Color,
         override val alpha: Multiplier,
         override val strokeWidth: Float,
@@ -32,6 +35,7 @@ sealed interface AxisLineConfiguration {
     }
 
     data class YConfiguration(
+        override val showAxisLine: Boolean,
         override val lineColor: Color,
         override val alpha: Multiplier,
         override val strokeWidth: Float,
@@ -45,6 +49,7 @@ sealed interface AxisLineConfiguration {
 
     companion object {
         fun xAxisLineConfigurationDefaults(
+            showAxisLine: Boolean = true,
             lineColor: Color = md_theme_dark_onBackground,
             alpha: Multiplier = Multiplier(1f),
             strokeWidth: Float = 2f,
@@ -53,6 +58,7 @@ sealed interface AxisLineConfiguration {
             axisPosition: AxisPosition.XAxis? = null,
             axisAlignment: AxisAlignment.XAxis = SpaceBetween
         ) = XConfiguration(
+            showAxisLine = showAxisLine,
             lineColor = lineColor,
             alpha = alpha,
             strokeWidth = strokeWidth,
@@ -63,6 +69,7 @@ sealed interface AxisLineConfiguration {
         )
 
         fun yAxisLineConfigurationDefaults(
+            showAxisLine: Boolean = true,
             lineColor: Color = md_theme_dark_onBackground,
             alpha: Multiplier = Multiplier(1f),
             strokeWidth: Float = 2f,
@@ -71,6 +78,7 @@ sealed interface AxisLineConfiguration {
             axisPosition: AxisPosition.YAxis? = null,
             axisAlignment: AxisAlignment.YAxis = SpaceBetween
         ) = YConfiguration(
+            showAxisLine = showAxisLine,
             lineColor = lineColor,
             alpha = alpha,
             strokeWidth = strokeWidth,

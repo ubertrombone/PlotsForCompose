@@ -3,6 +3,7 @@
 package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -23,6 +24,7 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
 import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
+import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.plotSize
 
@@ -151,9 +153,14 @@ fun AxesContent(
                     "x" to givenData.value.data.map { it.x },
                     "y" to givenData.value.data.map { it.y }
                 )
-                val plot = composePlot(data = data) {
-                    x = data["x"]
-                    y = data["y"]
+                val data2 = mapOf(
+                    "One" to listOf("11", "2", "31", "4", "15"),
+                    "Two" to listOf("60", "7", "80", "9", "10")
+                )
+                val plot = composePlot(data = data2) {
+                    //figure = BarFigure()
+                    x = "One"
+                    y = "Two"
                 }
                     .plus(unboundXAxis(
                         config = xConfig,
@@ -161,8 +168,14 @@ fun AxesContent(
                         labels = data["x"]?.map { it.toString() },
                         reverse = false
                     ))
+                    .plus(unboundYAxis(
+                        config = yConfig,
+                        breaks = data["y"],
+                        labels = data["y"]?.map { it.toString() },
+                        reverse = false
+                    ))
                     .plus(plotSize(height = 300.dp))
-                plot.show()
+                plot.show(modifier = Modifier.padding(50.dp))
             }
 //            item {
 //                AxesCanvas(
@@ -250,3 +263,25 @@ fun AxesContent(
         }
     }
 }
+
+//class Test(
+//           override val x: Any? = null,
+//           override val y: Any? = null,
+//           override val z: Any? = null,
+//           override val alpha: Any? = null,
+//           override val color: Any? = null,
+//           override val width: Any? = null,
+//           mapping: BarMapping.() -> Unit = {}
+//): BarAesthetics,
+//    Layer(
+//    data = mapOf("x" to listOf(1, 2)),
+//    plot = PlotConfigs(kind = PlotKind.BAR),
+//    stat = StatConfigs(kind = StatKind.COUNT),
+//    position = PosConfigs(kind = PosKind.STACK),
+//    showLegend = true,
+//    mapping = BarMapping().apply(mapping).seal()
+//) {
+//    override fun seal(): Configs {
+//        return super<BarAesthetics>.seal()
+//    }
+//}

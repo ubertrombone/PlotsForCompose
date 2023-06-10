@@ -17,6 +17,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  * @constructor Creates a configuration for axis guidelines.
  */
 data class GuidelinesConfiguration(
+    val showGuidelines: Boolean,
     val lineColor: Color,
     val alpha: Multiplier,
     val strokeWidth: Float,
@@ -38,6 +39,7 @@ object GuidelinesConfigurationDefaults {
      * @return the resulting [GuidelinesConfiguration] to be used with an axis configuration.
      */
     fun guidelinesConfigurationDefaults(
+        showGuidelines: Boolean = true,
         lineColor: Color = md_theme_dark_onBackground,
         alpha: Multiplier = Multiplier(factor = .1f),
         strokeWidth: Float = 2f,
@@ -45,6 +47,7 @@ object GuidelinesConfigurationDefaults {
         padding: Float = 25f
     ): GuidelinesConfiguration =
         GuidelinesConfiguration(
+            showGuidelines = showGuidelines,
             lineColor = lineColor,
             alpha = alpha,
             strokeWidth = strokeWidth,

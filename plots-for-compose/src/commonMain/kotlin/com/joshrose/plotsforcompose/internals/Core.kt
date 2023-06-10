@@ -1,6 +1,7 @@
 package com.joshrose.plotsforcompose.internals
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.joshrose.plotsforcompose.ShowPlot
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
@@ -26,7 +27,7 @@ class Plot internal constructor(
     fun otherFeatures(): List<ConfigsMap> = features.filterIsInstance<ConfigsMap>()
 
     @Composable
-    fun show() = ShowPlot(this)
+    fun show(modifier: Modifier = Modifier) = ShowPlot(this, modifier)
 
     override fun toString() = "Plot(data=$data, mapping=${mapping.map}, features=$features)"
 

@@ -15,7 +15,6 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.drawZero
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
@@ -129,19 +128,19 @@ fun AxesCanvas(
         }
 
         Canvas(modifier = modifier) {
-            if (xConfig.showAxis) {
-                unboundXAxis(
-                    config = xConfig,
-                    labels = xLabels,
-                    xRangeValues = Range(min = xMin, max = xMax),
-                    xAxisPosition = xAxisPosition,
-                    yAxisPosition = yAxisPosition,
-                    drawYAxis = yConfig.showAxis && yConfig.showAxisLine,
-                    drawZero = drawZero,
-                    range = xRange,
-                    textMeasurer = xTextMeasurer
-                )
-            }
+//            if (xConfig.showAxis) {
+//                unboundXAxis(
+//                    config = xConfig,
+//                    labels = xLabels,
+//                    xRangeValues = Range(min = xMin, max = xMax),
+//                    xAxisPosition = xAxisPosition,
+//                    yAxisPosition = yAxisPosition,
+//                    drawYAxis = yConfig.showAxis && yConfig.showAxisLine,
+//                    drawZero = drawZero,
+//                    range = xRange,
+//                    textMeasurer = xTextMeasurer
+//                )
+//            }
 
             if (yConfig.showAxis) {
                 unboundYAxis(

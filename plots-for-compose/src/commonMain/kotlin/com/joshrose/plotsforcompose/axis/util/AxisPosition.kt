@@ -56,3 +56,6 @@ sealed interface AxisPosition {
         Y
     }
 }
+
+fun AxisPosition?.toXAxis(): AxisPosition.XAxis? = this?.let { it as AxisPosition.XAxis }
+fun AxisPosition?.toYAxis(): AxisPosition.YAxis? = this?.let { it as AxisPosition.YAxis }
