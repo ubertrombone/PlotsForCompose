@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.plots
+package com.joshrose.plotsforcompose.figures
 
 import com.joshrose.plotsforcompose.internals.layer.StatConfigs
 

@@ -1,6 +1,7 @@
 package com.joshrose.plotsforcompose.internals
 
 import androidx.compose.runtime.Composable
+import com.joshrose.plotsforcompose.ShowPlot
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration

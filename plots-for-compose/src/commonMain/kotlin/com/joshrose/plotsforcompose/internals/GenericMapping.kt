@@ -1,7 +1,7 @@
 package com.joshrose.plotsforcompose.internals
 
+import com.joshrose.plotsforcompose.figures.Figure
 import com.joshrose.plotsforcompose.internals.layer.WithGroupOption
-import com.joshrose.plotsforcompose.plots.Figure
 
 class GenericMapping(
     var figure: Figure? = null,
