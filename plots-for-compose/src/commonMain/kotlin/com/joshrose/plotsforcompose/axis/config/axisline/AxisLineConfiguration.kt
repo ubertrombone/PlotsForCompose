@@ -48,6 +48,10 @@ sealed interface AxisLineConfiguration {
         var axisAlignment: AxisAlignment.YAxis = SpaceBetween
     ) : AxisLineConfiguration {
         override fun toString() = "AxisLineConfiguration#YConfiguration"
+
+        companion object {
+            fun buildConfig(config: YConfiguration.() -> Unit = {} ) = YConfiguration().apply(config)
+        }
     }
 
     companion object {
