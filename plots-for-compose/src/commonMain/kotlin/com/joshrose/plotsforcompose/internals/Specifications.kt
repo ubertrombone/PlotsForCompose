@@ -44,7 +44,7 @@ object Specifications {
         val scale: String? = null,
         val guidelineConfigs: GuidelinesConfiguration? = null,
         val labelConfigs: LabelsConfiguration? = null,
-        val axisLineConfigs: AxisLineConfiguration.Configuration? = null,
+        val axisLineConfigs: AxisLineConfiguration? = null,
         val name: String? = null,
         val breaks: List<Any>? = null,
         val labels: List<String>? = null,

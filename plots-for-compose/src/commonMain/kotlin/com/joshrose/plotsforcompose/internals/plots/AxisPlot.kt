@@ -8,10 +8,14 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
-import com.joshrose.plotsforcompose.axis.util.*
+import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.axis.util.Range
+import com.joshrose.plotsforcompose.axis.util.drawZero
+import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.common.maxValue
@@ -99,14 +103,27 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         maxValue = yMax
     ))}
 
-    // TODO: Test toXAxis and toYAxis
-    val xAxisPosition = scaleX?.axisLineConfigs?.axisPosition.toXAxis() ?: when {
+    val xAxisLineConfigs = when (scaleX?.axisLineConfigs) {
+        is XConfiguration -> scaleX?.axisLineConfigs as XConfiguration
+        is YConfiguration ->
+            throw IllegalStateException("Axis Line Configurations on the X scale should be of type XConfiguration.")
+        null -> null
+    }
+
+    val yAxisLineConfigs = when (scaleY?.axisLineConfigs) {
+        is XConfiguration ->
+            throw IllegalStateException("Axis Line Configurations on the Y scale should be of type YConfiguration.")
+        is YConfiguration -> scaleY?.axisLineConfigs as YConfiguration
+        null -> null
+    }
+
+    val xAxisPosition = xAxisLineConfigs?.axisPosition ?: when {
         yMax <= 0 -> AxisPosition.Top
         yMin < 0 -> AxisPosition.Center
         else -> AxisPosition.Bottom
     }
 
-    val yAxisPosition = scaleY?.axisLineConfigs?.axisPosition.toYAxis() ?: when {
+    val yAxisPosition = yAxisLineConfigs?.axisPosition ?: when {
         xMax <= 0 -> AxisPosition.End
         xMin < 0 -> AxisPosition.Center
         else -> AxisPosition.Start
@@ -146,12 +163,12 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
             unboundXAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfigurationDefaults.labelsConfigurationDefault(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults(),
-                axisLineConfigs = it.axisLineConfigs ?: AxisLineConfiguration.xAxisLineConfigurationDefaults(),
+                axisLineConfigs = xAxisLineConfigs ?: XConfiguration(),
                 labels = xLabels,
                 xRangeValues = Range(min = xMin, max = xMax),
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
-                drawYAxis = scaleY.isNotNull() && scaleY!!.axisLineConfigs?.showAxisLine ?: true,
+                drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: YConfiguration().ticks,
                 drawZero = drawZero,
                 range = xRange,
                 textMeasurer = xTextMeasurer
@@ -161,12 +178,12 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
             unboundYAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfigurationDefaults.labelsConfigurationDefault(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults(),
-                axisLineConfigs = it.axisLineConfigs ?: AxisLineConfiguration.xAxisLineConfigurationDefaults(),
+                axisLineConfigs = yAxisLineConfigs ?: YConfiguration(),
                 labels = yLabels,
                 yRangeValues = Range(min = yMin, max = yMax),
                 yAxisPosition = yAxisPosition,
                 xAxisPosition = xAxisPosition,
-                drawXAxis = scaleX.isNotNull() && scaleY!!.axisLineConfigs?.showAxisLine ?: true,
+                drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: XConfiguration().ticks,
                 drawZero = drawZero,
                 range = yRange,
                 textMeasurer = yTextMeasurer

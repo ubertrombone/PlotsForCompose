@@ -7,43 +7,46 @@ import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
+import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
 
 sealed interface AxisLineConfiguration {
     // TODO: use builder syntax for this and other configs
-    interface Configuration : AxisLineConfiguration {
-        val showAxisLine: Boolean
-        val lineColor: Color
-        val alpha: Multiplier
-        val strokeWidth: Float
-        val pathEffect: PathEffect?
-        val ticks: Boolean
-        val axisPosition: AxisPosition?
-        val axisAlignment: AxisAlignment
-    }
+//    interface Configuration : AxisLineConfiguration {
+//        var showAxisLine: Boolean
+//        var lineColor: Color
+//        var alpha: Multiplier
+//        var strokeWidth: Float
+//        var pathEffect: PathEffect?
+//        var ticks: Boolean
+//    }
 
-    data class XConfiguration(
-        override val showAxisLine: Boolean,
-        override val lineColor: Color,
-        override val alpha: Multiplier,
-        override val strokeWidth: Float,
-        override val pathEffect: PathEffect?,
-        override val ticks: Boolean,
-        override val axisPosition: AxisPosition.XAxis?,
-        override val axisAlignment: AxisAlignment.XAxis
-    ) : Configuration {
+    class XConfiguration(
+        var showAxisLine: Boolean = true,
+        var lineColor: Color = md_theme_dark_primary,
+        var alpha: Multiplier = Multiplier(1f),
+        var strokeWidth: Float = 2f,
+        var pathEffect: PathEffect? = null,
+        var ticks: Boolean = true,
+        var axisPosition: AxisPosition.XAxis? = null, // todo
+        var axisAlignment: AxisAlignment.XAxis = SpaceBetween // todo
+    ) : AxisLineConfiguration {
         override fun toString() = "AxisLineConfiguration#XConfiguration"
+
+        companion object {
+            fun buildConfig(config: XConfiguration.() -> Unit = {} ) = XConfiguration().apply(config)
+        }
     }
 
-    data class YConfiguration(
-        override val showAxisLine: Boolean,
-        override val lineColor: Color,
-        override val alpha: Multiplier,
-        override val strokeWidth: Float,
-        override val pathEffect: PathEffect?,
-        override val ticks: Boolean,
-        override val axisPosition: AxisPosition.YAxis?,
-        override val axisAlignment: AxisAlignment.YAxis
-    ) : Configuration {
+    class YConfiguration(
+        var showAxisLine: Boolean = true,
+        var lineColor: Color = md_theme_dark_primary,
+        var alpha: Multiplier = Multiplier(1f),
+        var strokeWidth: Float = 2f,
+        var pathEffect: PathEffect? = null,
+        var ticks: Boolean = true,
+        var axisPosition: AxisPosition.YAxis? = null,
+        var axisAlignment: AxisAlignment.YAxis = SpaceBetween
+    ) : AxisLineConfiguration {
         override fun toString() = "AxisLineConfiguration#YConfiguration"
     }
 
@@ -88,6 +91,13 @@ sealed interface AxisLineConfiguration {
             axisAlignment = axisAlignment
         )
     }
+}
+
+fun something(config: AxisLineConfiguration.XConfiguration.() -> Unit = {}) =
+    AxisLineConfiguration.XConfiguration().apply(config)
+
+val some = something {
+    ticks = false
 }
 
 /**

@@ -69,13 +69,13 @@ fun AxesContent(
                 breaks = xLabelsStates.breaks,
                 fontColor = colorScheme.primary,
             ),
-            axisLine = AxisLineConfiguration.xAxisLineConfigurationDefaults().copy(
-                ticks = xAxisLineStates.ticks,
-                lineColor = colorScheme.primary,
-                strokeWidth = xAxisLineStates.strokeWidth,
-                alpha = xAxisLineStates.alpha,
-                axisPosition = xAxisLineStates.axisPosition
-            )
+//            axisLine = AxisLineConfiguration.xAxisLineConfigurationDefaults().copy(
+//                ticks = xAxisLineStates.ticks,
+//                lineColor = colorScheme.primary,
+//                strokeWidth = xAxisLineStates.strokeWidth,
+//                alpha = xAxisLineStates.alpha,
+//                axisPosition = xAxisLineStates.axisPosition
+//            )
         )
     val yConfig = AxisConfiguration.yAxisConfigurationDefaults()
         .copy(
@@ -98,14 +98,17 @@ fun AxesContent(
                 breaks = yLabelsStates.breaks,
                 fontColor = colorScheme.primary
             ),
-            axisLine = AxisLineConfiguration.yAxisLineConfigurationDefaults().copy(
-                ticks = yAxisLineStates.ticks,
-                lineColor = colorScheme.primary,
-                strokeWidth = yAxisLineStates.strokeWidth,
-                alpha = yAxisLineStates.alpha,
-                axisPosition = yAxisLineStates.axisPosition
-            )
+//            axisLine = AxisLineConfiguration.yAxisLineConfigurationDefaults().copy(
+//                ticks = yAxisLineStates.ticks,
+//                lineColor = colorScheme.primary,
+//                strokeWidth = yAxisLineStates.strokeWidth,
+//                alpha = yAxisLineStates.alpha,
+//                axisPosition = yAxisLineStates.axisPosition
+//            )
         )
+    val xAxisLineConfigs = AxisLineConfiguration.XConfiguration.buildConfig {
+        ticks = false
+    }
 
     Scaffold(
         modifier = modifier,
@@ -162,14 +165,19 @@ fun AxesContent(
                     x = "One"
                     y = "Two"
                 }
+                    // TODO: Recombine the configs into one which will use the builder syntax
                     .plus(unboundXAxis(
-                        config = xConfig,
+                        labelConfigs = xConfig.labels,
+                        guidelinesConfigs = xConfig.guidelines,
+                        axisLineConfigs = xAxisLineConfigs,
                         breaks = data["x"],
                         labels = data["x"]?.map { it.toString() },
                         reverse = false
                     ))
                     .plus(unboundYAxis(
-                        config = yConfig,
+                        labelConfigs = yConfig.labels,
+                        guidelinesConfigs = yConfig.guidelines,
+                        axisLineConfigs = AxisLineConfiguration.YConfiguration(),
                         breaks = data["y"],
                         labels = data["y"]?.map { it.toString() },
                         reverse = false

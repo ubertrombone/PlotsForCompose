@@ -25,16 +25,19 @@ import com.joshrose.plotsforcompose.internals.Scale
 import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.calculateOffset
 
+// TODO: Move this somewhere else
 fun unboundXAxis(
-    config: AxisConfiguration.XConfiguration,
+    labelConfigs: LabelsConfiguration,
+    guidelinesConfigs: GuidelinesConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
     breaks: List<Number>? = null,
     labels: List<String>? = null,
     naValue: Number? = null,
     reverse: Boolean? = null
 ) = Scale(
-    labelConfigs = config.labels,
-    guidelinesConfigs = config.guidelines,
-    axisLineConfigs = config.axisLine,
+    labelConfigs = labelConfigs,
+    guidelinesConfigs = guidelinesConfigs,
+    axisLineConfigs = axisLineConfigs,
     scale = ScaleKind.X,
     breaks = breaks,
     labels = labels,
@@ -42,12 +45,11 @@ fun unboundXAxis(
     reverse = reverse
 )
 
-// TODO: Change axisLineConfigs to XConfiguration?
 @ExperimentalTextApi
 fun DrawScope.unboundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: AxisLineConfiguration.Configuration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
     labels: List<Number>,
     xRangeValues: Range<Number>,
     xAxisPosition: XAxis,

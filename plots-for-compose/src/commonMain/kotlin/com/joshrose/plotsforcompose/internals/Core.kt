@@ -100,7 +100,7 @@ class FeatureList(val elements: List<Feature>) : Feature() {
 class Scale(
     val guidelinesConfigs: GuidelinesConfiguration?,
     val labelConfigs: LabelsConfiguration?,
-    val axisLineConfigs: AxisLineConfiguration.Configuration?,
+    val axisLineConfigs: AxisLineConfiguration?,
     val scale: ScaleKind,
     val name: String? = null,
     val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn

@@ -10,12 +10,10 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.axis.x.continuous.boundXAxis
-import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
 import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.common.maxValue
 import com.joshrose.plotsforcompose.common.minValue
 import com.joshrose.plotsforcompose.common.range
-import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.exception.InvalidRangeException
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfig
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfigDefaults
@@ -41,6 +39,7 @@ import com.joshrose.plotsforcompose.util.LoadingState.*
 @ExperimentalTextApi
 @Composable
 fun LineGraph(
+    realData: Map<String, Any> = emptyMap(),
     data: List<NumberData>,
     modifier: Modifier = Modifier,
     xAxisConfig: AxisConfiguration.XConfiguration = AxisConfiguration.xAxisConfigurationDefaults(),
@@ -82,23 +81,23 @@ fun LineGraph(
         else -> Start
     }
 
-    val plot = composePlot(data = data.associate { it.x to it.y }) {
-        x = data.map { it.x }
-        y = data.map { it.y }
-
-        xMax = maxXValue
-    }
-        .plus(unboundXAxis(
-            config = xAxisConfig,
-            breaks = xLabels,
-            labels = xLabels.map { it.toString() },
-            naValue = Float.NaN,
-            reverse = true
-        ))
-        .plus(unboundXAxis(config = xAxisConfig))
-
-    println(plot)
-    println(plot.scales())
+//    val plot = composePlot(data = realData) {
+//        x = realData["X"]
+//        y = realData["Y"]
+//    }
+//        .plus(unboundXAxis(
+//            config = xAxisConfig,
+//            breaks = xLabels,
+//            labels = xLabels.map { it.toString() },
+//            naValue = Float.NaN,
+//            reverse = true
+//        ))
+//        .plus(unboundXAxis(config = xAxisConfig))
+//        .plus(plotSize(width = 20.dp, height = 20.dp))
+//
+//    println(plot)
+//    println(plot.scales())
+//    plot.show()
 
     Canvas(modifier = modifier) {
         if (yAxisConfig.showAxis) {

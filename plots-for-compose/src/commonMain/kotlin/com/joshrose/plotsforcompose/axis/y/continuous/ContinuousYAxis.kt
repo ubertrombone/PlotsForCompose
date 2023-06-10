@@ -20,15 +20,17 @@ import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 fun unboundYAxis(
-    config: AxisConfiguration.YConfiguration,
+    labelConfigs: LabelsConfiguration,
+    guidelinesConfigs: GuidelinesConfiguration,
+    axisLineConfigs: AxisLineConfiguration.YConfiguration,
     breaks: List<Number>? = null,
     labels: List<String>? = null,
     naValue: Number? = null,
     reverse: Boolean? = null
 ) = Scale(
-    labelConfigs = config.labels,
-    guidelinesConfigs = config.guidelines,
-    axisLineConfigs = config.axisLine,
+    labelConfigs = labelConfigs,
+    guidelinesConfigs = guidelinesConfigs,
+    axisLineConfigs = axisLineConfigs,
     scale = ScaleKind.Y,
     breaks = breaks,
     labels = labels,
@@ -40,7 +42,7 @@ fun unboundYAxis(
 fun DrawScope.unboundYAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: AxisLineConfiguration.Configuration,
+    axisLineConfigs: AxisLineConfiguration.YConfiguration,
     labels: List<Number>,
     yRangeValues: Range<Number>,
     yAxisPosition: YAxis,

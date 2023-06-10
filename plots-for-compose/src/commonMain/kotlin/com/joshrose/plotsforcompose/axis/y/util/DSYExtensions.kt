@@ -35,7 +35,7 @@ internal fun DrawScope.drawYGuideline(
 
 @Throws(IllegalStateException::class)
 internal fun DrawScope.drawYTick(
-    axisLineConfig: AxisLineConfiguration.Configuration,
+    axisLineConfig: AxisLineConfiguration.YConfiguration,
     y: Float,
     yAxisPosition: YAxis,
     axisOffset: Float
@@ -61,7 +61,7 @@ internal fun DrawScope.drawYTick(
 
 @Throws(IllegalStateException::class)
 internal fun DrawScope.drawYAxis(
-    axisLineConfig: AxisLineConfiguration.Configuration,
+    axisLineConfig: AxisLineConfiguration.YConfiguration,
     yAxisPosition: YAxis
 ) {
     val x = when (yAxisPosition) {
