@@ -188,7 +188,8 @@ internal fun DrawScope.drawYLabel(
             labelSize = labelDimensions.size.center
         )
 
-        rotate(degrees = labelConfig.rotation, pivot = Offset(x = secondXPivot, y = secondYPivot)) {
+        val secondDegrees = labelConfig.rotation.times(-1)
+        rotate(degrees = secondDegrees, pivot = Offset(x = secondXPivot, y = secondYPivot)) {
             drawText(
                 textLayoutResult = labelDimensions,
                 topLeft = Offset(x = secondXAdjusted, y = secondYAdjusted)
