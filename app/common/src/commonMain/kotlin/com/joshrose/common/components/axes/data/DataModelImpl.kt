@@ -20,7 +20,17 @@ class DataModelImpl(initialState: DataValueStates): InstanceKeeper.Instance, Dat
 
     override fun updateData(data: List<NumberData>) {
         scope.launch {
-            dataValueStates.update { it.copy(data = data) }
+            dataValueStates.update {
+                DataValueStates(
+                    data = data,
+                    maxXValue = data.maxXValue(),
+                    minXValue = data.minXValue(),
+                    maxYValue = data.maxYValue(),
+                    minYValue = data.minYValue(),
+                    xRange = data.maxXValue().minus(data.minXValue()),
+                    yRange = data.maxYValue().minus(data.minYValue())
+                )
+            }
         }
     }
 

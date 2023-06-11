@@ -27,14 +27,10 @@ sealed interface AxisLineConfiguration {
         var strokeWidth: Float = 2f,
         var pathEffect: PathEffect? = null,
         var ticks: Boolean = true,
-        var axisPosition: AxisPosition.XAxis? = null, // todo
-        var axisAlignment: AxisAlignment.XAxis = SpaceBetween // todo
+        var axisPosition: AxisPosition.XAxis? = null,
+        var axisAlignment: AxisAlignment.XAxis = SpaceBetween
     ) : AxisLineConfiguration {
         override fun toString() = "AxisLineConfiguration#XConfiguration"
-
-        companion object {
-            fun buildConfig(config: XConfiguration.() -> Unit = {} ) = XConfiguration().apply(config)
-        }
     }
 
     class YConfiguration(
@@ -48,13 +44,12 @@ sealed interface AxisLineConfiguration {
         var axisAlignment: AxisAlignment.YAxis = SpaceBetween
     ) : AxisLineConfiguration {
         override fun toString() = "AxisLineConfiguration#YConfiguration"
-
-        companion object {
-            fun buildConfig(config: YConfiguration.() -> Unit = {} ) = YConfiguration().apply(config)
-        }
     }
 
     companion object {
+        fun xConfiguration(init: XConfiguration.() -> Unit = {}) = XConfiguration().apply(init)
+        fun yConfiguration(init: YConfiguration.() -> Unit = {} ) = YConfiguration().apply(init)
+
         fun xAxisLineConfigurationDefaults(
             showAxisLine: Boolean = true,
             lineColor: Color = md_theme_dark_onBackground,
@@ -95,13 +90,6 @@ sealed interface AxisLineConfiguration {
             axisAlignment = axisAlignment
         )
     }
-}
-
-fun something(config: AxisLineConfiguration.XConfiguration.() -> Unit = {}) =
-    AxisLineConfiguration.XConfiguration().apply(config)
-
-val some = something {
-    ticks = false
 }
 
 /**

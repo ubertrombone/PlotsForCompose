@@ -1,8 +1,10 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.plotsforcompose.internals.plots
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.height
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -31,80 +33,70 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     val yTextMeasurer = rememberTextMeasurer()
     val zeroTextMeasurer = rememberTextMeasurer()
 
-    val data by remember { derivedStateOf { getData(plot.data) } }
+    val data = getData(plot.data)
 
-    val scaleX: Scale? by remember { derivedStateOf { plot.scales().lastOrNull { it.scale == ScaleKind.X } } }
-    val scaleY: Scale? by remember { derivedStateOf { plot.scales().lastOrNull { it.scale == ScaleKind.Y } } }
+    val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
+    val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
     // TODO: Is this still needed?
     val size: Map<String, Dp?>? =
         plot.otherFeatures().lastOrNull { it.kind == "size" }?.configs?.mapValues { it.value as Dp? }
 
-    val x by remember { derivedStateOf { asMappingData(data = data, mapping = plot.mapping.map, key = "x") } }
-    val y by remember { derivedStateOf { asMappingData(data = data, mapping = plot.mapping.map, key = "y") } }
+    val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
+    val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
 
-    val rawXMax by remember { derivedStateOf { x?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f } }
-    val xMax by remember { derivedStateOf {
-        maxValue(
-            maxValue = rawXMax,
-            maxValueAdjustment = scaleX?.labelConfigs?.maxValueAdjustment
-        )
-    }}
+    val rawXMax = x?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f
+    val xMax = maxValue(
+        maxValue = rawXMax,
+        maxValueAdjustment = scaleX?.labelConfigs?.maxValueAdjustment
+    )
 
-    val rawYMax by remember { derivedStateOf { y?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f } }
-    val yMax by remember { derivedStateOf {
-        maxValue(
-            maxValue = rawYMax,
-            maxValueAdjustment = scaleY?.labelConfigs?.maxValueAdjustment
-        )
-    }}
-
-    val rawXMin by remember { derivedStateOf { x?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 0f } }
+    val rawXMin = x?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 0f
     val xMin = minValue(
         minValue = rawXMin,
         maxValue = xMax,
         minValueAdjustment = scaleX?.labelConfigs?.minValueAdjustment
     )
 
-    val rawYMin by remember { derivedStateOf { y?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 0f } }
-    val yMin by remember { derivedStateOf {
-        minValue(
-            minValue = rawYMin,
-            maxValue = yMax,
-            minValueAdjustment = scaleY?.labelConfigs?.minValueAdjustment
-        )
-    }}
+    val xRange = range(
+        minValue = xMin,
+        maxValue = xMax,
+        rangeAdjustment = scaleX?.labelConfigs?.rangeAdjustment
+    )
 
-    val xRange by remember { derivedStateOf {
-        range(
-            minValue = xMin,
-            maxValue = xMax,
-            rangeAdjustment = scaleX?.labelConfigs?.rangeAdjustment
-        )
-    }}
-
-    val yRange by remember { derivedStateOf {
-        range(
-            minValue = yMin,
-            maxValue = yMax,
-            rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
-        )
-    }}
-
-    val xLabels by remember { mutableStateOf(floatLabels(
+    val xLabels = floatLabels(
         breaks = scaleX?.labelConfigs?.breaks ?: 5,
         minValue = xMin,
         maxValue = xMax
-    ))}
+    )
 
-    val yLabels by remember { mutableStateOf(floatLabels(
+    val rawYMax = y?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f
+    val yMax = maxValue(
+        maxValue = rawYMax,
+        maxValueAdjustment = scaleY?.labelConfigs?.maxValueAdjustment
+    )
+
+    val rawYMin = y?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 0f
+    val yMin = minValue(
+        minValue = rawYMin,
+        maxValue = yMax,
+        minValueAdjustment = scaleY?.labelConfigs?.minValueAdjustment
+    )
+
+    val yRange = range(
+        minValue = yMin,
+        maxValue = yMax,
+        rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
+    )
+
+    val yLabels = floatLabels(
         breaks = scaleY?.labelConfigs?.breaks ?: 5,
         minValue = yMin,
         maxValue = yMax
-    ))}
+    )
 
     val xAxisLineConfigs = when (scaleX?.axisLineConfigs) {
-        is XConfiguration -> scaleX?.axisLineConfigs as XConfiguration
+        is XConfiguration -> scaleX.axisLineConfigs
         is YConfiguration ->
             throw IllegalStateException("Axis Line Configurations on the X scale should be of type XConfiguration.")
         null -> null
@@ -113,7 +105,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     val yAxisLineConfigs = when (scaleY?.axisLineConfigs) {
         is XConfiguration ->
             throw IllegalStateException("Axis Line Configurations on the Y scale should be of type YConfiguration.")
-        is YConfiguration -> scaleY?.axisLineConfigs as YConfiguration
+        is YConfiguration -> scaleY.axisLineConfigs
         null -> null
     }
 

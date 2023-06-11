@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
@@ -27,9 +27,9 @@ import com.joshrose.plotsforcompose.util.calculateOffset
 
 // TODO: Move this somewhere else
 fun unboundXAxis(
-    labelConfigs: LabelsConfiguration,
-    guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    labelConfigs: LabelsConfiguration = LabelsConfiguration(),
+    guidelinesConfigs: GuidelinesConfiguration = GuidelinesConfiguration(),
+    axisLineConfigs: XConfiguration = XConfiguration(),
     breaks: List<Number>? = null,
     labels: List<String>? = null,
     naValue: Number? = null,
@@ -49,7 +49,7 @@ fun unboundXAxis(
 fun DrawScope.unboundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    axisLineConfigs: XConfiguration,
     labels: List<Number>,
     xRangeValues: Range<Number>,
     xAxisPosition: XAxis,

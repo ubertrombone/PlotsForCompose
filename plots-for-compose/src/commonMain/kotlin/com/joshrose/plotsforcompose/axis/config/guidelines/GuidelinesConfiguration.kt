@@ -16,14 +16,21 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  * @property padding the padding to be applied to the end of the guidelines closest to the axis.
  * @constructor Creates a configuration for axis guidelines.
  */
-data class GuidelinesConfiguration(
-    val showGuidelines: Boolean,
-    val lineColor: Color,
-    val alpha: Multiplier,
-    val strokeWidth: Float,
-    val pathEffect: PathEffect?,
-    val padding: Float
-)
+class GuidelinesConfiguration(
+    var showGuidelines: Boolean = true,
+    var lineColor: Color = md_theme_dark_onBackground,
+    var alpha: Multiplier = Multiplier(.1f),
+    var strokeWidth: Float = 2f,
+    var pathEffect: PathEffect? = null,
+    var padding: Float = 25f
+) {
+    override fun toString() = "GuidelinesConfiguration"
+
+    companion object {
+        fun guidelinesConfiguration(init: GuidelinesConfiguration.() -> Unit = {}) =
+            GuidelinesConfiguration().apply(init)
+    }
+}
 
 /** Contains default values used for implementations of [GuidelinesConfiguration] */
 object GuidelinesConfigurationDefaults {

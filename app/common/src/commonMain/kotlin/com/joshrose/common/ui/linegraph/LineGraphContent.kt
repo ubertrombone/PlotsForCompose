@@ -1,7 +1,6 @@
 package com.joshrose.common.ui.linegraph
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -10,9 +9,6 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
-import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
-import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.linegraph.LineGraph
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
@@ -25,15 +21,15 @@ fun LineGraphContent(
     val xConfig = AxisConfiguration.xAxisConfigurationDefaults()
         .copy(
             showGuidelines = true,
-            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
-                lineColor = MaterialTheme.colorScheme.onBackground,
-                alpha = Multiplier(.5f),
-                padding = 0f
-            ),
-            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
-                axisOffset = 20.dp,
-                fontColor = MaterialTheme.colorScheme.primary
-            ),
+//            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
+//                lineColor = MaterialTheme.colorScheme.onBackground,
+//                alpha = Multiplier(.5f),
+//                padding = 0f
+//            ),
+//            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
+//                axisOffset = 20.dp,
+//                fontColor = MaterialTheme.colorScheme.primary
+//            ),
 //            axisLine = AxisLineConfiguration.xAxisLineConfigurationDefaults().copy(
 //                lineColor = MaterialTheme.colorScheme.primary,
 //            )
@@ -41,15 +37,15 @@ fun LineGraphContent(
     val yConfig = AxisConfiguration.yAxisConfigurationDefaults()
         .copy(
             showGuidelines = true,
-            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
-                lineColor = MaterialTheme.colorScheme.onBackground,
-                alpha = Multiplier(.5f),
-                padding = 0f
-            ),
-            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
-                axisOffset = 20.dp,
-                fontColor = MaterialTheme.colorScheme.primary
-            ),
+//            guidelines = GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults().copy(
+//                lineColor = MaterialTheme.colorScheme.onBackground,
+//                alpha = Multiplier(.5f),
+//                padding = 0f
+//            ),
+//            labels = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
+//                axisOffset = 20.dp,
+//                fontColor = MaterialTheme.colorScheme.primary
+//            ),
 //            axisLine = AxisLineConfiguration.yAxisLineConfigurationDefaults().copy(
 //                lineColor = MaterialTheme.colorScheme.primary,
 //            )

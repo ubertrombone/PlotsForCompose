@@ -25,19 +25,26 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  * @constructor Creates a configuration for axis labels.
  */
 // TODO: Labels cannot be greater than breaks
-data class LabelsConfiguration(
-    val showLabels: Boolean,
-    val fontColor: Color,
-    val textStyle: TextStyle,
-    val axisOffset: Dp,
-    val rotation: Float,
-    val breaks: Int,
-    val labels: Int,
-    val minValueAdjustment: Multiplier,
-    val maxValueAdjustment: Multiplier,
-    val rangeAdjustment: Multiplier,
-    val format: String
-)
+class LabelsConfiguration(
+    var showLabels: Boolean = true,
+    var fontColor: Color = md_theme_dark_primary,
+    var textStyle: TextStyle = Typography.labelMedium,
+    var axisOffset: Dp = 0.dp,
+    var rotation: Float = 0f,
+    var breaks: Int = 5,
+    var labels: Int = 5,
+    var minValueAdjustment: Multiplier = Multiplier(0f),
+    var maxValueAdjustment: Multiplier = Multiplier(0f),
+    var rangeAdjustment: Multiplier = Multiplier(0f),
+    var format: String = "#.##"
+) {
+    override fun toString() = "LabelsConfiguration"
+
+    companion object {
+        fun labelsConfiguration(init: LabelsConfiguration.() -> Unit = {}) =
+            LabelsConfiguration().apply(init)
+    }
+}
 
 /** Contains default values used for implementations of [LabelsConfiguration] */
 object LabelsConfigurationDefaults {

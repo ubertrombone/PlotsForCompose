@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
@@ -20,9 +20,9 @@ import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 fun unboundYAxis(
-    labelConfigs: LabelsConfiguration,
-    guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: AxisLineConfiguration.YConfiguration,
+    labelConfigs: LabelsConfiguration = LabelsConfiguration(),
+    guidelinesConfigs: GuidelinesConfiguration = GuidelinesConfiguration(),
+    axisLineConfigs: YConfiguration = YConfiguration(),
     breaks: List<Number>? = null,
     labels: List<String>? = null,
     naValue: Number? = null,
@@ -42,7 +42,7 @@ fun unboundYAxis(
 fun DrawScope.unboundYAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: AxisLineConfiguration.YConfiguration,
+    axisLineConfigs: YConfiguration,
     labels: List<Number>,
     yRangeValues: Range<Number>,
     yAxisPosition: YAxis,
