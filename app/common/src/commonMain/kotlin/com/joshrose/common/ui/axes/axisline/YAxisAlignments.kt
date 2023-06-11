@@ -45,15 +45,6 @@ fun YAxisAlignment(
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
-
-            YAlignmentButton(
-                selected = currentSelected == Center,
-                icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
-                contentDescription = "Align center",
-                axisPosition = Center,
-                enabled = enabled,
-                onClick = { onClick(it) }
-            )
         }
 
         Row(
@@ -75,6 +66,30 @@ fun YAxisAlignment(
                 icon = createPainter(file = ALIGN_RIGHT),
                 contentDescription = "Align end",
                 axisPosition = End,
+                enabled = enabled,
+                onClick = { onClick(it) }
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            YAlignmentButton(
+                selected = currentSelected == Center,
+                icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
+                contentDescription = "Align center",
+                axisPosition = Center,
+                enabled = enabled,
+                onClick = { onClick(it) }
+            )
+
+            YAlignmentButton(
+                selected = currentSelected == Both,
+                icon = createPainter(file = ALIGN_BOTH_HORIZONTAL),
+                contentDescription = "Align Both",
+                axisPosition = Both,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )

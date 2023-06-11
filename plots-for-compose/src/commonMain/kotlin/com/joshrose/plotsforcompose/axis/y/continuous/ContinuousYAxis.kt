@@ -53,6 +53,7 @@ fun DrawScope.unboundYAxis(
 ) {
     val x = getX(yAxisPosition = yAxisPosition, width = size.width)
     val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+    val secondXAxisPositionYValue = if (xAxisPosition == Both) 0f else null
 
     labels.reversed().forEachIndexed { index, label ->
         // y - calculates the proportion of the range that rangeDiff occupies and then scales that
@@ -69,7 +70,7 @@ fun DrawScope.unboundYAxis(
 
         if (guidelinesConfigs.showGuidelines) {
             if (drawXAxis) {
-                if (xAxisPositionYValue != y) {
+                if (xAxisPositionYValue != y || secondXAxisPositionYValue != y) {
                     drawYGuideline(
                         guidelineConfig = guidelinesConfigs,
                         y = y,
@@ -200,6 +201,7 @@ fun DrawScope.boundYAxis(
 
     val x = getX(yAxisPosition = yAxisPosition, width = size.width)
     val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+    val secondXAxisPositionYValue = if (xAxisPosition == Both) 0f else null
 
     labels.forEachIndexed { index, label ->
         val y =
@@ -208,7 +210,7 @@ fun DrawScope.boundYAxis(
 
         if (guidelinesConfigs.showGuidelines) {
             if (drawXAxis) {
-                if (xAxisPositionYValue != y) {
+                if (xAxisPositionYValue != y || secondXAxisPositionYValue != y) {
                     drawYGuideline(
                         guidelineConfig = guidelinesConfigs,
                         y = y,
@@ -283,9 +285,10 @@ fun getXAxisXPosition(
     drawXAxis: Boolean,
     xAxisPosition: XAxis,
     height: Float
-)= if (drawXAxis) {
+) = if (drawXAxis) {
     when (xAxisPosition) {
         Bottom -> height
+        Both -> height
         Center -> height.div(2f)
         Top -> 0f
         else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")

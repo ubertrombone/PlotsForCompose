@@ -45,15 +45,6 @@ fun XAxisAlignment(
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
-
-            XAlignmentButton(
-                selected = currentSelected == Center,
-                icon = createPainter(file = ALIGN_CENTER_VERTICAL),
-                contentDescription = "Align center",
-                axisPosition = Center,
-                enabled = enabled,
-                onClick = { onClick(it) }
-            )
         }
 
         Row(
@@ -75,6 +66,30 @@ fun XAxisAlignment(
                 icon = createPainter(file = ALIGN_BOTTOM),
                 contentDescription = "Align bottom",
                 axisPosition = Bottom,
+                enabled = enabled,
+                onClick = { onClick(it) }
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            XAlignmentButton(
+                selected = currentSelected == Center,
+                icon = createPainter(file = ALIGN_CENTER_VERTICAL),
+                contentDescription = "Align center",
+                axisPosition = Center,
+                enabled = enabled,
+                onClick = { onClick(it) }
+            )
+
+            XAlignmentButton(
+                selected = currentSelected == Both,
+                icon = createPainter(file = ALIGN_BOTH_VERTICAL),
+                contentDescription = "Align Both",
+                axisPosition = Both,
                 enabled = enabled,
                 onClick = { onClick(it) }
             )
