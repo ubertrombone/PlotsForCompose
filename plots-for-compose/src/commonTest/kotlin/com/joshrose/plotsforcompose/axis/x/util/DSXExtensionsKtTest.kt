@@ -2,7 +2,7 @@ package com.joshrose.plotsforcompose.axis.x.util
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import org.junit.jupiter.api.Test
 import kotlin.math.abs
@@ -12,10 +12,10 @@ import kotlin.test.assertEquals
 class DSXExtensionsKtTest {
     private val random = Random
     private val size = Size(width = 100f, height = 100f)
-    private val config = LabelsConfigurationDefaults.labelsConfigurationDefault().copy(
-        axisOffset = random.nextInt(0, 50).dp,
+    private val config = labelsConfiguration {
+        axisOffset = random.nextInt(0, 50).dp
         rotation = random.nextInt(-90, 90).toFloat()
-    )
+    }
     private val labelSize =
         Size(width = random.nextInt(50, 100).toFloat(), height = random.nextInt(10, 30).toFloat())
 

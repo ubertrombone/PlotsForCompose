@@ -5,7 +5,6 @@ package com.joshrose.plotsforcompose.axis.x.continuous
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
-import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
@@ -119,7 +118,9 @@ fun DrawScope.unboundXAxis(
 // --> Bound XAxis doesn't need breaks. It needs a list of the labels to be shown.
 @ExperimentalTextApi
 fun DrawScope.boundXAxis(
-    config: AxisConfiguration.XConfiguration,
+    labelConfigs: LabelsConfiguration,
+    guidelinesConfigs: GuidelinesConfiguration,
+    axisLineConfigs: XConfiguration,
     labels: List<Any>,
     xAxisPosition: XAxis,
     yAxisPosition: YAxis,
@@ -139,18 +140,18 @@ fun DrawScope.boundXAxis(
             if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(factor)
             else index.plus(1).times(factor)
 
-        if (config.showGuidelines) {
+        if (guidelinesConfigs.showGuidelines) {
             if (drawYAxis) {
                 if (yAxisPositionXValue != x) {
                     drawXGuideline(
-                        guidelineConfig = config.guidelines,
+                        guidelineConfig = guidelinesConfigs,
                         x = x,
                         xAxisPosition = xAxisPosition
                     )
                 }
             } else {
                 drawXGuideline(
-                    guidelineConfig = config.guidelines,
+                    guidelineConfig = guidelinesConfigs,
                     x = x,
                     xAxisPosition = xAxisPosition
                 )
@@ -159,29 +160,29 @@ fun DrawScope.boundXAxis(
 
         if (!drawZero && label == 0f) return@forEachIndexed
 
-        if (config.showLabels) {
+        if (labelConfigs.showLabels) {
             drawXLabel(
                 y = y,
                 x = x,
                 label = label,
                 xAxisPosition = xAxisPosition,
                 textMeasurer = textMeasurer,
-                labelConfig = config.labels
+                labelConfig = labelConfigs
             )
         }
 
-        if (config.showAxisLine && config.axisLine.ticks) {
+        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
             drawXTick(
-                axisLineConfig = config.axisLine,
+                axisLineConfig = axisLineConfigs,
                 x = x,
                 xAxisPosition = xAxisPosition,
-                axisOffset = config.labels.axisOffset.toPx()
+                axisOffset = labelConfigs.axisOffset.toPx()
             )
         }
 
     }
 
-    if (config.showAxisLine) drawXAxis(axisLineConfig = config.axisLine, xAxisPosition = xAxisPosition)
+    if (axisLineConfigs.showAxisLine) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
 fun getX(

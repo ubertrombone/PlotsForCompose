@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurationDefaults
-import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfigurationDefaults
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.drawZero
@@ -109,6 +109,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         null -> null
     }
 
+    // TODO: Add concept of axis on both sides
     val xAxisPosition = xAxisLineConfigs?.axisPosition ?: when {
         yMax <= 0 -> AxisPosition.Top
         yMin < 0 -> AxisPosition.Center
@@ -153,8 +154,8 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     ) {
         scaleX?.let {
             unboundXAxis(
-                labelConfigs = it.labelConfigs ?: LabelsConfigurationDefaults.labelsConfigurationDefault(),
-                guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults(),
+                labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
+                guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = xAxisLineConfigs ?: XConfiguration(),
                 labels = xLabels,
                 xRangeValues = Range(min = xMin, max = xMax),
@@ -168,8 +169,8 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         }
         scaleY?.let {
             unboundYAxis(
-                labelConfigs = it.labelConfigs ?: LabelsConfigurationDefaults.labelsConfigurationDefault(),
-                guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfigurationDefaults.guidelinesConfigurationDefaults(),
+                labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
+                guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = yAxisLineConfigs ?: YConfiguration(),
                 labels = yLabels,
                 yRangeValues = Range(min = yMin, max = yMax),
@@ -189,7 +190,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
                 xAxisOffset = scaleY?.labelConfigs?.axisOffset?.toPx() ?: 25.dp.toPx(),
                 yAxisOffset = scaleX?.labelConfigs?.axisOffset?.toPx() ?: 25.dp.toPx(),
                 textMeasurer = zeroTextMeasurer,
-                labelConfig = scaleY?.labelConfigs ?: LabelsConfigurationDefaults.labelsConfigurationDefault()
+                labelConfig = scaleY?.labelConfigs ?: LabelsConfiguration()
             )
         }
     }

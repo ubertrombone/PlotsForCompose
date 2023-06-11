@@ -5,7 +5,6 @@ package com.joshrose.plotsforcompose.axis.y.continuous
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
-import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
@@ -99,7 +98,6 @@ fun DrawScope.unboundYAxis(
             )
         }
 
-        // TODO: Make axisLineConfigs axis dependent
         if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
             drawYTick(
                 axisLineConfig = axisLineConfigs,
@@ -110,85 +108,86 @@ fun DrawScope.unboundYAxis(
         }
     }
 
-    // TODO: Make axisLineConfigs axis dependent
     if (axisLineConfigs.showAxisLine) drawYAxis(axisLineConfig = axisLineConfigs, yAxisPosition = yAxisPosition)
 }
 
-@ExperimentalTextApi
-fun DrawScope.unboundYAxis(
-    config: AxisConfiguration.YConfiguration,
-    labels: List<Number>,
-    yRangeValues: Range<Number>,
-    yAxisPosition: YAxis,
-    xAxisPosition: XAxis,
-    drawXAxis: Boolean,
-    drawZero: Boolean = true,
-    range: Number,
-    textMeasurer: TextMeasurer
-) {
-    val x = getX(yAxisPosition = yAxisPosition, width = size.width)
-    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
-
-    labels.reversed().forEachIndexed { index, label ->
-        // y - calculates the proportion of the range that rangeDiff occupies and then scales that
-        // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
-        val y = getY(
-            height = size.height,
-            yValues = yRangeValues.mapToFloat(),
-            label = label.toFloat(),
-            range = range.toFloat(),
-            rangeAdj = config.labels.rangeAdjustment,
-            index = index,
-            labelsSize = labels.size
-        )
-
-        if (config.showGuidelines) {
-            if (drawXAxis) {
-                if (xAxisPositionYValue != y) {
-                    drawYGuideline(
-                        guidelineConfig = config.guidelines,
-                        y = y,
-                        yAxisPosition = yAxisPosition
-                    )
-                }
-            } else {
-                drawYGuideline(
-                    guidelineConfig = config.guidelines,
-                    y = y,
-                    yAxisPosition = yAxisPosition
-                )
-            }
-        }
-
-        if (!drawZero && label == 0f) return@forEachIndexed
-
-        if (config.showLabels) {
-            drawYLabel(
-                y = y,
-                x = x,
-                label = label,
-                textMeasurer = textMeasurer,
-                labelConfig = config.labels,
-                yAxisPosition = yAxisPosition
-            )
-        }
-
-        if (config.showAxisLine && config.axisLine.ticks) {
-            drawYTick(
-                axisLineConfig = config.axisLine,
-                y = y,
-                yAxisPosition = yAxisPosition,
-                axisOffset = config.labels.axisOffset.toPx()
-            )
-        }
-    }
-
-    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, yAxisPosition = yAxisPosition)
-}
+//@ExperimentalTextApi
+//fun DrawScope.unboundYAxis(
+//    config: AxisConfiguration.YConfiguration,
+//    labels: List<Number>,
+//    yRangeValues: Range<Number>,
+//    yAxisPosition: YAxis,
+//    xAxisPosition: XAxis,
+//    drawXAxis: Boolean,
+//    drawZero: Boolean = true,
+//    range: Number,
+//    textMeasurer: TextMeasurer
+//) {
+//    val x = getX(yAxisPosition = yAxisPosition, width = size.width)
+//    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+//
+//    labels.reversed().forEachIndexed { index, label ->
+//        // y - calculates the proportion of the range that rangeDiff occupies and then scales that
+//        // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
+//        val y = getY(
+//            height = size.height,
+//            yValues = yRangeValues.mapToFloat(),
+//            label = label.toFloat(),
+//            range = range.toFloat(),
+//            rangeAdj = config.labels.rangeAdjustment,
+//            index = index,
+//            labelsSize = labels.size
+//        )
+//
+//        if (config.showGuidelines) {
+//            if (drawXAxis) {
+//                if (xAxisPositionYValue != y) {
+//                    drawYGuideline(
+//                        guidelineConfig = config.guidelines,
+//                        y = y,
+//                        yAxisPosition = yAxisPosition
+//                    )
+//                }
+//            } else {
+//                drawYGuideline(
+//                    guidelineConfig = config.guidelines,
+//                    y = y,
+//                    yAxisPosition = yAxisPosition
+//                )
+//            }
+//        }
+//
+//        if (!drawZero && label == 0f) return@forEachIndexed
+//
+//        if (config.showLabels) {
+//            drawYLabel(
+//                y = y,
+//                x = x,
+//                label = label,
+//                textMeasurer = textMeasurer,
+//                labelConfig = config.labels,
+//                yAxisPosition = yAxisPosition
+//            )
+//        }
+//
+//        if (config.showAxisLine && config.axisLine.ticks) {
+//            drawYTick(
+//                axisLineConfig = config.axisLine,
+//                y = y,
+//                yAxisPosition = yAxisPosition,
+//                axisOffset = config.labels.axisOffset.toPx()
+//            )
+//        }
+//    }
+//
+//    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, yAxisPosition = yAxisPosition)
+//}
 
 @ExperimentalTextApi
 fun DrawScope.boundYAxis(
-    config: AxisConfiguration.YConfiguration,
+    labelConfigs: LabelsConfiguration,
+    guidelinesConfigs: GuidelinesConfiguration,
+    axisLineConfigs: YConfiguration,
     labels: List<Any>,
     yAxisPosition: YAxis,
     xAxisPosition: XAxis,
@@ -207,18 +206,18 @@ fun DrawScope.boundYAxis(
             if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
             else index.plus(1).times(factor)
 
-        if (config.showGuidelines) {
+        if (guidelinesConfigs.showGuidelines) {
             if (drawXAxis) {
                 if (xAxisPositionYValue != y) {
                     drawYGuideline(
-                        guidelineConfig = config.guidelines,
+                        guidelineConfig = guidelinesConfigs,
                         y = y,
                         yAxisPosition = yAxisPosition
                     )
                 }
             } else {
                 drawYGuideline(
-                    guidelineConfig = config.guidelines,
+                    guidelineConfig = guidelinesConfigs,
                     y = y,
                     yAxisPosition = yAxisPosition
                 )
@@ -227,28 +226,28 @@ fun DrawScope.boundYAxis(
 
         if (!drawZero && label == 0f) return@forEachIndexed
 
-        if (config.showLabels) {
+        if (labelConfigs.showLabels) {
             drawYLabel(
                 y = y,
                 x = x,
                 label = label,
                 textMeasurer = textMeasurer,
-                labelConfig = config.labels,
+                labelConfig = labelConfigs,
                 yAxisPosition = yAxisPosition
             )
         }
 
-        if (config.showAxisLine && config.axisLine.ticks) {
+        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
             drawYTick(
-                axisLineConfig = config.axisLine,
+                axisLineConfig = axisLineConfigs,
                 y = y,
                 yAxisPosition = yAxisPosition,
-                axisOffset = config.labels.axisOffset.toPx()
+                axisOffset = labelConfigs.axisOffset.toPx()
             )
         }
     }
 
-    if (config.showAxisLine) drawYAxis(axisLineConfig = config.axisLine, yAxisPosition = yAxisPosition)
+    if (axisLineConfigs.showAxisLine) drawYAxis(axisLineConfig = axisLineConfigs, yAxisPosition = yAxisPosition)
 }
 
 fun getY(

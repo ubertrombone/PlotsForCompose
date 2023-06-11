@@ -5,12 +5,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
-import com.joshrose.plotsforcompose.axis.config.AxisConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.Companion.xConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.Companion.yConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration.Companion.guidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
-import com.joshrose.plotsforcompose.axis.util.Range
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.x.continuous.boundXAxis
-import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
 import com.joshrose.plotsforcompose.common.maxValue
 import com.joshrose.plotsforcompose.common.minValue
 import com.joshrose.plotsforcompose.common.range
@@ -42,8 +46,12 @@ fun LineGraph(
     realData: Map<String, Any> = emptyMap(),
     data: List<NumberData>,
     modifier: Modifier = Modifier,
-    xAxisConfig: AxisConfiguration.XConfiguration = AxisConfiguration.xAxisConfigurationDefaults(),
-    yAxisConfig: AxisConfiguration.YConfiguration = AxisConfiguration.yAxisConfigurationDefaults(),
+    xLabelConfiguration: LabelsConfiguration = labelsConfiguration(),
+    xGuidelinesConfiguration: GuidelinesConfiguration = guidelinesConfiguration(),
+    xAxisLineConfiguration: XConfiguration = xConfiguration(),
+    yLabelConfiguration: LabelsConfiguration = labelsConfiguration(),
+    yGuidelinesConfiguration: GuidelinesConfiguration = guidelinesConfiguration(),
+    yAxisLineConfiguration: YConfiguration = yConfiguration(),
     lineGraphConfig: LineGraphConfig = LineGraphConfigDefaults.lineGraphConfigDefaults(),
 ) {
     var state by remember { mutableStateOf<LoadingState>(Success) }
@@ -54,14 +62,14 @@ fun LineGraph(
 
     val minXValue by remember { derivedStateOf { data.minXValue() } }
     val maxXValue by remember { derivedStateOf { data.maxXValue() } }
-    val maxYValue by remember { derivedStateOf { maxValue(data.maxYValue(), yAxisConfig.labels.maxValueAdjustment) } }
-    val minYValue by remember { derivedStateOf { minValue(data.minYValue(), maxYValue, yAxisConfig.labels.minValueAdjustment) } }
-    val yRange by remember { derivedStateOf { range(minYValue, maxYValue, yAxisConfig.labels.rangeAdjustment) } }
+    val maxYValue by remember { derivedStateOf { maxValue(data.maxYValue(), yLabelConfiguration.maxValueAdjustment) } }
+    val minYValue by remember { derivedStateOf { minValue(data.minYValue(), maxYValue, yLabelConfiguration.minValueAdjustment) } }
+    val yRange by remember { derivedStateOf { range(minYValue, maxYValue, yLabelConfiguration.rangeAdjustment) } }
 
     var yLabels by remember { mutableStateOf(listOf(0f, 100f)) }
     try {
         yLabels = floatLabels(
-            breaks = yAxisConfig.labels.breaks,
+            breaks = yLabelConfiguration.breaks,
             minValue = minYValue,
             maxValue = maxYValue
         )
@@ -69,13 +77,13 @@ fun LineGraph(
 
     val xLabels by remember { mutableStateOf(data.map { it.x }) }
 
-    val xAxisPosition = xAxisConfig.axisLine.axisPosition ?: when {
+    val xAxisPosition = xAxisLineConfiguration.axisPosition ?: when {
         maxYValue <= 0 -> Top
         minYValue < 0 -> Center
         else -> Bottom
     }
 
-    val yAxisPosition = yAxisConfig.axisLine.axisPosition ?: when {
+    val yAxisPosition = yAxisLineConfiguration.axisPosition ?: when {
         maxXValue <= 0 -> End
         minXValue < 0 -> Center
         else -> Start
@@ -100,30 +108,30 @@ fun LineGraph(
 //    plot.show()
 
     Canvas(modifier = modifier) {
-        if (yAxisConfig.showAxis) {
-            unboundYAxis(
-                config = yAxisConfig,
-                labels = yLabels.reversed(),
-                range = yRange,
-                yRangeValues = Range(min = minYValue, max = maxYValue),
-                yAxisPosition = yAxisPosition,
-                xAxisPosition = xAxisPosition,
-                drawXAxis = false,
-                drawZero = true,
-                textMeasurer = yTextMeasurer
-            )
-        }
-
-        if (xAxisConfig.showAxis) {
-            boundXAxis(
-                config = xAxisConfig,
-                labels = xLabels,
-                xAxisPosition = xAxisPosition,
-                yAxisPosition = yAxisPosition,
-                drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
-                axisAlignment = xAxisConfig.axisLine.axisAlignment,
-                textMeasurer = xTextMeasurer
-            )
-        }
+//        if (yAxisConfig.showAxis) {
+//            unboundYAxis(
+//                config = yAxisConfig,
+//                labels = yLabels.reversed(),
+//                range = yRange,
+//                yRangeValues = Range(min = minYValue, max = maxYValue),
+//                yAxisPosition = yAxisPosition,
+//                xAxisPosition = xAxisPosition,
+//                drawXAxis = false,
+//                drawZero = true,
+//                textMeasurer = yTextMeasurer
+//            )
+//        }
+//
+//        if (xAxisConfig.showAxis) {
+//            boundXAxis(
+//                config = xAxisConfig,
+//                labels = xLabels,
+//                xAxisPosition = xAxisPosition,
+//                yAxisPosition = yAxisPosition,
+//                drawYAxis = yAxisConfig.showAxis && yAxisConfig.showAxisLine,
+//                axisAlignment = xAxisConfig.axisLine.axisAlignment,
+//                textMeasurer = xTextMeasurer
+//            )
+//        }
     }
 }

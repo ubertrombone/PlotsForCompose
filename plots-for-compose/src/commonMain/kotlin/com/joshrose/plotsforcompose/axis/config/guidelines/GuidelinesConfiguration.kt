@@ -31,34 +31,3 @@ class GuidelinesConfiguration(
             GuidelinesConfiguration().apply(init)
     }
 }
-
-/** Contains default values used for implementations of [GuidelinesConfiguration] */
-object GuidelinesConfigurationDefaults {
-
-    /**
-     * Creates a [GuidelinesConfiguration] for basic guideline implementations.
-     *
-     * @param lineColor the guideline color.
-     * @param alpha the guideline alpha.
-     * @param strokeWidth the guideline line width.
-     * @param pathEffect the pathEffect to apply to the guidelines.
-     * @param padding the padding to offset the start of the guideline from the axis.
-     * @return the resulting [GuidelinesConfiguration] to be used with an axis configuration.
-     */
-    fun guidelinesConfigurationDefaults(
-        showGuidelines: Boolean = true,
-        lineColor: Color = md_theme_dark_onBackground,
-        alpha: Multiplier = Multiplier(factor = .1f),
-        strokeWidth: Float = 2f,
-        pathEffect: PathEffect? = null,
-        padding: Float = 25f
-    ): GuidelinesConfiguration =
-        GuidelinesConfiguration(
-            showGuidelines = showGuidelines,
-            lineColor = lineColor,
-            alpha = alpha,
-            strokeWidth = strokeWidth,
-            pathEffect = pathEffect,
-            padding = padding
-        )
-}
