@@ -18,8 +18,16 @@ internal fun DrawScope.drawXGuideline(
     xAxisPosition: XAxis
 ) {
     val lineLength = size.height.minus(guidelineConfig.padding)
-    val startY = if (xAxisPosition == Top) guidelineConfig.padding else 0f
-    val endY = if (xAxisPosition == Center) size.height else startY.plus(lineLength)
+    val startY = when (xAxisPosition) {
+        Top -> guidelineConfig.padding
+        Both -> guidelineConfig.padding
+        else -> 0f
+    }
+    val endY = when (xAxisPosition) {
+        Center -> size.height
+        Both -> startY.plus(lineLength).minus(guidelineConfig.padding)
+        else -> startY.plus(lineLength)
+    }
 
     drawLine(
         start = Offset(x = x, y = startY),
@@ -41,6 +49,7 @@ internal fun DrawScope.drawXTick(
     val tickStart = when (xAxisPosition) {
         Top -> 0f.minus(axisOffset.div(2f))
         Bottom -> size.height
+        Both -> size.height
         Center -> size.height.div(2f).minus(axisOffset.div(2f))
         else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
     }
@@ -55,6 +64,19 @@ internal fun DrawScope.drawXTick(
         alpha = axisLineConfig.alpha.factor,
         strokeWidth = axisLineConfig.strokeWidth
     )
+
+    if (xAxisPosition == Both) {
+        val secondStart = 0f.minus(axisOffset.div(2f))
+        val secondEnd = secondStart.plus(axisOffset.div(2f))
+
+        drawLine(
+            start = Offset(x = x, y = secondStart),
+            end = Offset(x = x, y = secondEnd),
+            color = axisLineConfig.lineColor,
+            alpha = axisLineConfig.alpha.factor,
+            strokeWidth = axisLineConfig.strokeWidth
+        )
+    }
 }
 
 @Throws(IllegalStateException::class)
@@ -65,6 +87,7 @@ internal fun DrawScope.drawXAxis(
     val y = when (xAxisPosition) {
         Top -> 0f
         Bottom -> size.height
+        Both -> size.height
         Center -> size.height.div(2f)
         else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
     }
@@ -72,6 +95,15 @@ internal fun DrawScope.drawXAxis(
     drawLine(
         start = Offset(x = 0f, y = y),
         end = Offset(x = size.width, y = y),
+        color = axisLineConfig.lineColor,
+        alpha = axisLineConfig.alpha.factor,
+        pathEffect = axisLineConfig.pathEffect,
+        strokeWidth = axisLineConfig.strokeWidth
+    )
+
+    if (xAxisPosition == Both) drawLine(
+        start = Offset(x = 0f, y = 0f),
+        end = Offset(x = size.width, y = 0f),
         color = axisLineConfig.lineColor,
         alpha = axisLineConfig.alpha.factor,
         pathEffect = axisLineConfig.pathEffect,
@@ -120,6 +152,25 @@ internal fun DrawScope.drawXLabel(
             textLayoutResult = labelDimensions,
             topLeft = Offset(x = xAdjusted, y = yAdjusted)
         )
+    }
+
+    if (xAxisPosition == Both) {
+        val secondOffsetY = 0f.minus(labelDimensions.size.height.div(2f)).minus(labelConfig.axisOffset.toPx())
+        val (secondXAdjusted, secondYAdjusted, secondXPivot) = adjustXLabelCoordinates(
+            x = x,
+            y = secondOffsetY,
+            rotation = labelConfig.rotation,
+            yOffset = labelDimensions.size.height.toFloat(),
+            xOffset = labelDimensions.size.width.toFloat()
+        )
+
+        val secondDegrees = labelConfig.rotation.times(-1)
+        rotate(degrees = secondDegrees, pivot = Offset(x = secondXPivot, y = secondOffsetY)) {
+            drawText(
+                textLayoutResult = labelDimensions,
+                topLeft = Offset(x = secondXAdjusted, y = secondYAdjusted)
+            )
+        }
     }
 }
 

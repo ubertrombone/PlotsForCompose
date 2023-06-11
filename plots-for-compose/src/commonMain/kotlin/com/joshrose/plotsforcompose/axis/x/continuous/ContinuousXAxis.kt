@@ -208,6 +208,7 @@ fun getX(
 fun getY(xAxisPosition: XAxis, height: Float) = when (xAxisPosition) {
     Top -> 0f
     Bottom -> height
+    Both -> height
     Center -> height.div(2f)
     else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
 }

@@ -122,6 +122,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         else -> AxisPosition.Start
     }
 
+    // TODO: Consider when Axes are Both
     val drawZero = when {
         yMin == 0f && xMin == 0f &&
                 xAxisPosition == AxisPosition.Bottom && yAxisPosition == AxisPosition.Start &&
