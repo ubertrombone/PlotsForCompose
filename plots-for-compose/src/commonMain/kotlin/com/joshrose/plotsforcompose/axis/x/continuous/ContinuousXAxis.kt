@@ -60,6 +60,7 @@ fun DrawScope.unboundXAxis(
 ) {
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
+    val secondYAxisPositionXValue = if (yAxisPosition == Both) size.width else null
 
     labels.forEachIndexed { index, label ->
         val x = getX(
@@ -73,18 +74,20 @@ fun DrawScope.unboundXAxis(
         )
 
         if (guidelinesConfigs.showGuidelines) {
-            if (drawYAxis && yAxisPositionXValue != x) {
-                drawXGuideline(
-                    guidelineConfig = guidelinesConfigs,
-                    x = x,
-                    xAxisPosition = xAxisPosition
-                )
-            } else {
-                drawXGuideline(
-                    guidelineConfig = guidelinesConfigs,
-                    x = x,
-                    xAxisPosition = xAxisPosition
-                )
+            if (drawYAxis) {
+                if (yAxisPositionXValue != x || secondYAxisPositionXValue != x) {
+                    drawXGuideline(
+                        guidelineConfig = guidelinesConfigs,
+                        x = x,
+                        xAxisPosition = xAxisPosition
+                    )
+                } else {
+                    drawXGuideline(
+                        guidelineConfig = guidelinesConfigs,
+                        x = x,
+                        xAxisPosition = xAxisPosition
+                    )
+                }
             }
         }
 
@@ -134,6 +137,7 @@ fun DrawScope.boundXAxis(
 
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
+    val secondYAxisPositionYValue = if (yAxisPosition == Both) size.width else null
 
     labels.forEachIndexed { index, label ->
         val x =
@@ -142,7 +146,7 @@ fun DrawScope.boundXAxis(
 
         if (guidelinesConfigs.showGuidelines) {
             if (drawYAxis) {
-                if (yAxisPositionXValue != x) {
+                if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
                     drawXGuideline(
                         guidelineConfig = guidelinesConfigs,
                         x = x,
@@ -221,6 +225,7 @@ fun getYAxisXPosition(
 ) = if (drawYAxis) {
     when (yAxisPosition) {
         AxisPosition.Start -> 0f
+        Both -> 0f
         Center -> width.div(2f)
         End -> width
         else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")

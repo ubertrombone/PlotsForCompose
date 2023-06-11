@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.plotsforcompose.axis.x.util
 
 import androidx.compose.ui.geometry.Offset

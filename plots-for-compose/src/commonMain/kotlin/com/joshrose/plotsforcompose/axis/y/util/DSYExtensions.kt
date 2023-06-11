@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.plotsforcompose.axis.y.util
 
 import androidx.compose.ui.geometry.Offset
@@ -20,8 +22,16 @@ internal fun DrawScope.drawYGuideline(
     yAxisPosition: YAxis
 ) {
     val lineLength = size.width.minus(guidelineConfig.padding)
-    val startX = if (yAxisPosition == Start) guidelineConfig.padding else 0f
-    val endX = if (yAxisPosition == Center) size.width else startX.plus(lineLength)
+    val startX = when (yAxisPosition) {
+        Start -> guidelineConfig.padding
+        Both -> guidelineConfig.padding
+        else -> 0f
+    }
+    val endX = when (yAxisPosition) {
+        Center -> size.width
+        Both -> startX.plus(lineLength).minus(guidelineConfig.padding)
+        else -> startX.plus(lineLength)
+    }
 
     drawLine(
         start = Offset(x = startX, y = y),
@@ -42,6 +52,7 @@ internal fun DrawScope.drawYTick(
 ) {
     val tickStart = when (yAxisPosition) {
         Start -> 0f.minus(axisOffset.div(2f))
+        Both -> 0f.minus(axisOffset.div(2f))
         End -> size.width
         Center -> size.width.div(2f).minus(axisOffset.div(2f))
         else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
@@ -57,6 +68,19 @@ internal fun DrawScope.drawYTick(
         alpha = axisLineConfig.alpha.factor,
         strokeWidth = axisLineConfig.strokeWidth
     )
+
+    if (yAxisPosition == Both) {
+        val secondStart = size.width
+        val secondEnd = secondStart.plus(axisOffset.div(2f))
+
+        drawLine(
+            start = Offset(x = secondStart, y = y),
+            end = Offset(x = secondEnd, y = y),
+            color = axisLineConfig.lineColor,
+            alpha = axisLineConfig.alpha.factor,
+            strokeWidth = axisLineConfig.strokeWidth
+        )
+    }
 }
 
 @Throws(IllegalStateException::class)
@@ -66,6 +90,7 @@ internal fun DrawScope.drawYAxis(
 ) {
     val x = when (yAxisPosition) {
         Start -> 0f
+        Both -> 0f
         End -> size.width
         Center -> size.width.div(2f)
         else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
@@ -74,6 +99,15 @@ internal fun DrawScope.drawYAxis(
     drawLine(
         start = Offset(x = x, y = 0f),
         end = Offset(x = x, y = size.height),
+        color = axisLineConfig.lineColor,
+        alpha = axisLineConfig.alpha.factor,
+        pathEffect = axisLineConfig.pathEffect,
+        strokeWidth = axisLineConfig.strokeWidth
+    )
+
+    if (yAxisPosition == Both) drawLine(
+        start = Offset(x = size.width, y = 0f),
+        end = Offset(x = size.width, y = size.height),
         color = axisLineConfig.lineColor,
         alpha = axisLineConfig.alpha.factor,
         pathEffect = axisLineConfig.pathEffect,
@@ -104,15 +138,13 @@ internal fun DrawScope.drawYLabel(
         )
     }
 
-
-
     val offsetX =
         if (yAxisPosition == End) x.plus(labelConfig.axisOffset.toPx())
         else x.minus(labelDimensions.size.width.div(2f)).minus(labelConfig.axisOffset.toPx())
 
     val (xAdjusted, yAdjusted) = adjustYLabelCoordinates(
         y = y,
-        x = offsetX,//if (yAxisPosition == END) x.plus(labelConfig.xOffset.toPx()) else x.minus(labelConfig.xOffset.toPx()),
+        x = offsetX,
         yOffset = labelDimensions.size.height.toFloat(),
         xOffset = labelDimensions.size.width.toFloat(),
         yAxisPosition = yAxisPosition
@@ -133,6 +165,35 @@ internal fun DrawScope.drawYLabel(
             textLayoutResult = labelDimensions,
             topLeft = Offset(x = xAdjusted, y = yAdjusted)
         )
+    }
+
+    if (yAxisPosition == Both) {
+        val secondOffsetX = size.width.plus(labelConfig.axisOffset.toPx())
+
+        val (secondXAdjusted, secondYAdjusted) = adjustYLabelCoordinates(
+            y = y,
+            x = secondOffsetX,
+            yOffset = labelDimensions.size.height.toFloat(),
+            xOffset = labelDimensions.size.width.toFloat(),
+            yAxisPosition = End
+        )
+
+        val (secondXPivot, secondYPivot) = yLabelPivotCoordinates(
+            y = y,
+            yAdjusted = secondYAdjusted,
+            xAdjusted = secondXAdjusted,
+            yAxisPosition = End,
+            rotation = labelConfig.rotation,
+            labelWidth = labelDimensions.size.width.toFloat(),
+            labelSize = labelDimensions.size.center
+        )
+
+        rotate(degrees = labelConfig.rotation, pivot = Offset(x = secondXPivot, y = secondYPivot)) {
+            drawText(
+                textLayoutResult = labelDimensions,
+                topLeft = Offset(x = secondXAdjusted, y = secondYAdjusted)
+            )
+        }
     }
 }
 

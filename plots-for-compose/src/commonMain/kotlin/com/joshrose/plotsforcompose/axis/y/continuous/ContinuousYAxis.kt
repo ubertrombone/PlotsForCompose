@@ -275,6 +275,7 @@ fun getY(
 @Throws(IllegalStateException::class)
 fun getX(yAxisPosition: YAxis, width: Float) = when (yAxisPosition) {
     Start -> 0f
+    Both -> 0f
     End -> width
     Center -> width.div(2f)
     else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
