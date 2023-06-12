@@ -3,9 +3,11 @@
 package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -18,10 +20,8 @@ import com.joshrose.common.ui.axes.axisline.AxisLineContent
 import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.labels.LabelsContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
+import com.joshrose.common.util.*
 import com.joshrose.common.util.ImageResources.*
-import com.joshrose.common.util.ScrollLazyColumn
-import com.joshrose.common.util.createPainter
-import com.joshrose.common.util.paddingBottomBar
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.Companion.xConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration.Companion.guidelinesConfiguration
@@ -151,7 +151,6 @@ fun AxesContent(
                     "y" to dataStates.data.map { it.y }
                 )
                 val plot = composePlot(data = data) {
-                    //figure = BarFigure()
                     x = "x"
                     y = "y"
                 }
@@ -214,40 +213,17 @@ fun AxesContent(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Button(
-                        onClick = {
-                            component.updateData(
-                                data = List(2) {
-                                    NumberData(
-                                        x = (-100..100).random().toFloat(),
-                                        y = (-100..100).random().toFloat()
-                                    )
-                                }
-                            )
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorScheme.primaryContainer,
-                            contentColor = colorScheme.onPrimaryContainer
-                        )
-                    ) {
-                        Text(
-                            text = "Generate New Axes",
-                            style = typography.bodyMedium
+                    GenerateDataButton {
+                        component.updateData(
+                            data = List(2) {
+                                NumberData(
+                                    x = (-100..100).random().toFloat(),
+                                    y = (-100..100).random().toFloat()
+                                )
+                            }
                         )
                     }
-
-                    Button(
-                        onClick = component::resetAxis,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = colorScheme.primaryContainer,
-                            contentColor = colorScheme.onPrimaryContainer
-                        )
-                    ) {
-                        Text(
-                            text = "Reset",
-                            style = typography.bodyMedium
-                        )
-                    }
+                    ResetButton(onClick = component::resetAxis)
                 }
             }
         }
