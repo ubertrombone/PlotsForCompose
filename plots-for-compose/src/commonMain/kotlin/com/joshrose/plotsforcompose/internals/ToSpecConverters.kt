@@ -7,8 +7,7 @@ fun Plot.toSpec() = Specifications.Specs(
         ),
         plot = Specifications.Plot(
             //layers = layers().map(Layer::toSpec),
-            scales = scales().map(Scale::toSpec),
-            size = size()?.size
+            scales = scales().map(Scale::toSpec)
         )
     ).also(::println)
 

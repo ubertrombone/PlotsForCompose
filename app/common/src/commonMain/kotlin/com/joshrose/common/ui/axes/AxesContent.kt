@@ -30,7 +30,6 @@ import com.joshrose.plotsforcompose.axis.unboundXAxis
 import com.joshrose.plotsforcompose.axis.unboundYAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
-import com.joshrose.plotsforcompose.plotSize
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -156,16 +155,14 @@ fun AxesContent(
                     x = "x"
                     y = "y"
                 }
-                    .plus(
-                        unboundXAxis(
+                    .plus(unboundXAxis(
                         labelConfigs = xLabelConfigs,
                         guidelinesConfigs = xGuidelineConfigs,
                         axisLineConfigs = xAxisLineConfigs,
                         breaks = data["x"],
                         labels = data["x"]?.map { it.toString() },
                         reverse = false
-                    )
-                    )
+                    ))
                     .plus(unboundYAxis(
                         labelConfigs = yLabelConfigs,
                         guidelinesConfigs = yGuidelineConfigs,
@@ -174,8 +171,12 @@ fun AxesContent(
                         labels = data["y"]?.map { it.toString() },
                         reverse = false
                     ))
-                    .plus(plotSize(height = 300.dp))
-                plot.show(modifier = Modifier.padding(50.dp))
+                plot.show(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp)
+                        .padding(50.dp)
+                )
             }
             item {
                 Children(stack = childStack) {

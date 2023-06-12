@@ -3,12 +3,10 @@
 package com.joshrose.plotsforcompose.internals.plots
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
@@ -24,7 +22,6 @@ import com.joshrose.plotsforcompose.internals.util.Range
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
-import com.joshrose.plotsforcompose.util.width
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -37,10 +34,6 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
-
-    // TODO: Is this still needed?
-    val size: Map<String, Dp?>? =
-        plot.otherFeatures().lastOrNull { it.kind == "size" }?.configs?.mapValues { it.value as Dp? }
 
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
     val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
@@ -109,7 +102,6 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         null -> null
     }
 
-    // TODO: Add concept of axis on both sides
     val xAxisPosition = xAxisLineConfigs?.axisPosition ?: when {
         yMax <= 0 -> Top
         yMin < 0 -> Center
@@ -147,11 +139,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         else -> true
     }
 
-    Canvas(
-        modifier = modifier
-            .height(size?.get("height") ?: 500.dp)
-            .width(size?.get("width"))
-    ) {
+    Canvas(modifier = modifier) {
         scaleX?.let {
             unboundXAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
