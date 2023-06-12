@@ -14,16 +14,16 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.X
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.util.drawZero
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.axis.x.continuous.unboundXAxis
-import com.joshrose.plotsforcompose.axis.y.continuous.unboundYAxis
-import com.joshrose.plotsforcompose.common.maxValue
-import com.joshrose.plotsforcompose.common.minValue
-import com.joshrose.plotsforcompose.common.range
 import com.joshrose.plotsforcompose.internals.*
+import com.joshrose.plotsforcompose.internals.aesthetics.axis.drawZero
+import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundXAxis
+import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
+import com.joshrose.plotsforcompose.internals.util.Range
+import com.joshrose.plotsforcompose.internals.util.maxValue
+import com.joshrose.plotsforcompose.internals.util.minValue
+import com.joshrose.plotsforcompose.internals.util.range
 import com.joshrose.plotsforcompose.util.width
 
 @OptIn(ExperimentalTextApi::class)
@@ -111,38 +111,37 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
 
     // TODO: Add concept of axis on both sides
     val xAxisPosition = xAxisLineConfigs?.axisPosition ?: when {
-        yMax <= 0 -> AxisPosition.Top
-        yMin < 0 -> AxisPosition.Center
-        else -> AxisPosition.Bottom
+        yMax <= 0 -> Top
+        yMin < 0 -> Center
+        else -> Bottom
     }
 
     val yAxisPosition = yAxisLineConfigs?.axisPosition ?: when {
-        xMax <= 0 -> AxisPosition.End
-        xMin < 0 -> AxisPosition.Center
-        else -> AxisPosition.Start
+        xMax <= 0 -> End
+        xMin < 0 -> Center
+        else -> Start
     }
 
-    // TODO: Consider when Axes are Both
     val drawZero = when {
         yMin == 0f && xMin == 0f &&
-                xAxisPosition == AxisPosition.Bottom && yAxisPosition == AxisPosition.Start &&
+                xAxisPosition == Bottom && yAxisPosition == Start &&
                 scaleX.isNotNull() && scaleY.isNotNull() &&
                 scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
         yMax == 0f && xMin == 0f &&
-                xAxisPosition == AxisPosition.Top && yAxisPosition == AxisPosition.Start &&
+                xAxisPosition == Top && yAxisPosition == Start &&
                 scaleX.isNotNull() && scaleY.isNotNull() &&
                 scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
         yMin == 0f && xMax == 0f &&
-                xAxisPosition == AxisPosition.Bottom && yAxisPosition == AxisPosition.End &&
+                xAxisPosition == Bottom && yAxisPosition == End &&
                 scaleX.isNotNull() && scaleY.isNotNull() &&
                 scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
         yMax == 0f && xMax == 0f &&
-                xAxisPosition == AxisPosition.Top && yAxisPosition == AxisPosition.End &&
+                xAxisPosition == Top && yAxisPosition == End &&
                 scaleX.isNotNull() && scaleY.isNotNull() &&
                 scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
         (xLabels.min() != 0f && xLabels.max() != 0f && xLabels.contains(0f)) &&
                 (yLabels.min() != 0f && yLabels.max() != 0f && yLabels.contains(0f)) &&
-                xAxisPosition == AxisPosition.Center && yAxisPosition == AxisPosition.Center &&
+                xAxisPosition == Center && yAxisPosition == Center &&
                 scaleX.isNotNull() && scaleY.isNotNull() &&
                 (scaleX?.labelConfigs?.showLabels == true || scaleY?.labelConfigs?.showLabels == true) -> false
         else -> true

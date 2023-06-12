@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.common
+package com.joshrose.plotsforcompose.internals.util
 
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import kotlin.math.abs

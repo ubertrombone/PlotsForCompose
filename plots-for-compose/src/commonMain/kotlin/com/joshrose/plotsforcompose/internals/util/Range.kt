@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.axis.util
+package com.joshrose.plotsforcompose.internals.util
 
 data class Range<out T>(val min: T, val max: T) {
     companion object {

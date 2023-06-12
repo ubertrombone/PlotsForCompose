@@ -1,6 +1,6 @@
 package com.joshrose.plotsforcompose.internals
 
-import com.joshrose.plotsforcompose.exception.DataFrameSizeException
+import com.joshrose.plotsforcompose.internals.exception.DataFrameSizeException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
 
 @Throws(DataFrameSizeException::class)

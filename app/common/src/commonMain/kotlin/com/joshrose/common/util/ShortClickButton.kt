@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.DecButton
 import com.joshrose.common.ui.axes.IncButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
-import com.joshrose.plotsforcompose.axis.util.formatToString
+import java.text.DecimalFormat
 
 @Composable
 fun ShortClickButton(
@@ -181,7 +181,7 @@ fun ShortClickButton(
             Spacer(Modifier.width(10.dp))
 
             Text(
-                text = value.factor.formatToString("#.#"),
+                text = DecimalFormat("#.#").format(value.factor).toString(),
                 color = colorScheme.primary,
                 fontSize = typography.labelLarge.fontSize
             )

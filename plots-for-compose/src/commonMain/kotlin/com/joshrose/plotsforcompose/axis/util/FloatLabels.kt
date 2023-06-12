@@ -1,14 +1,12 @@
 package com.joshrose.plotsforcompose.axis.util
 
-import com.joshrose.plotsforcompose.exception.InvalidRangeException
-
-@Throws(InvalidRangeException::class)
+@Throws(IllegalArgumentException::class)
 fun floatLabels(
     breaks: Int,
     minValue: Float,
     maxValue: Float
 ): List<Float> {
-    if (minValue == maxValue) throw InvalidRangeException(
+    if (minValue == maxValue) throw IllegalArgumentException(
         """
         minValue and maxValue cannot be equal.
         - minValue: $minValue

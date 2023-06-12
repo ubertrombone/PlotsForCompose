@@ -1,6 +1,6 @@
 @file:Suppress("DuplicatedCode")
 
-package com.joshrose.plotsforcompose.axis.y.util
+package com.joshrose.plotsforcompose.internals.aesthetics.axis
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -14,7 +14,6 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
-import com.joshrose.plotsforcompose.axis.util.makeTextLayout
 
 internal fun DrawScope.drawYGuideline(
     guidelineConfig: GuidelinesConfiguration,
@@ -198,7 +197,7 @@ internal fun DrawScope.drawYLabel(
     }
 }
 
-fun adjustYLabelCoordinates(
+internal fun adjustYLabelCoordinates(
     y: Float,
     x: Float,
     yOffset: Float,
@@ -210,7 +209,7 @@ fun adjustYLabelCoordinates(
     return xAdjusted to yAdjusted
 }
 
-fun yLabelPivotCoordinates(
+internal fun yLabelPivotCoordinates(
     y: Float,
     yAdjusted: Float,
     xAdjusted: Float,

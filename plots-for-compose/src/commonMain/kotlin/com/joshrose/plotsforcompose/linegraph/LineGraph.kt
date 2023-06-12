@@ -15,10 +15,9 @@ import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.axis.util.floatLabels
-import com.joshrose.plotsforcompose.common.maxValue
-import com.joshrose.plotsforcompose.common.minValue
-import com.joshrose.plotsforcompose.common.range
-import com.joshrose.plotsforcompose.exception.InvalidRangeException
+import com.joshrose.plotsforcompose.internals.util.maxValue
+import com.joshrose.plotsforcompose.internals.util.minValue
+import com.joshrose.plotsforcompose.internals.util.range
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfig
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfigDefaults
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
@@ -73,7 +72,7 @@ fun LineGraph(
             minValue = minYValue,
             maxValue = maxYValue
         )
-    } catch (e: InvalidRangeException) { state = Error }
+    } catch (e: IllegalArgumentException) { state = Error }
 
     val xLabels by remember { mutableStateOf(data.map { it.x }) }
 

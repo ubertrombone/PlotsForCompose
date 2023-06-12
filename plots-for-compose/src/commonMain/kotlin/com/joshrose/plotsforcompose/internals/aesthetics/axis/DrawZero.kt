@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.axis.util
+package com.joshrose.plotsforcompose.internals.aesthetics.axis
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -9,7 +9,7 @@ import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 
 @ExperimentalTextApi
-fun DrawScope.drawZero(
+internal fun DrawScope.drawZero(
     xAxisPosition: XAxis,
     yAxisPosition: YAxis,
     xAxisOffset: Float,

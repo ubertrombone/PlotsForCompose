@@ -1,58 +1,29 @@
 @file:Suppress("DuplicatedCode")
 
-package com.joshrose.plotsforcompose.axis.x.continuous
+package com.joshrose.plotsforcompose.internals.aesthetics.axis
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
-import com.joshrose.plotsforcompose.axis.util.AxisAlignment.SpaceBetween
-import com.joshrose.plotsforcompose.axis.util.AxisAlignment.Start
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
-import com.joshrose.plotsforcompose.axis.util.Range
-import com.joshrose.plotsforcompose.axis.util.Range.Companion.mapToFloat
-import com.joshrose.plotsforcompose.axis.x.util.drawXAxis
-import com.joshrose.plotsforcompose.axis.x.util.drawXGuideline
-import com.joshrose.plotsforcompose.axis.x.util.drawXLabel
-import com.joshrose.plotsforcompose.axis.x.util.drawXTick
-import com.joshrose.plotsforcompose.internals.Scale
-import com.joshrose.plotsforcompose.internals.ScaleKind
+import com.joshrose.plotsforcompose.internals.util.Range
+import com.joshrose.plotsforcompose.internals.util.Range.Companion.mapToFloat
 import com.joshrose.plotsforcompose.util.calculateOffset
 
-// TODO: Move this somewhere else
-fun unboundXAxis(
-    labelConfigs: LabelsConfiguration = LabelsConfiguration(),
-    guidelinesConfigs: GuidelinesConfiguration = GuidelinesConfiguration(),
-    axisLineConfigs: XConfiguration = XConfiguration(),
-    breaks: List<Number>? = null,
-    labels: List<String>? = null,
-    naValue: Number? = null,
-    reverse: Boolean? = null
-) = Scale(
-    labelConfigs = labelConfigs,
-    guidelinesConfigs = guidelinesConfigs,
-    axisLineConfigs = axisLineConfigs,
-    scale = ScaleKind.X,
-    breaks = breaks,
-    labels = labels,
-    naValue = naValue,
-    reverse = reverse
-)
-
 @ExperimentalTextApi
-fun DrawScope.unboundXAxis(
+internal fun DrawScope.unboundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: XConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
     labels: List<Number>,
     xRangeValues: Range<Number>,
-    xAxisPosition: XAxis,
-    yAxisPosition: YAxis,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     range: Number,
@@ -60,7 +31,7 @@ fun DrawScope.unboundXAxis(
 ) {
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
-    val secondYAxisPositionXValue = if (yAxisPosition == Both) size.width else null
+    val secondYAxisPositionXValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
     labels.forEachIndexed { index, label ->
         val x = getX(
@@ -120,13 +91,13 @@ fun DrawScope.unboundXAxis(
 // TODO: Consider how drawing all/some/none guidelines and all/some/none labels might go
 // --> Bound XAxis doesn't need breaks. It needs a list of the labels to be shown.
 @ExperimentalTextApi
-fun DrawScope.boundXAxis(
+internal fun DrawScope.boundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
-    axisLineConfigs: XConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
     labels: List<Any>,
-    xAxisPosition: XAxis,
-    yAxisPosition: YAxis,
+    xAxisPosition: AxisPosition.XAxis,
+    yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
     axisAlignment: AxisAlignment.XAxis,
@@ -137,11 +108,11 @@ fun DrawScope.boundXAxis(
 
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
-    val secondYAxisPositionYValue = if (yAxisPosition == Both) size.width else null
+    val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
     labels.forEachIndexed { index, label ->
         val x =
-            if (axisAlignment == Start || axisAlignment == SpaceBetween) index.times(factor)
+            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
             else index.plus(1).times(factor)
 
         if (guidelinesConfigs.showGuidelines) {
@@ -189,7 +160,7 @@ fun DrawScope.boundXAxis(
     if (axisLineConfigs.showAxisLine) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
-fun getX(
+internal fun getX(
     width: Float,
     xValues: Range<Float>,
     label: Float,
@@ -209,25 +180,25 @@ fun getX(
 }
 
 @Throws(IllegalStateException::class)
-fun getY(xAxisPosition: XAxis, height: Float) = when (xAxisPosition) {
-    Top -> 0f
-    Bottom -> height
-    Both -> height
-    Center -> height.div(2f)
+internal fun getY(xAxisPosition: AxisPosition.XAxis, height: Float) = when (xAxisPosition) {
+    AxisPosition.Top -> 0f
+    AxisPosition.Bottom -> height
+    AxisPosition.Both -> height
+    AxisPosition.Center -> height.div(2f)
     else -> throw IllegalStateException("xAxisPosition must be of type AxisPosition.XAxis. Current state: $xAxisPosition")
 }
 
 @Throws(IllegalStateException::class)
-fun getYAxisXPosition(
+internal fun getYAxisXPosition(
     drawYAxis: Boolean,
-    yAxisPosition: YAxis,
+    yAxisPosition: AxisPosition.YAxis,
     width: Float
 ) = if (drawYAxis) {
     when (yAxisPosition) {
         AxisPosition.Start -> 0f
-        Both -> 0f
-        Center -> width.div(2f)
-        End -> width
+        AxisPosition.Both -> 0f
+        AxisPosition.Center -> width.div(2f)
+        AxisPosition.End -> width
         else -> throw IllegalStateException("yAxisPosition must be of type AxisPosition.YAxis. Current state: $yAxisPosition")
     }
 } else null

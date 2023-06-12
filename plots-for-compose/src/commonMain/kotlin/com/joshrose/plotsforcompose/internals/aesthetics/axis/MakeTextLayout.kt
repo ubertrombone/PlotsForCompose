@@ -1,4 +1,4 @@
-package com.joshrose.plotsforcompose.axis.util
+package com.joshrose.plotsforcompose.internals.aesthetics.axis
 
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.ExperimentalTextApi
@@ -9,7 +9,7 @@ import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import java.text.DecimalFormat
 
 @ExperimentalTextApi
-fun makeTextLayout(
+internal fun makeTextLayout(
     label: Float,
     textMeasurer: TextMeasurer,
     labelConfig: LabelsConfiguration,
@@ -35,4 +35,4 @@ internal fun makeTextLayout(
     softWrap = false
 )
 
-fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
+internal fun Float.formatToString(pattern: String): String = DecimalFormat(pattern).format(this).toString()
