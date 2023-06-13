@@ -18,8 +18,6 @@ import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
-import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfig
-import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfigDefaults
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 import com.joshrose.plotsforcompose.linegraph.model.NumberData.Companion.maxXValue
 import com.joshrose.plotsforcompose.linegraph.model.NumberData.Companion.maxYValue
@@ -51,7 +49,7 @@ fun LineGraph(
     yLabelConfiguration: LabelsConfiguration = labelsConfiguration(),
     yGuidelinesConfiguration: GuidelinesConfiguration = guidelinesConfiguration(),
     yAxisLineConfiguration: YConfiguration = yConfiguration(),
-    lineGraphConfig: LineGraphConfig = LineGraphConfigDefaults.lineGraphConfigDefaults(),
+    //lineGraphConfig: LineGraphConfiguration = LineGraphConfigDefaults.lineGraphConfigDefaults(),
 ) {
     var state by remember { mutableStateOf<LoadingState>(Success) }
     val yTextMeasurer = rememberTextMeasurer()

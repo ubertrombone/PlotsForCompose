@@ -1,5 +1,3 @@
-@file:Suppress("DuplicatedCode")
-
 package com.joshrose.plotsforcompose.internals.plots
 
 import androidx.compose.foundation.Canvas
@@ -7,32 +5,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.XConfiguration
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.internals.*
-import com.joshrose.plotsforcompose.internals.aesthetics.axis.drawZero
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundXAxis
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
 import com.joshrose.plotsforcompose.internals.util.Range
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
-internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
+fun LineGraph(plot: Plot, modifier: Modifier = Modifier) {
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
-    val zeroTextMeasurer = rememberTextMeasurer()
 
     val data = getData(plot.data)
 
-    val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
-    val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
-
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
     val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
+
+    val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
+    val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
     val xAxisData = getAxisData(
         data = x,
@@ -66,29 +60,17 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     val xAxisPosition = getXAxisPosition(config = xAxisLineConfigs, yAxisData = yAxisData)
     val yAxisPosition = getYAxisPosition(config = yAxisLineConfigs, xAxisData = xAxisData)
 
-    val drawZero = drawZero(
-        scaleX = scaleX,
-        scaleY = scaleY,
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        xAxisPosition = xAxisPosition,
-        yAxisPosition = yAxisPosition,
-        xLabels = xLabels,
-        yLabels = yLabels
-    )
-
     Canvas(modifier = modifier) {
         scaleX?.let {
             unboundXAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
-                axisLineConfigs = xAxisLineConfigs ?: XConfiguration(),
+                axisLineConfigs = xAxisLineConfigs ?: AxisLineConfiguration.XConfiguration(),
                 labels = xLabels,
                 xRangeValues = Range(min = xAxisData.min, max = xAxisData.max),
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
-                drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: YConfiguration().ticks,
-                drawZero = drawZero,
+                drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.YConfiguration().ticks,
                 range = xAxisData.range,
                 textMeasurer = xTextMeasurer
             )
@@ -97,26 +79,14 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
             unboundYAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
-                axisLineConfigs = yAxisLineConfigs ?: YConfiguration(),
+                axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
                 labels = yLabels,
                 yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
                 yAxisPosition = yAxisPosition,
                 xAxisPosition = xAxisPosition,
-                drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: XConfiguration().ticks,
-                drawZero = drawZero,
+                drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
                 range = yAxisData.range,
                 textMeasurer = yTextMeasurer
-            )
-        }
-
-        if (!drawZero) {
-            drawZero(
-                xAxisPosition = xAxisPosition,
-                yAxisPosition = yAxisPosition,
-                xAxisOffset = scaleY?.labelConfigs?.axisOffset?.toPx() ?: 25.dp.toPx(),
-                yAxisOffset = scaleX?.labelConfigs?.axisOffset?.toPx() ?: 25.dp.toPx(),
-                textMeasurer = zeroTextMeasurer,
-                labelConfig = scaleY?.labelConfigs ?: LabelsConfiguration()
             )
         }
     }

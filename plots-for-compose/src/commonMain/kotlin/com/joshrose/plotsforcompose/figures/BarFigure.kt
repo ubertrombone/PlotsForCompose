@@ -12,5 +12,5 @@ class BarFigure(
     override val stat: StatConfigs = Stats.count(),
     override val showLegend: Boolean = true
 ) : Figure {
-    override fun toString() = "Figure#PlotBar"
+    override fun toString() = "Figure#Bar"
 }

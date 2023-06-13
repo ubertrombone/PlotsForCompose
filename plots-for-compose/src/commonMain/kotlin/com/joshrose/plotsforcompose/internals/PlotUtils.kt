@@ -1,7 +1,14 @@
 package com.joshrose.plotsforcompose.internals
 
+import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.*
+import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.internals.exception.DataFrameSizeException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
+import com.joshrose.plotsforcompose.internals.util.AxisData
+import com.joshrose.plotsforcompose.internals.util.maxValue
+import com.joshrose.plotsforcompose.internals.util.minValue
+import com.joshrose.plotsforcompose.internals.util.range
 
 @Throws(DataFrameSizeException::class)
 internal fun getData(data: Map<*, *>?): Map<String, List<Any?>> {
@@ -50,5 +57,91 @@ internal fun asMappingData(
         }
     }
 
-fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
-fun Scale?.isNotNull() = this != null
+internal fun getAxisData(
+    data: List<Any?>?,
+    minValueAdjustment: Multiplier?,
+    maxValueAdjustment: Multiplier?,
+    rangeAdjustment: Multiplier?
+): AxisData {
+    val max = maxValue(
+        maxValue = data?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f,
+        maxValueAdjustment = maxValueAdjustment
+    )
+
+    val min = minValue(
+        minValue = data?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 0f,
+        maxValue = max,
+        minValueAdjustment = minValueAdjustment
+    )
+
+    val range = range(
+        minValue = min,
+        maxValue = max,
+        rangeAdjustment = rangeAdjustment
+    )
+
+    return AxisData(min = min, max = max, range = range)
+}
+
+internal fun xConfigurationOrNull(scaleX: Scale?) = when (scaleX?.axisLineConfigs) {
+    is XConfiguration -> scaleX.axisLineConfigs
+    is YConfiguration ->
+        throw IllegalStateException("Axis Line Configurations on the X scale should be of type XConfiguration.")
+    null -> null
+}
+
+internal fun yConfigurationOrNull(scaleY: Scale?) = when (scaleY?.axisLineConfigs) {
+    is XConfiguration ->
+        throw IllegalStateException("Axis Line Configurations on the Y scale should be of type YConfiguration.")
+    is YConfiguration -> scaleY.axisLineConfigs
+    null -> null
+}
+
+internal fun getXAxisPosition(config: XConfiguration?, yAxisData: AxisData) = config?.axisPosition ?: when {
+    yAxisData.max <= 0 -> Top
+    yAxisData.min < 0 -> Center
+    else -> Bottom
+}
+
+internal fun getYAxisPosition(config: YConfiguration?, xAxisData: AxisData) = config?.axisPosition ?: when {
+    xAxisData.max <= 0 -> End
+    xAxisData.min < 0 -> Center
+    else -> Start
+}
+
+internal fun drawZero(
+    scaleX: Scale?,
+    scaleY: Scale?,
+    xAxisData: AxisData,
+    yAxisData: AxisData,
+    xAxisPosition: XAxis,
+    yAxisPosition: YAxis,
+    xLabels: List<Float>,
+    yLabels: List<Float>
+) = when {
+    yAxisData.min == 0f && xAxisData.min == 0f &&
+            xAxisPosition == Bottom && yAxisPosition == Start &&
+            scaleX.isNotNull() && scaleY.isNotNull() &&
+            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+    yAxisData.max == 0f && xAxisData.min == 0f &&
+            xAxisPosition == Top && yAxisPosition == Start &&
+            scaleX.isNotNull() && scaleY.isNotNull() &&
+            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+    yAxisData.min == 0f && xAxisData.max == 0f &&
+            xAxisPosition == Bottom && yAxisPosition == End &&
+            scaleX.isNotNull() && scaleY.isNotNull() &&
+            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+    yAxisData.max == 0f && xAxisData.max == 0f &&
+            xAxisPosition == Top && yAxisPosition == End &&
+            scaleX.isNotNull() && scaleY.isNotNull() &&
+            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+    (xLabels.min() != 0f && xLabels.max() != 0f && xLabels.contains(0f)) &&
+            (yLabels.min() != 0f && yLabels.max() != 0f && yLabels.contains(0f)) &&
+            xAxisPosition == Center && yAxisPosition == Center &&
+            scaleX.isNotNull() && scaleY.isNotNull() &&
+            (scaleX?.labelConfigs?.showLabels == true || scaleY?.labelConfigs?.showLabels == true) -> false
+    else -> true
+}
+
+internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
+internal fun Scale?.isNotNull() = this != null
