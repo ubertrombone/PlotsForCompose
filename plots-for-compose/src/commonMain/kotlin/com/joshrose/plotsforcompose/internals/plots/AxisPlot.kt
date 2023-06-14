@@ -60,11 +60,11 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         maxValue = yAxisData.max
     )
 
-    val xAxisLineConfigs = xConfigurationOrNull(scaleX)
-    val yAxisLineConfigs = yConfigurationOrNull(scaleY)
+    val xAxisLineConfigs = scaleX.xConfigurationOrNull()
+    val yAxisLineConfigs = scaleY.yConfigurationOrNull()
 
-    val xAxisPosition = getXAxisPosition(config = xAxisLineConfigs, yAxisData = yAxisData)
-    val yAxisPosition = getYAxisPosition(config = yAxisLineConfigs, xAxisData = xAxisData)
+    val xAxisPosition = xAxisLineConfigs.getXAxisPosition(yAxisData = yAxisData)
+    val yAxisPosition = yAxisLineConfigs.getYAxisPosition(xAxisData = xAxisData)
 
     val drawZero = drawZero(
         scaleX = scaleX,

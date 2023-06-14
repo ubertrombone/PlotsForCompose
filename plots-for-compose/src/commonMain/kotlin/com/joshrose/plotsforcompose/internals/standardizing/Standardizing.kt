@@ -22,7 +22,7 @@ internal object Standardizing {
     }
 }
 
-private fun toDouble(n: Number): Double? {
+internal fun toDouble(n: Number): Double? {
     return when (n) {
         is Float -> if (n.isFinite()) n.toDouble() else null
         is Double -> if (n.isFinite()) n else null

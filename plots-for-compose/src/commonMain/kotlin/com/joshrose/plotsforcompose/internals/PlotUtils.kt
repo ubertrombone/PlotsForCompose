@@ -5,10 +5,12 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.internals.exception.DataFrameSizeException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
+import com.joshrose.plotsforcompose.internals.standardizing.toDouble
 import com.joshrose.plotsforcompose.internals.util.AxisData
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
+import kotlin.time.Duration
 
 @Throws(DataFrameSizeException::class)
 internal fun getData(data: Map<*, *>?): Map<String, List<Any?>> {
@@ -83,31 +85,33 @@ internal fun getAxisData(
     return AxisData(min = min, max = max, range = range)
 }
 
-internal fun xConfigurationOrNull(scaleX: Scale?) = when (scaleX?.axisLineConfigs) {
-    is XConfiguration -> scaleX.axisLineConfigs
+internal fun Scale?.xConfigurationOrNull() = when (this?.axisLineConfigs) {
+    is XConfiguration -> this.axisLineConfigs
     is YConfiguration ->
         throw IllegalStateException("Axis Line Configurations on the X scale should be of type XConfiguration.")
     null -> null
 }
 
-internal fun yConfigurationOrNull(scaleY: Scale?) = when (scaleY?.axisLineConfigs) {
+internal fun Scale?.yConfigurationOrNull() = when (this?.axisLineConfigs) {
     is XConfiguration ->
         throw IllegalStateException("Axis Line Configurations on the Y scale should be of type YConfiguration.")
-    is YConfiguration -> scaleY.axisLineConfigs
+    is YConfiguration -> this.axisLineConfigs
     null -> null
 }
 
-internal fun getXAxisPosition(config: XConfiguration?, yAxisData: AxisData) = config?.axisPosition ?: when {
+internal fun XConfiguration?.getXAxisPosition(yAxisData: AxisData) = let { it?.axisPosition } ?: when {
     yAxisData.max <= 0 -> Top
     yAxisData.min < 0 -> Center
     else -> Bottom
 }
 
-internal fun getYAxisPosition(config: YConfiguration?, xAxisData: AxisData) = config?.axisPosition ?: when {
+internal fun YConfiguration?.getYAxisPosition(xAxisData: AxisData) = let { it?.axisPosition } ?: when {
     xAxisData.max <= 0 -> End
     xAxisData.min < 0 -> Center
     else -> Start
 }
+
+internal fun YConfiguration?.getYAxisPosition() = let { it?.axisPosition } ?: Start
 
 internal fun drawZero(
     scaleX: Scale?,
@@ -141,6 +145,17 @@ internal fun drawZero(
             scaleX.isNotNull() && scaleY.isNotNull() &&
             (scaleX?.labelConfigs?.showLabels == true || scaleY?.labelConfigs?.showLabels == true) -> false
     else -> true
+}
+
+internal fun List<Any?>.sortedNotNull(): List<Any> = filterNotNull().sortedWith { value1, value2 ->
+    when (value1) {
+        is String -> value1.toString().compareTo(value2.toString())
+        is Char -> value1.toString().compareTo(value2.toString())
+        is Number -> toDouble(value1)?.compareTo(toDouble(value2 as Float) ?: Double.NaN) ?: 0
+        is Boolean -> value1.toString().toBoolean().compareTo(value2 as Boolean)
+        is Duration -> value1.inWholeMilliseconds.compareTo((value2 as Duration).inWholeMilliseconds)
+        else -> throw Exception("Values must be primitive non-iterable type.")
+    }
 }
 
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()

@@ -8,38 +8,32 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
+import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.internals.*
-import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundXAxis
+import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
+import com.joshrose.plotsforcompose.internals.exception.MissingAestheticException
 import com.joshrose.plotsforcompose.internals.util.Range
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
-fun LineGraph(plot: Plot, modifier: Modifier = Modifier) {
+fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
 
     val data = getData(plot.data)
 
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
+        ?: throw MissingAestheticException("LinePlot must have an X aesthetic mapping.")
+    // TODO: Y should be a list of counts of the X items.
+    // TODO: Check the StatKind
     val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
-    val xAxisData = getAxisData(
-        data = x,
-        minValueAdjustment = scaleX?.labelConfigs?.minValueAdjustment,
-        maxValueAdjustment = scaleX?.labelConfigs?.maxValueAdjustment,
-        rangeAdjustment = scaleX?.labelConfigs?.rangeAdjustment
-    )
-
-    val xLabels = floatLabels(
-        breaks = scaleX?.labelConfigs?.breaks ?: 5,
-        minValue = xAxisData.min,
-        maxValue = xAxisData.max
-    )
+    val xLabels = x.sortedNotNull()
 
     val yAxisData = getAxisData(
         data = y,
@@ -54,24 +48,23 @@ fun LineGraph(plot: Plot, modifier: Modifier = Modifier) {
         maxValue = yAxisData.max
     )
 
-    val xAxisLineConfigs = xConfigurationOrNull(scaleX)
-    val yAxisLineConfigs = yConfigurationOrNull(scaleY)
+    val xAxisLineConfigs = scaleX.xConfigurationOrNull()
+    val yAxisLineConfigs = scaleY.yConfigurationOrNull()
 
-    val xAxisPosition = getXAxisPosition(config = xAxisLineConfigs, yAxisData = yAxisData)
-    val yAxisPosition = getYAxisPosition(config = yAxisLineConfigs, xAxisData = xAxisData)
+    val xAxisPosition = xAxisLineConfigs.getXAxisPosition(yAxisData = yAxisData)
+    val yAxisPosition = yAxisLineConfigs.getYAxisPosition()
 
     Canvas(modifier = modifier) {
         scaleX?.let {
-            unboundXAxis(
+            boundXAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = xAxisLineConfigs ?: AxisLineConfiguration.XConfiguration(),
                 labels = xLabels,
-                xRangeValues = Range(min = xAxisData.min, max = xAxisData.max),
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.YConfiguration().ticks,
-                range = xAxisData.range,
+                axisAlignment = xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween,
                 textMeasurer = xTextMeasurer
             )
         }

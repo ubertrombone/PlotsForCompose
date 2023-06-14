@@ -99,7 +99,6 @@ internal fun DrawScope.boundXAxis(
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
-    drawZero: Boolean = true,
     axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
@@ -132,8 +131,6 @@ internal fun DrawScope.boundXAxis(
                 )
             }
         }
-
-        if (!drawZero && label == 0f) return@forEachIndexed
 
         if (labelConfigs.showLabels) {
             drawXLabel(
