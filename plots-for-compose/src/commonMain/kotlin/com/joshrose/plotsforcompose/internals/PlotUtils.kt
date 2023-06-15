@@ -158,10 +158,7 @@ internal fun Collection<Any?>.sortedNotNull(): List<Any> = filterNotNull().sorte
     }
 }
 
-internal fun isCastAsNumber(value: List<Any?>): Boolean {
-    try { value as List<Number> } catch (e: TypeCastException) { return false }
-    return true
-}
+internal fun isCastAsNumber(value: List<Any?>) = value.all { it is Number }
 
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
 internal fun Scale?.isNotNull() = this != null

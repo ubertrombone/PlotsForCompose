@@ -33,6 +33,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         COUNT -> x.groupingBy { it }.eachCount().values
         else -> asMappingData(data = data, mapping = plot.mapping.map, key = "y")
     }?.toList()
+    println(y)
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
