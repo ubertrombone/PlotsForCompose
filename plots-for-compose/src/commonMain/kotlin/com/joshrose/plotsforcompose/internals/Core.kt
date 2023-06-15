@@ -10,7 +10,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition
 
 class Plot internal constructor(
     val data: Map<*, *>? = null,
-    val mapping: Configs = GenericMapping().seal(),
+    val mapping: Configs = GeneralAestheticMapping().seal(),
     val features: List<Feature> = emptyList()
 ) {
     operator fun plus(other: Feature): Plot {

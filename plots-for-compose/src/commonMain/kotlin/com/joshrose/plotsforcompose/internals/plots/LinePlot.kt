@@ -10,10 +10,11 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurati
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.floatLabels
+import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.internals.*
+import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
-import com.joshrose.plotsforcompose.internals.exception.MissingAestheticException
 import com.joshrose.plotsforcompose.internals.util.Range
 
 @OptIn(ExperimentalTextApi::class)
@@ -22,18 +23,25 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val xTextMeasurer = rememberTextMeasurer()
     val yTextMeasurer = rememberTextMeasurer()
 
+    val figure = plot.mapping.map["figure"] as LineFigure
     val data = getData(plot.data)
 
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
-        ?: throw MissingAestheticException("LinePlot must have an X aesthetic mapping.")
-    // TODO: Y should be a list of counts of the X items.
-    // TODO: Check the StatKind
-    val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
+    requireNotNull(value = x) { "LinePlot must have values defined for X." }
+
+    val y = when (figure.stat.kind) {
+        COUNT -> x.groupingBy { it }.eachCount().values
+        else -> asMappingData(data = data, mapping = plot.mapping.map, key = "y")
+    }?.toList()
+    requireNotNull(value = y) { "LinePlot must have values defined for Y." }
+    require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
+
+    val statX = if (figure.stat.kind == COUNT) x.toSet() else x
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
-    val xLabels = x.sortedNotNull()
+    val xLabels = statX.sortedNotNull()
 
     val yAxisData = getAxisData(
         data = y,
@@ -42,6 +50,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
     )
 
+    // TODO: Make these more flexible for stat.count
     val yLabels = floatLabels(
         breaks = scaleY?.labelConfigs?.breaks ?: 5,
         minValue = yAxisData.min,

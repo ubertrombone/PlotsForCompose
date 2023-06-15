@@ -3,7 +3,7 @@ package com.joshrose.plotsforcompose.internals
 import com.joshrose.plotsforcompose.figures.Figure
 import com.joshrose.plotsforcompose.internals.layer.WithGroupOption
 
-class GenericMapping(
+class GeneralAestheticMapping(
     var figure: Figure? = null,
 
     var x: Any? = null,

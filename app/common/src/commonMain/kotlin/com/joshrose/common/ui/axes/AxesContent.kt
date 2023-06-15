@@ -147,12 +147,12 @@ fun AxesContent(
         ) {
             item {
                 val data = mapOf(
-                    "x" to dataStates.data.map { it.x },
-                    "y" to dataStates.data.map { it.y }
+                    "Independent" to dataStates.data.map { it.x },
+                    "Dependent" to dataStates.data.map { it.y }
                 )
                 val plot = composePlot(data = data) {
-                    x = "x"
-                    y = "y"
+                    x = "Independent"
+                    y = "Dependent"
                 }
                     .plus(unboundXAxis(
                         labelConfigs = xLabelConfigs,

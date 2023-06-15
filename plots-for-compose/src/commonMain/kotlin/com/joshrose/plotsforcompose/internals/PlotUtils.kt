@@ -147,15 +147,20 @@ internal fun drawZero(
     else -> true
 }
 
-internal fun List<Any?>.sortedNotNull(): List<Any> = filterNotNull().sortedWith { value1, value2 ->
+internal fun Collection<Any?>.sortedNotNull(): List<Any> = filterNotNull().sortedWith { value1, value2 ->
     when (value1) {
         is String -> value1.toString().compareTo(value2.toString())
         is Char -> value1.toString().compareTo(value2.toString())
-        is Number -> toDouble(value1)?.compareTo(toDouble(value2 as Float) ?: Double.NaN) ?: 0
+        is Number -> toDouble(value1)?.compareTo(toDouble(value2 as Number) ?: Double.NaN) ?: 0
         is Boolean -> value1.toString().toBoolean().compareTo(value2 as Boolean)
         is Duration -> value1.inWholeMilliseconds.compareTo((value2 as Duration).inWholeMilliseconds)
         else -> throw Exception("Values must be primitive non-iterable type.")
     }
+}
+
+internal fun isCastAsNumber(value: List<Any?>): Boolean {
+    try { value as List<Number> } catch (e: TypeCastException) { return false }
+    return true
 }
 
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()

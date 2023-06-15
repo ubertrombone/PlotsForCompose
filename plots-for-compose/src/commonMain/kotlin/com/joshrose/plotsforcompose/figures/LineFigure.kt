@@ -7,7 +7,7 @@ import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration.Comp
 
 class LineFigure(
     val configs: LineGraphConfiguration = lineGraphConfiguration(),
-    override val stat: StatConfigs = Stats.count(),
+    override val stat: StatConfigs = Stats.identity,
     override val showLegend: Boolean = false
 ) : Figure {
     override fun toString() = "Figure#Line"

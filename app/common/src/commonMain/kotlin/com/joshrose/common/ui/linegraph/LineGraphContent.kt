@@ -8,8 +8,11 @@ import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
-import com.joshrose.plotsforcompose.linegraph.LineGraph
-import com.joshrose.plotsforcompose.linegraph.model.NumberData
+import com.joshrose.plotsforcompose.Stats
+import com.joshrose.plotsforcompose.axis.unboundXAxis
+import com.joshrose.plotsforcompose.axis.unboundYAxis
+import com.joshrose.plotsforcompose.composePlot
+import com.joshrose.plotsforcompose.figures.LineFigure
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -22,8 +25,8 @@ fun LineGraphContent(
         contentAlignment = Alignment.Center
     ) {
         val rawData = mapOf(
-            "X" to listOf(1, 2, 3, 4, 5),
-            "Y" to listOf(6, 7, 8, 9, 10)
+            "Independent" to listOf(1, 2, 2, 3, 4, 5),
+            "Dependent" to listOf(6, 7, 8, 9, 10, 11)
         )
         ScrollLazyColumn(
             modifier = Modifier
@@ -31,9 +34,20 @@ fun LineGraphContent(
                 .padding(horizontal = 20.dp)
         ) {
             item {
-                LineGraph(
-                    realData = rawData,
-                    data = listOf(NumberData(1, 2f), NumberData(4, 5f), NumberData(3, 4f), NumberData(11, 12f)).sortedBy { it.x.toFloat() },
+                val plot = composePlot(data = rawData) {
+                    figure = LineFigure(stat = Stats.count())
+                    x = "Independent"
+                    y = "Dependent"
+                }
+                    .plus(
+                        unboundXAxis(
+                        reverse = false
+                    ))
+                    .plus(
+                        unboundYAxis(
+                        reverse = false
+                    ))
+                plot.show(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp)
