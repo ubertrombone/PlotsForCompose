@@ -10,10 +10,6 @@ import com.joshrose.plotsforcompose.internals.plots.LinePlot
 
 @Composable
 fun ShowPlot(plot: Plot, modifier: Modifier = Modifier) {
-    if (plot.mapping.map["figure"] is LineFigure) {
-        println((plot.mapping.map["figure"] as LineFigure).stat.kind)
-    }
-    println(plot.mapping.map["figure"])
     when (plot.mapping.map["figure"]) {
         is BarFigure -> println("BAR")
         is LineFigure -> LinePlot(plot, modifier)

@@ -95,6 +95,7 @@ internal fun DrawScope.boundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    factor: Float,
     labels: List<Any>,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
@@ -102,9 +103,6 @@ internal fun DrawScope.boundXAxis(
     axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
-    // TODO: This can be hoisted to the graph composable and used for both axis and data.
-    val factor = size.width.div(labels.size.plus(axisAlignment.offset).toFloat())
-
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null

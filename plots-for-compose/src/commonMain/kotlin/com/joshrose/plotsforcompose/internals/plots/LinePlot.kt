@@ -33,16 +33,17 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         COUNT -> x.groupingBy { it }.eachCount().values
         else -> asMappingData(data = data, mapping = plot.mapping.map, key = "y")
     }?.toList()
-    println(y)
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
-    val statX = if (figure.stat.kind == COUNT) x.toSet() else x
+    val statX = (if (figure.stat.kind == COUNT) x.toSet() else x).sortedNotNull()
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
-    val xLabels = statX.sortedNotNull()
+    val xLabels = scaleX?.labels ?: statX
+    val xBreaks = scaleX?.breaks ?: statX
+
 
     val yAxisData = getAxisData(
         data = y,
@@ -65,11 +66,15 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val yAxisPosition = yAxisLineConfigs.getYAxisPosition()
 
     Canvas(modifier = modifier) {
+        val xLabelFactor =
+            size.width.div(xLabels.size.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset).toFloat())
+
         scaleX?.let {
             boundXAxis(
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = xAxisLineConfigs ?: AxisLineConfiguration.XConfiguration(),
+                factor = xLabelFactor,
                 labels = xLabels,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
