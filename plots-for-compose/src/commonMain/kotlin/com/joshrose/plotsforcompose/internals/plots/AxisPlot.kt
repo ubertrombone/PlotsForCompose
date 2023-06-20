@@ -34,12 +34,13 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
     val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
 
-    val xAxisData = getAxisData(
+    var xAxisData = getAxisData(
         data = x,
         minValueAdjustment = scaleX?.labelConfigs?.minValueAdjustment,
         maxValueAdjustment = scaleX?.labelConfigs?.maxValueAdjustment,
         rangeAdjustment = scaleX?.labelConfigs?.rangeAdjustment
     )
+    if (xAxisData.min == xAxisData.max) xAxisData = xAxisData.copy(min = xAxisData.min.minus(1))
 
     val xLabels = floatLabels(
         breaks = scaleX?.labelConfigs?.breaks ?: 5,
@@ -47,12 +48,13 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
         maxValue = xAxisData.max
     )
 
-    val yAxisData = getAxisData(
+    var yAxisData = getAxisData(
         data = y,
         minValueAdjustment = scaleY?.labelConfigs?.minValueAdjustment,
         maxValueAdjustment = scaleY?.labelConfigs?.maxValueAdjustment,
         rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
     )
+    if (yAxisData.min == yAxisData.max) yAxisData = yAxisData.copy(min = yAxisData.min.minus(1))
 
     val yLabels = floatLabels(
         breaks = scaleY?.labelConfigs?.breaks ?: 5,
