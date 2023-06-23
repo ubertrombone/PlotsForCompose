@@ -7,6 +7,7 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.util.Proportional
 
 class Plot internal constructor(
     val data: Map<*, *>? = null,
@@ -102,16 +103,15 @@ class Scale(
     val axisLineConfigs: AxisLineConfiguration?,
     val scale: ScaleKind,
     val name: String? = null,
-    val breaks: List<Any>? = null, // TODO -> These are where ticks and guidelines should be drawn
-    val labels: List<String>? = null, // TODO -> These are the labels that will be drawn, should be at correct position
-    val limits: Any? = null, // TODO -> Value to limit data. E.g., columnData = listOf("a", "b", "c"), limit = "b", "c" will not be shown.
+    val breaks: Proportional? = null,
+    val labels: Proportional? = null,
     val naValue: Any? = null,
     val format: String? = null,
     val reverse: Boolean? = null,
     val position: AxisPosition? = null
 ) : Feature() {
     override fun toString() =
-        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, limits=$limits, naValue=$naValue, format=$format, reverse=$reverse)"
+        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, naValue=$naValue, format=$format, reverse=$reverse)"
 }
 
 //open class ConfigsMap internal constructor(

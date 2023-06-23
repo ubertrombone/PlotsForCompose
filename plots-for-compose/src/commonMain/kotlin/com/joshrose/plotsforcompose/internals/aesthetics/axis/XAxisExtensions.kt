@@ -117,7 +117,7 @@ internal fun DrawScope.drawXLabel(
     y: Float,
     x: Float,
     xAxisPosition: XAxis,
-    label: Any,
+    label: Any?,
     textMeasurer: TextMeasurer,
     labelConfig: LabelsConfiguration
 ) {

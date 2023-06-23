@@ -95,6 +95,7 @@ internal fun DrawScope.boundYAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.YConfiguration,
+    factor: Float,
     labels: List<Any>,
     yAxisPosition: AxisPosition.YAxis,
     xAxisPosition: AxisPosition.XAxis,
@@ -102,8 +103,6 @@ internal fun DrawScope.boundYAxis(
     axisAlignment: AxisAlignment.YAxis,
     textMeasurer: TextMeasurer
 ) {
-    val factor = size.height.div(labels.size.plus(axisAlignment.offset).toFloat())
-
     val x = getX(yAxisPosition = yAxisPosition, width = size.width)
     val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
     val secondXAxisPositionYValue = if (xAxisPosition == AxisPosition.Both) 0f else null

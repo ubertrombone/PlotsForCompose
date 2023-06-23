@@ -6,7 +6,7 @@ import com.joshrose.plotsforcompose.figures.BarFigure
 import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.internals.Plot
 import com.joshrose.plotsforcompose.internals.plots.AxisPlot
-import com.joshrose.plotsforcompose.internals.plots.LinePlot
+import com.joshrose.plotsforcompose.internals.plots.lines.LinePlot
 
 @Composable
 fun ShowPlot(plot: Plot, modifier: Modifier = Modifier) {

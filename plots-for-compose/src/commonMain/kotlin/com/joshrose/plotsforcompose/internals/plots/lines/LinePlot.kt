@@ -1,4 +1,6 @@
-package com.joshrose.plotsforcompose.internals.plots
+@file:Suppress("DuplicatedCode")
+
+package com.joshrose.plotsforcompose.internals.plots.lines
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
@@ -9,14 +11,14 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
-import com.joshrose.plotsforcompose.axis.util.floatLabels
 import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
+import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
-import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
-import com.joshrose.plotsforcompose.internals.util.Range
+import kotlin.math.roundToInt
 
+// TODO: On boundAxis, user should deal with sorting...
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
@@ -36,36 +38,32 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
-    val statX = (if (figure.stat.kind == COUNT) x.toSet() else x).sortedNotNull()
+    val xData = if (figure.stat.kind == COUNT) x.toSet() else x
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
-    val xLabels = scaleX?.labels ?: statX
-    val xBreaks = scaleX?.breaks ?: statX
+    // TODO: IF xLabels.last() != xStat.last(), draw some space after last label/guideline
+    val xBreaks = xData.filterIndexed { index, _ -> index % (1.div(scaleX?.breaks?.factor ?: 1f)).roundToInt() == 0 }
+    val xLabels = xData.filterIndexed { index, _ -> index % (1.div(scaleX?.labels?.factor ?: 1f)).roundToInt() == 0 }
 
-
-    val yAxisData = getAxisData(
+    val yAxisData = if (figure.stat.kind == IDENTITY) getAxisData(
         data = y,
         minValueAdjustment = scaleY?.labelConfigs?.minValueAdjustment,
         maxValueAdjustment = scaleY?.labelConfigs?.maxValueAdjustment,
         rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
-    )
-
-    // TODO: Make these more flexible for stat.count
-    val yLabels = floatLabels(
-        breaks = scaleY?.labelConfigs?.breaks ?: 5,
-        minValue = yAxisData.min,
-        maxValue = yAxisData.max
-    )
+    ) else null
 
     val xAxisLineConfigs = scaleX.xConfigurationOrNull()
     val yAxisLineConfigs = scaleY.yConfigurationOrNull()
 
-    val xAxisPosition = xAxisLineConfigs.getXAxisPosition(yAxisData = yAxisData)
+    val xAxisPosition =
+        if (figure.stat.kind == COUNT) xAxisLineConfigs.getXAxisPosition()
+        else xAxisLineConfigs.getXAxisPosition(yAxisData = yAxisData!!)
     val yAxisPosition = yAxisLineConfigs.getYAxisPosition()
 
     Canvas(modifier = modifier) {
+        // TODO: Guideline factors
         val xLabelFactor =
             size.width.div(xLabels.size.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset).toFloat())
 
@@ -84,18 +82,28 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             )
         }
         scaleY?.let {
-            unboundYAxis(
-                labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
-                guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
-                axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
-                labels = yLabels,
-                yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
-                yAxisPosition = yAxisPosition,
-                xAxisPosition = xAxisPosition,
-                drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
-                range = yAxisData.range,
-                textMeasurer = yTextMeasurer
-            )
+            if (figure.stat.kind == COUNT) {
+                lineCountAxis(
+                    plot = plot,
+                    x = x,
+                    xAxisPosition = xAxisPosition,
+                    yAxisPosition = yAxisPosition,
+                    scaleX = scaleX,
+                    xAxisLineConfigs = xAxisLineConfigs,
+                    yAxisLineConfigs = yAxisLineConfigs,
+                    yTextMeasurer = yTextMeasurer
+                )
+            } else {
+                lineIdentityAxis(
+                    plot = plot,
+                    xAxisPosition = xAxisPosition,
+                    yAxisPosition = yAxisPosition,
+                    scaleX = scaleX,
+                    xAxisLineConfigs = xAxisLineConfigs,
+                    yAxisLineConfigs = yAxisLineConfigs,
+                    yTextMeasurer = yTextMeasurer
+                )
+            }
         }
     }
 }

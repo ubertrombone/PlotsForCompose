@@ -5,13 +5,14 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurati
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.internals.Scale
 import com.joshrose.plotsforcompose.internals.ScaleKind
+import com.joshrose.plotsforcompose.util.Proportional
 
 fun unboundXAxis(
     labelConfigs: LabelsConfiguration = LabelsConfiguration(),
     guidelinesConfigs: GuidelinesConfiguration = GuidelinesConfiguration(),
     axisLineConfigs: XConfiguration = XConfiguration(),
-    breaks: List<Number>? = null,
-    labels: List<String>? = null,
+    breaks: Proportional? = null,
+    labels: Proportional? = null,
     naValue: Number? = null,
     reverse: Boolean? = null
 ) = Scale(

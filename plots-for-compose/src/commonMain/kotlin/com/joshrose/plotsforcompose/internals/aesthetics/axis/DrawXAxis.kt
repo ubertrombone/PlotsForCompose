@@ -96,7 +96,7 @@ internal fun DrawScope.boundXAxis(
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
     factor: Float,
-    labels: List<Any>,
+    labels: List<Any?>,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,

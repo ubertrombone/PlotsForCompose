@@ -105,6 +105,8 @@ internal fun XConfiguration?.getXAxisPosition(yAxisData: AxisData) = let { it?.a
     else -> Bottom
 }
 
+internal fun XConfiguration?.getXAxisPosition() = let { it?.axisPosition } ?: Bottom
+
 internal fun YConfiguration?.getYAxisPosition(xAxisData: AxisData) = let { it?.axisPosition } ?: when {
     xAxisData.max <= 0 -> End
     xAxisData.min < 0 -> Center
@@ -158,7 +160,7 @@ internal fun Collection<Any?>.sortedNotNull(): List<Any> = filterNotNull().sorte
     }
 }
 
-internal fun isCastAsNumber(value: List<Any?>) = value.all { it is Number }
+internal fun isCastAsNumber(value: List<Any?>) = value.all { (it ?: Float.NaN) is Number }
 
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
 internal fun Scale?.isNotNull() = this != null

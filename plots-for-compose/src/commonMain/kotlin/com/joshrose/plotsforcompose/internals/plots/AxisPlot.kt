@@ -12,7 +12,7 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.X
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
-import com.joshrose.plotsforcompose.axis.util.floatLabels
+import com.joshrose.plotsforcompose.axis.util.floatLabelsAndBreaks
 import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.drawZero
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundXAxis
@@ -42,8 +42,8 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     )
     if (xAxisData.min == xAxisData.max) xAxisData = xAxisData.copy(min = xAxisData.min.minus(1))
 
-    val xLabels = floatLabels(
-        breaks = scaleX?.labelConfigs?.breaks ?: 5,
+    val xLabels = floatLabelsAndBreaks(
+        amount = scaleX?.labelConfigs?.breaks ?: 5,
         minValue = xAxisData.min,
         maxValue = xAxisData.max
     )
@@ -56,8 +56,8 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     )
     if (yAxisData.min == yAxisData.max) yAxisData = yAxisData.copy(min = yAxisData.min.minus(1))
 
-    val yLabels = floatLabels(
-        breaks = scaleY?.labelConfigs?.breaks ?: 5,
+    val yLabels = floatLabelsAndBreaks(
+        amount = scaleY?.labelConfigs?.breaks ?: 5,
         minValue = yAxisData.min,
         maxValue = yAxisData.max
     )

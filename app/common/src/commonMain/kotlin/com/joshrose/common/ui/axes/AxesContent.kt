@@ -158,16 +158,12 @@ fun AxesContent(
                         labelConfigs = xLabelConfigs,
                         guidelinesConfigs = xGuidelineConfigs,
                         axisLineConfigs = xAxisLineConfigs,
-                        breaks = data["x"],
-                        labels = data["x"]?.map { it.toString() },
                         reverse = false
                     ))
                     .plus(unboundYAxis(
                         labelConfigs = yLabelConfigs,
                         guidelinesConfigs = yGuidelineConfigs,
                         axisLineConfigs = yAxisLineConfigs,
-                        breaks = data["y"],
-                        labels = data["y"]?.map { it.toString() },
                         reverse = false
                     ))
                 plot.show(

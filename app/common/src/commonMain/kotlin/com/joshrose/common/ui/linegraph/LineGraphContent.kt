@@ -4,16 +4,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
+import com.joshrose.plotsforcompose.Stats
 import com.joshrose.plotsforcompose.axis.unboundXAxis
 import com.joshrose.plotsforcompose.axis.unboundYAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.figures.LineFigure
+import com.joshrose.plotsforcompose.util.Proportional
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun LineGraphContent(
     component: LineGraphComponent,
@@ -24,8 +24,8 @@ fun LineGraphContent(
         contentAlignment = Alignment.Center
     ) {
         val rawData = mapOf(
-            "Independent" to listOf(1, 2, 2, 3, 4, 5),
-            "Dependent" to listOf(6, 7, 8, 9, 10, 11)
+            "Independent" to List(20) { (-100..100).random() },
+            "Dependent" to List(20) { (-100..100).random() }
         )
         ScrollLazyColumn(
             modifier = Modifier
@@ -34,18 +34,22 @@ fun LineGraphContent(
         ) {
             item {
                 val plot = composePlot(data = rawData) {
-                    figure = LineFigure()
+                    figure = LineFigure(stat = Stats.count())
                     x = "Independent"
                     y = "Dependent"
                 }
+                    // TODO: Need bound versions or just axis
                     .plus(
                         unboundXAxis(
-                        reverse = false
-                    ))
+                            reverse = false,
+                            breaks = Proportional(.25f),
+                            labels = Proportional(.25f)
+                        ))
                     .plus(
                         unboundYAxis(
-                        reverse = false
-                    ))
+                            reverse = false,
+                            labels = Proportional(.25f)
+                        ))
                 plot.show(
                     modifier = Modifier
                         .fillMaxWidth()
