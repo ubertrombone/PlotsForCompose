@@ -29,12 +29,19 @@ internal fun DrawScope.lineCountAxis(
     yTextMeasurer: TextMeasurer
 ) {
     val scaleY = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
-    val y = x.groupingBy { it }.eachCount().values.toSet()
+    val y = x.groupingBy { it }.eachCount().values.toSet().sorted()
+
+    // Consider:
+        // --> Case1: scaleY?.breaks && scaleY?.labels == null -- yBreaks = y && yLabels = y
+        // --> Case2: scaleY?.breaks?.factor is null -- yBreaks = yLabels
+        // --> Case3: scaleY?.guidelinesConfigs?.showGuidelines = false -- yBreaks = null; do not draw
+        // --> Case4: yLabels.size < yBreaks.size
+        // --> Case5: yLabels.size > yBreaks.size -- scaleY?.labels?.factor = scaleY?.breaks?.factor
     val yBreaks = y.filterIndexed { index, _ -> index % (1.div(scaleY?.breaks?.factor ?: 1f)).roundToInt() == 0 }
     val yLabels = y.filterIndexed { index, _ -> index % (1.div(scaleY?.labels?.factor ?: 1f)).roundToInt() == 0 }
 
     val yLabelFactor =
-        if (yLabels.size == 1 && (yAxisLineConfigs?.axisAlignment == AxisAlignment.SpaceBetween || yAxisLineConfigs?.axisAlignment == null))
+        if (yLabels.size == 1 && (yAxisLineConfigs?.axisAlignment == AxisAlignment.SpaceBetween))
             size.height.div(yLabels.size.toFloat())
         else size.height.div(yLabels.size.plus((yAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset).toFloat())
 

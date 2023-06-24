@@ -24,8 +24,8 @@ fun LineGraphContent(
         contentAlignment = Alignment.Center
     ) {
         val rawData = mapOf(
-            "Independent" to List(20) { (-100..100).random() },
-            "Dependent" to List(20) { (-100..100).random() }
+            "Independent" to List(20) { (-5..5).random() },
+            "Dependent" to List(20) { (-5..5).random() }
         )
         ScrollLazyColumn(
             modifier = Modifier
@@ -48,7 +48,7 @@ fun LineGraphContent(
                     .plus(
                         unboundYAxis(
                             reverse = false,
-                            labels = Proportional(.25f)
+                            labels = Proportional(.5f)
                         ))
                 plot.show(
                     modifier = Modifier

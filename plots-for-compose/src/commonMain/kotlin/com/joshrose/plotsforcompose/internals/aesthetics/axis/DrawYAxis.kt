@@ -90,6 +90,7 @@ internal fun DrawScope.unboundYAxis(
     if (axisLineConfigs.showAxisLine) drawYAxis(axisLineConfig = axisLineConfigs, yAxisPosition = yAxisPosition)
 }
 
+// TODO: Test how changing axis location affects "Reversed"
 @ExperimentalTextApi
 internal fun DrawScope.boundYAxis(
     labelConfigs: LabelsConfiguration,
@@ -107,7 +108,7 @@ internal fun DrawScope.boundYAxis(
     val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
     val secondXAxisPositionYValue = if (xAxisPosition == AxisPosition.Both) 0f else null
 
-    labels.forEachIndexed { index, label ->
+    labels.reversed().forEachIndexed { index, label ->
         val y =
             if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
             else index.plus(1).times(factor)

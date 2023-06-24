@@ -44,8 +44,25 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
     // TODO: IF xLabels.last() != xStat.last(), draw some space after last label/guideline
-    val xBreaks = xData.filterIndexed { index, _ -> index % (1.div(scaleX?.breaks?.factor ?: 1f)).roundToInt() == 0 }
-    val xLabels = xData.filterIndexed { index, _ -> index % (1.div(scaleX?.labels?.factor ?: 1f)).roundToInt() == 0 }
+    // Consider:
+        // --> Case1: scaleX?.breaks && scaleX?.labels == null -- xBreaks = xData && xLabels = xData
+        // --> Case2: scaleX?.breaks?.factor is null -- xBreaks = xLabels
+        // --> Case3: scaleX?.guidelinesConfigs?.showGuidelines = false -- xBreaks = null; do not draw
+        // --> Case4: xLabels.size < xBreaks.size
+        // --> Case5: xLabels.size > xBreaks.size -- scaleX?.labels?.factor = scaleX?.breaks?.factor
+    val xBreaks = when {
+        scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
+        scaleX.breaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels?.factor ?: 1f)).roundToInt() == 0 }
+        scaleX.guidelinesConfigs?.showGuidelines == false -> null
+        else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.breaks.factor)).roundToInt() == 0 }
+    }
+
+    val xLabels = when {
+        scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
+        scaleX.labels == null -> xBreaks
+        scaleX.labelConfigs?.showLabels == false -> null
+        else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
+    }
 
     val yAxisData = if (figure.stat.kind == IDENTITY) getAxisData(
         data = y,
@@ -65,7 +82,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier) {
         // TODO: Guideline factors
         val xLabelFactor =
-            size.width.div(xLabels.size.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset).toFloat())
+            size.width.div(xLabels?.size?.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
 
         scaleX?.let {
             boundXAxis(

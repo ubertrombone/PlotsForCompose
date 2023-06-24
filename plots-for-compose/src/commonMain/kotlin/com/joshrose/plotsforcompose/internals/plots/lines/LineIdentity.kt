@@ -36,6 +36,13 @@ internal fun DrawScope.lineIdentityAxis(
         rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
     )
 
+    // Consider:
+        // --> Case1: scaleY?.breaks && scaleY?.labels == null -- yBreaks = y && yLabels = y
+        // --> Case2: scaleY?.breaks?.factor is null -- yBreaks = yLabels
+        // --> Case3: scaleY?.guidelinesConfigs?.showGuidelines = false -- yBreaks = null; do not draw
+        // --> Case4: yLabels.size < yBreaks.size
+        // --> Case5: yLabels.size > yBreaks.size -- scaleY?.labels?.factor = scaleY?.breaks?.factor
+
     val yBreaks = floatLabelsAndBreaks(
         amount = (y.size.times((scaleY?.breaks?.factor ?: 1f))).roundToInt(),
         minValue = yAxisData.min,

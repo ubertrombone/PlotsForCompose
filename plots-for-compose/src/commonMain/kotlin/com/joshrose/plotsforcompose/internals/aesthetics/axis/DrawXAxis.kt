@@ -96,7 +96,7 @@ internal fun DrawScope.boundXAxis(
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
     factor: Float,
-    labels: List<Any?>,
+    labels: List<Any?>?,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
@@ -107,49 +107,51 @@ internal fun DrawScope.boundXAxis(
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
-    labels.forEachIndexed { index, label ->
-        val x =
-            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
-            else index.plus(1).times(factor)
+    // TODO: Split Guidelines from labels
+    labels.let {
+        it?.forEachIndexed { index, label ->
+            val x =
+                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
+                else index.plus(1).times(factor)
 
-        if (guidelinesConfigs.showGuidelines) {
-            if (drawYAxis) {
-                if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
+            if (guidelinesConfigs.showGuidelines) {
+                if (drawYAxis) {
+                    if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
+                        drawXGuideline(
+                            guidelineConfig = guidelinesConfigs,
+                            x = x,
+                            xAxisPosition = xAxisPosition
+                        )
+                    }
+                } else {
                     drawXGuideline(
                         guidelineConfig = guidelinesConfigs,
                         x = x,
                         xAxisPosition = xAxisPosition
                     )
                 }
-            } else {
-                drawXGuideline(
-                    guidelineConfig = guidelinesConfigs,
+            }
+
+            if (labelConfigs.showLabels) {
+                drawXLabel(
+                    y = y,
                     x = x,
-                    xAxisPosition = xAxisPosition
+                    label = label,
+                    xAxisPosition = xAxisPosition,
+                    textMeasurer = textMeasurer,
+                    labelConfig = labelConfigs
+                )
+            }
+
+            if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                drawXTick(
+                    axisLineConfig = axisLineConfigs,
+                    x = x,
+                    xAxisPosition = xAxisPosition,
+                    axisOffset = labelConfigs.axisOffset.toPx()
                 )
             }
         }
-
-        if (labelConfigs.showLabels) {
-            drawXLabel(
-                y = y,
-                x = x,
-                label = label,
-                xAxisPosition = xAxisPosition,
-                textMeasurer = textMeasurer,
-                labelConfig = labelConfigs
-            )
-        }
-
-        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
-            drawXTick(
-                axisLineConfig = axisLineConfigs,
-                x = x,
-                xAxisPosition = xAxisPosition,
-                axisOffset = labelConfigs.axisOffset.toPx()
-            )
-        }
-
     }
 
     if (axisLineConfigs.showAxisLine) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)

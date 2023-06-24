@@ -10,7 +10,7 @@ import com.joshrose.plotsforcompose.util.Proportional
 fun unboundYAxis(
     labelConfigs: LabelsConfiguration = LabelsConfiguration(),
     guidelinesConfigs: GuidelinesConfiguration = GuidelinesConfiguration(),
-    axisLineConfigs: YConfiguration = YConfiguration(),
+    axisLineConfigs: YConfiguration = YConfiguration(), // If this is ever nullable, update LineCount
     breaks: Proportional? = null,
     labels: Proportional? = null,
     naValue: Number? = null,
