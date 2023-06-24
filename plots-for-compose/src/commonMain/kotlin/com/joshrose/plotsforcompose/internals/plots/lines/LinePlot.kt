@@ -81,6 +81,8 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
     Canvas(modifier = modifier) {
         // TODO: Guideline factors
+        val xGuidelineFactor =
+            size.width.div(xBreaks?.size?.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
         val xLabelFactor =
             size.width.div(xLabels?.size?.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
 
@@ -89,8 +91,10 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = xAxisLineConfigs ?: AxisLineConfiguration.XConfiguration(),
-                factor = xLabelFactor,
+                labelFactor = xLabelFactor,
+                guidelinesFactor = xGuidelineFactor,
                 labels = xLabels,
+                guidelines = xBreaks,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.YConfiguration().ticks,
@@ -101,11 +105,11 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         scaleY?.let {
             if (figure.stat.kind == COUNT) {
                 lineCountAxis(
-                    plot = plot,
                     x = x,
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
                     scaleX = scaleX,
+                    scaleY = scaleY,
                     xAxisLineConfigs = xAxisLineConfigs,
                     yAxisLineConfigs = yAxisLineConfigs,
                     yTextMeasurer = yTextMeasurer
@@ -116,6 +120,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
                     scaleX = scaleX,
+                    scaleY = scaleY,
                     xAxisLineConfigs = xAxisLineConfigs,
                     yAxisLineConfigs = yAxisLineConfigs,
                     yTextMeasurer = yTextMeasurer

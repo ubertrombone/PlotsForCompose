@@ -99,21 +99,21 @@ internal fun Scale?.yConfigurationOrNull() = when (this?.axisLineConfigs) {
     null -> null
 }
 
-internal fun XConfiguration?.getXAxisPosition(yAxisData: AxisData) = let { it?.axisPosition } ?: when {
+internal fun XConfiguration?.getXAxisPosition(yAxisData: AxisData) = this?.axisPosition ?: when {
     yAxisData.max <= 0 -> Top
     yAxisData.min < 0 -> Center
     else -> Bottom
 }
 
-internal fun XConfiguration?.getXAxisPosition() = let { it?.axisPosition } ?: Bottom
+internal fun XConfiguration?.getXAxisPosition() = this?.axisPosition ?: Bottom
 
-internal fun YConfiguration?.getYAxisPosition(xAxisData: AxisData) = let { it?.axisPosition } ?: when {
+internal fun YConfiguration?.getYAxisPosition(xAxisData: AxisData) = this?.axisPosition ?: when {
     xAxisData.max <= 0 -> End
     xAxisData.min < 0 -> Center
     else -> Start
 }
 
-internal fun YConfiguration?.getYAxisPosition() = let { it?.axisPosition } ?: Start
+internal fun YConfiguration?.getYAxisPosition() = this?.axisPosition ?: Start
 
 internal fun drawZero(
     scaleX: Scale?,

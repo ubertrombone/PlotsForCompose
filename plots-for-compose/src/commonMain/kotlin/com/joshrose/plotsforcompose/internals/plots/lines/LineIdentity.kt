@@ -19,21 +19,20 @@ internal fun DrawScope.lineIdentityAxis(
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
+    scaleY: Scale,
     xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     yTextMeasurer: TextMeasurer
 ) {
-    val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
-
     val y = asMappingData(data = getData(plot.data), mapping = plot.mapping.map, key = "y")
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
     val yAxisData = getAxisData(
         data = y,
-        minValueAdjustment = scaleY?.labelConfigs?.minValueAdjustment,
-        maxValueAdjustment = scaleY?.labelConfigs?.maxValueAdjustment,
-        rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
+        minValueAdjustment = scaleY.labelConfigs?.minValueAdjustment,
+        maxValueAdjustment = scaleY.labelConfigs?.maxValueAdjustment,
+        rangeAdjustment = scaleY.labelConfigs?.rangeAdjustment
     )
 
     // Consider:
@@ -44,28 +43,26 @@ internal fun DrawScope.lineIdentityAxis(
         // --> Case5: yLabels.size > yBreaks.size -- scaleY?.labels?.factor = scaleY?.breaks?.factor
 
     val yBreaks = floatLabelsAndBreaks(
-        amount = (y.size.times((scaleY?.breaks?.factor ?: 1f))).roundToInt(),
+        amount = (y.size.times((scaleY.breaks?.factor ?: 1f))).roundToInt(),
         minValue = yAxisData.min,
         maxValue = yAxisData.max
     )
     val yLabels = floatLabelsAndBreaks(
-        amount = (y.size.times((scaleY?.labels?.factor ?: 1f))).roundToInt(),
+        amount = (y.size.times((scaleY.labels?.factor ?: 1f))).roundToInt(),
         minValue = yAxisData.min,
         maxValue = yAxisData.max
     )
 
-    scaleY?.let {
-        unboundYAxis(
-            labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
-            guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
-            axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
-            labels = yLabels,
-            yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
-            yAxisPosition = yAxisPosition,
-            xAxisPosition = xAxisPosition,
-            drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
-            range = yAxisData.range,
-            textMeasurer = yTextMeasurer
-        )
-    }
+    unboundYAxis(
+        labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),
+        guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
+        axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
+        labels = yLabels,
+        yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
+        yAxisPosition = yAxisPosition,
+        xAxisPosition = xAxisPosition,
+        drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
+        range = yAxisData.range,
+        textMeasurer = yTextMeasurer
+    )
 }

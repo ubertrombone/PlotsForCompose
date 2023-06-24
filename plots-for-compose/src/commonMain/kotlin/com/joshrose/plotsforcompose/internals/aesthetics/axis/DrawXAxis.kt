@@ -95,8 +95,10 @@ internal fun DrawScope.boundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
-    factor: Float,
+    labelFactor: Float,
+    guidelinesFactor: Float,
     labels: List<Any?>?,
+    guidelines: List<Any?>?,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
@@ -108,11 +110,15 @@ internal fun DrawScope.boundXAxis(
     val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
     // TODO: Split Guidelines from labels
-    labels.let {
-        it?.forEachIndexed { index, label ->
+    guidelines?.let {
+
+    }
+
+    labels?.let {
+        it.forEachIndexed { index, label ->
             val x =
-                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
-                else index.plus(1).times(factor)
+                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(labelFactor)
+                else index.plus(1).times(labelFactor)
 
             if (guidelinesConfigs.showGuidelines) {
                 if (drawYAxis) {
