@@ -42,22 +42,51 @@ internal fun DrawScope.lineIdentityAxis(
         // --> Case4: yLabels.size < yBreaks.size
         // --> Case5: yLabels.size > yBreaks.size -- scaleY?.labels?.factor = scaleY?.breaks?.factor
 
-    val yBreaks = floatLabelsAndBreaks(
-        amount = (y.size.times((scaleY.breaks?.factor ?: 1f))).roundToInt(),
-        minValue = yAxisData.min,
-        maxValue = yAxisData.max
-    )
-    val yLabels = floatLabelsAndBreaks(
-        amount = (y.size.times((scaleY.labels?.factor ?: 1f))).roundToInt(),
-        minValue = yAxisData.min,
-        maxValue = yAxisData.max
-    )
+    val yBreaks = when {
+        scaleY.breaks == null && scaleY.labels == null -> floatLabelsAndBreaks(
+            amount = y.size,
+            minValue = yAxisData.min,
+            maxValue = yAxisData.max
+        )
+        scaleY.breaks == null -> floatLabelsAndBreaks(
+            amount = (y.size.times((scaleY.labels?.factor ?: 1f))).roundToInt(),
+            minValue = yAxisData.min,
+            maxValue = yAxisData.max
+        )
+        scaleY.guidelinesConfigs?.showGuidelines == false -> null
+        else -> floatLabelsAndBreaks(
+            amount = (y.size.times((scaleY.breaks.factor))).roundToInt(),
+            minValue = yAxisData.min,
+            maxValue = yAxisData.max
+        )
+    }
+
+    val yLabels = when {
+        scaleY.breaks == null && scaleY.labels == null -> floatLabelsAndBreaks(
+            amount = y.size,
+            minValue = yAxisData.min,
+            maxValue = yAxisData.max
+        )
+        scaleY.labels == null -> yBreaks
+        scaleY.labelConfigs?.showLabels == false -> null
+        yBreaks == null -> floatLabelsAndBreaks(
+            amount = (y.size.times((scaleY.labels.factor))).roundToInt(),
+            minValue = yAxisData.min,
+            maxValue = yAxisData.max
+        )
+        else -> floatLabelsAndBreaks(
+            amount = (yBreaks.size.times((scaleY.labels.factor))).roundToInt(),
+            minValue = yAxisData.min,
+            maxValue = yAxisData.max
+        )
+    }
 
     unboundYAxis(
         labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),
         guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
         axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
         labels = yLabels,
+        guidelines = yBreaks,
         yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
         yAxisPosition = yAxisPosition,
         xAxisPosition = xAxisPosition,

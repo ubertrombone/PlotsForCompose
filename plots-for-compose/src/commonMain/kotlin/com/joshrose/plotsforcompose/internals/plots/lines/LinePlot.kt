@@ -61,7 +61,8 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
         scaleX.labels == null -> xBreaks
         scaleX.labelConfigs?.showLabels == false -> null
-        else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
+        xBreaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
+        else -> xBreaks.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
     }
 
     val yAxisData = if (figure.stat.kind == IDENTITY) getAxisData(

@@ -109,34 +109,37 @@ internal fun DrawScope.boundXAxis(
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
-    // TODO: Split Guidelines from labels
     guidelines?.let {
-
-    }
-
-    labels?.let {
-        it.forEachIndexed { index, label ->
+        it.forEachIndexed { index, _ ->
             val x =
-                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(labelFactor)
-                else index.plus(1).times(labelFactor)
+                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
+                    index.times(guidelinesFactor)
+                else index.plus(1).times(guidelinesFactor)
 
-            if (guidelinesConfigs.showGuidelines) {
-                if (drawYAxis) {
-                    if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
-                        drawXGuideline(
-                            guidelineConfig = guidelinesConfigs,
-                            x = x,
-                            xAxisPosition = xAxisPosition
-                        )
-                    }
-                } else {
+            if (drawYAxis) {
+                if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
                     drawXGuideline(
                         guidelineConfig = guidelinesConfigs,
                         x = x,
                         xAxisPosition = xAxisPosition
                     )
                 }
+            } else {
+                drawXGuideline(
+                    guidelineConfig = guidelinesConfigs,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
             }
+        }
+    }
+
+    labels?.let {
+        it.forEachIndexed { index, label ->
+            val x =
+                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
+                    index.times(labelFactor)
+                else index.plus(1).times(labelFactor)
 
             if (labelConfigs.showLabels) {
                 drawXLabel(

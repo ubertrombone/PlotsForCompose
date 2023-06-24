@@ -20,7 +20,8 @@ internal fun DrawScope.unboundYAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.YConfiguration,
-    labels: List<Number>,
+    labels: List<Number>?,
+    guidelines: List<Number>?,
     yRangeValues: Range<Number>,
     yAxisPosition: AxisPosition.YAxis,
     xAxisPosition: AxisPosition.XAxis,
@@ -33,40 +34,41 @@ internal fun DrawScope.unboundYAxis(
     val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
     val secondXAxisPositionYValue = if (xAxisPosition == AxisPosition.Both) 0f else null
 
-    labels.reversed().forEachIndexed { index, label ->
-        // y - calculates the proportion of the range that rangeDiff occupies and then scales that
-        // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
-        val y = getY(
-            height = size.height,
-            yValues = yRangeValues.mapToFloat(),
-            label = label.toFloat(),
-            range = range.toFloat(),
-            rangeAdj = labelConfigs.rangeAdjustment,
-            index = index,
-            labelsSize = labels.size
-        )
+    labels?.let {
+        labels.reversed().forEachIndexed { index, label ->
+            // y - calculates the proportion of the range that rangeDiff occupies and then scales that
+            // difference to the DrawScope's height. For the y-axis, we then have to subtract that value from the height.
+            val y = getY(
+                height = size.height,
+                yValues = yRangeValues.mapToFloat(),
+                label = label.toFloat(),
+                range = range.toFloat(),
+                rangeAdj = labelConfigs.rangeAdjustment,
+                index = index,
+                labelsSize = labels.size
+            )
 
-        if (guidelinesConfigs.showGuidelines) {
-            if (drawXAxis) {
-                if (xAxisPositionYValue != y || secondXAxisPositionYValue != y) {
+            //TODO: How to get the Y's to draw these separately?
+            guidelines?.let {
+                if (drawXAxis) {
+                    if (xAxisPositionYValue != y || secondXAxisPositionYValue != y) {
+                        drawYGuideline(
+                            guidelineConfig = guidelinesConfigs,
+                            y = y,
+                            yAxisPosition = yAxisPosition
+                        )
+                    }
+                } else {
                     drawYGuideline(
                         guidelineConfig = guidelinesConfigs,
                         y = y,
                         yAxisPosition = yAxisPosition
                     )
                 }
-            } else {
-                drawYGuideline(
-                    guidelineConfig = guidelinesConfigs,
-                    y = y,
-                    yAxisPosition = yAxisPosition
-                )
             }
-        }
 
-        if (!drawZero && label == 0f) return@forEachIndexed
+            if (!drawZero && label == 0f) return@forEachIndexed
 
-        if (labelConfigs.showLabels) {
             drawYLabel(
                 y = y,
                 x = x,
@@ -75,15 +77,15 @@ internal fun DrawScope.unboundYAxis(
                 labelConfig = labelConfigs,
                 yAxisPosition = yAxisPosition
             )
-        }
 
-        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
-            drawYTick(
-                axisLineConfig = axisLineConfigs,
-                y = y,
-                yAxisPosition = yAxisPosition,
-                axisOffset = labelConfigs.axisOffset.toPx()
-            )
+            if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                drawYTick(
+                    axisLineConfig = axisLineConfigs,
+                    y = y,
+                    yAxisPosition = yAxisPosition,
+                    axisOffset = labelConfigs.axisOffset.toPx()
+                )
+            }
         }
     }
 
