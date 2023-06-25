@@ -5,12 +5,10 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import com.joshrose.plotsforcompose.internals.exception.DataFrameSizeException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
-import com.joshrose.plotsforcompose.internals.standardizing.toDouble
 import com.joshrose.plotsforcompose.internals.util.AxisData
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
-import kotlin.time.Duration
 
 @Throws(DataFrameSizeException::class)
 internal fun getData(data: Map<*, *>?): Map<String, List<Any?>> {
@@ -149,18 +147,21 @@ internal fun drawZero(
     else -> true
 }
 
-internal fun Collection<Any?>.sortedNotNull(): List<Any> = filterNotNull().sortedWith { value1, value2 ->
-    when (value1) {
-        is String -> value1.toString().compareTo(value2.toString())
-        is Char -> value1.toString().compareTo(value2.toString())
-        is Number -> toDouble(value1)?.compareTo(toDouble(value2 as Number) ?: Double.NaN) ?: 0
-        is Boolean -> value1.toString().toBoolean().compareTo(value2 as Boolean)
-        is Duration -> value1.inWholeMilliseconds.compareTo((value2 as Duration).inWholeMilliseconds)
-        else -> throw Exception("Values must be primitive non-iterable type.")
-    }
-}
+//internal fun Collection<Any?>.sortedNotNull(): List<Any> = filterNotNull().sortedWith { value1, value2 ->
+//    when (value1) {
+//        is String -> value1.toString().compareTo(value2.toString())
+//        is Char -> value1.toString().compareTo(value2.toString())
+//        is Number -> toDouble(value1)?.compareTo(toDouble(value2 as Number) ?: Double.NaN) ?: 0
+//        is Boolean -> value1.toString().toBoolean().compareTo(value2 as Boolean)
+//        is Duration -> value1.inWholeMilliseconds.compareTo((value2 as Duration).inWholeMilliseconds)
+//        else -> throw Exception("Values must be primitive non-iterable type.")
+//    }
+//}
 
 internal fun isCastAsNumber(value: List<Any?>) = value.all { (it ?: Float.NaN) is Number }
 
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
+
 internal fun Scale?.isNotNull() = this != null
+
+internal fun List<Int>.countsRange() = (min()..max()).toList()

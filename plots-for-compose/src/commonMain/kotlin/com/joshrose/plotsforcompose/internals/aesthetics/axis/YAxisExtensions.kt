@@ -118,7 +118,7 @@ internal fun DrawScope.drawYAxis(
 internal fun DrawScope.drawYLabel(
     y: Float,
     x: Float,
-    label: Any,
+    label: Any?,
     yAxisPosition: YAxis,
     textMeasurer: TextMeasurer,
     labelConfig: LabelsConfiguration

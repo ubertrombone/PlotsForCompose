@@ -101,6 +101,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = yAxisLineConfigs ?: YConfiguration(),
                 labels = yLabels,
+                guidelines = yLabels,
                 yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
                 yAxisPosition = yAxisPosition,
                 xAxisPosition = xAxisPosition,

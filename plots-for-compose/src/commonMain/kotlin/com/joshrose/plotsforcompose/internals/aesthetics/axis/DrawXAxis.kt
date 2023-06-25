@@ -141,16 +141,14 @@ internal fun DrawScope.boundXAxis(
                     index.times(labelFactor)
                 else index.plus(1).times(labelFactor)
 
-            if (labelConfigs.showLabels) {
-                drawXLabel(
-                    y = y,
-                    x = x,
-                    label = label,
-                    xAxisPosition = xAxisPosition,
-                    textMeasurer = textMeasurer,
-                    labelConfig = labelConfigs
-                )
-            }
+            drawXLabel(
+                y = y,
+                x = x,
+                label = label,
+                xAxisPosition = xAxisPosition,
+                textMeasurer = textMeasurer,
+                labelConfig = labelConfigs
+            )
 
             if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
                 drawXTick(

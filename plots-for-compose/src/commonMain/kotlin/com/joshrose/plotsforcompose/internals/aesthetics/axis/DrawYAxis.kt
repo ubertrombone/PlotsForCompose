@@ -98,8 +98,10 @@ internal fun DrawScope.boundYAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.YConfiguration,
-    factor: Float,
-    labels: List<Any>,
+    labelFactor: Float,
+    guidelinesFactor: Float,
+    labels: List<Any?>?,
+    guidelines: List<Any?>?,
     yAxisPosition: AxisPosition.YAxis,
     xAxisPosition: AxisPosition.XAxis,
     drawXAxis: Boolean,
@@ -110,12 +112,12 @@ internal fun DrawScope.boundYAxis(
     val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
     val secondXAxisPositionYValue = if (xAxisPosition == AxisPosition.Both) 0f else null
 
-    labels.reversed().forEachIndexed { index, label ->
-        val y =
-            if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
-            else index.plus(1).times(factor)
+    guidelines?.let {
+        it.reversed().forEachIndexed { index, _ ->
+            val y =
+                if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(guidelinesFactor)
+                else index.plus(1).times(guidelinesFactor)
 
-        if (guidelinesConfigs.showGuidelines) {
             if (drawXAxis) {
                 if (xAxisPositionYValue != y || secondXAxisPositionYValue != y) {
                     drawYGuideline(
@@ -132,8 +134,14 @@ internal fun DrawScope.boundYAxis(
                 )
             }
         }
+    }
 
-        if (labelConfigs.showLabels) {
+    labels?.let {
+        it.reversed().forEachIndexed { index, label ->
+            val y =
+                if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(labelFactor)
+                else index.plus(1).times(labelFactor)
+
             drawYLabel(
                 y = y,
                 x = x,
@@ -142,15 +150,15 @@ internal fun DrawScope.boundYAxis(
                 labelConfig = labelConfigs,
                 yAxisPosition = yAxisPosition
             )
-        }
 
-        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
-            drawYTick(
-                axisLineConfig = axisLineConfigs,
-                y = y,
-                yAxisPosition = yAxisPosition,
-                axisOffset = labelConfigs.axisOffset.toPx()
-            )
+            if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                drawYTick(
+                    axisLineConfig = axisLineConfigs,
+                    y = y,
+                    yAxisPosition = yAxisPosition,
+                    axisOffset = labelConfigs.axisOffset.toPx()
+                )
+            }
         }
     }
 

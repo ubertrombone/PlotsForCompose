@@ -42,13 +42,13 @@ fun LineGraphContent(
                     .plus(
                         unboundXAxis(
                             reverse = false,
-                            breaks = Proportional(.25f),
-                            labels = Proportional(.25f)
+                            breaks = Proportional(.5f),
+                            labels = Proportional(.5f)
                         ))
                     .plus(
                         unboundYAxis(
                             reverse = false,
-                            labels = Proportional(.5f)
+                            //labels = Proportional(.5f)
                         ))
                 plot.show(
                     modifier = Modifier
