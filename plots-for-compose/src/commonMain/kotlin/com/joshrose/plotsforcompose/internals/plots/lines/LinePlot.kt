@@ -53,11 +53,11 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.breaks.factor)).roundToInt() == 0 }
     }
 
-    // TODO: xBreaks == null is out of order, but order for all seems wrong
+    // TODO: xBreaks == null is out of order, but order for all seems wrong -- Added null check for 3rd condition
     val xLabels = when {
         scaleX?.labelConfigs?.showLabels == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
-        scaleX.labels == null -> xBreaks
+        scaleX.labels == null -> xBreaks ?: xData.toList()
         xBreaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
         else -> xBreaks.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
     }
@@ -65,7 +65,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val xLabelIndices = when {
         scaleX?.labelConfigs?.showLabels == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.indices.toList()
-        scaleX.labels == null -> xBreaks?.indices?.toList()
+        scaleX.labels == null -> xBreaks?.indices?.toList() ?: xData.indices.toList()
         xBreaks == null ->
             List(xData.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
         else ->
