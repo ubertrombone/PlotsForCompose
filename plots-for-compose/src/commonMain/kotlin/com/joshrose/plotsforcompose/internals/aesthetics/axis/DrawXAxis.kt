@@ -15,6 +15,7 @@ import com.joshrose.plotsforcompose.internals.util.Range
 import com.joshrose.plotsforcompose.internals.util.Range.Companion.mapToFloat
 import com.joshrose.plotsforcompose.util.calculateOffset
 
+// TODO: Same as for bound? maybe not -- no factors
 @ExperimentalTextApi
 internal fun DrawScope.unboundXAxis(
     labelConfigs: LabelsConfiguration,
@@ -85,11 +86,9 @@ internal fun DrawScope.unboundXAxis(
         }
     }
 
-    if (axisLineConfigs.showAxisLine) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
+    if (axisLineConfigs.showAxisLine) drawXAxisLine(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
-// TODO: Consider how drawing all/some/none guidelines and all/some/none labels might go
-// --> Bound XAxis doesn't need breaks. It needs a list of the labels to be shown.
 @ExperimentalTextApi
 internal fun DrawScope.boundXAxis(
     labelConfigs: LabelsConfiguration,
@@ -109,59 +108,143 @@ internal fun DrawScope.boundXAxis(
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
-    guidelines?.let {
-        it.forEachIndexed { index, _ ->
-            val x =
-                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
-                    index.times(guidelinesFactor)
-                else index.plus(1).times(guidelinesFactor)
+    // TODO: Still need to plan for what to do when partial labels/guidelines are less than total data points
+    when {
+        guidelines != null -> {
+            drawXAxis(
+                y = y,
+                yAxisPositionXValue = yAxisPositionXValue,
+                secondYAxisPositionYValue = secondYAxisPositionYValue,
+                guidelines = guidelines,
+                labels = labels,
+                guidelinesFactor = guidelinesFactor,
+                drawYAxis = drawYAxis,
+                axisAlignment = axisAlignment,
+                xAxisPosition = xAxisPosition,
+                guidelinesConfigs = guidelinesConfigs,
+                labelConfigs = labelConfigs,
+                axisLineConfigs = axisLineConfigs,
+                textMeasurer = textMeasurer
+            )
+        }
+        labels != null -> {
+            drawXAxis(
+                y = y,
+                labels = labels,
+                labelFactor = labelFactor,
+                axisAlignment = axisAlignment,
+                xAxisPosition = xAxisPosition,
+                labelConfigs = labelConfigs,
+                axisLineConfigs = axisLineConfigs,
+                textMeasurer = textMeasurer
+            )
+        }
+    }
 
-            if (drawYAxis) {
-                if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
-                    drawXGuideline(
-                        guidelineConfig = guidelinesConfigs,
-                        x = x,
-                        xAxisPosition = xAxisPosition
-                    )
-                }
-            } else {
+    if (axisLineConfigs.showAxisLine) drawXAxisLine(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
+}
+
+@OptIn(ExperimentalTextApi::class)
+internal fun DrawScope.drawXAxis(
+    y: Float,
+    yAxisPositionXValue: Float?,
+    secondYAxisPositionYValue: Float?,
+    guidelines: List<Any?>,
+    labels: List<Any?>?,
+    guidelinesFactor: Float,
+    drawYAxis: Boolean,
+    axisAlignment: AxisAlignment.XAxis,
+    xAxisPosition: AxisPosition.XAxis,
+    guidelinesConfigs: GuidelinesConfiguration,
+    labelConfigs: LabelsConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    textMeasurer: TextMeasurer
+) {
+    val overlappingLabels = labels?.toMutableList()
+
+    guidelines.forEachIndexed { index, value ->
+        val x =
+            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
+                index.times(guidelinesFactor)
+            else index.plus(1).times(guidelinesFactor)
+
+        if (drawYAxis) {
+            if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
                 drawXGuideline(
                     guidelineConfig = guidelinesConfigs,
                     x = x,
                     xAxisPosition = xAxisPosition
                 )
             }
-        }
-    }
-
-    labels?.let {
-        it.forEachIndexed { index, label ->
-            val x =
-                if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
-                    index.times(labelFactor)
-                else index.plus(1).times(labelFactor)
-
-            drawXLabel(
-                y = y,
+        } else {
+            drawXGuideline(
+                guidelineConfig = guidelinesConfigs,
                 x = x,
-                label = label,
-                xAxisPosition = xAxisPosition,
-                textMeasurer = textMeasurer,
-                labelConfig = labelConfigs
+                xAxisPosition = xAxisPosition
             )
+        }
 
-            if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
-                drawXTick(
-                    axisLineConfig = axisLineConfigs,
+        overlappingLabels?.let {
+            if (it.contains(value)) {
+                drawXLabel(
+                    y = y,
                     x = x,
+                    label = value,
                     xAxisPosition = xAxisPosition,
-                    axisOffset = labelConfigs.axisOffset.toPx()
+                    textMeasurer = textMeasurer,
+                    labelConfig = labelConfigs
                 )
+
+                if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                    drawXTick(
+                        axisLineConfig = axisLineConfigs,
+                        x = x,
+                        xAxisPosition = xAxisPosition,
+                        axisOffset = labelConfigs.axisOffset.toPx()
+                    )
+                }
+
+                it.removeAt(it.indexOf(value))
             }
         }
     }
+}
 
-    if (axisLineConfigs.showAxisLine) drawXAxis(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
+@OptIn(ExperimentalTextApi::class)
+internal fun DrawScope.drawXAxis(
+    y: Float,
+    labels: List<Any?>,
+    labelFactor: Float,
+    axisAlignment: AxisAlignment.XAxis,
+    xAxisPosition: AxisPosition.XAxis,
+    labelConfigs: LabelsConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    textMeasurer: TextMeasurer
+) {
+    labels.forEachIndexed { index, label ->
+        val x =
+            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
+                index.times(labelFactor)
+            else index.plus(1).times(labelFactor)
+
+        drawXLabel(
+            y = y,
+            x = x,
+            label = label,
+            xAxisPosition = xAxisPosition,
+            textMeasurer = textMeasurer,
+            labelConfig = labelConfigs
+        )
+
+        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+            drawXTick(
+                axisLineConfig = axisLineConfigs,
+                x = x,
+                xAxisPosition = xAxisPosition,
+                axisOffset = labelConfigs.axisOffset.toPx()
+            )
+        }
+    }
 }
 
 internal fun getX(

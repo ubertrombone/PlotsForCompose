@@ -81,7 +81,7 @@ internal fun DrawScope.drawXTick(
 }
 
 @Throws(IllegalStateException::class)
-internal fun DrawScope.drawXAxis(
+internal fun DrawScope.drawXAxisLine(
     axisLineConfig: AxisLineConfiguration.XConfiguration,
     xAxisPosition: XAxis
 ) {

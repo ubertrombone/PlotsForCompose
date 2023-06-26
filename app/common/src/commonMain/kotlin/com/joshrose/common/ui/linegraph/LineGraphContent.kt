@@ -42,7 +42,7 @@ fun LineGraphContent(
                     .plus(
                         unboundXAxis(
                             reverse = false,
-                            breaks = Proportional(.5f),
+                            breaks = Proportional(.25f),
                             labels = Proportional(.5f)
                         ))
                     .plus(
