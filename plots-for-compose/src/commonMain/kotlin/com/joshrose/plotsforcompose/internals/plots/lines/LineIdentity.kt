@@ -36,6 +36,7 @@ internal fun DrawScope.lineIdentityAxis(
     )
 
     val yBreaks = when {
+        scaleY.guidelinesConfigs?.showGuidelines == false -> null
         scaleY.breaks == null && scaleY.labels == null -> floatLabelsAndBreaks(
             amount = y.size,
             minValue = yAxisData.min,
@@ -46,7 +47,6 @@ internal fun DrawScope.lineIdentityAxis(
             minValue = yAxisData.min,
             maxValue = yAxisData.max
         )
-        scaleY.guidelinesConfigs?.showGuidelines == false -> null
         else -> floatLabelsAndBreaks(
             amount = (y.size.times((scaleY.breaks.factor))).roundToInt(),
             minValue = yAxisData.min,
@@ -55,13 +55,13 @@ internal fun DrawScope.lineIdentityAxis(
     }
 
     val yLabels = when {
+        scaleY.labelConfigs?.showLabels == false -> null
         scaleY.breaks == null && scaleY.labels == null -> floatLabelsAndBreaks(
             amount = y.size,
             minValue = yAxisData.min,
             maxValue = yAxisData.max
         )
         scaleY.labels == null -> yBreaks
-        scaleY.labelConfigs?.showLabels == false -> null
         yBreaks == null -> floatLabelsAndBreaks(
             amount = (y.size.times((scaleY.labels.factor))).roundToInt(),
             minValue = yAxisData.min,

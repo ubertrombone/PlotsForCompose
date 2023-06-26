@@ -97,6 +97,7 @@ internal fun DrawScope.boundXAxis(
     labelFactor: Float,
     guidelinesFactor: Float,
     labels: List<Any?>?,
+    labelIndices: List<Int>?,
     guidelines: List<Any?>?,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
@@ -104,6 +105,10 @@ internal fun DrawScope.boundXAxis(
     axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
+    println("Guidelines: $guidelines")
+    println("Labels: $labels")
+    println("Labels Indices: $labelIndices")
+
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
@@ -117,6 +122,7 @@ internal fun DrawScope.boundXAxis(
                 secondYAxisPositionYValue = secondYAxisPositionYValue,
                 guidelines = guidelines,
                 labels = labels,
+                labelIndices = labelIndices,
                 guidelinesFactor = guidelinesFactor,
                 drawYAxis = drawYAxis,
                 axisAlignment = axisAlignment,
@@ -151,6 +157,7 @@ internal fun DrawScope.drawXAxis(
     secondYAxisPositionYValue: Float?,
     guidelines: List<Any?>,
     labels: List<Any?>?,
+    labelIndices: List<Int>?,
     guidelinesFactor: Float,
     drawYAxis: Boolean,
     axisAlignment: AxisAlignment.XAxis,
@@ -184,8 +191,8 @@ internal fun DrawScope.drawXAxis(
             )
         }
 
-        overlappingLabels?.let {
-            if (it.contains(value)) {
+        labelIndices?.let {
+            if (it.contains(index)) {
                 drawXLabel(
                     y = y,
                     x = x,
@@ -204,7 +211,7 @@ internal fun DrawScope.drawXAxis(
                     )
                 }
 
-                it.removeAt(it.indexOf(value))
+                //it.removeAt(it.indexOf(value))
             }
         }
     }

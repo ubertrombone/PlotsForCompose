@@ -45,20 +45,31 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
     // TODO: IF xLabels.last() != xStat.last(), draw some space after last label/guideline
-
+    // TODO: All of these need to be reordered
     val xBreaks = when {
+        scaleX?.guidelinesConfigs?.showGuidelines == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
         scaleX.breaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels?.factor ?: 1f)).roundToInt() == 0 }
-        scaleX.guidelinesConfigs?.showGuidelines == false -> null
         else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.breaks.factor)).roundToInt() == 0 }
     }
 
+    // TODO: xBreaks == null is out of order, but order for all seems wrong
     val xLabels = when {
+        scaleX?.labelConfigs?.showLabels == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
         scaleX.labels == null -> xBreaks
-        scaleX.labelConfigs?.showLabels == false -> null
         xBreaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
         else -> xBreaks.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
+    }
+
+    val xLabelIndices = when {
+        scaleX?.labelConfigs?.showLabels == false -> null
+        scaleX?.breaks == null && scaleX?.labels == null -> xData.indices.toList()
+        scaleX.labels == null -> xBreaks?.indices?.toList()
+        xBreaks == null ->
+            List(xData.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+        else ->
+            List(xBreaks.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
     }
 
     val yAxisData = if (figure.stat.kind == IDENTITY) getAxisData(
@@ -90,6 +101,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 labelFactor = xLabelFactor,
                 guidelinesFactor = xGuidelineFactor,
                 labels = xLabels,
+                labelIndices = xLabelIndices,
                 guidelines = xBreaks,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,

@@ -30,16 +30,16 @@ internal fun DrawScope.lineCountAxis(
     val y = x.groupingBy { it }.eachCount().values.toSet().sorted().countsRange()
 
     val yBreaks = when {
+        scaleY.guidelinesConfigs?.showGuidelines == false -> null
         scaleY.breaks == null && scaleY.labels == null -> y
         scaleY.breaks == null -> y.filterIndexed { index, _ -> index % (1.div(scaleY.labels?.factor ?: 1f)).roundToInt() == 0 }
-        scaleY.guidelinesConfigs?.showGuidelines == false -> null
         else -> y.filterIndexed { index, _ -> index % (1.div(scaleY.breaks.factor)).roundToInt() == 0 }
     }
 
     val yLabels = when {
+        scaleY.labelConfigs?.showLabels == false -> null
         scaleY.breaks == null && scaleY.labels == null -> y
         scaleY.labels == null -> yBreaks
-        scaleY.labelConfigs?.showLabels == false -> null
         yBreaks == null -> y.filterIndexed { index, _ -> index % (1.div(scaleY.labels.factor)).roundToInt() == 0 }
         else -> yBreaks.filterIndexed { index, _ -> index % (1.div(scaleY.labels.factor)).roundToInt() == 0 }
     }
