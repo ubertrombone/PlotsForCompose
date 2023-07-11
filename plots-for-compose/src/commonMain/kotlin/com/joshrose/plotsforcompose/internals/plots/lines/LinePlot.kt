@@ -45,7 +45,6 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
     // TODO: IF xLabels.last() != xStat.last(), draw some space after last label/guideline
-    // TODO: All others of these need to be reordered
     val xBreaks = when {
         scaleX?.guidelinesConfigs?.showGuidelines == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
@@ -53,7 +52,6 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.breaks.factor)).roundToInt() == 0 }
     }
 
-    // TODO: Added null check for 3rd condition
     val xLabels = when {
         scaleX?.labelConfigs?.showLabels == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()

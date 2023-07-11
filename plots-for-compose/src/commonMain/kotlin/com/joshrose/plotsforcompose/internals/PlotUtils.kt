@@ -39,7 +39,7 @@ internal fun asMappingData(
     mapping[key]?.let {
         when (it) {
             is String -> {
-                check(data[it].isNotNull()) { "Variable not found: $it. Variables in data frame: ${data.keys}" }
+                checkNotNull(data[it]) { "Variable not found: $it. Variables in data frame: ${data.keys}" }
                 data[it]!!
             }
             is List<Any?> -> {
@@ -157,7 +157,5 @@ internal fun isCastAsNumber(value: List<Any?>) = value.all { (it ?: Float.NaN) i
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
 
 internal fun Scale?.isNotNull() = this != null
-
-internal fun List<*>?.isNotNull() = this != null
 
 internal fun List<Int>.countsRange() = (min()..max()).toList()
