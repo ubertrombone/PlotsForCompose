@@ -121,7 +121,6 @@ internal fun DrawScope.boundXAxis(
                 yAxisPositionXValue = yAxisPositionXValue,
                 secondYAxisPositionYValue = secondYAxisPositionYValue,
                 guidelines = guidelines,
-                labels = labels,
                 labelIndices = labelIndices,
                 guidelinesFactor = guidelinesFactor,
                 drawYAxis = drawYAxis,
@@ -156,7 +155,6 @@ internal fun DrawScope.drawXAxis(
     yAxisPositionXValue: Float?,
     secondYAxisPositionYValue: Float?,
     guidelines: List<Any?>,
-    labels: List<Any?>?,
     labelIndices: List<Int>?,
     guidelinesFactor: Float,
     drawYAxis: Boolean,
@@ -167,8 +165,6 @@ internal fun DrawScope.drawXAxis(
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
     textMeasurer: TextMeasurer
 ) {
-    val overlappingLabels = labels?.toMutableList()
-
     guidelines.forEachIndexed { index, value ->
         val x =
             if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
@@ -210,8 +206,6 @@ internal fun DrawScope.drawXAxis(
                         axisOffset = labelConfigs.axisOffset.toPx()
                     )
                 }
-
-                //it.removeAt(it.indexOf(value))
             }
         }
     }

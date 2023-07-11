@@ -3,25 +3,22 @@ package com.joshrose.plotsforcompose.internals
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.*
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
-import com.joshrose.plotsforcompose.internals.exception.DataFrameSizeException
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
 import com.joshrose.plotsforcompose.internals.util.AxisData
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
 
-@Throws(DataFrameSizeException::class)
+@Throws(IllegalStateException::class)
 internal fun getData(data: Map<*, *>?): Map<String, List<Any?>> {
     val typedData = data?.let { asPlotData(it) }
     val dataFrameValueSizes = typedData?.values?.map { it.size }?.toSet()?.size
-    if (dataFrameValueSizes != 1) {
+    check(dataFrameValueSizes == 1) {
         val dataAsString = typedData?.let { it.map { (key, value) -> "$key: ${value.size}" } }
-        val message = dataAsString?.let {
-            "All data values must have an equal size:\n${it.joinToString("\n")}"
-        } ?: "Data must not be Null."
-        throw DataFrameSizeException(message)
+        dataAsString?.let { "All data values must have an equal size:\n${it.joinToString("\n")}" }
+            ?: "Data must not be Null."
     }
-    return typedData
+    return typedData!!
 }
 
 internal fun asPlotData(rawData: Map<*, *>): Map<String, List<Any?>> {
@@ -33,7 +30,7 @@ internal fun asPlotData(rawData: Map<*, *>): Map<String, List<Any?>> {
     return standardizedData
 }
 
-@Throws(IllegalArgumentException::class, DataFrameSizeException::class)
+@Throws(IllegalStateException::class)
 internal fun asMappingData(
     data: Map<String, List<Any?>>,
     mapping: Map<String, Any>,
@@ -42,18 +39,17 @@ internal fun asMappingData(
     mapping[key]?.let {
         when (it) {
             is String -> {
-                data[it] ?:
-                throw IllegalArgumentException("Variable not found: $it. Variables in data frame: ${data.keys}")
+                check(data[it].isNotNull()) { "Variable not found: $it. Variables in data frame: ${data.keys}" }
+                data[it]!!
             }
             is List<Any?> -> {
-                val len =  data.values.first().size
-                if (it.size == len) it
-                else {
+                check(it.size == data.values.first().size) {
                     val dataAsString = data.map { (k, v) -> "$k: ${v.size}" }.plus("$key: ${it.size}")
-                    throw DataFrameSizeException("All data values must have an equal size:\n${dataAsString.joinToString("\n")}")
+                    "All data values must have an equal size:\n${dataAsString.joinToString("\n")}"
                 }
+                it
             }
-            else -> throw IllegalArgumentException("Argument must be String or List<Any?>. Got: $it")
+            else -> throw IllegalStateException("Argument must be String or List<Any?>.")
         }
     }
 
@@ -83,18 +79,16 @@ internal fun getAxisData(
     return AxisData(min = min, max = max, range = range)
 }
 
-internal fun Scale?.xConfigurationOrNull() = when (this?.axisLineConfigs) {
-    is XConfiguration -> this.axisLineConfigs
-    is YConfiguration ->
-        throw IllegalStateException("Axis Line Configurations on the X scale should be of type XConfiguration.")
-    null -> null
+@Throws(IllegalStateException::class)
+internal fun Scale?.xConfigurationOrNull(): XConfiguration? {
+    check(this?.axisLineConfigs is XConfiguration?) { "Axis Line Configurations on the X scale should be of type XConfiguration." }
+    return if (this?.axisLineConfigs is XConfiguration) this.axisLineConfigs else null
 }
 
-internal fun Scale?.yConfigurationOrNull() = when (this?.axisLineConfigs) {
-    is XConfiguration ->
-        throw IllegalStateException("Axis Line Configurations on the Y scale should be of type YConfiguration.")
-    is YConfiguration -> this.axisLineConfigs
-    null -> null
+@Throws(IllegalStateException::class)
+internal fun Scale?.yConfigurationOrNull(): YConfiguration? {
+    check(this?.axisLineConfigs is YConfiguration) { "Axis Line Configurations on the Y scale should be of type YConfiguration." }
+    return if (this?.axisLineConfigs is YConfiguration) this.axisLineConfigs else null
 }
 
 internal fun XConfiguration?.getXAxisPosition(yAxisData: AxisData) = this?.axisPosition ?: when {
@@ -163,5 +157,7 @@ internal fun isCastAsNumber(value: List<Any?>) = value.all { (it ?: Float.NaN) i
 internal fun Any?.toFloatOrNull() = this.toString().toDoubleOrNull()?.toFloat()
 
 internal fun Scale?.isNotNull() = this != null
+
+internal fun List<*>?.isNotNull() = this != null
 
 internal fun List<Int>.countsRange() = (min()..max()).toList()

@@ -6,13 +6,13 @@ fun floatLabelsAndBreaks(
     minValue: Float,
     maxValue: Float
 ): List<Float> {
-    if (minValue == maxValue) throw IllegalArgumentException(
+    require(minValue < maxValue) {
         """
         minValue and maxValue cannot be equal.
         - minValue: $minValue
         - maxValue: $maxValue
         """.trimIndent()
-    )
+    }
 
     // if minValue is less than 0 and an even number, increase amount by 1 to ensure the center value is 0
     val centeredBreaks = if (amount.mod(2) == 0) amount.plus(1) else amount
