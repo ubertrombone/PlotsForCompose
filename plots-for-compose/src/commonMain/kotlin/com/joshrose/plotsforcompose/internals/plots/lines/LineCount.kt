@@ -31,8 +31,7 @@ internal fun DrawScope.lineCountAxis(
 
     val yBreaks = when {
         scaleY.guidelinesConfigs?.showGuidelines == false -> null
-        scaleY.breaks == null && scaleY.labels == null -> y
-        scaleY.breaks == null -> y.filterIndexed { index, _ -> index % (1.div(scaleY.labels?.factor ?: 1f)).roundToInt() == 0 }
+        scaleY.breaks == null -> y
         else -> y.filterIndexed { index, _ -> index % (1.div(scaleY.breaks.factor)).roundToInt() == 0 }
     }
 

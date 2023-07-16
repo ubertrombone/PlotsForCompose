@@ -40,8 +40,10 @@ fun LineGraphContent(
                     // TODO: Need bound versions or just axis
                     .plus(
                         xAxis(
+                            //axisLineConfigs = AxisLineConfiguration.xConfiguration { axisAlignment = AxisAlignment.Start },
+                            //guidelinesConfigs = GuidelinesConfiguration.guidelinesConfiguration { showGuidelines = false },
                             reverse = false,
-                            breaks = Proportional(.25f),
+                            //breaks = Proportional(.25f),
                             labels = Proportional(.5f)
                         ))
                     .plus(

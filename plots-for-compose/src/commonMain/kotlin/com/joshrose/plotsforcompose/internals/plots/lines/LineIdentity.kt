@@ -37,13 +37,8 @@ internal fun DrawScope.lineIdentityAxis(
 
     val yBreaks = when {
         scaleY.guidelinesConfigs?.showGuidelines == false -> null
-        scaleY.breaks == null && scaleY.labels == null -> floatLabelsAndBreaks(
-            amount = y.size,
-            minValue = yAxisData.min,
-            maxValue = yAxisData.max
-        )
         scaleY.breaks == null -> floatLabelsAndBreaks(
-            amount = (y.size.times((scaleY.labels?.factor ?: 1f))).roundToInt(),
+            amount = y.size,
             minValue = yAxisData.min,
             maxValue = yAxisData.max
         )
