@@ -114,8 +114,8 @@ internal fun drawZero(
     yAxisData: AxisData,
     xAxisPosition: XAxis,
     yAxisPosition: YAxis,
-    xLabels: List<Float>,
-    yLabels: List<Float>
+    xLabels: List<Float>?,
+    yLabels: List<Float>?
 ) = when {
     yAxisData.min == 0f && xAxisData.min == 0f &&
             xAxisPosition == Bottom && yAxisPosition == Start &&
@@ -133,8 +133,8 @@ internal fun drawZero(
             xAxisPosition == Top && yAxisPosition == End &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
             scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
-    (xLabels.min() != 0f && xLabels.max() != 0f && xLabels.contains(0f)) &&
-            (yLabels.min() != 0f && yLabels.max() != 0f && yLabels.contains(0f)) &&
+    (xLabels?.min() != 0f && xLabels?.max() != 0f && xLabels?.contains(0f) == true) &&
+            (yLabels?.min() != 0f && yLabels?.max() != 0f && yLabels?.contains(0f) == true) &&
             xAxisPosition == Center && yAxisPosition == Center &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
             (scaleX?.labelConfigs?.showLabels == true || scaleY?.labelConfigs?.showLabels == true) -> false

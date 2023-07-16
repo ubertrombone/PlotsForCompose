@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
+import com.joshrose.plotsforcompose.Stats
 import com.joshrose.plotsforcompose.axis.unboundYAxis
 import com.joshrose.plotsforcompose.axis.xAxis
 import com.joshrose.plotsforcompose.composePlot
@@ -33,7 +34,7 @@ fun LineGraphContent(
         ) {
             item {
                 val plot = composePlot(data = rawData) {
-                    figure = LineFigure()
+                    figure = LineFigure(stat = Stats.count())
                     x = "Independent"
                     y = "Dependent"
                 }

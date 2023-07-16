@@ -26,8 +26,8 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.Companion.xConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration.Companion.guidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
-import com.joshrose.plotsforcompose.axis.xAxis
 import com.joshrose.plotsforcompose.axis.unboundYAxis
+import com.joshrose.plotsforcompose.axis.xAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
@@ -154,6 +154,7 @@ fun AxesContent(
                     x = "Independent"
                     y = "Dependent"
                 }
+                    // TODO: Rewrite how changing label breaks and guidelines work in sample UI
                     .plus(xAxis(
                         labelConfigs = xLabelConfigs,
                         guidelinesConfigs = xGuidelineConfigs,
@@ -211,10 +212,10 @@ fun AxesContent(
                 ) {
                     GenerateDataButton {
                         component.updateData(
-                            data = List(2) {
+                            data = List(5) {
                                 NumberData(
-                                    x = (-100..100).random().toFloat(),
-                                    y = (-100..100).random().toFloat()
+                                    x = (-10..100).random().toFloat(),
+                                    y = (-10..100).random().toFloat()
                                 )
                             }
                         )

@@ -12,76 +12,56 @@ import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.internals.util.Range
-import com.joshrose.plotsforcompose.internals.util.Range.Companion.mapToFloat
 import com.joshrose.plotsforcompose.util.calculateOffset
 
-// TODO: Same as for bound? maybe not -- no factors
 @ExperimentalTextApi
 internal fun DrawScope.unboundXAxis(
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
-    labels: List<Number>,
-    xRangeValues: Range<Number>,
+    labels: List<Number>?,
+    labelIndices: List<Int>?,
+    guidelines: List<Number>?,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     drawYAxis: Boolean,
     drawZero: Boolean = true,
-    range: Number,
     textMeasurer: TextMeasurer
 ) {
+    println("Guidelines: $guidelines")
+    println("Labels: $labels")
+    println("Labels Indices: $labelIndices")
+
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionXValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
-    labels.forEachIndexed { index, label ->
-        val x = getX(
-            width = size.width,
-            xValues = xRangeValues.mapToFloat(),
-            label = label.toFloat(),
-            range = range.toFloat(),
-            rangeAdj = labelConfigs.rangeAdjustment,
-            index = index,
-            labelsSize = labels.size
-        )
-
-        if (guidelinesConfigs.showGuidelines) {
-            if (drawYAxis) {
-                if (yAxisPositionXValue != x || secondYAxisPositionXValue != x) {
-                    drawXGuideline(
-                        guidelineConfig = guidelinesConfigs,
-                        x = x,
-                        xAxisPosition = xAxisPosition
-                    )
-                } else {
-                    drawXGuideline(
-                        guidelineConfig = guidelinesConfigs,
-                        x = x,
-                        xAxisPosition = xAxisPosition
-                    )
-                }
-            }
-        }
-
-        if (!drawZero && label == 0f) return@forEachIndexed
-
-        if (labelConfigs.showLabels) {
-            drawXLabel(
+    when {
+        guidelines != null -> {
+            drawXAxisUnbounded(
                 y = y,
-                x = x,
-                label = label,
+                yAxisPositionXValue = yAxisPositionXValue,
+                secondYAxisPositionXValue = secondYAxisPositionXValue,
+                guidelines = guidelines,
+                labelIndices = labelIndices,
+                drawYAxis = drawYAxis,
+                drawZero = drawZero,
                 xAxisPosition = xAxisPosition,
-                textMeasurer = textMeasurer,
-                labelConfig = labelConfigs
+                guidelinesConfigs = guidelinesConfigs,
+                labelConfigs = labelConfigs,
+                axisLineConfigs = axisLineConfigs,
+                textMeasurer = textMeasurer
             )
         }
-
-        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
-            drawXTick(
-                axisLineConfig = axisLineConfigs,
-                x = x,
+        labels != null -> {
+            drawXAxisUnbounded(
+                y = y,
+                labels = labels,
+                drawZero = drawZero,
                 xAxisPosition = xAxisPosition,
-                axisOffset = labelConfigs.axisOffset.toPx()
+                labelConfigs = labelConfigs,
+                axisLineConfigs = axisLineConfigs,
+                textMeasurer = textMeasurer
             )
         }
     }
@@ -105,21 +85,16 @@ internal fun DrawScope.boundXAxis(
     axisAlignment: AxisAlignment.XAxis,
     textMeasurer: TextMeasurer
 ) {
-    println("Guidelines: $guidelines")
-    println("Labels: $labels")
-    println("Labels Indices: $labelIndices")
-
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
-    val secondYAxisPositionYValue = if (yAxisPosition == AxisPosition.Both) size.width else null
+    val secondYAxisPositionXValue = if (yAxisPosition == AxisPosition.Both) size.width else null
 
-    // TODO: Still need to plan for what to do when partial labels/guidelines are less than total data points
     when {
         guidelines != null -> {
-            drawXAxis(
+            drawXAxisBounded(
                 y = y,
                 yAxisPositionXValue = yAxisPositionXValue,
-                secondYAxisPositionYValue = secondYAxisPositionYValue,
+                secondYAxisPositionXValue = secondYAxisPositionXValue,
                 guidelines = guidelines,
                 labelIndices = labelIndices,
                 guidelinesFactor = guidelinesFactor,
@@ -133,7 +108,7 @@ internal fun DrawScope.boundXAxis(
             )
         }
         labels != null -> {
-            drawXAxis(
+            drawXAxisBounded(
                 y = y,
                 labels = labels,
                 labelFactor = labelFactor,
@@ -150,10 +125,128 @@ internal fun DrawScope.boundXAxis(
 }
 
 @OptIn(ExperimentalTextApi::class)
-internal fun DrawScope.drawXAxis(
+internal fun DrawScope.drawXAxisUnbounded(
     y: Float,
     yAxisPositionXValue: Float?,
-    secondYAxisPositionYValue: Float?,
+    secondYAxisPositionXValue: Float?,
+    guidelines: List<Number>,
+    labelIndices: List<Int>?,
+    drawYAxis: Boolean,
+    drawZero: Boolean,
+    xAxisPosition: AxisPosition.XAxis,
+    guidelinesConfigs: GuidelinesConfiguration,
+    labelConfigs: LabelsConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    textMeasurer: TextMeasurer
+) {
+    val data = Range(guidelines.minOf { it.toFloat() }, guidelines.maxOf { it.toFloat() })
+    val range = data.max.minus(data.min)
+    println("Size: ${guidelines.size}")
+
+    guidelines.forEachIndexed { index, value ->
+        val x = getX(
+            width = size.width,
+            xValues = data,
+            label = value.toFloat(),
+            range = range,
+            rangeAdj = labelConfigs.rangeAdjustment,
+            index = index,
+            labelsSize = guidelines.size
+        )
+
+        if (drawYAxis) {
+            if (yAxisPositionXValue != x || secondYAxisPositionXValue != x) {
+                drawXGuideline(
+                    guidelineConfig = guidelinesConfigs,
+                    x = x,
+                    xAxisPosition = xAxisPosition
+                )
+            }
+        } else {
+            drawXGuideline(
+                guidelineConfig = guidelinesConfigs,
+                x = x,
+                xAxisPosition = xAxisPosition
+            )
+        }
+
+        if (!drawZero && value == 0f) return@forEachIndexed
+
+        labelIndices?.let {
+            if (it.contains(index)) {
+                drawXLabel(
+                    y = y,
+                    x = x,
+                    label = value,
+                    xAxisPosition = xAxisPosition,
+                    textMeasurer = textMeasurer,
+                    labelConfig = labelConfigs
+                )
+
+                if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                    drawXTick(
+                        axisLineConfig = axisLineConfigs,
+                        x = x,
+                        xAxisPosition = xAxisPosition,
+                        axisOffset = labelConfigs.axisOffset.toPx()
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalTextApi::class)
+internal fun DrawScope.drawXAxisUnbounded(
+    y: Float,
+    labels: List<Number>,
+    drawZero: Boolean,
+    xAxisPosition: AxisPosition.XAxis,
+    labelConfigs: LabelsConfiguration,
+    axisLineConfigs: AxisLineConfiguration.XConfiguration,
+    textMeasurer: TextMeasurer
+) {
+    val data = Range(labels.minOf { it.toFloat() }, labels.maxOf { it.toFloat() })
+    val range = data.max.minus(data.min)
+
+    labels.forEachIndexed { index, label ->
+        val x = getX(
+            width = size.width,
+            xValues = data,
+            label = label.toFloat(),
+            range = range,
+            rangeAdj = labelConfigs.rangeAdjustment,
+            index = index,
+            labelsSize = labels.size
+        )
+
+        if (!drawZero && label == 0f) return@forEachIndexed
+
+        drawXLabel(
+            y = y,
+            x = x,
+            label = label,
+            xAxisPosition = xAxisPosition,
+            textMeasurer = textMeasurer,
+            labelConfig = labelConfigs
+        )
+
+        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+            drawXTick(
+                axisLineConfig = axisLineConfigs,
+                x = x,
+                xAxisPosition = xAxisPosition,
+                axisOffset = labelConfigs.axisOffset.toPx()
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalTextApi::class)
+internal fun DrawScope.drawXAxisBounded(
+    y: Float,
+    yAxisPositionXValue: Float?,
+    secondYAxisPositionXValue: Float?,
     guidelines: List<Any?>,
     labelIndices: List<Int>?,
     guidelinesFactor: Float,
@@ -172,7 +265,7 @@ internal fun DrawScope.drawXAxis(
             else index.plus(1).times(guidelinesFactor)
 
         if (drawYAxis) {
-            if (yAxisPositionXValue != x || secondYAxisPositionYValue != x) {
+            if (yAxisPositionXValue != x || secondYAxisPositionXValue != x) {
                 drawXGuideline(
                     guidelineConfig = guidelinesConfigs,
                     x = x,
@@ -212,7 +305,7 @@ internal fun DrawScope.drawXAxis(
 }
 
 @OptIn(ExperimentalTextApi::class)
-internal fun DrawScope.drawXAxis(
+internal fun DrawScope.drawXAxisBounded(
     y: Float,
     labels: List<Any?>,
     labelFactor: Float,
