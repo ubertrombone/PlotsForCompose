@@ -28,10 +28,6 @@ internal fun DrawScope.unboundXAxis(
     drawZero: Boolean = true,
     textMeasurer: TextMeasurer
 ) {
-    println("Guidelines: $guidelines")
-    println("Labels: $labels")
-    println("Labels Indices: $labelIndices")
-
     val y = getY(xAxisPosition = xAxisPosition, height = size.height)
     val yAxisPositionXValue = getYAxisXPosition(drawYAxis = drawYAxis, yAxisPosition = yAxisPosition, width = size.width)
     val secondYAxisPositionXValue = if (yAxisPosition == AxisPosition.Both) size.width else null

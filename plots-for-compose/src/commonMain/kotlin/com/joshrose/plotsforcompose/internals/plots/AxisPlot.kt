@@ -35,8 +35,6 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
     val y = asMappingData(data = data, mapping = plot.mapping.map, key = "y")
 
-    println("Data: $x")
-
     var xAxisData = getAxisData(
         data = x,
         minValueAdjustment = scaleX?.labelConfigs?.minValueAdjustment,
