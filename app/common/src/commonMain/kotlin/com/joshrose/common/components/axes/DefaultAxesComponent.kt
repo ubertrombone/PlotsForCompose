@@ -15,6 +15,9 @@ import com.joshrose.common.components.axes.axisline.AxisLineComponent
 import com.joshrose.common.components.axes.axisline.DefaultAxisLineComponent
 import com.joshrose.common.components.axes.axisline.XAxisLineModelImpl
 import com.joshrose.common.components.axes.axisline.YAxisLineModelImpl
+import com.joshrose.common.components.axes.breaks.BreaksComponent
+import com.joshrose.common.components.axes.breaks.BreaksModelImpl
+import com.joshrose.common.components.axes.breaks.DefaultBreaksComponent
 import com.joshrose.common.components.axes.data.DataModelImpl
 import com.joshrose.common.components.axes.guidelines.DefaultGuidelinesComponent
 import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
@@ -119,6 +122,22 @@ class DefaultAxesComponent(
 
     override val yLabelsState: Value<LabelsStates> = _yLabelsState.labelsState
 
+    private val _xBreakState = instanceKeeper.getOrCreate(KEY_X_BREAKS) {
+        BreaksModelImpl(
+            initialState = stateKeeper.consume(KEY_X_BREAKS) ?: BreakStates()
+        )
+    }
+
+    override val xBreakState: Value<BreakStates> = _xBreakState.breaksState
+
+    private val _yBreakState = instanceKeeper.getOrCreate(KEY_Y_BREAKS) {
+        BreaksModelImpl(
+            initialState = stateKeeper.consume(KEY_Y_BREAKS) ?: BreakStates()
+        )
+    }
+
+    override val yBreakState: Value<BreakStates> = _yBreakState.breaksState
+
     private val _childStack = childStack(
         source = navigation,
         initialConfiguration = Config.Visibility,
@@ -136,7 +155,8 @@ class DefaultAxesComponent(
             is Config.Visibility -> Child.VisibilityChild(visibility(componentContext))
             is Config.Guidelines -> Child.GuidelinesChild(guidelines(componentContext))
             is Config.AxisLine -> Child.AxisLinesChild(axisLine(componentContext))
-            is Config.Labels -> Child.LabelsChild(labels(componentContext))
+            is Config.Labels ->
+                Child.LabelsChild(labels(componentContext), breaks(componentContext))
         }
 
     private fun visibility(componentContext: ComponentContext): VisibilityComponent =
@@ -167,6 +187,13 @@ class DefaultAxesComponent(
             yLabelsValues = _yLabelsState
         )
 
+    private fun breaks(componentContext: ComponentContext): BreaksComponent =
+        DefaultBreaksComponent(
+            componentContext = componentContext,
+            xBreaksValues = _xBreakState,
+            yBreaksValues = _yBreakState
+        )
+
     override fun onVisibilityTabClicked() { navigation.bringToFront(Config.Visibility) }
     override fun onGuidelinesTabClicked() { navigation.bringToFront(Config.Guidelines) }
     override fun onAxisLinesTabClicked() { navigation.bringToFront(Config.AxisLine) }
@@ -181,6 +208,8 @@ class DefaultAxesComponent(
         _yAxisLineState.resetAxisLine()
         _xLabelsState.resetLabels()
         _yLabelsState.resetLabels()
+        _xBreakState.resetLabels()
+        _yBreakState.resetLabels()
     }
 
     init {
@@ -194,6 +223,8 @@ class DefaultAxesComponent(
         stateKeeper.register(KEY_Y_AXIS_LINE) { _yAxisLineState.axisLineState.value }
         stateKeeper.register(KEY_X_LABELS) { _xLabelsState.labelsState.value }
         stateKeeper.register(KEY_Y_LABELS) { _yLabelsState.labelsState.value }
+        stateKeeper.register(KEY_X_BREAKS) { _xBreakState.breaksState.value }
+        stateKeeper.register(KEY_Y_BREAKS) { _yBreakState.breaksState.value }
     }
 
     private companion object {
@@ -207,6 +238,8 @@ class DefaultAxesComponent(
         private const val KEY_Y_AXIS_LINE = "Y_AXIS_LINE"
         private const val KEY_X_LABELS = "X_LABELS"
         private const val KEY_Y_LABELS = "Y_LABELS"
+        private const val KEY_X_BREAKS = "X_BREAKS"
+        private const val KEY_Y_BREAKS = "Y_BREAKS"
     }
 
     private sealed class Config : Parcelable {

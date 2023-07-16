@@ -15,6 +15,10 @@ import com.arkivanov.essenty.parcelable.Parcelize
 value class Proportional(val factor: Float): Parcelable {
     init {
         require(factor != 0f) { "factor must not be 0f." }
-        require(factor in 0f..0.5f) { "factor must be greater than to 0f and less than or equal to 0.5f: $factor" }
+        require(factor in 0f..0.5f) { "factor must be greater than 0f and less than or equal to 0.5f: $factor" }
     }
+
+    operator fun plus(increment: Float): Proportional = Proportional(factor.plus(increment).coerceAtMost(0.5f))
+    operator fun minus(decrement: Float): Proportional? =
+        try { Proportional(factor.minus(decrement)) } catch (e: IllegalArgumentException) { null }
 }

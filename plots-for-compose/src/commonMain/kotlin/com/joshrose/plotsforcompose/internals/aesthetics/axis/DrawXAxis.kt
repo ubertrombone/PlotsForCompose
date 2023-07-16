@@ -137,7 +137,6 @@ internal fun DrawScope.drawXAxisUnbounded(
 ) {
     val data = Range(guidelines.minOf { it.toFloat() }, guidelines.maxOf { it.toFloat() })
     val range = data.max.minus(data.min)
-    println("Size: ${guidelines.size}")
 
     guidelines.forEachIndexed { index, value ->
         val x = getX(

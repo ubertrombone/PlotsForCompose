@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.axes.DecButton
 import com.joshrose.common.ui.axes.IncButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.util.Proportional
 import java.text.DecimalFormat
 
 @Composable
@@ -189,6 +190,67 @@ fun ShortClickButton(
             Spacer(Modifier.width(10.dp))
 
             val decEnabled = value.factor > lowerLimit && enabled
+            DecButton(
+                enabled = decEnabled,
+                contentDescription = "Decrease $label",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(enabled = decEnabled, onClick = decClick)
+            )
+        }
+    }
+}
+
+@Composable
+fun ShortClickButton(
+    label: String,
+    value: Proportional?,
+    upperLimit: Float,
+    lowerLimit: Float,
+    incClick: () -> Unit,
+    decClick: () -> Unit,
+    enabled: Boolean = true,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            color = colorScheme.primary,
+            fontSize = typography.titleMedium.fontSize,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(Modifier.height(5.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            val incEnabled = ((value?.factor ?: 0f) < upperLimit) && enabled
+            IncButton(
+                enabled = incEnabled,
+                contentDescription = "Increase $label",
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .clickable(enabled = incEnabled, onClick = incClick)
+            )
+
+            Spacer(Modifier.width(10.dp))
+
+            Text(
+                text = DecimalFormat("#.#").format(value?.factor ?: 0).toString(),
+                color = colorScheme.primary,
+                fontSize = typography.labelLarge.fontSize
+            )
+
+            Spacer(Modifier.width(10.dp))
+
+            val decEnabled = ((value?.factor ?: 0f) > lowerLimit) && enabled
             DecButton(
                 enabled = decEnabled,
                 contentDescription = "Decrease $label",

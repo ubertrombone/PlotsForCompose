@@ -48,6 +48,8 @@ fun AxesContent(
     val yAxisLineStates by component.yAxisLineState.subscribeAsState()
     val xLabelsStates by component.xLabelsState.subscribeAsState()
     val yLabelsStates by component.yLabelsState.subscribeAsState()
+    val xBreakStates by component.xBreakState.subscribeAsState()
+    val yBreakStates by component.yBreakState.subscribeAsState()
     val dataStates by component.dataValueStates.subscribeAsState()
 
     val primaryColor = colorScheme.primary
@@ -154,18 +156,20 @@ fun AxesContent(
                     x = "Independent"
                     y = "Dependent"
                 }
-                    // TODO: Rewrite how changing label breaks and guidelines work in sample UI
+                    // TODO: Add axis guideline positions
                     .plus(xAxis(
                         labelConfigs = xLabelConfigs,
                         guidelinesConfigs = xGuidelineConfigs,
                         axisLineConfigs = xAxisLineConfigs,
-                        reverse = false
+                        breaks = xBreakStates.breaks,
+                        labels = xBreakStates.labels
                     ))
                     .plus(unboundYAxis(
                         labelConfigs = yLabelConfigs,
                         guidelinesConfigs = yGuidelineConfigs,
                         axisLineConfigs = yAxisLineConfigs,
-                        reverse = false
+                        breaks = yBreakStates.breaks,
+                        labels = yBreakStates.labels
                     ))
                 plot.show(
                     modifier = Modifier
@@ -193,7 +197,8 @@ fun AxesContent(
                             )
                         is AxesComponent.Child.LabelsChild ->
                             LabelsContent(
-                                component = child.component,
+                                labelsComponent = child.labelComponent,
+                                breaksComponent = child.breaksComponent,
                                 data = component.dataValueStates,
                                 xEnabled = !(!xVisibilityStates.showAxis || !xVisibilityStates.showLabels),
                                 yEnabled = !(!yVisibilityStates.showAxis || !yVisibilityStates.showLabels),

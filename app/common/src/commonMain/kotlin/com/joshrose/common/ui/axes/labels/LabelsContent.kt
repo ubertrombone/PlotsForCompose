@@ -8,20 +8,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.arkivanov.decompose.value.Value
+import com.joshrose.common.components.axes.breaks.BreaksComponent
 import com.joshrose.common.components.axes.labels.LabelsComponent
 import com.joshrose.common.components.axes.models.DataValueStates
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 
 @Composable
 fun LabelsContent(
-    component: LabelsComponent,
+    labelsComponent: LabelsComponent,
+    breaksComponent: BreaksComponent,
     data: Value<DataValueStates>,
     xEnabled: Boolean = true,
     yEnabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    val xLabelsStates by component.xLabelsState.subscribeAsState()
-    val yLabelsStates by component.yLabelsState.subscribeAsState()
+    val xLabelsStates by labelsComponent.xLabelsState.subscribeAsState()
+    val yLabelsStates by labelsComponent.yLabelsState.subscribeAsState()
+    val xBreakStates by breaksComponent.xBreaksState.subscribeAsState()
+    val yBreakStates by breaksComponent.yBreakState.subscribeAsState()
     val allData by data.subscribeAsState()
 
     Row(
@@ -33,7 +37,8 @@ fun LabelsContent(
             label = "X Axis Labels",
             rotation = xLabelsStates.rotation,
             axisOffset = xLabelsStates.axisOffset,
-            breaks = xLabelsStates.breaks,
+            breaks = xBreakStates.breaks,
+            labels = xBreakStates.labels,
             rangeAdjustment =
                 if (allData.minXValue == 0f || allData.maxXValue == 0f) Multiplier(0f)
                 else xLabelsStates.rangeAdjustment,
@@ -41,18 +46,20 @@ fun LabelsContent(
             maxAdjustment = xLabelsStates.maxValueAdjustment,
             minAdjustment = xLabelsStates.minValueAdjustment,
             enabled = xEnabled,
-            incRotationClick = component::incRotationX,
-            decRotationClick = component::decRotationX,
-            incAxisOffsetClick = component::incOffsetX,
-            decAxisOffsetClick = component::decOffsetX,
-            incBreaksClick = component::incBreaksX,
-            decBreaksClick = component::decBreaksX,
-            incRangeAdjClick = component::incRangeAdjustmentX,
-            decRangeAdjClick = component::decRangeAdjustmentX,
-            incMaxAdjClick = component::incMaxAdjustmentX,
-            decMaxAdjClick = component::decMaxAdjustmentX,
-            incMinAdjClick = component::incMinAdjustmentX,
-            decMinAdjClick = component::decMinAdjustmentX,
+            incRotationClick = labelsComponent::incRotationX,
+            decRotationClick = labelsComponent::decRotationX,
+            incAxisOffsetClick = labelsComponent::incOffsetX,
+            decAxisOffsetClick = labelsComponent::decOffsetX,
+            incBreaksClick = breaksComponent::incBreaksX,
+            decBreaksClick = breaksComponent::decBreaksX,
+            incLabelsClick = breaksComponent::incLabelsX,
+            decLabelsClick = breaksComponent::decLabelsX,
+            incRangeAdjClick = labelsComponent::incRangeAdjustmentX,
+            decRangeAdjClick = labelsComponent::decRangeAdjustmentX,
+            incMaxAdjClick = labelsComponent::incMaxAdjustmentX,
+            decMaxAdjClick = labelsComponent::decMaxAdjustmentX,
+            incMinAdjClick = labelsComponent::incMinAdjustmentX,
+            decMinAdjClick = labelsComponent::decMinAdjustmentX,
             modifier = Modifier
                 .fillMaxHeight()
                 .width(IntrinsicSize.Max)
@@ -62,7 +69,8 @@ fun LabelsContent(
             label = "Y Axis Labels",
             rotation = yLabelsStates.rotation,
             axisOffset = yLabelsStates.axisOffset,
-            breaks = yLabelsStates.breaks,
+            breaks = yBreakStates.breaks,
+            labels = yBreakStates.labels,
             rangeAdjustment =
                 if (allData.minYValue == 0f || allData.maxYValue == 0f) Multiplier(0f)
                 else yLabelsStates.rangeAdjustment,
@@ -70,18 +78,20 @@ fun LabelsContent(
             maxAdjustment = yLabelsStates.maxValueAdjustment,
             minAdjustment = yLabelsStates.minValueAdjustment,
             enabled = yEnabled,
-            incRotationClick = component::incRotationY,
-            decRotationClick = component::decRotationY,
-            incAxisOffsetClick = component::incOffsetY,
-            decAxisOffsetClick = component::decOffsetY,
-            incBreaksClick = component::incBreaksY,
-            decBreaksClick = component::decBreaksY,
-            incRangeAdjClick = component::incRangeAdjustmentY,
-            decRangeAdjClick = component::decRangeAdjustmentY,
-            incMaxAdjClick = component::incMaxAdjustmentY,
-            decMaxAdjClick = component::decMaxAdjustmentY,
-            incMinAdjClick = component::incMinAdjustmentY,
-            decMinAdjClick = component::decMinAdjustmentY,
+            incRotationClick = labelsComponent::incRotationY,
+            decRotationClick = labelsComponent::decRotationY,
+            incAxisOffsetClick = labelsComponent::incOffsetY,
+            decAxisOffsetClick = labelsComponent::decOffsetY,
+            incBreaksClick = breaksComponent::incBreaksY,
+            decBreaksClick = breaksComponent::decBreaksY,
+            incLabelsClick = breaksComponent::incLabelsY,
+            decLabelsClick = breaksComponent::decLabelsY,
+            incRangeAdjClick = labelsComponent::incRangeAdjustmentY,
+            decRangeAdjClick = labelsComponent::decRangeAdjustmentY,
+            incMaxAdjClick = labelsComponent::incMaxAdjustmentY,
+            decMaxAdjClick = labelsComponent::decMaxAdjustmentY,
+            incMinAdjClick = labelsComponent::incMinAdjustmentY,
+            decMinAdjClick = labelsComponent::decMinAdjustmentY,
             modifier = Modifier
                 .fillMaxHeight()
                 .width(IntrinsicSize.Max)

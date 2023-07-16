@@ -3,6 +3,7 @@ package com.joshrose.common.components.axes
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import com.joshrose.common.components.axes.axisline.AxisLineComponent
+import com.joshrose.common.components.axes.breaks.BreaksComponent
 import com.joshrose.common.components.axes.guidelines.GuidelinesComponent
 import com.joshrose.common.components.axes.labels.LabelsComponent
 import com.joshrose.common.components.axes.models.*
@@ -24,6 +25,8 @@ interface AxesComponent {
     val yAxisLineState: Value<AxisLineStates.YState>
     val xLabelsState: Value<LabelsStates>
     val yLabelsState: Value<LabelsStates>
+    val xBreakState: Value<BreakStates>
+    val yBreakState: Value<BreakStates>
     val childStack: Value<ChildStack<*, Child>>
 
     fun updateData(data: List<NumberData>)
@@ -39,6 +42,6 @@ interface AxesComponent {
         class VisibilityChild(val component: VisibilityComponent): Child()
         class GuidelinesChild(val component: GuidelinesComponent): Child()
         class AxisLinesChild(val component: AxisLineComponent): Child()
-        class LabelsChild(val component: LabelsComponent): Child()
+        class LabelsChild(val labelComponent: LabelsComponent, val breaksComponent: BreaksComponent): Child()
     }
 }

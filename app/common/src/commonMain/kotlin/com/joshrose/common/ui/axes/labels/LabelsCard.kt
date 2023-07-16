@@ -15,13 +15,15 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.util.RepeatableButton
 import com.joshrose.common.util.ShortClickButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.util.Proportional
 
 @Composable
 fun LabelsCard(
     label: String,
     rotation: Float,
     axisOffset: Float,
-    breaks: Int,
+    breaks: Proportional?,
+    labels: Proportional?,
     rangeAdjustment: Multiplier,
     rangeEnabled: Boolean = true,
     maxAdjustment: Multiplier,
@@ -33,6 +35,8 @@ fun LabelsCard(
     decAxisOffsetClick: () -> Unit,
     incBreaksClick: () -> Unit,
     decBreaksClick: () -> Unit,
+    incLabelsClick: () -> Unit,
+    decLabelsClick: () -> Unit,
     incRangeAdjClick: () -> Unit,
     decRangeAdjClick: () -> Unit,
     incMaxAdjClick: () -> Unit,
@@ -41,6 +45,7 @@ fun LabelsCard(
     decMinAdjClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // TODO: Iron out Breaks and Labels
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),
@@ -86,10 +91,22 @@ fun LabelsCard(
             ShortClickButton(
                 label = "Breaks",
                 value = breaks,
-                upperLimit = 10,
-                lowerLimit = 2,
+                upperLimit = .5f,
+                lowerLimit = 0f,
                 incClick = incBreaksClick,
                 decClick = decBreaksClick,
+                enabled = enabled
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            ShortClickButton(
+                label = "Labels",
+                value = labels,
+                upperLimit = .5f,
+                lowerLimit = 0f,
+                incClick = incLabelsClick,
+                decClick = decLabelsClick,
                 enabled = enabled
             )
 
