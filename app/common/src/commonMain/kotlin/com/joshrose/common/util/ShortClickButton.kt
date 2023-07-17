@@ -243,7 +243,7 @@ fun ShortClickButton(
             Spacer(Modifier.width(10.dp))
 
             Text(
-                text = DecimalFormat("#.#").format(value?.factor ?: 0).toString(),
+                text = DecimalFormat("#.##").format(value?.factor ?: 0).toString(),
                 color = colorScheme.primary,
                 fontSize = typography.labelLarge.fontSize
             )

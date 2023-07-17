@@ -45,7 +45,6 @@ fun LabelsCard(
     decMinAdjClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // TODO: Iron out Breaks and Labels
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(8.dp),

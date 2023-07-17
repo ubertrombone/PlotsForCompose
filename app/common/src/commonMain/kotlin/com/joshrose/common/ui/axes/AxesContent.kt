@@ -156,7 +156,6 @@ fun AxesContent(
                     x = "Independent"
                     y = "Dependent"
                 }
-                    // TODO: Add axis guideline positions
                     .plus(xAxis(
                         labelConfigs = xLabelConfigs,
                         guidelinesConfigs = xGuidelineConfigs,

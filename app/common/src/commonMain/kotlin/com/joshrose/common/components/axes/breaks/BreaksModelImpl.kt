@@ -13,25 +13,25 @@ class BreaksModelImpl(initialState: BreakStates): InstanceKeeper.Instance, Break
 
     override fun incBreaks() {
         scope.launch {
-            breaksState.update { it.copy(breaks = it.breaks?.plus(.1f) ?: Proportional(.1f)) }
+            breaksState.update { it.copy(breaks = it.breaks?.plus(.25f) ?: Proportional(.25f)) }
         }
     }
 
     override fun decBreaks() {
         scope.launch {
-            breaksState.update { it.copy(breaks = it.breaks?.minus(.1f)) }
+            breaksState.update { it.copy(breaks = it.breaks?.minus(.25f)) }
         }
     }
 
     override fun incLabels() {
         scope.launch {
-            breaksState.update { it.copy(labels = it.labels?.plus(.1f) ?: Proportional(.1f)) }
+            breaksState.update { it.copy(labels = it.labels?.plus(.25f) ?: Proportional(.25f)) }
         }
     }
 
     override fun decLabels() {
         scope.launch {
-            breaksState.update { it.copy(labels = it.labels?.minus(.1f)) }
+            breaksState.update { it.copy(labels = it.labels?.minus(.25f)) }
         }
     }
 
