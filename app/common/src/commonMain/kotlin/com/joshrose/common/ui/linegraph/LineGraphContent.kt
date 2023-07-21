@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.plotsforcompose.Stats
-import com.joshrose.plotsforcompose.axis.unboundYAxis
+import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.axis.xAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.figures.LineFigure
@@ -43,13 +43,11 @@ fun LineGraphContent(
                         xAxis(
                             //axisLineConfigs = AxisLineConfiguration.xConfiguration { axisAlignment = AxisAlignment.Start },
                             //guidelinesConfigs = GuidelinesConfiguration.guidelinesConfiguration { showGuidelines = false },
-                            reverse = false,
                             //breaks = Proportional(.25f),
                             labels = Proportional(.5f)
                         ))
                     .plus(
-                        unboundYAxis(
-                            reverse = false,
+                        yAxis(
                             //labels = Proportional(.5f)
                         ))
                 plot.show(

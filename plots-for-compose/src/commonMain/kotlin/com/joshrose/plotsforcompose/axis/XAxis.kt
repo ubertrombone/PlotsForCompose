@@ -14,7 +14,6 @@ fun xAxis(
     breaks: Proportional? = null,
     labels: Proportional? = null,
     naValue: Number? = null,
-    reverse: Boolean? = null
 ) = Scale(
     labelConfigs = labelConfigs,
     guidelinesConfigs = guidelinesConfigs,
@@ -22,6 +21,5 @@ fun xAxis(
     scale = ScaleKind.X,
     breaks = breaks,
     labels = labels,
-    naValue = naValue,
-    reverse = reverse
+    naValue = naValue
 )

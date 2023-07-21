@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.plotsforcompose.internals.plots.lines
 
 import androidx.compose.ui.graphics.drawscope.DrawScope
@@ -10,7 +12,6 @@ import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.axis.util.floatLabelsAndBreaks
 import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
-import com.joshrose.plotsforcompose.internals.util.Range
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalTextApi::class)
@@ -69,17 +70,25 @@ internal fun DrawScope.lineIdentityAxis(
         )
     }
 
+    val yLabelIndices = when {
+        scaleY.labelConfigs?.showLabels == false -> null
+        scaleY.labels == null -> yBreaks?.indices?.toList() ?: y.indices.toList()
+        yBreaks == null ->
+            List(y.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+        else ->
+            List(yBreaks.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+    }
+
     unboundYAxis(
         labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),
         guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
         axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
         labels = yLabels,
+        labelIndices = yLabelIndices,
         guidelines = yBreaks,
-        yRangeValues = Range(min = yAxisData.min, max = yAxisData.max),
         yAxisPosition = yAxisPosition,
         xAxisPosition = xAxisPosition,
         drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
-        range = yAxisData.range,
         textMeasurer = yTextMeasurer
     )
 }

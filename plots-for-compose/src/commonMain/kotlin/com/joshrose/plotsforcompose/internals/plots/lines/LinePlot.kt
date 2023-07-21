@@ -44,7 +44,6 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
-    // TODO: IF xLabels.last() != xStat.last(), draw some space after last label/guideline -- Maybe
     val xBreaks = when {
         scaleX?.guidelinesConfigs?.showGuidelines == false -> null
         scaleX?.breaks == null -> xData.toList()

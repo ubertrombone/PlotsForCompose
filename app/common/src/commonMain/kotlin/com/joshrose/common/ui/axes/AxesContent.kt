@@ -26,8 +26,8 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.Companion.xConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration.Companion.guidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
-import com.joshrose.plotsforcompose.axis.unboundYAxis
 import com.joshrose.plotsforcompose.axis.xAxis
+import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
@@ -163,7 +163,7 @@ fun AxesContent(
                         breaks = xBreakStates.breaks,
                         labels = xBreakStates.labels
                     ))
-                    .plus(unboundYAxis(
+                    .plus(yAxis(
                         labelConfigs = yLabelConfigs,
                         guidelinesConfigs = yGuidelineConfigs,
                         axisLineConfigs = yAxisLineConfigs,

@@ -7,14 +7,13 @@ import com.joshrose.plotsforcompose.internals.Scale
 import com.joshrose.plotsforcompose.internals.ScaleKind
 import com.joshrose.plotsforcompose.util.Proportional
 
-fun unboundYAxis(
+fun yAxis(
     labelConfigs: LabelsConfiguration = LabelsConfiguration(),
     guidelinesConfigs: GuidelinesConfiguration = GuidelinesConfiguration(),
     axisLineConfigs: YConfiguration = YConfiguration(), // If this is ever nullable, update LineCount
     breaks: Proportional? = null,
     labels: Proportional? = null,
-    naValue: Number? = null,
-    reverse: Boolean? = null
+    naValue: Number? = null
 ) = Scale(
     labelConfigs = labelConfigs,
     guidelinesConfigs = guidelinesConfigs,
@@ -22,6 +21,5 @@ fun unboundYAxis(
     scale = ScaleKind.Y,
     breaks = breaks,
     labels = labels,
-    naValue = naValue,
-    reverse = reverse
+    naValue = naValue
 )

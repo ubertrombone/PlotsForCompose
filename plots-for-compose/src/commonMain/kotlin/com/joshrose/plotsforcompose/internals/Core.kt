@@ -97,6 +97,7 @@ class FeatureList(val elements: List<Feature>) : Feature() {
 //    """.trimIndent()
 //}
 
+// TODO: What configs are more appropriate in the class body?
 class Scale(
     val guidelinesConfigs: GuidelinesConfiguration?,
     val labelConfigs: LabelsConfiguration?,
@@ -107,11 +108,10 @@ class Scale(
     val labels: Proportional? = null,
     val naValue: Any? = null,
     val format: String? = null,
-    val reverse: Boolean? = null,
     val position: AxisPosition? = null
 ) : Feature() {
     override fun toString() =
-        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, naValue=$naValue, format=$format, reverse=$reverse)"
+        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, naValue=$naValue, format=$format)"
 }
 
 //open class ConfigsMap internal constructor(

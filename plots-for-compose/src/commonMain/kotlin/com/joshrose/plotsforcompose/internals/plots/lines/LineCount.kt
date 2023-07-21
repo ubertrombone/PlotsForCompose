@@ -43,6 +43,15 @@ internal fun DrawScope.lineCountAxis(
         else -> yBreaks.filterIndexed { index, _ -> index % (1.div(scaleY.labels.factor)).roundToInt() == 0 }
     }
 
+    val yLabelIndices = when {
+        scaleY.labelConfigs?.showLabels == false -> null
+        scaleY.labels == null -> yBreaks?.indices?.toList() ?: y.indices.toList()
+        yBreaks == null ->
+            List(y.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+        else ->
+            List(yBreaks.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+    }
+
     val yGuidelinesFactor =
         if (yBreaks?.size == 1 && (yAxisLineConfigs?.axisAlignment == AxisAlignment.SpaceBetween))
             size.height.div(yBreaks.size.toFloat())
@@ -58,6 +67,7 @@ internal fun DrawScope.lineCountAxis(
         guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
         axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
         labelFactor = yLabelFactor,
+        labelIndices = yLabelIndices,
         guidelinesFactor = yGuidelinesFactor,
         labels = yLabels,
         guidelines = yBreaks,

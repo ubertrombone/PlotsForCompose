@@ -31,7 +31,6 @@ fun Scale.toSpec() = Specifications.Scale(
     name = name,
     naValue = naValue,
     format = format,
-    reverse = reverse,
     position = position
 )
 
