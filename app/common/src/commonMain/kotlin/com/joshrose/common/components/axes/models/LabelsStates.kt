@@ -11,5 +11,4 @@ data class LabelsStates(
     val rangeAdjustment: Multiplier = Multiplier(0f),
     val minValueAdjustment: Multiplier = Multiplier(0f),
     val maxValueAdjustment: Multiplier = Multiplier(0f),
-    val breaks: Int = 5
 ): Parcelable

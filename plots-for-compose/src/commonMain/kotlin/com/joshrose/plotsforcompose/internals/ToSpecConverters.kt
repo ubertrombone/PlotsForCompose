@@ -28,10 +28,7 @@ fun Scale.toSpec() = Specifications.Scale(
     guidelineConfigs = guidelinesConfigs,
     labelConfigs = labelConfigs,
     axisLineConfigs = axisLineConfigs,
-    name = name,
-    naValue = naValue,
-    format = format,
-    position = position
+    name = name
 )
 
 //internal fun asPlotData(rawData: Map<*, *>): Map<String, List<Any?>> {

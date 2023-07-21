@@ -70,18 +70,6 @@ class LabelsModelImpl(initialState: LabelsStates): InstanceKeeper.Instance, Labe
         }
     }
 
-    override fun incBreaks() {
-        scope.launch {
-            labelsState.update { it.copy(breaks = it.breaks.inc()) }
-        }
-    }
-
-    override fun decBreaks() {
-        scope.launch {
-            labelsState.update { it.copy(breaks = it.breaks.dec()) }
-        }
-    }
-
     override fun resetLabels() {
         scope.launch {
             labelsState.update { LabelsStates() }

@@ -10,7 +10,6 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
 
 sealed interface AxisLineConfiguration {
     class XConfiguration(
-        var showAxisLine: Boolean = true,
         var lineColor: Color = md_theme_dark_primary,
         var alpha: Multiplier = Multiplier(1f),
         var strokeWidth: Float = 2f,
@@ -23,7 +22,6 @@ sealed interface AxisLineConfiguration {
     }
 
     class YConfiguration(
-        var showAxisLine: Boolean = true,
         var lineColor: Color = md_theme_dark_primary,
         var alpha: Multiplier = Multiplier(1f),
         var strokeWidth: Float = 2f,

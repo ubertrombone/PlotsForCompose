@@ -11,11 +11,13 @@ import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
+import com.joshrose.plotsforcompose.internals.Scale
 import com.joshrose.plotsforcompose.internals.util.Range
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 @ExperimentalTextApi
 internal fun DrawScope.unboundXAxis(
+    scale: Scale,
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
@@ -46,7 +48,8 @@ internal fun DrawScope.unboundXAxis(
                 guidelinesConfigs = guidelinesConfigs,
                 labelConfigs = labelConfigs,
                 axisLineConfigs = axisLineConfigs,
-                textMeasurer = textMeasurer
+                textMeasurer = textMeasurer,
+                scale = scale
             )
         }
         labels != null -> {
@@ -57,16 +60,18 @@ internal fun DrawScope.unboundXAxis(
                 xAxisPosition = xAxisPosition,
                 labelConfigs = labelConfigs,
                 axisLineConfigs = axisLineConfigs,
-                textMeasurer = textMeasurer
+                textMeasurer = textMeasurer,
+                scale = scale
             )
         }
     }
 
-    if (axisLineConfigs.showAxisLine) drawXAxisLine(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
+    if (scale.showAxisLine) drawXAxisLine(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
 @ExperimentalTextApi
 internal fun DrawScope.boundXAxis(
+    scale: Scale,
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
@@ -100,7 +105,8 @@ internal fun DrawScope.boundXAxis(
                 guidelinesConfigs = guidelinesConfigs,
                 labelConfigs = labelConfigs,
                 axisLineConfigs = axisLineConfigs,
-                textMeasurer = textMeasurer
+                textMeasurer = textMeasurer,
+                scale = scale
             )
         }
         labels != null -> {
@@ -112,12 +118,13 @@ internal fun DrawScope.boundXAxis(
                 xAxisPosition = xAxisPosition,
                 labelConfigs = labelConfigs,
                 axisLineConfigs = axisLineConfigs,
-                textMeasurer = textMeasurer
+                textMeasurer = textMeasurer,
+                scale = scale
             )
         }
     }
 
-    if (axisLineConfigs.showAxisLine) drawXAxisLine(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
+    if (scale.showAxisLine) drawXAxisLine(axisLineConfig = axisLineConfigs, xAxisPosition = xAxisPosition)
 }
 
 @OptIn(ExperimentalTextApi::class)
@@ -133,7 +140,8 @@ internal fun DrawScope.drawXAxisUnbounded(
     guidelinesConfigs: GuidelinesConfiguration,
     labelConfigs: LabelsConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    scale: Scale
 ) {
     val data = Range(guidelines.minOf { it.toFloat() }, guidelines.maxOf { it.toFloat() })
     val range = data.max.minus(data.min)
@@ -178,7 +186,7 @@ internal fun DrawScope.drawXAxisUnbounded(
                     labelConfig = labelConfigs
                 )
 
-                if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                if (scale.showAxisLine && axisLineConfigs.ticks) {
                     drawXTick(
                         axisLineConfig = axisLineConfigs,
                         x = x,
@@ -199,7 +207,8 @@ internal fun DrawScope.drawXAxisUnbounded(
     xAxisPosition: AxisPosition.XAxis,
     labelConfigs: LabelsConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    scale: Scale
 ) {
     val data = Range(labels.minOf { it.toFloat() }, labels.maxOf { it.toFloat() })
     val range = data.max.minus(data.min)
@@ -226,7 +235,7 @@ internal fun DrawScope.drawXAxisUnbounded(
             labelConfig = labelConfigs
         )
 
-        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+        if (scale.showAxisLine && axisLineConfigs.ticks) {
             drawXTick(
                 axisLineConfig = axisLineConfigs,
                 x = x,
@@ -251,7 +260,8 @@ internal fun DrawScope.drawXAxisBounded(
     guidelinesConfigs: GuidelinesConfiguration,
     labelConfigs: LabelsConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    scale: Scale
 ) {
     guidelines.forEachIndexed { index, value ->
         val x =
@@ -286,7 +296,7 @@ internal fun DrawScope.drawXAxisBounded(
                     labelConfig = labelConfigs
                 )
 
-                if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+                if (scale.showAxisLine && axisLineConfigs.ticks) {
                     drawXTick(
                         axisLineConfig = axisLineConfigs,
                         x = x,
@@ -308,7 +318,8 @@ internal fun DrawScope.drawXAxisBounded(
     xAxisPosition: AxisPosition.XAxis,
     labelConfigs: LabelsConfiguration,
     axisLineConfigs: AxisLineConfiguration.XConfiguration,
-    textMeasurer: TextMeasurer
+    textMeasurer: TextMeasurer,
+    scale: Scale
 ) {
     labels.forEachIndexed { index, label ->
         val x =
@@ -325,7 +336,7 @@ internal fun DrawScope.drawXAxisBounded(
             labelConfig = labelConfigs
         )
 
-        if (axisLineConfigs.showAxisLine && axisLineConfigs.ticks) {
+        if (scale.showAxisLine && axisLineConfigs.ticks) {
             drawXTick(
                 axisLineConfig = axisLineConfigs,
                 x = x,

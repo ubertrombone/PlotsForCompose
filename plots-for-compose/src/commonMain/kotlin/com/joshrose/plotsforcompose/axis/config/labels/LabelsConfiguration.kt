@@ -26,13 +26,10 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  */
 // TODO: Labels cannot be greater than breaks
 class LabelsConfiguration(
-    var showLabels: Boolean = true,
     var fontColor: Color = md_theme_dark_primary,
     var textStyle: TextStyle = Typography.labelMedium,
     var axisOffset: Dp = 0.dp,
     var rotation: Float = 0f,
-    var breaks: Int = 5,
-    var labels: Int = 5,
     var minValueAdjustment: Multiplier = Multiplier(0f),
     var maxValueAdjustment: Multiplier = Multiplier(0f),
     var rangeAdjustment: Multiplier = Multiplier(0f),

@@ -18,7 +18,5 @@ interface LabelsModel {
     fun decMaxAdjustment()
     fun incMinAdjustment()
     fun decMinAdjustment()
-    fun incBreaks()
-    fun decBreaks()
     fun resetLabels()
 }

@@ -87,7 +87,7 @@ internal fun Scale?.xConfigurationOrNull(): XConfiguration? {
 
 @Throws(IllegalStateException::class)
 internal fun Scale?.yConfigurationOrNull(): YConfiguration? {
-    check(this?.axisLineConfigs is YConfiguration) { "Axis Line Configurations on the Y scale should be of type YConfiguration." }
+    check(this?.axisLineConfigs is YConfiguration?) { "Axis Line Configurations on the Y scale should be of type YConfiguration." }
     return if (this?.axisLineConfigs is YConfiguration) this.axisLineConfigs else null
 }
 
@@ -120,24 +120,24 @@ internal fun drawZero(
     yAxisData.min == 0f && xAxisData.min == 0f &&
             xAxisPosition == Bottom && yAxisPosition == Start &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
-            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+            scaleX?.showLabels == true && scaleY?.showLabels == true -> false
     yAxisData.max == 0f && xAxisData.min == 0f &&
             xAxisPosition == Top && yAxisPosition == Start &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
-            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+            scaleX?.showLabels == true && scaleY?.showLabels == true -> false
     yAxisData.min == 0f && xAxisData.max == 0f &&
             xAxisPosition == Bottom && yAxisPosition == End &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
-            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+            scaleX?.showLabels == true && scaleY?.showLabels == true -> false
     yAxisData.max == 0f && xAxisData.max == 0f &&
             xAxisPosition == Top && yAxisPosition == End &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
-            scaleX?.labelConfigs?.showLabels == true && scaleY?.labelConfigs?.showLabels == true -> false
+            scaleX?.showLabels == true && scaleY?.showLabels == true -> false
     (xLabels?.min() != 0f && xLabels?.max() != 0f && xLabels?.contains(0f) == true) &&
             (yLabels?.min() != 0f && yLabels?.max() != 0f && yLabels?.contains(0f) == true) &&
             xAxisPosition == Center && yAxisPosition == Center &&
             scaleX.isNotNull() && scaleY.isNotNull() &&
-            (scaleX?.labelConfigs?.showLabels == true || scaleY?.labelConfigs?.showLabels == true) -> false
+            (scaleX?.showLabels == true || scaleY?.showLabels == true) -> false
     else -> true
 }
 

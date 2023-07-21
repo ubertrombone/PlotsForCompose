@@ -45,13 +45,13 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
     val xBreaks = when {
-        scaleX?.guidelinesConfigs?.showGuidelines == false -> null
+        scaleX?.showGuidelines == false -> null
         scaleX?.breaks == null -> xData.toList()
         else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.breaks.factor)).roundToInt() == 0 }
     }
 
     val xLabels = when {
-        scaleX?.labelConfigs?.showLabels == false -> null
+        scaleX?.showLabels == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
         scaleX.labels == null -> xBreaks ?: xData.toList()
         xBreaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
@@ -59,7 +59,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     }
 
     val xLabelIndices = when {
-        scaleX?.labelConfigs?.showLabels == false -> null
+        scaleX?.showLabels == false -> null
         scaleX?.labels == null -> xBreaks?.indices?.toList() ?: xData.indices.toList()
         xBreaks == null ->
             List(xData.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
@@ -100,9 +100,10 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 guidelines = xBreaks,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
-                drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.YConfiguration().ticks,
+                drawYAxis = scaleY.isNotNull() && scaleY?.showAxisLine ?: AxisLineConfiguration.YConfiguration().ticks,
                 axisAlignment = xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween,
-                textMeasurer = xTextMeasurer
+                textMeasurer = xTextMeasurer,
+                scale = scaleX
             )
         }
         scaleY?.let {
@@ -113,7 +114,6 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                     yAxisPosition = yAxisPosition,
                     scaleX = scaleX,
                     scaleY = scaleY,
-                    xAxisLineConfigs = xAxisLineConfigs,
                     yAxisLineConfigs = yAxisLineConfigs,
                     yTextMeasurer = yTextMeasurer
                 )
@@ -124,7 +124,6 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                     yAxisPosition = yAxisPosition,
                     scaleX = scaleX,
                     scaleY = scaleY,
-                    xAxisLineConfigs = xAxisLineConfigs,
                     yAxisLineConfigs = yAxisLineConfigs,
                     yTextMeasurer = yTextMeasurer
                 )

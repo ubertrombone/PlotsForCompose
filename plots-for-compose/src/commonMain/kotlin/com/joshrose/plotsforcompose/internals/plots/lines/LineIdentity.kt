@@ -21,7 +21,6 @@ internal fun DrawScope.lineIdentityAxis(
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
     scaleY: Scale,
-    xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     yTextMeasurer: TextMeasurer
 ) {
@@ -37,7 +36,7 @@ internal fun DrawScope.lineIdentityAxis(
     )
 
     val yBreaks = when {
-        scaleY.guidelinesConfigs?.showGuidelines == false -> null
+        !scaleY.showGuidelines -> null
         scaleY.breaks == null -> floatLabelsAndBreaks(
             amount = y.size,
             minValue = yAxisData.min,
@@ -51,7 +50,7 @@ internal fun DrawScope.lineIdentityAxis(
     }
 
     val yLabels = when {
-        scaleY.labelConfigs?.showLabels == false -> null
+        !scaleY.showLabels -> null
         scaleY.breaks == null && scaleY.labels == null -> floatLabelsAndBreaks(
             amount = y.size,
             minValue = yAxisData.min,
@@ -71,7 +70,7 @@ internal fun DrawScope.lineIdentityAxis(
     }
 
     val yLabelIndices = when {
-        scaleY.labelConfigs?.showLabels == false -> null
+        !scaleY.showLabels -> null
         scaleY.labels == null -> yBreaks?.indices?.toList() ?: y.indices.toList()
         yBreaks == null ->
             List(y.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
@@ -88,7 +87,8 @@ internal fun DrawScope.lineIdentityAxis(
         guidelines = yBreaks,
         yAxisPosition = yAxisPosition,
         xAxisPosition = xAxisPosition,
-        drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
-        textMeasurer = yTextMeasurer
+        drawXAxis = scaleX.isNotNull() && scaleX?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
+        textMeasurer = yTextMeasurer,
+        scale = scaleY
     )
 }

@@ -23,20 +23,19 @@ internal fun DrawScope.lineCountAxis(
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
     scaleY: Scale,
-    xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     yTextMeasurer: TextMeasurer
 ) {
     val y = x.groupingBy { it }.eachCount().values.toSet().sorted().countsRange()
 
     val yBreaks = when {
-        scaleY.guidelinesConfigs?.showGuidelines == false -> null
+        !scaleY.showGuidelines -> null
         scaleY.breaks == null -> y
         else -> y.filterIndexed { index, _ -> index % (1.div(scaleY.breaks.factor)).roundToInt() == 0 }
     }
 
     val yLabels = when {
-        scaleY.labelConfigs?.showLabels == false -> null
+        !scaleY.showLabels -> null
         scaleY.breaks == null && scaleY.labels == null -> y
         scaleY.labels == null -> yBreaks
         yBreaks == null -> y.filterIndexed { index, _ -> index % (1.div(scaleY.labels.factor)).roundToInt() == 0 }
@@ -44,7 +43,7 @@ internal fun DrawScope.lineCountAxis(
     }
 
     val yLabelIndices = when {
-        scaleY.labelConfigs?.showLabels == false -> null
+        !scaleY.showLabels -> null
         scaleY.labels == null -> yBreaks?.indices?.toList() ?: y.indices.toList()
         yBreaks == null ->
             List(y.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
@@ -73,8 +72,9 @@ internal fun DrawScope.lineCountAxis(
         guidelines = yBreaks,
         yAxisPosition = yAxisPosition,
         xAxisPosition = xAxisPosition,
-        drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
+        drawXAxis = scaleX.isNotNull() && scaleX?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
         axisAlignment = yAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween,
-        textMeasurer = yTextMeasurer
+        textMeasurer = yTextMeasurer,
+        scale = scaleY
     )
 }

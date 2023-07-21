@@ -22,8 +22,6 @@ class DefaultLabelsComponent(
     override fun decMaxAdjustmentX() = xLabelsValues.decMaxAdjustment()
     override fun incMinAdjustmentX() = xLabelsValues.incMinAdjustment()
     override fun decMinAdjustmentX() = xLabelsValues.decMinAdjustment()
-    override fun incBreaksX() = xLabelsValues.incBreaks()
-    override fun decBreaksX() = xLabelsValues.decBreaks()
 
     override val yLabelsState: Value<LabelsStates> = yLabelsValues.labelsState
 
@@ -37,6 +35,4 @@ class DefaultLabelsComponent(
     override fun decMaxAdjustmentY() = yLabelsValues.decMaxAdjustment()
     override fun incMinAdjustmentY() = yLabelsValues.incMinAdjustment()
     override fun decMinAdjustmentY() = yLabelsValues.decMinAdjustment()
-    override fun incBreaksY() = yLabelsValues.incBreaks()
-    override fun decBreaksY() = yLabelsValues.decBreaks()
 }

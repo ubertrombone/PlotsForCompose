@@ -17,8 +17,6 @@ interface LabelsComponent {
     fun decMaxAdjustmentX()
     fun incMinAdjustmentX()
     fun decMinAdjustmentX()
-    fun incBreaksX()
-    fun decBreaksX()
 
     val yLabelsState: Value<LabelsStates>
 
@@ -32,6 +30,4 @@ interface LabelsComponent {
     fun decMaxAdjustmentY()
     fun incMinAdjustmentY()
     fun decMinAdjustmentY()
-    fun incBreaksY()
-    fun decBreaksY()
 }

@@ -17,7 +17,6 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
  * @constructor Creates a configuration for axis guidelines.
  */
 class GuidelinesConfiguration(
-    var showGuidelines: Boolean = true,
     var lineColor: Color = md_theme_dark_onBackground,
     var alpha: Multiplier = Multiplier(.1f),
     var strokeWidth: Float = 2f,

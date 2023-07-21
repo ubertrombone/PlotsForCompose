@@ -43,7 +43,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     if (xAxisData.min == xAxisData.max) xAxisData = xAxisData.copy(min = xAxisData.min.minus(1))
 
     val xBreaks = when {
-        scaleX?.guidelinesConfigs?.showGuidelines == false -> null
+        scaleX?.showGuidelines == false -> null
         scaleX?.breaks == null -> floatLabelsAndBreaks(
             amount = x?.size ?: 20,
             minValue = xAxisData.min,
@@ -57,7 +57,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     }
 
     val xLabels = when {
-        scaleX?.labelConfigs?.showLabels == false -> null
+        scaleX?.showLabels == false -> null
         scaleX?.breaks == null && scaleX?.labels == null -> floatLabelsAndBreaks(
             amount = x?.size ?: 20,
             minValue = xAxisData.min,
@@ -77,7 +77,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     }
 
     val xLabelIndices = when {
-        scaleX?.labelConfigs?.showLabels == false -> null
+        scaleX?.showLabels == false -> null
         scaleX?.labels == null -> xBreaks?.indices?.toList() ?: (x?.indices?.toList() ?: (1..20).toList())
         xBreaks == null ->
             List(x?.size ?: 20) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
@@ -94,7 +94,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     if (yAxisData.min == yAxisData.max) yAxisData = yAxisData.copy(min = yAxisData.min.minus(1))
 
     val yBreaks = when {
-        scaleY?.guidelinesConfigs?.showGuidelines == false -> null
+        scaleY?.showGuidelines == false -> null
         scaleY?.breaks == null -> floatLabelsAndBreaks(
             amount = y?.size ?: 20,
             minValue = yAxisData.min,
@@ -108,7 +108,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     }
 
     val yLabels = when {
-        scaleY?.labelConfigs?.showLabels == false -> null
+        scaleY?.showLabels == false -> yBreaks
         scaleY?.breaks == null && scaleY?.labels == null -> floatLabelsAndBreaks(
             amount = y?.size ?: 20,
             minValue = yAxisData.min,
@@ -128,7 +128,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     }
 
     val yLabelIndices = when {
-        scaleY?.labelConfigs?.showLabels == false -> null
+        scaleY?.showLabels == false -> null
         scaleY?.labels == null -> yBreaks?.indices?.toList() ?: (y?.indices?.toList() ?: (1..20).toList())
         yBreaks == null ->
             List(y?.size ?: 20) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
@@ -164,9 +164,10 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
                 guidelines = xBreaks,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
-                drawYAxis = scaleY.isNotNull() && yAxisLineConfigs?.showAxisLine ?: YConfiguration().ticks,
+                drawYAxis = scaleY.isNotNull() && scaleY?.showAxisLine ?: YConfiguration().ticks,
                 drawZero = drawZero,
-                textMeasurer = xTextMeasurer
+                textMeasurer = xTextMeasurer,
+                scale = scaleX
             )
         }
         scaleY?.let {
@@ -179,9 +180,10 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
                 guidelines = yLabels,
                 yAxisPosition = yAxisPosition,
                 xAxisPosition = xAxisPosition,
-                drawXAxis = scaleX.isNotNull() && xAxisLineConfigs?.showAxisLine ?: XConfiguration().ticks,
+                drawXAxis = scaleX.isNotNull() && scaleX?.showAxisLine ?: XConfiguration().ticks,
                 drawZero = drawZero,
-                textMeasurer = yTextMeasurer
+                textMeasurer = yTextMeasurer,
+                scale = scaleY
             )
         }
 

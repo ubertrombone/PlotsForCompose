@@ -6,7 +6,6 @@ import com.joshrose.plotsforcompose.ShowPlot
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
-import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.util.Proportional
 
 class Plot internal constructor(
@@ -97,21 +96,20 @@ class FeatureList(val elements: List<Feature>) : Feature() {
 //    """.trimIndent()
 //}
 
-// TODO: What configs are more appropriate in the class body?
 class Scale(
+    val showGuidelines: Boolean = true,
+    val showLabels: Boolean = true,
+    val showAxisLine: Boolean = true,
     val guidelinesConfigs: GuidelinesConfiguration?,
     val labelConfigs: LabelsConfiguration?,
     val axisLineConfigs: AxisLineConfiguration?,
     val scale: ScaleKind,
-    val name: String? = null,
+    val name: String? = null, // TODO: Consider removing or see how we'll do labels
     val breaks: Proportional? = null,
-    val labels: Proportional? = null,
-    val naValue: Any? = null,
-    val format: String? = null,
-    val position: AxisPosition? = null
+    val labels: Proportional? = null
 ) : Feature() {
     override fun toString() =
-        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, naValue=$naValue, format=$format)"
+        "Scale(scale=$scale, name=$name, breaks=$breaks, labels=$labels, showGuidelines=$showGuidelines, showLabels=$showLabels, showAxisLine=$showAxisLine)"
 }
 
 //open class ConfigsMap internal constructor(

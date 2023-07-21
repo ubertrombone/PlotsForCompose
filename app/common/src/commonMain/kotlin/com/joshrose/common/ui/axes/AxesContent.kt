@@ -54,36 +54,30 @@ fun AxesContent(
 
     val primaryColor = colorScheme.primary
     val xLabelConfigs = labelsConfiguration {
-        showLabels = xVisibilityStates.showLabels
         rotation = xLabelsStates.rotation
         axisOffset = xLabelsStates.axisOffset.dp
         rangeAdjustment = xLabelsStates.rangeAdjustment
         minValueAdjustment = xLabelsStates.minValueAdjustment
         maxValueAdjustment = xLabelsStates.maxValueAdjustment
-        breaks = xLabelsStates.breaks
         fontColor = primaryColor
     }
     val yLabelConfigs = labelsConfiguration {
-        showLabels = yVisibilityStates.showLabels
         rotation = yLabelsStates.rotation
         axisOffset = yLabelsStates.axisOffset.dp
         rangeAdjustment = yLabelsStates.rangeAdjustment
         minValueAdjustment = yLabelsStates.minValueAdjustment
         maxValueAdjustment = yLabelsStates.maxValueAdjustment
-        breaks = yLabelsStates.breaks
         fontColor = primaryColor
     }
 
     val onBackgroundColor = colorScheme.onBackground
     val xGuidelineConfigs = guidelinesConfiguration {
-        showGuidelines = xVisibilityStates.showGuidelines
         strokeWidth = xGuidelinesStates.strokeWidth
         lineColor = onBackgroundColor
         alpha = xGuidelinesStates.alpha
         padding = xGuidelinesStates.padding
     }
     val yGuidelineConfigs = guidelinesConfiguration {
-        showGuidelines = yVisibilityStates.showGuidelines
         strokeWidth = yGuidelinesStates.strokeWidth
         lineColor = onBackgroundColor
         alpha = yGuidelinesStates.alpha
@@ -91,7 +85,6 @@ fun AxesContent(
     }
 
     val xAxisLineConfigs = xConfiguration {
-        showAxisLine = xVisibilityStates.showAxisLine
         ticks = xAxisLineStates.ticks
         lineColor = primaryColor
         strokeWidth = xAxisLineStates.strokeWidth
@@ -99,7 +92,6 @@ fun AxesContent(
         axisPosition = xAxisLineStates.axisPosition
     }
     val yAxisLineConfigs = AxisLineConfiguration.yConfiguration {
-        showAxisLine = yVisibilityStates.showAxisLine
         ticks = yAxisLineStates.ticks
         lineColor = primaryColor
         strokeWidth = yAxisLineStates.strokeWidth
@@ -152,24 +144,31 @@ fun AxesContent(
                     "Independent" to dataStates.data.map { it.x },
                     "Dependent" to dataStates.data.map { it.y }
                 )
-                val plot = composePlot(data = data) {
+                var plot = composePlot(data = data) {
                     x = "Independent"
                     y = "Dependent"
                 }
-                    .plus(xAxis(
+                if (xVisibilityStates.showAxis) plot = plot.plus(xAxis(
+                        showGuidelines = xVisibilityStates.showGuidelines,
+                        showLabels = xVisibilityStates.showLabels,
+                        showAxisLine = xVisibilityStates.showAxisLine,
                         labelConfigs = xLabelConfigs,
                         guidelinesConfigs = xGuidelineConfigs,
                         axisLineConfigs = xAxisLineConfigs,
                         breaks = xBreakStates.breaks,
                         labels = xBreakStates.labels
                     ))
-                    .plus(yAxis(
+                if (yVisibilityStates.showAxis) plot = plot.plus(yAxis(
+                        showGuidelines = yVisibilityStates.showGuidelines,
+                        showLabels = yVisibilityStates.showLabels,
+                        showAxisLine = yVisibilityStates.showAxisLine,
                         labelConfigs = yLabelConfigs,
                         guidelinesConfigs = yGuidelineConfigs,
                         axisLineConfigs = yAxisLineConfigs,
                         breaks = yBreakStates.breaks,
                         labels = yBreakStates.labels
                     ))
+
                 plot.show(
                     modifier = Modifier
                         .fillMaxWidth()
