@@ -10,11 +10,8 @@ import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfigurati
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
-import com.joshrose.plotsforcompose.internals.Scale
+import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundYAxis
-import com.joshrose.plotsforcompose.internals.countsRange
-import com.joshrose.plotsforcompose.internals.isNotNull
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.lineCountAxis(
@@ -28,38 +25,14 @@ internal fun DrawScope.lineCountAxis(
 ) {
     val y = x.groupingBy { it }.eachCount().values.toSet().sorted().countsRange()
 
-    val yBreaks = when {
-        !scaleY.showGuidelines -> null
-        scaleY.breaks == null -> y
-        else -> y.filterIndexed { index, _ -> index % (1.div(scaleY.breaks.factor)).roundToInt() == 0 }
-    }
-
-    val yLabels = when {
-        !scaleY.showLabels -> null
-        scaleY.breaks == null && scaleY.labels == null -> y
-        scaleY.labels == null -> yBreaks
-        yBreaks == null -> y.filterIndexed { index, _ -> index % (1.div(scaleY.labels.factor)).roundToInt() == 0 }
-        else -> yBreaks.filterIndexed { index, _ -> index % (1.div(scaleY.labels.factor)).roundToInt() == 0 }
-    }
-
-    val yLabelIndices = when {
-        !scaleY.showLabels -> null
-        scaleY.labels == null -> yBreaks?.indices?.toList() ?: y.indices.toList()
-        yBreaks == null ->
-            List(y.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-        else ->
-            List(yBreaks.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-    }
+    val yBreaks = getBoundBreaks(scale = scaleY, rawData = y)
+    val yLabels = getBoundLabels(scale = scaleY, rawData = y, breaksData = yBreaks)
+    val yLabelIndices = getIndices(scale = scaleY, rawData = y, breaksData = yBreaks)
 
     val yGuidelinesFactor =
-        if (yBreaks?.size == 1 && (yAxisLineConfigs?.axisAlignment == AxisAlignment.SpaceBetween))
-            size.height.div(yBreaks.size.toFloat())
-        else size.height.div(yBreaks?.size?.plus((yAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
-
+        getYFactor(height = size.height, dataSize = yBreaks?.size, axisAlignment = yAxisLineConfigs?.axisAlignment)
     val yLabelFactor =
-        if (yLabels?.size == 1 && (yAxisLineConfigs?.axisAlignment == AxisAlignment.SpaceBetween))
-            size.height.div(yLabels.size.toFloat())
-        else size.height.div(yLabels?.size?.plus((yAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
+        getYFactor(height = size.height, dataSize = yLabels?.size, axisAlignment = yAxisLineConfigs?.axisAlignment)
 
     boundYAxis(
         labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),

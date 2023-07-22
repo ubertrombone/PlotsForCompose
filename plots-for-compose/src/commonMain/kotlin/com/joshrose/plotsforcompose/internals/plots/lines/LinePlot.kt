@@ -16,10 +16,8 @@ import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
-import kotlin.math.roundToInt
 
 // TODO: On boundAxis, user should deal with sorting...
-// TODO: Should LineCount/Identity throw an error when Y axis type != Stat type?
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
@@ -44,28 +42,9 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
 
-    val xBreaks = when {
-        scaleX?.showGuidelines == false -> null
-        scaleX?.breaks == null -> xData.toList()
-        else -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.breaks.factor)).roundToInt() == 0 }
-    }
-
-    val xLabels = when {
-        scaleX?.showLabels == false -> null
-        scaleX?.breaks == null && scaleX?.labels == null -> xData.toList()
-        scaleX.labels == null -> xBreaks ?: xData.toList()
-        xBreaks == null -> xData.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
-        else -> xBreaks.filterIndexed { index, _ -> index % (1.div(scaleX.labels.factor)).roundToInt() == 0 }
-    }
-
-    val xLabelIndices = when {
-        scaleX?.showLabels == false -> null
-        scaleX?.labels == null -> xBreaks?.indices?.toList() ?: xData.indices.toList()
-        xBreaks == null ->
-            List(xData.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-        else ->
-            List(xBreaks.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-    }
+    val xBreaks = getBoundBreaks(scale = scaleX, rawData = xData)
+    val xLabels = getBoundLabels(scale = scaleX, rawData = xData, breaksData = xBreaks)
+    val xLabelIndices = getIndices(scale = scaleX, rawData = xData, breaksData = xBreaks)
 
     val yAxisData = if (figure.stat.kind == IDENTITY) getAxisData(
         data = y,
@@ -84,9 +63,9 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
     Canvas(modifier = modifier) {
         val xGuidelineFactor =
-            size.width.div(xBreaks?.size?.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
+            getXFactor(width = size.width, dataSize = xBreaks?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
         val xLabelFactor =
-            size.width.div(xLabels?.size?.plus((xAxisLineConfigs?.axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
+            getXFactor(width = size.width, dataSize = xLabels?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
 
         scaleX?.let {
             boundXAxis(
@@ -119,7 +98,8 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 )
             } else {
                 lineIdentityAxis(
-                    plot = plot,
+                    y = y,
+                    yAxisData = yAxisData!!,
                     xAxisPosition = xAxisPosition,
                     yAxisPosition = yAxisPosition,
                     scaleX = scaleX,

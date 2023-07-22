@@ -16,7 +16,6 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  * @property textStyle the [TextStyle] of the labels.
  * @property axisOffset value to offset each label from the respective axis.
  * @property rotation the number of degrees to rotate each label.
- * @property breaks the number of labels to apply to the axis.
  * @property minValueAdjustment the amount as a [Multiplier] to adjust the given data's minimum value.
  * @property maxValueAdjustment the amount as a [Multiplier] to adjust the given data's maximum value.
  * @property rangeAdjustment the amount as a [Multiplier] to adjust the given data's range and
@@ -24,7 +23,6 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  * @property format a string pattern to format numeric labels. E.g., "#.##" -- "1.23"
  * @constructor Creates a configuration for axis labels.
  */
-// TODO: Labels cannot be greater than breaks
 class LabelsConfiguration(
     var fontColor: Color = md_theme_dark_primary,
     var textStyle: TextStyle = Typography.labelMedium,

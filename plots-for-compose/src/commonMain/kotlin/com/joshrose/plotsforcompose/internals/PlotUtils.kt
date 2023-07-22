@@ -2,12 +2,15 @@ package com.joshrose.plotsforcompose.internals
 
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.*
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
+import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
+import com.joshrose.plotsforcompose.axis.util.floatLabelsAndBreaks
 import com.joshrose.plotsforcompose.internals.standardizing.SeriesStandardizing
 import com.joshrose.plotsforcompose.internals.util.AxisData
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
+import kotlin.math.roundToInt
 
 @Throws(IllegalStateException::class)
 internal fun getData(data: Map<*, *>?): Map<String, List<Any?>> {
@@ -78,6 +81,91 @@ internal fun getAxisData(
 
     return AxisData(min = min, max = max, range = range)
 }
+
+internal fun getBoundBreaks(scale: Scale?, rawData: Collection<Any?>): List<Any?>? = when {
+    scale?.showGuidelines == false -> null
+    scale?.breaks == null -> rawData.toList()
+    else -> rawData.filterIndexed { index, _ -> index % (1.div(scale.breaks.factor)).roundToInt() == 0 }
+}
+
+internal fun getUnboundBreaks(
+    scale: Scale?,
+    rawData: Collection<Any?>,
+    axisData: AxisData
+): List<Float>? = when {
+    scale?.showGuidelines == false -> null
+    scale?.breaks == null -> floatLabelsAndBreaks(
+        amount = rawData.size,
+        minValue = axisData.min,
+        maxValue = axisData.max
+    )
+    else -> floatLabelsAndBreaks(
+        amount = (rawData.size.times((scale.breaks.factor))).roundToInt(),
+        minValue = axisData.min,
+        maxValue = axisData.max
+    )
+}
+
+internal fun getBoundLabels(
+    scale: Scale?,
+    rawData: Collection<Any?>,
+    breaksData: List<Any?>?
+): List<Any?>? = when {
+    scale?.showLabels == false -> null
+    scale?.breaks == null && scale?.labels == null -> rawData.toList()
+    scale.labels == null -> breaksData ?: rawData.toList()
+    breaksData == null -> rawData.filterIndexed { index, _ -> index % (1.div(scale.labels.factor)).roundToInt() == 0 }
+    else -> breaksData.filterIndexed { index, _ -> index % (1.div(scale.labels.factor)).roundToInt() == 0 }
+}
+
+internal fun getUnboundLabels(
+    scale: Scale?,
+    rawData: Collection<Any?>,
+    breaksData: List<Float>?,
+    axisData: AxisData
+): List<Float>? = when {
+    scale?.showLabels == false -> null
+    scale?.breaks == null && scale?.labels == null -> floatLabelsAndBreaks(
+        amount = rawData.size,
+        minValue = axisData.min,
+        maxValue = axisData.max
+    )
+    scale.labels == null -> breaksData ?: floatLabelsAndBreaks(
+        amount = rawData.size,
+        minValue = axisData.min,
+        maxValue = axisData.max
+    )
+    breaksData == null -> floatLabelsAndBreaks(
+        amount = (rawData.size.times((scale.labels.factor))).roundToInt(),
+        minValue = axisData.min,
+        maxValue = axisData.max
+    )
+    else -> floatLabelsAndBreaks(
+        amount = (breaksData.size.times((scale.labels.factor))).roundToInt(),
+        minValue = axisData.min,
+        maxValue = axisData.max
+    )
+}
+
+internal fun getIndices(
+    scale: Scale?,
+    rawData: Collection<Any?>,
+    breaksData: List<Any?>?
+): List<Int>? = when {
+    scale?.showLabels == false -> null
+    scale?.labels == null -> breaksData?.indices?.toList() ?: rawData.indices.toList()
+    breaksData == null ->
+        List(rawData.size) { index -> if (index % (1.div(scale.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+    else ->
+        List(breaksData.size) { index -> if (index % (1.div(scale.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
+}
+
+internal fun getYFactor(height: Float, dataSize: Int?, axisAlignment: AxisAlignment.YAxis?): Float =
+    if (dataSize == 1 && (axisAlignment == AxisAlignment.SpaceBetween)) height.div(dataSize.toFloat())
+    else height.div(dataSize?.plus((axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
+
+internal fun getXFactor(width: Float, dataSize: Int?, axisAlignment: AxisAlignment.XAxis?): Float =
+    width.div(dataSize?.plus((axisAlignment ?: AxisAlignment.SpaceBetween).offset)?.toFloat() ?: 1f)
 
 @Throws(IllegalStateException::class)
 internal fun Scale?.xConfigurationOrNull(): XConfiguration? {

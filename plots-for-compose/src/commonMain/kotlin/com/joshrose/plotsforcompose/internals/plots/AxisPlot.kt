@@ -12,12 +12,10 @@ import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.X
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.YConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
-import com.joshrose.plotsforcompose.axis.util.floatLabelsAndBreaks
 import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.drawZero
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundXAxis
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -42,48 +40,9 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     )
     if (xAxisData.min == xAxisData.max) xAxisData = xAxisData.copy(min = xAxisData.min.minus(1))
 
-    val xBreaks = when {
-        scaleX?.showGuidelines == false -> null
-        scaleX?.breaks == null -> floatLabelsAndBreaks(
-            amount = x?.size ?: 20,
-            minValue = xAxisData.min,
-            maxValue = xAxisData.max
-        )
-        else -> floatLabelsAndBreaks(
-            amount = ((x?.size ?: 20).times((scaleX.breaks.factor))).roundToInt(),
-            minValue = xAxisData.min,
-            maxValue = xAxisData.max
-        )
-    }
-
-    val xLabels = when {
-        scaleX?.showLabels == false -> null
-        scaleX?.breaks == null && scaleX?.labels == null -> floatLabelsAndBreaks(
-            amount = x?.size ?: 20,
-            minValue = xAxisData.min,
-            maxValue = xAxisData.max
-        )
-        scaleX.labels == null -> xBreaks
-        xBreaks == null -> floatLabelsAndBreaks(
-            amount = ((x?.size ?: 20).times((scaleX.labels.factor))).roundToInt(),
-            minValue = xAxisData.min,
-            maxValue = xAxisData.max
-        )
-        else -> floatLabelsAndBreaks(
-            amount = (xBreaks.size.times((scaleX.labels.factor))).roundToInt(),
-            minValue = xAxisData.min,
-            maxValue = xAxisData.max
-        )
-    }
-
-    val xLabelIndices = when {
-        scaleX?.showLabels == false -> null
-        scaleX?.labels == null -> xBreaks?.indices?.toList() ?: (x?.indices?.toList() ?: (1..20).toList())
-        xBreaks == null ->
-            List(x?.size ?: 20) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-        else ->
-            List(xBreaks.size) { index -> if (index % (1.div(scaleX.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-    }
+    val xBreaks = getUnboundBreaks(scale = scaleX, rawData = (x ?: (1..20).toList()), axisData = xAxisData)
+    val xLabels = getUnboundLabels(scale = scaleX, rawData = (x ?: (1..20).toList()), breaksData = xBreaks, axisData = xAxisData)
+    val xLabelIndices = getIndices(scale = scaleX, rawData = (x ?: (1..20).toList()), breaksData = xBreaks)
 
     var yAxisData = getAxisData(
         data = y,
@@ -93,48 +52,9 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
     )
     if (yAxisData.min == yAxisData.max) yAxisData = yAxisData.copy(min = yAxisData.min.minus(1))
 
-    val yBreaks = when {
-        scaleY?.showGuidelines == false -> null
-        scaleY?.breaks == null -> floatLabelsAndBreaks(
-            amount = y?.size ?: 20,
-            minValue = yAxisData.min,
-            maxValue = yAxisData.max
-        )
-        else -> floatLabelsAndBreaks(
-            amount = ((y?.size ?: 20).times((scaleY.breaks.factor))).roundToInt(),
-            minValue = yAxisData.min,
-            maxValue = yAxisData.max
-        )
-    }
-
-    val yLabels = when {
-        scaleY?.showLabels == false -> yBreaks
-        scaleY?.breaks == null && scaleY?.labels == null -> floatLabelsAndBreaks(
-            amount = y?.size ?: 20,
-            minValue = yAxisData.min,
-            maxValue = yAxisData.max
-        )
-        scaleY.labels == null -> yBreaks
-        yBreaks == null -> floatLabelsAndBreaks(
-            amount = ((y?.size ?: 20).times((scaleY.labels.factor))).roundToInt(),
-            minValue = yAxisData.min,
-            maxValue = yAxisData.max
-        )
-        else -> floatLabelsAndBreaks(
-            amount = (yBreaks.size.times((scaleY.labels.factor))).roundToInt(),
-            minValue = yAxisData.min,
-            maxValue = yAxisData.max
-        )
-    }
-
-    val yLabelIndices = when {
-        scaleY?.showLabels == false -> null
-        scaleY?.labels == null -> yBreaks?.indices?.toList() ?: (y?.indices?.toList() ?: (1..20).toList())
-        yBreaks == null ->
-            List(y?.size ?: 20) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-        else ->
-            List(yBreaks.size) { index -> if (index % (1.div(scaleY.labels.factor)).roundToInt() == 0) index else null }.filterNotNull()
-    }
+    val yBreaks = getUnboundBreaks(scale = scaleY, rawData = (y ?: (1..20).toList()), axisData = yAxisData)
+    val yLabels = getUnboundLabels(scale = scaleY, rawData = (y ?: (1..20).toList()), breaksData = yBreaks, axisData = yAxisData)
+    val yLabelIndices = getIndices(scale = scaleY, rawData = (y ?: (1..20).toList()), breaksData = yBreaks)
 
     val xAxisLineConfigs = scaleX.xConfigurationOrNull()
     val yAxisLineConfigs = scaleY.yConfigurationOrNull()
@@ -177,7 +97,7 @@ internal fun AxisPlot(plot: Plot, modifier: Modifier = Modifier) {
                 axisLineConfigs = yAxisLineConfigs ?: YConfiguration(),
                 labels = yLabels,
                 labelIndices = yLabelIndices,
-                guidelines = yLabels,
+                guidelines = yBreaks,
                 yAxisPosition = yAxisPosition,
                 xAxisPosition = xAxisPosition,
                 drawXAxis = scaleX.isNotNull() && scaleX?.showAxisLine ?: XConfiguration().ticks,
