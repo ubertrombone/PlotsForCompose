@@ -10,6 +10,7 @@ import com.joshrose.plotsforcompose.internals.util.AxisData
 import com.joshrose.plotsforcompose.internals.util.maxValue
 import com.joshrose.plotsforcompose.internals.util.minValue
 import com.joshrose.plotsforcompose.internals.util.range
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 @Throws(IllegalStateException::class)
@@ -62,13 +63,16 @@ internal fun getAxisData(
     maxValueAdjustment: Multiplier?,
     rangeAdjustment: Multiplier?
 ): AxisData {
+    val tentativeMax = data?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f
+    val tentativeMin = data?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 100f
+
     val max = maxValue(
-        maxValue = data?.mapNotNull { it.toFloatOrNull() }?.maxOrNull() ?: 100f,
+        maxValue = if (abs(tentativeMin) > tentativeMax) abs(tentativeMin) else tentativeMax,
         maxValueAdjustment = maxValueAdjustment
     )
 
     val min = minValue(
-        minValue = data?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 0f,
+        minValue = tentativeMin,
         maxValue = max,
         minValueAdjustment = minValueAdjustment
     )
