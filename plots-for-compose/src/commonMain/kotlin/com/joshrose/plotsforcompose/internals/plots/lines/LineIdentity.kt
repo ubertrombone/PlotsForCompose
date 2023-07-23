@@ -99,14 +99,6 @@ internal fun DrawScope.drawLineIdentity(
         )
 
         coordinates.add(x to y)
-
-        if (lineConfigs.markers) {
-            drawCircle(
-                color = lineConfigs.markerColor ?: Color.White,
-                radius = lineConfigs.markerSize?.toPx() ?: 5f,
-                center = Offset(x, y)
-            )
-        }
     }
 
     coordinates.forEachIndexed { index, (x, y) ->
@@ -131,6 +123,16 @@ internal fun DrawScope.drawLineIdentity(
         color = lineConfigs.lineColor,
         style = Stroke(width = lineConfigs.strokeWidth.toPx())
     )
+
+    coordinates.forEach {
+        if (lineConfigs.markers) {
+            drawCircle(
+                color = lineConfigs.markerColor ?: Color.White,
+                radius = lineConfigs.markerSize?.toPx() ?: 5f,
+                center = Offset(it.first, it.second)
+            )
+        }
+    }
 }
 
 internal fun getY(

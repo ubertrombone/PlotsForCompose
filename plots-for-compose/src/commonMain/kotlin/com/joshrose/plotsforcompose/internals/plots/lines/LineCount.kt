@@ -99,15 +99,6 @@ internal fun DrawScope.drawLineCount(
             else size.height.minus(yValues.indexOf(count).plus(1).times(yFactor))
 
         coordinates.add(x to y)
-
-        if (lineConfigs.markers) {
-            drawCircle(
-                color = lineConfigs.markerColor ?: Color.White,
-                radius = lineConfigs.markerSize?.toPx() ?: 5f,
-                center = Offset(x, y)
-            )
-        }
-
         // TODO: Custom marker types
         // TODO: Labels on tap/hover
     }
@@ -134,4 +125,14 @@ internal fun DrawScope.drawLineCount(
         color = lineConfigs.lineColor,
         style = Stroke(width = lineConfigs.strokeWidth.toPx())
     )
+
+    coordinates.forEach {
+        if (lineConfigs.markers) {
+            drawCircle(
+                color = lineConfigs.markerColor ?: Color.White,
+                radius = lineConfigs.markerSize?.toPx() ?: 5f,
+                center = Offset(it.first, it.second)
+            )
+        }
+    }
 }
