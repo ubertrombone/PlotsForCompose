@@ -67,7 +67,11 @@ internal fun getAxisData(
     val tentativeMin = data?.mapNotNull { it.toFloatOrNull() }?.minOrNull() ?: 100f
 
     val max = maxValue(
-        maxValue = if (abs(tentativeMin) > tentativeMax) abs(tentativeMin) else tentativeMax,
+        maxValue = when {
+            tentativeMin <= 0 && tentativeMax <= 0 -> tentativeMax
+            abs(tentativeMin) > tentativeMax -> abs(tentativeMin)
+            else -> tentativeMax
+        },
         maxValueAdjustment = maxValueAdjustment
     )
 

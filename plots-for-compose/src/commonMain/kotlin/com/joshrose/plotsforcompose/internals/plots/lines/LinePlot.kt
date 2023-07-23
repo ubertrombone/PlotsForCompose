@@ -18,6 +18,7 @@ import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
 
 // TODO: On boundAxis, user should deal with sorting...
+// TODO: Test how null values get drawn or if they throw errors
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
@@ -106,11 +107,15 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             lineIdentityFigure(
                 y = y,
                 yAxisData = yAxisData!!,
+                xValues = xData,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 scaleX = scaleX,
                 scaleY = scaleY,
+                xDataFactor = xDataFactor,
+                lineConfigs = configs,
                 yAxisLineConfigs = yAxisLineConfigs,
+                xAxisLineConfigs = xAxisLineConfigs,
                 yTextMeasurer = yTextMeasurer
             )
         }

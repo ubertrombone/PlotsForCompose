@@ -13,6 +13,7 @@ import com.joshrose.plotsforcompose.axis.util.AxisAlignment
 import com.joshrose.plotsforcompose.axis.util.AxisPosition
 import com.joshrose.plotsforcompose.internals.Scale
 import com.joshrose.plotsforcompose.internals.util.Range
+import com.joshrose.plotsforcompose.internals.util.range
 import com.joshrose.plotsforcompose.util.calculateOffset
 
 @ExperimentalTextApi
@@ -143,8 +144,13 @@ internal fun DrawScope.drawYAxisUnbounded(
     textMeasurer: TextMeasurer,
     scale: Scale
 ) {
+    println("Guidelines: $guidelines")
     val data = Range(guidelines.minOf { it.toFloat() }, guidelines.maxOf { it.toFloat() })
-    val range = data.max.minus(data.min)
+    val range = range(
+        minValue = data.min,
+        maxValue = data.max,
+        rangeAdjustment = labelConfigs.rangeAdjustment
+    )
 
     guidelines.reversed().forEachIndexed { index, value ->
         val y = getY(
@@ -211,7 +217,11 @@ internal fun DrawScope.drawYAxisUnbounded(
     scale: Scale
 ) {
     val data = Range(labels.minOf { it.toFloat() }, labels.maxOf { it.toFloat() })
-    val range = data.max.minus(data.min)
+    val range = range(
+        minValue = data.min,
+        maxValue = data.max,
+        rangeAdjustment = labelConfigs.rangeAdjustment
+    )
 
     labels.reversed().forEachIndexed { index, label ->
         val y = getY(

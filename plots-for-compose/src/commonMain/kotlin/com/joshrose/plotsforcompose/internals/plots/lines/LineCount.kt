@@ -88,8 +88,6 @@ internal fun DrawScope.drawLineCount(
     val coordinates: MutableList<Pair<Float, Float>> = mutableListOf()
     val linePath = Path().apply { moveTo(x = 0f, y = size.height) }
 
-    println("data: $data")
-
     data.forEachIndexed { index, (_, count) ->
         val x =
             if (xAxisAlignment == AxisAlignment.Start || xAxisAlignment == AxisAlignment.SpaceBetween) index.times(xFactor)
