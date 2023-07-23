@@ -31,7 +31,7 @@ internal fun DrawScope.unboundYAxis(
     textMeasurer: TextMeasurer
 ) {
     val x = getX(yAxisPosition = yAxisPosition, width = size.width)
-    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+    val xAxisPositionYValue = getXAxisYPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
     val secondXAxisPositionYValue = if (xAxisPosition == AxisPosition.Both) 0f else null
 
     when {
@@ -87,7 +87,7 @@ internal fun DrawScope.boundYAxis(
     textMeasurer: TextMeasurer
 ) {
     val x = getX(yAxisPosition = yAxisPosition, width = size.width)
-    val xAxisPositionYValue = getXAxisXPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
+    val xAxisPositionYValue = getXAxisYPosition(drawXAxis = drawXAxis, xAxisPosition = xAxisPosition, height = size.height)
     val secondXAxisPositionYValue = if (xAxisPosition == AxisPosition.Both) 0f else null
 
     when {
@@ -375,7 +375,7 @@ internal fun getX(yAxisPosition: AxisPosition.YAxis, width: Float) = when (yAxis
 }
 
 @Throws(IllegalStateException::class)
-internal fun getXAxisXPosition(
+internal fun getXAxisYPosition(
     drawXAxis: Boolean,
     xAxisPosition: AxisPosition.XAxis,
     height: Float

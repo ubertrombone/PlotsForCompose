@@ -34,7 +34,7 @@ fun LineGraphContent(
         ) {
             item {
                 val plot = composePlot(data = rawData) {
-                    figure = LineFigure(stat = Stats.identity)
+                    figure = LineFigure(stat = Stats.count())
                     x = "Independent"
                     y = "Dependent"
                 }

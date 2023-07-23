@@ -12,13 +12,13 @@ import com.joshrose.plotsforcompose.internals.aesthetics.axis.unboundYAxis
 import com.joshrose.plotsforcompose.internals.util.AxisData
 
 @OptIn(ExperimentalTextApi::class)
-internal fun DrawScope.lineIdentityAxis(
+internal fun DrawScope.lineIdentityFigure(
     y: List<Any?>,
     yAxisData: AxisData,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
-    scaleY: Scale,
+    scaleY: Scale?,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     yTextMeasurer: TextMeasurer
 ) {
@@ -26,17 +26,19 @@ internal fun DrawScope.lineIdentityAxis(
     val yLabels = getUnboundLabels(scale = scaleY, rawData = y, breaksData = yBreaks, axisData = yAxisData)
     val yLabelIndices = getIndices(scale = scaleY, rawData = y, breaksData = yBreaks)
 
-    unboundYAxis(
-        labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),
-        guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
-        axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
-        labels = yLabels,
-        labelIndices = yLabelIndices,
-        guidelines = yBreaks,
-        yAxisPosition = yAxisPosition,
-        xAxisPosition = xAxisPosition,
-        drawXAxis = scaleX.isNotNull() && scaleX?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
-        textMeasurer = yTextMeasurer,
-        scale = scaleY
-    )
+    scaleY?.let {
+        unboundYAxis(
+            labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),
+            guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
+            axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
+            labels = yLabels,
+            labelIndices = yLabelIndices,
+            guidelines = yBreaks,
+            yAxisPosition = yAxisPosition,
+            xAxisPosition = xAxisPosition,
+            drawXAxis = scaleX.isNotNull() && scaleX?.showAxisLine ?: AxisLineConfiguration.XConfiguration().ticks,
+            textMeasurer = yTextMeasurer,
+            scale = scaleY
+        )
+    }
 }

@@ -25,6 +25,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val yTextMeasurer = rememberTextMeasurer()
 
     val figure = plot.mapping.map["figure"] as LineFigure
+    val configs = figure.configs
     val data = getData(plot.data)
 
     val x = asMappingData(data = data, mapping = plot.mapping.map, key = "x")
@@ -37,7 +38,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
-    val xData = if (figure.stat.kind == COUNT) x.toSet() else x
+    val xData = if (figure.stat.kind == COUNT) x.toSet() else x // TODO: This is the full X Data - pass to draw funcs
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
@@ -66,6 +67,8 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             getXFactor(width = size.width, dataSize = xBreaks?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
         val xLabelFactor =
             getXFactor(width = size.width, dataSize = xLabels?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
+        val xDataFactor =
+            getXFactor(width = size.width, dataSize = xData.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
 
         scaleX?.let {
             boundXAxis(
@@ -85,29 +88,35 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 scale = scaleX
             )
         }
-        scaleY?.let {
-            if (figure.stat.kind == COUNT) {
-                lineCountAxis(
-                    x = x,
-                    xAxisPosition = xAxisPosition,
-                    yAxisPosition = yAxisPosition,
-                    scaleX = scaleX,
-                    scaleY = scaleY,
-                    yAxisLineConfigs = yAxisLineConfigs,
-                    yTextMeasurer = yTextMeasurer
-                )
-            } else {
-                lineIdentityAxis(
-                    y = y,
-                    yAxisData = yAxisData!!,
-                    xAxisPosition = xAxisPosition,
-                    yAxisPosition = yAxisPosition,
-                    scaleX = scaleX,
-                    scaleY = scaleY,
-                    yAxisLineConfigs = yAxisLineConfigs,
-                    yTextMeasurer = yTextMeasurer
-                )
-            }
+
+        if (figure.stat.kind == COUNT) {
+            lineCountFigure(
+                x = x,
+                xAxisPosition = xAxisPosition,
+                yAxisPosition = yAxisPosition,
+                scaleX = scaleX,
+                scaleY = scaleY,
+                xDataFactor = xDataFactor,
+                lineConfigs = configs,
+                yAxisLineConfigs = yAxisLineConfigs,
+                xAxisLineConfigs = xAxisLineConfigs,
+                yTextMeasurer = yTextMeasurer
+            )
+        } else {
+            lineIdentityFigure(
+                y = y,
+                yAxisData = yAxisData!!,
+                xAxisPosition = xAxisPosition,
+                yAxisPosition = yAxisPosition,
+                scaleX = scaleX,
+                scaleY = scaleY,
+                yAxisLineConfigs = yAxisLineConfigs,
+                yTextMeasurer = yTextMeasurer
+            )
         }
+
+        // TODO: Draw line graphs
+        // TODO: 1 - lineCount - Needs X and Y factors -- consider moving Y Factor calc here if possible, or just recalc -- Maybe lineCountAxis returns factors?
+        // TODO: 2 - lineIdentity - Needs X factor
     }
 }
