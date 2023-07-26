@@ -2,7 +2,7 @@
 
 buildscript {
     dependencies {
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath(deps.gradle)
     }
 }
 group = "com.joshrose"
