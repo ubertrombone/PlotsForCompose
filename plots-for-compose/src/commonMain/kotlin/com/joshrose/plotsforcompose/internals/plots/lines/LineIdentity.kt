@@ -118,10 +118,11 @@ internal fun DrawScope.drawLineIdentity(
         }
     }
 
+    // TODO: Maybe this could be lifted out?
     drawPath(
         path = linePath,
         color = lineConfigs.lineColor,
-        style = Stroke(width = lineConfigs.strokeWidth.toPx())
+        style = Stroke(width = lineConfigs.strokeWidth.toPx(), pathEffect = lineConfigs.pathEffect)
     )
 
     coordinates.forEach {

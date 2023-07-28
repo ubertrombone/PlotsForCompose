@@ -18,7 +18,6 @@ import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
 
 // TODO: On boundAxis, user should deal with sorting...
-// TODO: Test how null values get drawn or if they throw errors
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
@@ -39,7 +38,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
-    val xData = if (figure.stat.kind == COUNT) x.toSet() else x // TODO: This is the full X Data - pass to draw funcs
+    val xData = if (figure.stat.kind == COUNT) x.toSet() else x
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
@@ -119,9 +118,5 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 yTextMeasurer = yTextMeasurer
             )
         }
-
-        // TODO: Draw line graphs
-        // TODO: 1 - lineCount - Needs X and Y factors -- consider moving Y Factor calc here if possible, or just recalc -- Maybe lineCountAxis returns factors?
-        // TODO: 2 - lineIdentity - Needs X factor
     }
 }
