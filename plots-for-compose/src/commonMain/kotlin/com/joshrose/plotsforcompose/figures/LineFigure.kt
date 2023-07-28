@@ -3,7 +3,7 @@ package com.joshrose.plotsforcompose.figures
 import com.joshrose.plotsforcompose.Stats
 import com.joshrose.plotsforcompose.internals.layer.StatConfigs
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration
-import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration.Companion.lineGraphConfiguration
+import com.joshrose.plotsforcompose.linegraph.config.lineGraphConfiguration
 
 class LineFigure(
     val configs: LineGraphConfiguration = lineGraphConfiguration(),

@@ -22,10 +22,10 @@ import com.joshrose.common.ui.axes.labels.LabelsContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.*
 import com.joshrose.common.util.ImageResources.*
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
-import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration.Companion.xConfiguration
-import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration.Companion.guidelinesConfiguration
-import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.xConfiguration
+import com.joshrose.plotsforcompose.axis.config.axisline.yConfiguration
+import com.joshrose.plotsforcompose.axis.config.guidelines.guidelinesConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.labelsConfiguration
 import com.joshrose.plotsforcompose.axis.xAxis
 import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.composePlot
@@ -91,7 +91,7 @@ fun AxesContent(
         alpha = xAxisLineStates.alpha
         axisPosition = xAxisLineStates.axisPosition
     }
-    val yAxisLineConfigs = AxisLineConfiguration.yConfiguration {
+    val yAxisLineConfigs = yConfiguration {
         ticks = yAxisLineStates.ticks
         lineColor = primaryColor
         strokeWidth = yAxisLineStates.strokeWidth

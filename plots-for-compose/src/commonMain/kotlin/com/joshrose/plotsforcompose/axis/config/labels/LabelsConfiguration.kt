@@ -23,7 +23,7 @@ import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
  * @property format a string pattern to format numeric labels. E.g., "#.##" -- "1.23"
  * @constructor Creates a configuration for axis labels.
  */
-class LabelsConfiguration(
+data class LabelsConfiguration(
     var fontColor: Color = md_theme_dark_primary,
     var textStyle: TextStyle = Typography.labelMedium,
     var axisOffset: Dp = 0.dp,
@@ -34,9 +34,6 @@ class LabelsConfiguration(
     var format: String = "#.##"
 ) {
     override fun toString() = "LabelsConfiguration"
-
-    companion object {
-        fun labelsConfiguration(init: LabelsConfiguration.() -> Unit = {}) =
-            LabelsConfiguration().apply(init)
-    }
 }
+
+fun labelsConfiguration(init: LabelsConfiguration.() -> Unit = {}) = LabelsConfiguration().apply(init)
