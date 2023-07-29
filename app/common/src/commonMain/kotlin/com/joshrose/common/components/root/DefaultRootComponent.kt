@@ -6,9 +6,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.joshrose.common.components.axes.DefaultAxesComponent
-import com.joshrose.common.components.graph.LineGraphComponent
 import com.joshrose.common.components.home.DefaultHomeComponent
 import com.joshrose.common.components.home.HomeComponent
+import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.components.root.RootComponent.Child.*
 import com.joshrose.common.util.ScreenNames.*
 
@@ -33,7 +33,7 @@ class DefaultRootComponent(
         when (config) {
             is Config.Home -> HomeChild(home(componentContext))
             is Config.Axes -> AxesChild(DefaultAxesComponent(componentContext))
-            is Config.LineGraph -> LineGraphChild(LineGraphComponent(componentContext))
+            is Config.LineGraph -> LineGraphChild(DefaultLineGraphComponent(componentContext))
         }
 
     private fun home(componentContext: ComponentContext): HomeComponent =
@@ -52,12 +52,18 @@ class DefaultRootComponent(
 
     private sealed class Config : Parcelable {
         @Parcelize
-        object Home : Config()
+        data object Home : Config() {
+            private fun readResolve(): Any = Home
+        }
 
         @Parcelize
-        object Axes: Config()
+        data object Axes: Config() {
+            private fun readResolve(): Any = Axes
+        }
 
         @Parcelize
-        object LineGraph : Config()
+        data object LineGraph : Config() {
+            private fun readResolve(): Any = LineGraph
+        }
     }
 }

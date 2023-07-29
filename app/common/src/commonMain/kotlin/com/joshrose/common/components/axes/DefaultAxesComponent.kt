@@ -55,6 +55,7 @@ class DefaultAxesComponent(
             initialState = stateKeeper.consume(KEY_LOADING_STATE) ?: Loading
         )
     }
+    // TODO: Is this not used?
     override val loadingState: Value<LoadingState> = _loadingState.loadingState
 
     override fun updateData(data: List<NumberData>) = _dataValuesState.updateData(data)
@@ -244,15 +245,23 @@ class DefaultAxesComponent(
 
     private sealed class Config : Parcelable {
         @Parcelize
-        object Visibility: Config()
+        data object Visibility: Config() {
+            private fun readResolve(): Any = Visibility
+        }
 
         @Parcelize
-        object Guidelines: Config()
+        data object Guidelines: Config() {
+            private fun readResolve(): Any = Guidelines
+        }
 
         @Parcelize
-        object AxisLine: Config()
+        data object AxisLine: Config() {
+            private fun readResolve(): Any = AxisLine
+        }
 
         @Parcelize
-        object Labels: Config()
+        data object Labels: Config() {
+            private fun readResolve(): Any = Labels
+        }
     }
 }

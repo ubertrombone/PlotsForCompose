@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.components.graph.LineGraphComponent
+import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.util.ScrollLazyColumn
 import com.joshrose.plotsforcompose.Stats
 import com.joshrose.plotsforcompose.axis.config.axisline.xConfiguration
@@ -23,7 +23,7 @@ import com.joshrose.plotsforcompose.util.Proportional
 
 @Composable
 fun LineGraphContent(
-    component: LineGraphComponent,
+    component: DefaultLineGraphComponent,
     modifier: Modifier = Modifier
 ) {
 
