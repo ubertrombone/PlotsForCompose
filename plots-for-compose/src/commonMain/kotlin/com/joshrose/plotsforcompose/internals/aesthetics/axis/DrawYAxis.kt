@@ -144,7 +144,6 @@ internal fun DrawScope.drawYAxisUnbounded(
     textMeasurer: TextMeasurer,
     scale: Scale
 ) {
-    println("Guidelines: $guidelines")
     val data = Range(guidelines.minOf { it.toFloat() }, guidelines.maxOf { it.toFloat() })
     val range = range(
         minValue = data.min,
