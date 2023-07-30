@@ -55,7 +55,6 @@ class DefaultAxesComponent(
             initialState = stateKeeper.consume(KEY_LOADING_STATE) ?: Loading
         )
     }
-    // TODO: Is this not used?
     override val loadingState: Value<LoadingState> = _loadingState.loadingState
 
     override fun updateData(data: List<NumberData>) = _dataValuesState.updateData(data)
