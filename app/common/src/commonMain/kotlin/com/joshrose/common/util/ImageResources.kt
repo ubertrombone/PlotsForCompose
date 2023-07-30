@@ -15,5 +15,9 @@ enum class ImageResources(val path: String) {
     ALIGN_BOTH_VERTICAL("align_vertical_both.xml"),
     ALIGN_AUTO("auto_awesome.xml"),
     DOUBLE_ARROW_UP("keyboard_double_arrow_up.xml"),
-    DOUBLE_ARROW_DOWN("keyboard_double_arrow_down.xml")
+    DOUBLE_ARROW_DOWN("keyboard_double_arrow_down.xml"),
+    LINE_CURVE("line_curve.xml"),
+    LINE_STRAIGHT("line_straight.xml"),
+    PUSH_PIN("push_pin.xml"),
+    SHOW_CHART("show_chart.xml")
 }

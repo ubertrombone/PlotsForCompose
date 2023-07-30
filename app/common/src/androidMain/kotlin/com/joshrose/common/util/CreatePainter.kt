@@ -25,5 +25,9 @@ internal actual fun createPainter(file: ImageResources): Painter =
             ALIGN_AUTO -> R.drawable.auto_awesome
             DOUBLE_ARROW_UP -> R.drawable.keyboard_double_arrow_up
             DOUBLE_ARROW_DOWN -> R.drawable.keyboard_double_arrow_down
+            LINE_CURVE -> R.drawable.line_curve
+            LINE_STRAIGHT -> R.drawable.line_straight
+            PUSH_PIN -> R.drawable.push_pin
+            SHOW_CHART -> R.drawable.show_chart
         }
     )

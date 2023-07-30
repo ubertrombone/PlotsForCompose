@@ -9,7 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun GenerateDataButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun GenerateDataButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Button(
         modifier = modifier,
         onClick = onClick,
@@ -19,7 +22,7 @@ fun GenerateDataButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
         )
     ) {
         Text(
-            text = "Generate New Axes",
+            text = "Generate New Data",
             style = typography.bodyMedium
         )
     }

@@ -3,7 +3,6 @@
 package com.joshrose.common.ui.axes
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.NavigationBar
@@ -31,7 +30,6 @@ import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AxesContent(
     component: AxesComponent,
