@@ -10,10 +10,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.components.linegraph.LineGraphComponent
-import com.joshrose.common.ui.axes.BottomBarItems
+import com.joshrose.common.ui.linegraph.line.LineContent
+import com.joshrose.common.ui.linegraph.marker.MarkerContent
 import com.joshrose.common.util.*
 import com.joshrose.common.util.ImageResources.PUSH_PIN
 import com.joshrose.common.util.ImageResources.SHOW_CHART
@@ -27,7 +29,6 @@ import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.linegraph.config.lineGraphConfiguration
-import com.joshrose.plotsforcompose.linegraph.util.LineType.CURVED
 import com.joshrose.plotsforcompose.util.Proportional
 
 @Composable
@@ -42,6 +43,7 @@ fun LineGraphContent(
     val markerStates by component.markerStates.subscribeAsState()
     val data by component.dataValues.subscribeAsState()
 
+    // TODO: this is ugly in light theme for some reason (tertiary probably)
     val color = MaterialTheme.colorScheme.primary
     val xAxisLineConfigs = xConfiguration { lineColor = color }
     val yAxisLineConfigs = yConfiguration { lineColor = color }
@@ -62,11 +64,11 @@ fun LineGraphContent(
     val lineGraphColor = MaterialTheme.colorScheme.onTertiary
     val markColor = MaterialTheme.colorScheme.tertiary
     val lineGraphConfigs = lineGraphConfiguration {
-        lineType = CURVED
+        lineType = lineStates.lineType
         lineColor = lineGraphColor
-        strokeWidth = 5.dp
-        markers = true
-        markerSize = 4.dp
+        strokeWidth = lineStates.strokeWidth.dp
+        markers = markerStates.markers
+        markerSize = markerStates.markerSize.dp
         markerColor = markColor
     }
 
@@ -131,6 +133,16 @@ fun LineGraphContent(
                         .height(300.dp)
                         .padding(50.dp)
                 )
+            }
+            item {
+                Children(stack = childStack) {
+                    when (val child = it.instance) {
+                        is LineGraphComponent.Child.LineChild ->
+                            LineContent(component = child.component, modifier = Modifier.fillMaxSize())
+                        is LineGraphComponent.Child.MarkerChild ->
+                            MarkerContent(component = child.component, modifier = Modifier.fillMaxSize())
+                    }
+                }
             }
             item {
                 Row(
