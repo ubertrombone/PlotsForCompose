@@ -1,4 +1,4 @@
-package com.joshrose.common.ui.axes
+package com.joshrose.common.util
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.MaterialTheme

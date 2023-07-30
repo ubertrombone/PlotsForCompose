@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.ui.axes.DecButton
-import com.joshrose.common.ui.axes.IncButton
 import com.joshrose.plotsforcompose.axis.config.util.Multiplier
 import com.joshrose.plotsforcompose.util.Proportional
 import java.text.DecimalFormat
