@@ -97,8 +97,13 @@ fun LineGraphContent(
                 .paddingBottomBar(paddingValues = padding, start = 20.dp, end = 20.dp)
         ) {
             item {
-                // TODO: Data should be cleaned up here.
-                val plot = composePlot(data = data.data) {
+                val sortedData = data.data["Independent"]!!.zip(data.data["Dependent"]!!).sortedBy { it.first }.unzip()
+                val cleanedData = mapOf(
+                    "Independent" to sortedData.first,
+                    "Dependent" to sortedData.second
+                )
+
+                val plot = composePlot(data = cleanedData) {
                     figure = LineFigure(stat = Stats.identity, configs = lineGraphConfigs)
                     x = "Independent"
                     y = "Dependent"
