@@ -17,7 +17,6 @@ import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
 
-// TODO: On boundAxis, user should deal with sorting...
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
@@ -38,7 +37,14 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
-    val xData = if (figure.stat.kind == COUNT) x.toSet() else x
+    val (newX, newY) = if (figure.stat.kind == COUNT) x to y else {
+        x
+            .zip(y.map { it.toString().toFloatOrNull() })
+            .filter { it.second != null }.map { it.first to it.second!! }
+            .unzip()
+    }
+
+    val xData = if (figure.stat.kind == COUNT) newX.toSet() else newX
 
     val scaleX: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.X }
     val scaleY: Scale? = plot.scales().lastOrNull { it.scale == ScaleKind.Y }
@@ -48,7 +54,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val xLabelIndices = getIndices(scale = scaleX, rawData = xData, breaksData = xBreaks)
 
     val yAxisData = if (figure.stat.kind == IDENTITY) getAxisData(
-        data = y,
+        data = newY,
         minValueAdjustment = scaleY?.labelConfigs?.minValueAdjustment,
         maxValueAdjustment = scaleY?.labelConfigs?.maxValueAdjustment,
         rangeAdjustment = scaleY?.labelConfigs?.rangeAdjustment
@@ -91,7 +97,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
         if (figure.stat.kind == COUNT) {
             lineCountFigure(
-                x = x,
+                x = newX,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 scaleX = scaleX,
@@ -104,7 +110,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             )
         } else {
             lineIdentityFigure(
-                y = y,
+                y = newY,
                 yAxisData = yAxisData!!,
                 xValues = xData,
                 xAxisPosition = xAxisPosition,

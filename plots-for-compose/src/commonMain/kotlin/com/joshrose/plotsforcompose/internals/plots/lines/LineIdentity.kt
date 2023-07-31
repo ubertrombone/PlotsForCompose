@@ -1,10 +1,7 @@
 package com.joshrose.plotsforcompose.internals.plots.lines
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
@@ -36,11 +33,6 @@ internal fun DrawScope.lineIdentityFigure(
     xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
     yTextMeasurer: TextMeasurer
 ) {
-    // TODO: Check that x and y sizes are equal?
-    // TODO: Axes need to also remove null pairs
-    val data = xValues.zip(y.map { it.toString().toFloatOrNull() })
-    val filteredData = data.filter { it.second != null }.map { it.first to it.second!! }
-
     val yBreaks = getUnboundBreaks(scale = scaleY, rawData = y, axisData = yAxisData)
     val yLabels = getUnboundLabels(scale = scaleY, rawData = y, breaksData = yBreaks, axisData = yAxisData)
     val yLabelIndices = getIndices(scale = scaleY, rawData = y, breaksData = yBreaks)
@@ -62,7 +54,7 @@ internal fun DrawScope.lineIdentityFigure(
     }
 
     drawLineIdentity(
-        data = filteredData,
+        data = xValues.zip(y.map { it.toString().toFloat() }),
         yAxisData = yAxisData,
         xFactor = xDataFactor,
         xAxisAlignment = xAxisLineConfigs?.axisAlignment,
@@ -117,23 +109,12 @@ internal fun DrawScope.drawLineIdentity(
             }
         }
     }
-
-    // TODO: Maybe this could be lifted out?
-    drawPath(
+    
+    drawLinePath(
+        coordinates = coordinates,
         path = linePath,
-        color = lineConfigs.lineColor,
-        style = Stroke(width = lineConfigs.strokeWidth.toPx(), pathEffect = lineConfigs.pathEffect)
+        configs = lineConfigs
     )
-
-    coordinates.forEach {
-        if (lineConfigs.markers) {
-            drawCircle(
-                color = lineConfigs.markerColor ?: Color.White,
-                radius = lineConfigs.markerSize?.toPx() ?: 5f,
-                center = Offset(it.first, it.second)
-            )
-        }
-    }
 }
 
 internal fun getY(

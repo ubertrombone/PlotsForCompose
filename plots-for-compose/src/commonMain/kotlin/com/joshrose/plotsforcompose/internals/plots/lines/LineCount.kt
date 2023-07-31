@@ -1,12 +1,7 @@
-@file:Suppress("DuplicatedCode")
-
 package com.joshrose.plotsforcompose.internals.plots.lines
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextMeasurer
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
@@ -120,19 +115,9 @@ internal fun DrawScope.drawLineCount(
         }
     }
 
-    drawPath(
+    drawLinePath(
+        coordinates = coordinates,
         path = linePath,
-        color = lineConfigs.lineColor,
-        style = Stroke(width = lineConfigs.strokeWidth.toPx())
+        configs = lineConfigs
     )
-
-    coordinates.forEach {
-        if (lineConfigs.markers) {
-            drawCircle(
-                color = lineConfigs.markerColor ?: Color.White,
-                radius = lineConfigs.markerSize?.toPx() ?: 5f,
-                center = Offset(it.first, it.second)
-            )
-        }
-    }
 }
