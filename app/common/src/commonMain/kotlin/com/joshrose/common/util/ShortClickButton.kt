@@ -25,7 +25,8 @@ fun ShortClickButton(
     incClick: () -> Unit,
     decClick: () -> Unit,
     enabled: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween
 ) {
     Column(
         modifier = modifier,
@@ -43,7 +44,7 @@ fun ShortClickButton(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = horizontalArrangement,
             verticalAlignment = Alignment.CenterVertically
         ) {
             val incEnabled = value < upperLimit && enabled

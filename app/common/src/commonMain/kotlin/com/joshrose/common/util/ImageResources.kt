@@ -19,5 +19,6 @@ enum class ImageResources(val path: String) {
     LINE_CURVE("line_curve.xml"),
     LINE_STRAIGHT("line_straight.xml"),
     PUSH_PIN("push_pin.xml"),
+    SMALL_PUSH_PIN("small_push_pin.xml"),
     SHOW_CHART("show_chart.xml")
 }

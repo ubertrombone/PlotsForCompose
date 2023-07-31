@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.linegraph.line.LineComponent
+import com.joshrose.common.util.ShortClickButton
 
 @Composable
 fun LineContent(component: LineComponent, modifier: Modifier) {
@@ -41,6 +42,18 @@ fun LineContent(component: LineComponent, modifier: Modifier) {
             LineTypeContent(
                 currentSelected = line.lineType,
                 onSelected = component::updateType
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            ShortClickButton(
+                label = "Stroke Width",
+                value = line.strokeWidth,
+                upperLimit = 10f,
+                lowerLimit = 1f,
+                incClick = component::incStrokeWidth,
+                decClick = component::decStrokeWidth,
+                horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally)
             )
         }
     }

@@ -28,6 +28,7 @@ internal actual fun createPainter(file: ImageResources): Painter =
             LINE_CURVE -> R.drawable.line_curve
             LINE_STRAIGHT -> R.drawable.line_straight
             PUSH_PIN -> R.drawable.push_pin
+            SMALL_PUSH_PIN -> R.drawable.small_push_pin
             SHOW_CHART -> R.drawable.show_chart
         }
     )
