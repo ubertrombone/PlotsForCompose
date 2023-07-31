@@ -22,7 +22,7 @@ import com.joshrose.plotsforcompose.util.calculateOffset
 internal fun DrawScope.lineIdentityFigure(
     y: List<Any?>,
     yAxisData: AxisData,
-    xValues: Collection<Any?>,
+    data: List<Pair<Any?, Float>>,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
@@ -31,7 +31,8 @@ internal fun DrawScope.lineIdentityFigure(
     lineConfigs: LineGraphConfiguration,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
-    yTextMeasurer: TextMeasurer
+    yTextMeasurer: TextMeasurer,
+    coordinates: MutableList<Pair<Float, Float>>
 ) {
     val yBreaks = getUnboundBreaks(scale = scaleY, rawData = y, axisData = yAxisData)
     val yLabels = getUnboundLabels(scale = scaleY, rawData = y, breaksData = yBreaks, axisData = yAxisData)
@@ -54,12 +55,13 @@ internal fun DrawScope.lineIdentityFigure(
     }
 
     drawLineIdentity(
-        data = xValues.zip(y.map { it.toString().toFloat() }),
+        data = data,
         yAxisData = yAxisData,
         xFactor = xDataFactor,
         xAxisAlignment = xAxisLineConfigs?.axisAlignment,
         lineConfigs = lineConfigs,
-        rangeAdj = scaleY?.labelConfigs?.rangeAdjustment ?: Multiplier(0f)
+        rangeAdj = scaleY?.labelConfigs?.rangeAdjustment ?: Multiplier(0f),
+        coordinates = coordinates
     )
 }
 
@@ -69,9 +71,10 @@ internal fun DrawScope.drawLineIdentity(
     xFactor: Float,
     xAxisAlignment: AxisAlignment.XAxis?,
     lineConfigs: LineGraphConfiguration,
-    rangeAdj: Multiplier
+    rangeAdj: Multiplier,
+    coordinates: MutableList<Pair<Float, Float>>
 ) {
-    val coordinates: MutableList<Pair<Float, Float>> = mutableListOf()
+    coordinates.clear()
     val linePath = Path().apply { moveTo(x = 0f, y = size.height) }
 
     val reducedData = Range(min = yAxisData.min, max = yAxisData.max)
@@ -109,7 +112,9 @@ internal fun DrawScope.drawLineIdentity(
             }
         }
     }
-    
+
+    println("Coordinates: $coordinates")
+
     drawLinePath(
         coordinates = coordinates,
         path = linePath,

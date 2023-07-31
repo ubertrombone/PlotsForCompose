@@ -272,6 +272,7 @@ internal fun DrawScope.drawYAxisBounded(
     textMeasurer: TextMeasurer,
     scale: Scale
 ) {
+    // TODO: Bug! -- if guideline max is less than data max, there is disconnect between data and axis
     guidelines.reversed().forEachIndexed { index, value ->
         val y =
             if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(guidelinesFactor)

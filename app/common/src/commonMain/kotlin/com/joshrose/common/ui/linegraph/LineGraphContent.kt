@@ -102,9 +102,10 @@ fun LineGraphContent(
                     "Independent" to sortedData.first,
                     "Dependent" to sortedData.second
                 )
+                println("Raw Data: $cleanedData")
 
                 val plot = composePlot(data = cleanedData) {
-                    figure = LineFigure(stat = Stats.identity, configs = lineGraphConfigs)
+                    figure = LineFigure(stat = Stats.count(), configs = lineGraphConfigs)
                     x = "Independent"
                     y = "Dependent"
                 }

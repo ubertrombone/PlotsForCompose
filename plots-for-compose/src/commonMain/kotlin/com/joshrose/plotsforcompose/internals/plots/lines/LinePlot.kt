@@ -3,8 +3,11 @@
 package com.joshrose.plotsforcompose.internals.plots.lines
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.background
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.rememberTextMeasurer
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
@@ -16,6 +19,7 @@ import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
+import kotlin.math.roundToInt
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -68,7 +72,46 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         else xAxisLineConfigs.getXAxisPosition(yAxisData = yAxisData!!)
     val yAxisPosition = yAxisLineConfigs.getYAxisPosition()
 
-    Canvas(modifier = modifier) {
+    val coordinates: MutableList<Pair<Float, Float>> by remember { mutableStateOf(mutableListOf()) }
+    val graphedCountData = newX.groupingBy { it }.eachCount().map { Pair(it.key, it.value) }
+    val graphedIdentityData = xData.zip(newY.map { it.toString().toFloat() })
+    println("Data: ${if (figure.stat.kind == COUNT) graphedCountData else graphedIdentityData}")
+
+    var background by remember { mutableStateOf(Color.Black) }
+
+    Canvas(
+        modifier = modifier
+            .background(color = background)
+            .pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        val event = awaitPointerEvent()
+                        val positionX = event.changes.first().position.x
+                        val xPoints = coordinates.map { it.first }.map { it.roundToInt() }
+                        val xPointRanges =
+                            coordinates.map { it.first }.map {
+                                val factor = size.width.div(coordinates.size).div(3f)
+                                it.minus(factor) to it.plus(factor)
+                            }
+                        val areaRange = xPointRanges.lastOrNull { it.first < positionX }
+
+                        areaRange?.let {
+                            if (positionX <= areaRange.second) {
+                                val pointIndex = xPointRanges.indexOf(areaRange)
+                                val pointValue =
+                                    if (figure.stat.kind == COUNT) graphedCountData.elementAt(pointIndex)
+                                    else graphedIdentityData.elementAt(pointIndex)
+                                background = Color.Green
+                                println("Pos: $positionX, Pot: $xPoints")
+                                println("Values: $pointValue")
+                            } else background = Color.Black
+                        }
+                    }
+                }
+            }
+    ) {
+        println("Size: H: ${size.height}, W: ${size.width}")
+
         val xGuidelineFactor =
             getXFactor(width = size.width, dataSize = xBreaks?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
         val xLabelFactor =
@@ -98,6 +141,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
         if (figure.stat.kind == COUNT) {
             lineCountFigure(
                 x = newX,
+                data = graphedCountData,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 scaleX = scaleX,
@@ -106,13 +150,14 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 lineConfigs = configs,
                 yAxisLineConfigs = yAxisLineConfigs,
                 xAxisLineConfigs = xAxisLineConfigs,
-                yTextMeasurer = yTextMeasurer
+                yTextMeasurer = yTextMeasurer,
+                coordinates = coordinates
             )
         } else {
             lineIdentityFigure(
                 y = newY,
                 yAxisData = yAxisData!!,
-                xValues = xData,
+                data = graphedIdentityData,
                 xAxisPosition = xAxisPosition,
                 yAxisPosition = yAxisPosition,
                 scaleX = scaleX,
@@ -121,7 +166,8 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 lineConfigs = configs,
                 yAxisLineConfigs = yAxisLineConfigs,
                 xAxisLineConfigs = xAxisLineConfigs,
-                yTextMeasurer = yTextMeasurer
+                yTextMeasurer = yTextMeasurer,
+                coordinates = coordinates
             )
         }
     }
