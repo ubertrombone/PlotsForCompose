@@ -43,7 +43,6 @@ fun LineGraphContent(
     val markerStates by component.markerStates.subscribeAsState()
     val data by component.dataValues.subscribeAsState()
 
-    // TODO: this is ugly in light theme for some reason (tertiary probably)
     val color = MaterialTheme.colorScheme.primary
     val xAxisLineConfigs = xConfiguration { lineColor = color }
     val yAxisLineConfigs = yConfiguration { lineColor = color }
@@ -60,8 +59,7 @@ fun LineGraphContent(
         rotation = 45f
     }
 
-    // TODO: make this all configurable in app
-    val lineGraphColor = MaterialTheme.colorScheme.onTertiary
+    val lineGraphColor = MaterialTheme.colorScheme.tertiaryContainer
     val markColor = MaterialTheme.colorScheme.tertiary
     val lineGraphConfigs = lineGraphConfiguration {
         lineType = lineStates.lineType
