@@ -10,9 +10,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 
-// TODO: How much of this should be moved to configs?
-// TODO: How much should be lifted out to make this modifier reusable for other graph types?
-internal fun Modifier.showGraphLabels(
+internal fun Modifier.showLineGraphLabels(
     interactionSource: InteractionSource,
     enabled: Boolean,
     coordinates: List<Pair<Float, Float>>,

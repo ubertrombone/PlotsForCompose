@@ -23,7 +23,7 @@ import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
-import com.joshrose.plotsforcompose.internals.util.modifiers.showGraphLabels
+import com.joshrose.plotsforcompose.internals.util.modifiers.showLineGraphLabels
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -87,7 +87,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
     Canvas(
         modifier = modifier
-            .showGraphLabels(
+            .showLineGraphLabels(
                 interactionSource = remember { MutableInteractionSource() },
                 enabled = true,
                 coordinates = coordinates,
