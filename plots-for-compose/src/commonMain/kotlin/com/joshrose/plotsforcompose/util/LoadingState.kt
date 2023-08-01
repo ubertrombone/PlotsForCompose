@@ -5,19 +5,19 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 sealed interface LoadingState: Parcelable {
     @Parcelize
-    object Empty: LoadingState {
+    data object Empty: LoadingState {
         @Suppress("unused")
         private fun readResolve(): Any = Empty
     }
 
     @Parcelize
-    object Error: LoadingState {
+    data object Error: LoadingState {
         @Suppress("unused")
         private fun readResolve(): Any = Error
     }
 
     @Parcelize
-    object Success: LoadingState {
+    data object Success: LoadingState {
         @Suppress("unused")
         private fun readResolve(): Any = Success
     }
