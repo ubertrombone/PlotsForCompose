@@ -23,7 +23,7 @@ import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
-import com.joshrose.plotsforcompose.internals.util.showGraphLabels
+import com.joshrose.plotsforcompose.internals.util.modifiers.showGraphLabels
 
 @OptIn(ExperimentalTextApi::class)
 @Composable

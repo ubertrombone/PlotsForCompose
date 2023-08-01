@@ -1,6 +1,5 @@
-package com.joshrose.plotsforcompose.internals.util
+package com.joshrose.plotsforcompose.internals.util.modifiers
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.runtime.getValue
@@ -8,10 +7,12 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 
-@SuppressLint("ModifierFactoryUnreferencedReceiver")
-internal actual fun Modifier.showGraphLabels(
+// TODO: How much of this should be moved to configs?
+// TODO: How much should be lifted out to make this modifier reusable for other graph types?
+internal fun Modifier.showGraphLabels(
     interactionSource: InteractionSource,
     enabled: Boolean,
     coordinates: List<Pair<Float, Float>>,
@@ -24,7 +25,6 @@ internal actual fun Modifier.showGraphLabels(
             while (true) {
                 val event = awaitPointerEvent()
                 val position = event.changes.first().position
-                // TODO: Android: if event.changes.first().pressed = false -- return null; Desktop: if event.nativeEvent contains "MOUSE_EXITED" -- return null
                 val xPointRanges =
                     coordinates.map { it.first }.map {
                         val factor = size.width.div(coordinates.size).div(3f)
@@ -40,9 +40,10 @@ internal actual fun Modifier.showGraphLabels(
                     } else updateListener(null, null, null)
                 }
 
-                if (!event.changes.first().pressed)
-                    updateListener(null, null, null)
+                onPointerOut(event = event) { updateListener(null, null, null) }
             }
         }
     }
 }
+
+internal expect fun onPointerOut(event: PointerEvent, update: () -> Unit)
