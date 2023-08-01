@@ -1,13 +1,15 @@
 package com.joshrose.plotsforcompose.internals.plots.lines
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.drawscope.Fill
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -21,6 +23,7 @@ import com.joshrose.plotsforcompose.internals.*
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
+import com.joshrose.plotsforcompose.internals.util.showGraphLabels
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
@@ -75,55 +78,32 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val yAxisPosition = yAxisLineConfigs.getYAxisPosition()
 
     val coordinates: MutableList<Pair<Float, Float>> by remember { mutableStateOf(mutableListOf()) }
-    val graphedCountData = newX.groupingBy { it }.eachCount().map { Pair(it.key, it.value) }
-    val graphedIdentityData = xData.zip(newY.map { it.toString().toFloat() })
+    val graphedCountData: MutableList<Pair<Any?, Int>> by remember { mutableStateOf(mutableListOf()) }
+    val graphedIdentityData: MutableList<Pair<Any?, Float>> by remember { mutableStateOf(mutableListOf()) }
 
     var pointerPosition: Offset? by remember { mutableStateOf(null) }
     var valuesAtPosition: Pair<Any?, Any?>? by remember { mutableStateOf(null) }
     var coordinateIndex: Int? by remember { mutableStateOf(null) }
 
-    // TODO: Remove background modifier
-    // TODO: Move modifier to own file
-    // TODO: How to draw data labels?
     Canvas(
         modifier = modifier
-            .pointerInput(Unit) {
-                awaitPointerEventScope {
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        val position = event.changes.first().position
-                        val xPointRanges =
-                            coordinates.map { it.first }.map {
-                                val factor = size.width.div(coordinates.size).div(3f)
-                                it.minus(factor) to it.plus(factor)
-                            }
-                        val areaRange = xPointRanges.lastOrNull { it.first < position.x }
-
-                        areaRange?.let {
-                            if (position.x <= areaRange.second && (0f..size.height.toFloat().minus(.01f)).contains(position.y)) {
-                                val pointIndex = xPointRanges.indexOf(areaRange)
-                                val pointValue =
-                                    if (figure.stat.kind == COUNT) graphedCountData.elementAt(pointIndex)
-                                    else graphedIdentityData.elementAt(pointIndex)
-                                pointerPosition = position
-                                valuesAtPosition = pointValue
-                                coordinateIndex = pointIndex
-                            } else {
-                                pointerPosition = null
-                                valuesAtPosition = null
-                                coordinateIndex = null
-                            }
-                        }
-                    }
+            .showGraphLabels(
+                interactionSource = remember { MutableInteractionSource() },
+                enabled = true,
+                coordinates = coordinates,
+                data = if (figure.stat.kind == COUNT) graphedCountData else graphedIdentityData,
+                updatePosition = { position, values, index ->
+                    pointerPosition = position
+                    valuesAtPosition = values
+                    coordinateIndex = index
                 }
-            }
+            )
     ) {
         val factor =
             getXFactor(width = size.width, dataSize = xData.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
 
         scaleX?.let {
             boundXAxis(
-                xValues = xData,
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = xAxisLineConfigs ?: AxisLineConfiguration.XConfiguration(),
@@ -157,6 +137,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             )
         } else {
             lineIdentityFigure(
+                x = xData,
                 y = newY,
                 yAxisData = yAxisData!!,
                 data = graphedIdentityData,
@@ -175,7 +156,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
         // TODO: Lift this to new file
         // TODO: Add this to LineConfig class
-        // TODO: How will end user supply their custom labels?
+        // TODO: How will end user supply their custom labels? - They won't?
         valuesAtPosition?.let {
             val labelString = buildAnnotatedString {
                 withStyle(
@@ -208,16 +189,17 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             val labelOffsetFromBoxTop = labelHeight.div(3f).div(2f)
             val labelOffsetFromBoxStart = labelWidth.div(3f).div(2f)
 
+            val currentCoordinate = coordinates.elementAt(coordinateIndex!!)
+
             val topYOfBox =
-                if ((0f..size.height.div(2f)).contains(coordinates.elementAt(coordinateIndex!!).second))
+                if ((0f..size.height.div(2f)).contains(currentCoordinate.second))
                     size.height.minus(boxHeight)
                 else 0f
 
-            val startXOfBox = when (coordinates.elementAt(coordinateIndex!!).first) {
+            val startXOfBox = when (currentCoordinate.first) {
                 0f -> 0f
                 size.width -> size.width.minus(boxWidth)
-                else ->
-                    coordinates.elementAt(coordinateIndex!!).first.minus(boxWidth.div(2f))
+                else -> currentCoordinate.first.minus(boxWidth.div(2f))
             }
 
             val topYOfText = topYOfBox.plus(labelOffsetFromBoxTop)
@@ -234,6 +216,13 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             drawText(
                 textLayoutResult = textMeasurer,
                 topLeft = Offset(x = startXOfText, y = topYOfText)
+            )
+
+            drawCircle(
+                color = Color.Red,
+                radius = if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f,
+                center = Offset(x = currentCoordinate.first, y = currentCoordinate.second),
+                style = if (!configs.markers) Fill else Stroke(width = 3f)
             )
         }
     }

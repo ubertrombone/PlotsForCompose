@@ -17,7 +17,7 @@ import com.joshrose.plotsforcompose.linegraph.util.LineType.STRAIGHT
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.lineCountFigure(
     x: List<Any?>,
-    data: List<Pair<Any?, Int>>,
+    data: MutableList<Pair<Any?, Int>>,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
@@ -29,6 +29,8 @@ internal fun DrawScope.lineCountFigure(
     yTextMeasurer: TextMeasurer,
     coordinates: MutableList<Pair<Float, Float>>
 ) {
+    data.clear()
+    data.addAll(x.groupingBy { it }.eachCount().map { Pair(it.key, it.value) })
     val y = x.groupingBy { it }.eachCount().values.toSet().sorted().countsRange()
 
     val yBreaks = getBoundBreaks(scale = scaleY, rawData = y)

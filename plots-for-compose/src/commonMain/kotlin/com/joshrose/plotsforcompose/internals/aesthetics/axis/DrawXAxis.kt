@@ -72,7 +72,6 @@ internal fun DrawScope.unboundXAxis(
 
 @ExperimentalTextApi
 internal fun DrawScope.boundXAxis(
-    xValues: Collection<Any?>,
     scale: Scale,
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
@@ -95,7 +94,6 @@ internal fun DrawScope.boundXAxis(
         guidelines != null -> {
             drawXAxisBounded(
                 y = y,
-                xValues = xValues,
                 yAxisPositionXValue = yAxisPositionXValue,
                 secondYAxisPositionXValue = secondYAxisPositionXValue,
                 guidelines = guidelines,
@@ -114,7 +112,6 @@ internal fun DrawScope.boundXAxis(
         labels != null -> {
             drawXAxisBounded(
                 y = y,
-                xValues = xValues,
                 labels = labels,
                 factor = factor,
                 axisAlignment = axisAlignment,
@@ -260,7 +257,6 @@ internal fun DrawScope.drawXAxisUnbounded(
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.drawXAxisBounded(
     y: Float,
-    xValues: Collection<Any?>,
     yAxisPositionXValue: Float?,
     secondYAxisPositionXValue: Float?,
     guidelines: List<Any?>,
@@ -277,9 +273,8 @@ internal fun DrawScope.drawXAxisBounded(
 ) {
     guidelines.forEachIndexed { index, value ->
         val x =
-            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
-                xValues.indexOf(value).times(factor)
-            else xValues.indexOf(value).times(factor)
+            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
+            else index.times(factor)
 
         if (drawYAxis) {
             if (yAxisPositionXValue != x || secondYAxisPositionXValue != x) {
@@ -324,7 +319,6 @@ internal fun DrawScope.drawXAxisBounded(
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.drawXAxisBounded(
     y: Float,
-    xValues: Collection<Any?>,
     labels: List<Any?>,
     factor: Float,
     axisAlignment: AxisAlignment.XAxis,
@@ -334,11 +328,10 @@ internal fun DrawScope.drawXAxisBounded(
     textMeasurer: TextMeasurer,
     scale: Scale
 ) {
-    labels.forEach { value ->
+    labels.forEachIndexed { index, value ->
         val x =
-            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween)
-                xValues.indexOf(value).times(factor)
-            else xValues.indexOf(value).times(factor)
+            if (axisAlignment == AxisAlignment.Start || axisAlignment == AxisAlignment.SpaceBetween) index.times(factor)
+            else index.times(factor)
 
         drawXLabel(
             y = y,

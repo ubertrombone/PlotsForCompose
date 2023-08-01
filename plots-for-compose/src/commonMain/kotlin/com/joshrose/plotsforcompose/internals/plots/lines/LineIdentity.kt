@@ -20,9 +20,10 @@ import com.joshrose.plotsforcompose.util.calculateOffset
 
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.lineIdentityFigure(
+    x: Collection<Any?>,
     y: List<Any?>,
     yAxisData: AxisData,
-    data: List<Pair<Any?, Float>>,
+    data: MutableList<Pair<Any?, Float>>,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
@@ -34,6 +35,9 @@ internal fun DrawScope.lineIdentityFigure(
     yTextMeasurer: TextMeasurer,
     coordinates: MutableList<Pair<Float, Float>>
 ) {
+    data.clear()
+    data.addAll(x.zip(y.map { it.toString().toFloat() }))
+
     val yBreaks = getUnboundBreaks(scale = scaleY, rawData = y, axisData = yAxisData)
     val yLabels = getUnboundLabels(scale = scaleY, rawData = y, breaksData = yBreaks, axisData = yAxisData)
     val yLabelIndices = getIndices(scale = scaleY, rawData = y, breaksData = yBreaks)
@@ -112,8 +116,6 @@ internal fun DrawScope.drawLineIdentity(
             }
         }
     }
-
-    println("Coordinates: $coordinates")
 
     drawLinePath(
         coordinates = coordinates,

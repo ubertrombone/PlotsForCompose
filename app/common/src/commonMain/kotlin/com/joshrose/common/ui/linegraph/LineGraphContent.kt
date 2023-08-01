@@ -102,11 +102,10 @@ fun LineGraphContent(
                     "Independent" to sortedData.first,
                     "Dependent" to sortedData.second
                 )
-                println("Raw Data: $cleanedData")
 
                 // TODO: What happens when X has null values?
                 val plot = composePlot(data = cleanedData) {
-                    figure = LineFigure(stat = Stats.count(), configs = lineGraphConfigs)
+                    figure = LineFigure(stat = Stats.identity, configs = lineGraphConfigs)
                     x = "Independent"
                     y = "Dependent"
                 }
