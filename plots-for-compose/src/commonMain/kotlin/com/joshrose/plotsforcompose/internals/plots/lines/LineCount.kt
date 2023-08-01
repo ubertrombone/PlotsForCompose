@@ -18,6 +18,7 @@ import com.joshrose.plotsforcompose.linegraph.util.LineType.STRAIGHT
 internal fun DrawScope.lineCountFigure(
     x: List<Any?>,
     data: MutableList<Pair<Any?, Int>>,
+    coordinates: MutableList<Pair<Float, Float>>,
     xAxisPosition: AxisPosition.XAxis,
     yAxisPosition: AxisPosition.YAxis,
     scaleX: Scale?,
@@ -26,8 +27,7 @@ internal fun DrawScope.lineCountFigure(
     lineConfigs: LineGraphConfiguration,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
-    yTextMeasurer: TextMeasurer,
-    coordinates: MutableList<Pair<Float, Float>>
+    yTextMeasurer: TextMeasurer
 ) {
     data.clear()
     data.addAll(x.groupingBy { it }.eachCount().map { Pair(it.key, it.value) })
@@ -75,12 +75,12 @@ internal fun DrawScope.lineCountFigure(
 internal fun DrawScope.drawLineCount(
     data: List<Pair<Any?, Int>>,
     yValues: List<Int>,
+    coordinates: MutableList<Pair<Float, Float>>,
     xFactor: Float,
     yFactor: Float,
     xAxisAlignment: AxisAlignment.XAxis?,
     yAxisAlignment: AxisAlignment.YAxis?,
-    lineConfigs: LineGraphConfiguration,
-    coordinates: MutableList<Pair<Float, Float>>
+    lineConfigs: LineGraphConfiguration
 ) {
     coordinates.clear()
     val linePath = Path().apply { moveTo(x = 0f, y = size.height) }
@@ -97,7 +97,6 @@ internal fun DrawScope.drawLineCount(
 
         coordinates.add(x to y)
         // TODO: Custom marker types
-        // TODO: Labels on tap/hover
     }
 
     coordinates.forEachIndexed { index, (x, y) ->
