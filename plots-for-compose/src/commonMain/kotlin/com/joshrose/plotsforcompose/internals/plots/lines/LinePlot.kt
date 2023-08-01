@@ -81,7 +81,6 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     val graphedCountData: MutableList<Pair<Any?, Int>> by remember { mutableStateOf(mutableListOf()) }
     val graphedIdentityData: MutableList<Pair<Any?, Float>> by remember { mutableStateOf(mutableListOf()) }
 
-    var pointerPosition: Offset? by remember { mutableStateOf(null) }
     var valuesAtPosition: Pair<Any?, Any?>? by remember { mutableStateOf(null) }
     var coordinateIndex: Int? by remember { mutableStateOf(null) }
 
@@ -92,8 +91,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 enabled = true,
                 coordinates = coordinates,
                 data = if (figure.stat.kind == COUNT) graphedCountData else graphedIdentityData,
-                updatePosition = { position, values, index ->
-                    pointerPosition = position
+                updatePosition = { values, index ->
                     valuesAtPosition = values
                     coordinateIndex = index
                 }

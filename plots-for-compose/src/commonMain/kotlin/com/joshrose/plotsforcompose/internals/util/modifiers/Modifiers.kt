@@ -6,7 +6,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.pointerInput
 
@@ -15,7 +14,7 @@ internal fun Modifier.showLineGraphLabels(
     enabled: Boolean,
     coordinates: List<Pair<Float, Float>>,
     data: List<Pair<Any?, Number>>,
-    updatePosition: (position: Offset?, values: Pair<Any?, Any?>?, index: Int?) -> Unit
+    updatePosition: (values: Pair<Any?, Any?>?, index: Int?) -> Unit
 ): Modifier = composed {
     val updateListener by rememberUpdatedState(updatePosition)
     pointerInput(interactionSource, enabled) {
@@ -34,11 +33,11 @@ internal fun Modifier.showLineGraphLabels(
                     if (position.x <= areaRange.second && (0f..size.height.toFloat().minus(.01f)).contains(position.y)) {
                         val pointIndex = xPointRanges.indexOf(areaRange)
                         val pointValue = data.elementAt(pointIndex)
-                        updateListener(position, pointValue, pointIndex)
-                    } else updateListener(null, null, null)
+                        updateListener(pointValue, pointIndex)
+                    } else updateListener(null, null)
                 }
 
-                onPointerOut(event = event) { updateListener(null, null, null) }
+                onPointerOut(event = event) { updateListener(null, null) }
             }
         }
     }
