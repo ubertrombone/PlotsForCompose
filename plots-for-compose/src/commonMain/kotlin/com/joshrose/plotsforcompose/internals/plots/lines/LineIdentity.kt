@@ -22,6 +22,7 @@ import com.joshrose.plotsforcompose.util.calculateOffset
 internal fun DrawScope.lineIdentityFigure(
     x: Collection<Any?>,
     y: List<Any?>,
+    coordinates: MutableList<Pair<Float, Float>>,
     yAxisData: AxisData,
     data: MutableList<Pair<Any?, Float>>,
     xAxisPosition: AxisPosition.XAxis,
@@ -32,8 +33,7 @@ internal fun DrawScope.lineIdentityFigure(
     lineConfigs: LineGraphConfiguration,
     yAxisLineConfigs: AxisLineConfiguration.YConfiguration?,
     xAxisLineConfigs: AxisLineConfiguration.XConfiguration?,
-    yTextMeasurer: TextMeasurer,
-    coordinates: MutableList<Pair<Float, Float>>
+    yTextMeasurer: TextMeasurer
 ) {
     data.clear()
     data.addAll(x.zip(y.map { it.toString().toFloat() }))
@@ -71,12 +71,12 @@ internal fun DrawScope.lineIdentityFigure(
 
 internal fun DrawScope.drawLineIdentity(
     data: List<Pair<Any?, Float>>,
+    coordinates: MutableList<Pair<Float, Float>>,
     yAxisData: AxisData,
     xFactor: Float,
     xAxisAlignment: AxisAlignment.XAxis?,
     lineConfigs: LineGraphConfiguration,
-    rangeAdj: Multiplier,
-    coordinates: MutableList<Pair<Float, Float>>
+    rangeAdj: Multiplier
 ) {
     coordinates.clear()
     val linePath = Path().apply { moveTo(x = 0f, y = size.height) }

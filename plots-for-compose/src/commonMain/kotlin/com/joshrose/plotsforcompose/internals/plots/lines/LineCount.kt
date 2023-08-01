@@ -71,7 +71,6 @@ internal fun DrawScope.lineCountFigure(
     )
 }
 
-// TODO: Clean up the change in signatures
 internal fun DrawScope.drawLineCount(
     data: List<Pair<Any?, Int>>,
     yValues: List<Int>,

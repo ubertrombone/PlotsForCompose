@@ -72,12 +72,12 @@ internal fun DrawScope.unboundYAxis(
 
 @ExperimentalTextApi
 internal fun DrawScope.boundYAxis(
-    yValues: List<Int>,
     scale: Scale,
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.YConfiguration,
     factor: Float,
+    yValues: List<Int>,
     labels: List<Any?>?,
     labelIndices: List<Int>?,
     guidelines: List<Any?>?,
