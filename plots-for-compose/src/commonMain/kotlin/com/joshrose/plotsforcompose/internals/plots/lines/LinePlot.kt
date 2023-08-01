@@ -4,16 +4,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Fill
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.*
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.rememberTextMeasurer
 import com.joshrose.plotsforcompose.axis.config.axisline.AxisLineConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.GuidelinesConfiguration
 import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration
@@ -152,75 +144,13 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             )
         }
 
-        // TODO: Lift this to new file
-        // TODO: Add this to LineConfig class
-        // TODO: How will end user supply their custom labels? - They won't?
         valuesAtPosition?.let {
-            val labelString = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        color = Color.Red,
-                        fontSize = 20.sp,
-                    )
-                ) {
-                    append(it.first.toString())
-                    append("\n")
-                    append(it.second.toString())
-                }
-            }
-
-            val textMeasurer = dataLabelMeasurer.measure(
-                text = labelString,
-                style = TextStyle(
-                    color = Color.Red,
-                    fontSize = 20.sp,
-                    textAlign = TextAlign.Center
-                ),
-                overflow = TextOverflow.Visible,
-                softWrap = false
-            )
-
-            val labelHeight = textMeasurer.size.height
-            val labelWidth = textMeasurer.size.width
-            val boxHeight = labelHeight.plus(labelHeight.div(3f))
-            val boxWidth = labelWidth.plus(labelWidth.div(3f ))
-            val labelOffsetFromBoxTop = labelHeight.div(3f).div(2f)
-            val labelOffsetFromBoxStart = labelWidth.div(3f).div(2f)
-
-            val currentCoordinate = coordinates.elementAt(coordinateIndex!!)
-
-            val topYOfBox =
-                if ((0f..size.height.div(2f)).contains(currentCoordinate.second))
-                    size.height.minus(boxHeight)
-                else 0f
-
-            val startXOfBox = when (currentCoordinate.first) {
-                0f -> 0f
-                size.width -> size.width.minus(boxWidth)
-                else -> currentCoordinate.first.minus(boxWidth.div(2f))
-            }
-
-            val topYOfText = topYOfBox.plus(labelOffsetFromBoxTop)
-            val startXOfText = startXOfBox.plus(labelOffsetFromBoxStart)
-
-            drawRoundRect(
-                color = Color.LightGray,
-                topLeft = Offset(x = startXOfBox, y = topYOfBox),
-                size = Size(width = boxWidth, height = boxHeight),
-                alpha = .3f,
-                cornerRadius = CornerRadius(x = 15f, y = 15f)
-            )
-
-            drawText(
-                textLayoutResult = textMeasurer,
-                topLeft = Offset(x = startXOfText, y = topYOfText)
-            )
-
-            drawCircle(
-                color = Color.Red,
-                radius = if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f,
-                center = Offset(x = currentCoordinate.first, y = currentCoordinate.second),
-                style = if (!configs.markers) Fill else Stroke(width = 3f)
+            drawPointerLabels(
+                label = it,
+                coordinates = coordinates,
+                coordinateIndex = coordinateIndex!!,
+                configs = configs,
+                dataLabelMeasurer = dataLabelMeasurer
             )
         }
     }
