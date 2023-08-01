@@ -72,12 +72,12 @@ internal fun DrawScope.unboundYAxis(
 
 @ExperimentalTextApi
 internal fun DrawScope.boundYAxis(
+    yValues: List<Int>,
     scale: Scale,
     labelConfigs: LabelsConfiguration,
     guidelinesConfigs: GuidelinesConfiguration,
     axisLineConfigs: AxisLineConfiguration.YConfiguration,
-    labelFactor: Float,
-    guidelinesFactor: Float,
+    factor: Float,
     labels: List<Any?>?,
     labelIndices: List<Int>?,
     guidelines: List<Any?>?,
@@ -95,11 +95,12 @@ internal fun DrawScope.boundYAxis(
         guidelines != null -> {
             drawYAxisBounded(
                 x = x,
+                yValues = yValues,
                 xAxisPositionYValue = xAxisPositionYValue,
                 secondXAxisPositionYValue = secondXAxisPositionYValue,
                 guidelines = guidelines,
                 labelIndices = labelIndices,
-                guidelinesFactor = guidelinesFactor,
+                factor = factor,
                 drawXAxis = drawXAxis,
                 axisAlignment = axisAlignment,
                 yAxisPosition =yAxisPosition,
@@ -113,8 +114,9 @@ internal fun DrawScope.boundYAxis(
         labels != null -> {
             drawYAxisBounded(
                 x = x,
+                yValues = yValues,
                 labels = labels,
-                labelFactor = labelFactor,
+                factor = factor,
                 axisAlignment = axisAlignment,
                 yAxisPosition = yAxisPosition,
                 labelConfigs = labelConfigs,
@@ -258,11 +260,12 @@ internal fun DrawScope.drawYAxisUnbounded(
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.drawYAxisBounded(
     x: Float,
+    yValues: List<Int>,
     xAxisPositionYValue: Float?,
     secondXAxisPositionYValue: Float?,
     guidelines: List<Any?>,
     labelIndices: List<Int>?,
-    guidelinesFactor: Float,
+    factor: Float,
     drawXAxis: Boolean,
     axisAlignment: AxisAlignment.YAxis,
     yAxisPosition: AxisPosition.YAxis,
@@ -272,11 +275,11 @@ internal fun DrawScope.drawYAxisBounded(
     textMeasurer: TextMeasurer,
     scale: Scale
 ) {
-    // TODO: Bug! -- if guideline max is less than data max, there is disconnect between data and axis
-    guidelines.reversed().forEachIndexed { index, value ->
+    guidelines.forEachIndexed { index, value ->
         val y =
-            if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(guidelinesFactor)
-            else index.plus(1).times(guidelinesFactor)
+            if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween)
+                size.height.minus(yValues.indexOf(value).times(factor))
+            else size.height.minus(yValues.indexOf(value).plus(1).times(factor))
 
         if (drawXAxis) {
             if (xAxisPositionYValue != y || secondXAxisPositionYValue != y) {
@@ -321,8 +324,9 @@ internal fun DrawScope.drawYAxisBounded(
 @OptIn(ExperimentalTextApi::class)
 internal fun DrawScope.drawYAxisBounded(
     x: Float,
+    yValues: List<Int>,
     labels: List<Any?>,
-    labelFactor: Float,
+    factor: Float,
     axisAlignment: AxisAlignment.YAxis,
     yAxisPosition: AxisPosition.YAxis,
     labelConfigs: LabelsConfiguration,
@@ -330,10 +334,11 @@ internal fun DrawScope.drawYAxisBounded(
     textMeasurer: TextMeasurer,
     scale: Scale
 ) {
-    labels.reversed().forEachIndexed { index, label ->
+    labels.forEach { label ->
         val y =
-            if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween) index.times(labelFactor)
-            else index.plus(1).times(labelFactor)
+            if (axisAlignment == AxisAlignment.Top || axisAlignment == AxisAlignment.SpaceBetween)
+                size.height.minus(yValues.indexOf(label).times(factor))
+            else size.height.minus(yValues.indexOf(label).plus(1).times(factor))
 
         drawYLabel(
             y = y,

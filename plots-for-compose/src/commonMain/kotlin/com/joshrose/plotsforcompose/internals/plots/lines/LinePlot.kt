@@ -79,6 +79,10 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
     var background by remember { mutableStateOf(Color.Black) }
 
+    // TODO: Clean up print statements
+    // TODO: Remove background modifier
+    // TODO: Move modifier to own file
+    // TODO: How to draw data labels?
     Canvas(
         modifier = modifier
             .background(color = background)
@@ -112,20 +116,16 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     ) {
         println("Size: H: ${size.height}, W: ${size.width}")
 
-        val xGuidelineFactor =
-            getXFactor(width = size.width, dataSize = xBreaks?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
-        val xLabelFactor =
-            getXFactor(width = size.width, dataSize = xLabels?.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
-        val xDataFactor =
+        val factor =
             getXFactor(width = size.width, dataSize = xData.size, axisAlignment = xAxisLineConfigs?.axisAlignment)
 
         scaleX?.let {
             boundXAxis(
+                xValues = xData,
                 labelConfigs = it.labelConfigs ?: LabelsConfiguration(),
                 guidelinesConfigs = it.guidelinesConfigs ?: GuidelinesConfiguration(),
                 axisLineConfigs = xAxisLineConfigs ?: AxisLineConfiguration.XConfiguration(),
-                labelFactor = xLabelFactor,
-                guidelinesFactor = xGuidelineFactor,
+                factor = factor,
                 labels = xLabels,
                 labelIndices = xLabelIndices,
                 guidelines = xBreaks,
@@ -146,7 +146,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 yAxisPosition = yAxisPosition,
                 scaleX = scaleX,
                 scaleY = scaleY,
-                xDataFactor = xDataFactor,
+                xDataFactor = factor,
                 lineConfigs = configs,
                 yAxisLineConfigs = yAxisLineConfigs,
                 xAxisLineConfigs = xAxisLineConfigs,
@@ -162,7 +162,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 yAxisPosition = yAxisPosition,
                 scaleX = scaleX,
                 scaleY = scaleY,
-                xDataFactor = xDataFactor,
+                xDataFactor = factor,
                 lineConfigs = configs,
                 yAxisLineConfigs = yAxisLineConfigs,
                 xAxisLineConfigs = xAxisLineConfigs,

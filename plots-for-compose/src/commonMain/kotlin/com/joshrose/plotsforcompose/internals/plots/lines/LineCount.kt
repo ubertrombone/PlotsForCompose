@@ -35,21 +35,17 @@ internal fun DrawScope.lineCountFigure(
     val yLabels = getBoundLabels(scale = scaleY, rawData = y, breaksData = yBreaks)
     val yLabelIndices = getIndices(scale = scaleY, rawData = y, breaksData = yBreaks)
 
-    val yGuidelinesFactor =
-        getYFactor(height = size.height, dataSize = yBreaks?.size, axisAlignment = yAxisLineConfigs?.axisAlignment)
-    val yLabelFactor =
-        getYFactor(height = size.height, dataSize = yLabels?.size, axisAlignment = yAxisLineConfigs?.axisAlignment)
-    val yDataFactor =
+    val yFactor =
         getYFactor(height = size.height, dataSize = y.size, axisAlignment = yAxisLineConfigs?.axisAlignment)
 
     scaleY?.let {
         boundYAxis(
+            yValues = y,
             labelConfigs = scaleY.labelConfigs ?: LabelsConfiguration(),
             guidelinesConfigs = scaleY.guidelinesConfigs ?: GuidelinesConfiguration(),
             axisLineConfigs = yAxisLineConfigs ?: AxisLineConfiguration.YConfiguration(),
-            labelFactor = yLabelFactor,
+            factor = yFactor,
             labelIndices = yLabelIndices,
-            guidelinesFactor = yGuidelinesFactor,
             labels = yLabels,
             guidelines = yBreaks,
             yAxisPosition = yAxisPosition,
@@ -65,7 +61,7 @@ internal fun DrawScope.lineCountFigure(
         data = data,
         yValues = y,
         xFactor = xDataFactor,
-        yFactor = yDataFactor,
+        yFactor = yFactor,
         xAxisAlignment = xAxisLineConfigs?.axisAlignment,
         yAxisAlignment = yAxisLineConfigs?.axisAlignment,
         lineConfigs = lineConfigs,

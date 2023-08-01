@@ -114,7 +114,6 @@ fun LineGraphContent(
                             axisLineConfigs = xAxisLineConfigs,
                             guidelinesConfigs = guidelinesConfigs,
                             labelConfigs = labelConfigs,
-                            //breaks = Proportional(.25f),
                             labels = Proportional(.5f)
                         )
                     )
@@ -123,7 +122,7 @@ fun LineGraphContent(
                             axisLineConfigs = yAxisLineConfigs,
                             guidelinesConfigs = guidelinesConfigs,
                             labelConfigs = labelConfigs.copy(rotation = -(labelConfigs.rotation)),
-                            breaks = Proportional(.5f)
+                            labels = Proportional(.5f)
                         )
                     )
                 plot.show(
