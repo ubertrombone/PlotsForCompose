@@ -28,6 +28,9 @@ internal actual fun DrawScope.drawLabelRect(
     val topYOfText = topYOfBox.plus(labelOffset.y)
     val startXOfText = startXOfBox.plus(labelOffset.x)
 
+    // TODO: rect color
+    // TODO: rect alpha
+    // TODO: rect cornerRadius
     drawRoundRect(
         color = Color.LightGray,
         topLeft = Offset(x = startXOfBox, y = topYOfBox),

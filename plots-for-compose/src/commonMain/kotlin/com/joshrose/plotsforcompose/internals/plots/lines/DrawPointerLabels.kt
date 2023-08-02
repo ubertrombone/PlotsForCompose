@@ -15,18 +15,24 @@ import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration
 // TODO: Add this to LineConfig class
 // TODO: How will end user supply their custom labels? - They won't?
 // TODO: If I will force the labels, then add StatKind to know how to format Int vs. Float
+// TODO: If I add Z Axis, labels will need to be drawn differently
+// TODO: Draw bright line on Label's x coord (and y maybe?)
 internal fun DrawScope.drawPointerLabels(
     label: Pair<Any?, Any?>,
     coordinates: List<Pair<Float, Float>>,
     coordinateIndex: Int,
     configs: LineGraphConfiguration,
-    dataLabelMeasurer: TextMeasurer
+    dataLabelMeasurer: TextMeasurer,
+    //statKind: StatKind
 ) {
+    // TODO: Include labels or no
+    // TODO: Font Color
+    // TODO: Font Size
     val labelString = buildAnnotatedString {
         withStyle(style = SpanStyle(color = Color.Red, fontSize = 20.sp)) {
             append(label.first.toString())
             append("\n")
-            append(label.second.toString())
+            append(label.second.toString())//if (statKind == COUNT) label.second.toString().toInt().toString() else label.second.toString())
         }
     }
 
@@ -50,11 +56,16 @@ internal fun DrawScope.drawPointerLabels(
         textLayoutResult = textLayoutResult
     )
 
+    // TODO: circle color
+    // TODO: sealed interface Radius: auto, withMarkers(size: Float), withoutMarkers(size: Float)
+    // TODO: sealed interface Style: auto, fill, stroke(width: Float)
+    val radiusWithMarkers = if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f
+    val strokeWidthWithMarkers = radiusWithMarkers.minus(configs.markerSize?.toPx() ?: 3f)
     drawCircle(
         color = Color.Red,
-        radius = if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f,
+        radius = radiusWithMarkers,
         center = Offset(x = currentCoordinate.first, y = currentCoordinate.second),
-        style = if (!configs.markers) Fill else Stroke(width = 3f)
+        style = if (!configs.markers) Fill else Stroke(width = strokeWidthWithMarkers)
     )
 }
 

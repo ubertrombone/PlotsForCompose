@@ -2,7 +2,7 @@ package com.joshrose.plotsforcompose.axis.x.util
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.joshrose.plotsforcompose.axis.config.labels.LabelsConfiguration.Companion.labelsConfiguration
+import com.joshrose.plotsforcompose.axis.config.labels.labelsConfiguration
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
 import kotlin.random.Random
 
