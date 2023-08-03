@@ -24,35 +24,35 @@ sealed interface AxisAlignment {
 
     @Parcelize
     @Stable
-    object Start : XAxis {
+    data object Start : XAxis {
         private fun readResolve(): Any = Start
         override fun toString() = "AxisAlignment#Start"
     }
 
     @Parcelize
     @Stable
-    object End : XAxis {
+    data object End : XAxis {
         private fun readResolve(): Any = End
         override fun toString() = "AxisAlignment#End"
     }
 
     @Parcelize
     @Stable
-    object Top : YAxis {
+    data object Top : YAxis {
         private fun readResolve(): Any = Top
         override fun toString() = "AxisAlignment#Top"
     }
 
     @Parcelize
     @Stable
-    object Bottom : YAxis {
+    data object Bottom : YAxis {
         private fun readResolve(): Any = Bottom
         override fun toString() = "AxisAlignment#Bottom"
     }
 
     @Parcelize
     @Stable
-    object SpaceEvenly : XOrYAxis {
+    data object SpaceEvenly : XOrYAxis {
         private fun readResolve(): Any = SpaceEvenly
         override val offset = 1
         override fun toString() = "AxisAlignment#SpaceEvenly"
@@ -60,7 +60,7 @@ sealed interface AxisAlignment {
 
     @Parcelize
     @Stable
-    object SpaceBetween : XOrYAxis {
+    data object SpaceBetween : XOrYAxis {
         private fun readResolve(): Any = SpaceBetween
         override val offset = -1
         override fun toString() = "AxisAlignment#SpaceBetween"

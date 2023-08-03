@@ -16,42 +16,42 @@ sealed interface AxisPosition {
 
     @Parcelize
     @Stable
-    object Start : YAxis {
+    data object Start : YAxis {
         private fun readResolve(): Any = Start
         override fun toString() = "AxisPosition#Start"
     }
 
     @Parcelize
     @Stable
-    object End : YAxis {
+    data object End : YAxis {
         private fun readResolve(): Any = End
         override fun toString() = "AxisPosition#End"
     }
 
     @Parcelize
     @Stable
-    object Top : XAxis {
+    data object Top : XAxis {
         private fun readResolve(): Any = Top
         override fun toString() = "AxisPosition#Top"
     }
 
     @Parcelize
     @Stable
-    object Bottom : XAxis {
+    data object Bottom : XAxis {
         private fun readResolve(): Any = Bottom
         override fun toString() = "AxisPosition#Bottom"
     }
 
     @Parcelize
     @Stable
-    object Center : XOrYAxis {
+    data object Center : XOrYAxis {
         private fun readResolve(): Any = Center
         override fun toString() = "AxisPosition#Center"
     }
 
     @Parcelize
     @Stable
-    object Both: XOrYAxis {
+    data object Both: XOrYAxis {
         private fun readResolve(): Any = Both
         override fun toString() = "AxisPosition#Both"
     }

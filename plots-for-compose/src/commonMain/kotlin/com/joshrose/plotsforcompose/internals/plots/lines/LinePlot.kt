@@ -17,6 +17,7 @@ import com.joshrose.plotsforcompose.internals.StatKind.IDENTITY
 import com.joshrose.plotsforcompose.internals.aesthetics.axis.boundXAxis
 import com.joshrose.plotsforcompose.internals.util.modifiers.showLineGraphLabels
 
+// TODO: Add Z Axis for multi lines
 @OptIn(ExperimentalTextApi::class)
 @Composable
 fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
@@ -150,7 +151,8 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
                 coordinates = coordinates,
                 coordinateIndex = coordinateIndex!!,
                 configs = configs,
-                dataLabelMeasurer = dataLabelMeasurer
+                dataLabelMeasurer = dataLabelMeasurer,
+                statKind = figure.stat.kind
             )
         }
     }
