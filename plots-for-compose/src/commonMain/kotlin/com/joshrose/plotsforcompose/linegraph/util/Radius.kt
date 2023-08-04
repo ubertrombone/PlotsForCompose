@@ -8,22 +8,24 @@ import com.arkivanov.essenty.parcelable.Parcelize
 @Immutable
 sealed interface Radius : Parcelable {
 
+    val size: Float
+
     @Stable
     @Parcelize
-    data object Auto : Radius {
-        private fun readResolve(): Any = Auto
+    // Size does nothing
+    class Auto(override val size: Float = 0f): Radius {
         override fun toString() = "Radius#Auto"
     }
 
     @Stable
     @Parcelize
-    data class WithMarkers(val size: Float) : Radius {
+    class WithMarkers(override val size: Float) : Radius {
         override fun toString() = "Radius#WithMarker#$size"
     }
 
     @Stable
     @Parcelize
-    data class WithoutMarkers(val size: Float) : Radius {
+    class WithoutMarkers(override val size: Float) : Radius {
         override fun toString() = "Radius#WithoutMarkers#$size"
     }
 }

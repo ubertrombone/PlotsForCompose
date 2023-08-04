@@ -145,6 +145,7 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             )
         }
 
+        // TODO: Check if labels should be shown
         valuesAtPosition?.let {
             drawPointerLabels(
                 label = it,

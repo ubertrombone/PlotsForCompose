@@ -11,9 +11,9 @@ import com.joshrose.plotsforcompose.linegraph.util.LineType
 import com.joshrose.plotsforcompose.linegraph.util.LineType.STRAIGHT
 import com.joshrose.plotsforcompose.linegraph.util.Radius
 import com.joshrose.plotsforcompose.linegraph.util.Style
-import com.joshrose.plotsforcompose.theme.md_theme_dark_inverseOnSurface
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
+import com.joshrose.plotsforcompose.theme.md_theme_dark_secondary
 
 data class LineGraphConfiguration(
     var lineType: LineType = STRAIGHT,
@@ -24,15 +24,16 @@ data class LineGraphConfiguration(
     var markerColor: Color? = null,
     var pathEffect: PathEffect? = null,
     var hasDynamicLabels: Boolean = true,
-    var labelFontColor: Color = md_theme_dark_onBackground, // TODO
+    var labelFontColor: Color = md_theme_dark_secondary,
     var labelFontSize: TextUnit = 12.sp,
-    var boxColor: Color = md_theme_dark_inverseOnSurface, // TODO
-    var boxAlpha: Float = 0.5f,
+    var boxColor: Color = md_theme_dark_onBackground,
+    var boxAlpha: Float = .3f,
     var rectCornerRadius: CornerRadius = CornerRadius(x = 0f, y = 0f),
-    var labelMarkerColor: Color = md_theme_dark_onBackground, // TODO
-    var labelMarkerRadius: Radius = Radius.Auto,
-    var labelMarkerStyle: Style = Style.Auto
+    var labelMarkerColor: Color = md_theme_dark_onBackground,
+    var labelMarkerRadius: Radius = Radius.Auto(),
+    var labelMarkerStyle: Style = Style.Auto()
 ) {
+    // TODO: Make these config toString()s more informative
     override fun toString() = "LineGraphConfiguration"
 }
 

@@ -6,23 +6,23 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 sealed interface Style : Parcelable {
 
+    val size: Float
+
     @Stable
     @Parcelize
-    data object Auto : Style {
-        private fun readResolve(): Any = Auto
+    class Auto(override val size: Float = 0f) : Style {
         override fun toString() = "Style#Auto"
     }
 
     @Stable
     @Parcelize
-    data object Fill : Style {
-        private fun readResolve(): Any = Fill
+    class Fill(override val size: Float = 0f) : Style {
         override fun toString() = "Style#Fill"
     }
 
     @Stable
     @Parcelize
-    data class Stroke(val size: Float) : Style {
+    class Stroke(override val size: Float) : Style {
         override fun toString() = "Style#Stroke#$size"
     }
 }

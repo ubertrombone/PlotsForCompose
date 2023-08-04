@@ -2,19 +2,18 @@ package com.joshrose.plotsforcompose.internals.plots.lines
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import com.joshrose.plotsforcompose.internals.StatKind
 import com.joshrose.plotsforcompose.internals.StatKind.COUNT
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration
+import com.joshrose.plotsforcompose.linegraph.util.Radius
+import com.joshrose.plotsforcompose.linegraph.util.Style
 
-// TODO: Add this to LineConfig class
 // TODO: How will end user supply their custom labels? - They won't?
 // TODO: clean up label
 // TODO: If I add Z Axis, labels will need to be drawn differently
@@ -29,7 +28,7 @@ internal fun DrawScope.drawPointerLabels(
     statKind: StatKind
 ) {
     val labelString = buildAnnotatedString {
-        withStyle(style = SpanStyle(color = Color.Red, fontSize = 20.sp)) {
+        withStyle(style = SpanStyle(color = configs.labelFontColor, fontSize = configs.labelFontSize)) {
             append(label.first.toString())
             append("\n")
             append(if (statKind == COUNT) label.second.toString().toInt().toString() else label.second.toString())
@@ -50,23 +49,34 @@ internal fun DrawScope.drawPointerLabels(
     val currentCoordinate = coordinates.elementAt(coordinateIndex)
 
     drawLabelRect(
+        configs = configs,
         currentCoordinate = currentCoordinate,
         boxSize = boxSize,
         labelOffset = labelOffsetFromBox,
         textLayoutResult = textLayoutResult
     )
 
-    val radiusWithMarkers = if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f
+    val radiusWithMarkers = when (configs.labelMarkerRadius) {
+        is Radius.Auto -> if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f
+        is Radius.WithMarkers -> configs.labelMarkerRadius.size
+        is Radius.WithoutMarkers -> configs.labelMarkerRadius.size
+    }
     val strokeWidthWithMarkers = radiusWithMarkers.minus(configs.markerSize?.toPx() ?: 3f)
+    val circleStyle = when (configs.labelMarkerStyle) {
+        is Style.Auto -> if (!configs.markers) Fill else Stroke(width = strokeWidthWithMarkers)
+        is Style.Fill -> Fill
+        is Style.Stroke -> Stroke(width = radiusWithMarkers.minus(configs.labelMarkerStyle.size))
+    }
     drawCircle(
-        color = Color.Red,
+        color = configs.labelMarkerColor,
         radius = radiusWithMarkers,
         center = Offset(x = currentCoordinate.first, y = currentCoordinate.second),
-        style = if (!configs.markers) Fill else Stroke(width = strokeWidthWithMarkers)
+        style = circleStyle
     )
 }
 
 internal expect fun DrawScope.drawLabelRect(
+    configs: LineGraphConfiguration,
     currentCoordinate: Pair<Float, Float>,
     boxSize: Size,
     labelOffset: Offset,
