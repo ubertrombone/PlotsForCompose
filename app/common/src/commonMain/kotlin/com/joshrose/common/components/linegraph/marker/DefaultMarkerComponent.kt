@@ -6,7 +6,7 @@ import com.joshrose.common.components.linegraph.models.MarkerStates
 
 class DefaultMarkerComponent(
     componentContext: ComponentContext,
-    private val markerValues: MarkerModel
+    private val markerValues: MarkerModelImpl
 ): MarkerComponent, ComponentContext by componentContext {
     override val markerStates: Value<MarkerStates> = markerValues.markerStates
 
