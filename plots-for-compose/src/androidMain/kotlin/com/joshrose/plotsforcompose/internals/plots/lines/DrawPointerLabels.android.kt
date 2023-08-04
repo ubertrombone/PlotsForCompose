@@ -2,8 +2,6 @@ package com.joshrose.plotsforcompose.internals.plots.lines
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.drawText
@@ -45,20 +43,20 @@ internal actual fun DrawScope.drawLabelRect(
     drawLine(
         start = Offset(x = currentCoordinate.first, y = boxSize.height),
         end = Offset(x = currentCoordinate.first, y = endY),
-        color = Color.White,
-        alpha = .5f,
-        strokeWidth = 3f,
-        cap = StrokeCap.Round
+        color = configs.labelLineColor,
+        alpha = configs.labelLineAlpha,
+        strokeWidth = configs.labelLineStrokeWidth,
+        cap = configs.labelLineStrokeCap
     )
 
     if (endY != size.height && currentCoordinate.second != size.height) {
         drawLine(
             start = Offset(x = currentCoordinate.first, y = currentCoordinate.second.plus(configs.markerSize?.toPx()?.times(2f) ?: 5f)),
             end = Offset(x = currentCoordinate.first, y = size.height),
-            color = Color.White,
-            alpha = .5f,
-            strokeWidth = 3f,
-            cap = StrokeCap.Round
+            color = configs.labelLineColor,
+            alpha = configs.labelLineAlpha,
+            strokeWidth = configs.labelLineStrokeWidth,
+            cap = configs.labelLineStrokeCap
         )
     }
 }

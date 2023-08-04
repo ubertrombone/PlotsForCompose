@@ -17,8 +17,6 @@ import com.joshrose.plotsforcompose.linegraph.util.Style
 // TODO: How will end user supply their custom labels? - They won't?
 // TODO: clean up label
 // TODO: If I add Z Axis, labels will need to be drawn differently
-// TODO: Draw bright line on Label's x coord (and y maybe?)
-    // TODO: Line width and color
 internal fun DrawScope.drawPointerLabels(
     label: Pair<Any?, Any?>,
     coordinates: List<Pair<Float, Float>>,

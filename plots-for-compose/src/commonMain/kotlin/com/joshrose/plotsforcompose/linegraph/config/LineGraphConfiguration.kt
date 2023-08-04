@@ -3,6 +3,7 @@ package com.joshrose.plotsforcompose.linegraph.config
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -31,7 +32,11 @@ data class LineGraphConfiguration(
     var rectCornerRadius: CornerRadius = CornerRadius(x = 0f, y = 0f),
     var labelMarkerColor: Color = md_theme_dark_onBackground,
     var labelMarkerRadius: Radius = Radius.Auto(),
-    var labelMarkerStyle: Style = Style.Auto()
+    var labelMarkerStyle: Style = Style.Auto(),
+    var labelLineColor: Color = md_theme_dark_onBackground,
+    var labelLineAlpha: Float = .5f,
+    var labelLineStrokeWidth: Float = 3f,
+    var labelLineStrokeCap: StrokeCap = StrokeCap.Round
 ) {
     // TODO: Make these config toString()s more informative
     override fun toString() = "LineGraphConfiguration"

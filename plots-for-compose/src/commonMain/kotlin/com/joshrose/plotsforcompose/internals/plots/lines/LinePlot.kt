@@ -145,16 +145,17 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
             )
         }
 
-        // TODO: Check if labels should be shown
-        valuesAtPosition?.let {
-            drawPointerLabels(
-                label = it,
-                coordinates = coordinates,
-                coordinateIndex = coordinateIndex!!,
-                configs = configs,
-                dataLabelMeasurer = dataLabelMeasurer,
-                statKind = figure.stat.kind
-            )
+        if (configs.hasDynamicLabels) {
+            valuesAtPosition?.let {
+                drawPointerLabels(
+                    label = it,
+                    coordinates = coordinates,
+                    coordinateIndex = coordinateIndex!!,
+                    configs = configs,
+                    dataLabelMeasurer = dataLabelMeasurer,
+                    statKind = figure.stat.kind
+                )
+            }
         }
     }
 }
