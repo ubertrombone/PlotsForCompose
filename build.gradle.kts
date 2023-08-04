@@ -24,6 +24,6 @@ plugins {
     alias(deps.plugins.android.library) apply false
     alias(deps.plugins.jetbrains.compose) apply false
     alias(deps.plugins.kotlin.serialization) apply false
-    id("com.github.ben-manes.versions").version("0.41.0")
+    id("com.github.ben-manes.versions").version("0.42.0")
     id("nl.littlerobots.version-catalog-update").version("0.8.0")
 }
