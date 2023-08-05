@@ -139,6 +139,9 @@ fun LineGraphContent(
                             LineContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is LineGraphComponent.Child.MarkerChild ->
                             MarkerContent(component = child.component, modifier = Modifier.fillMaxSize())
+                        is LineGraphComponent.Child.LabelChild -> println("Label Child")
+                        is LineGraphComponent.Child.LabelLineChild -> println("Label Line Child")
+                        is LineGraphComponent.Child.LabelMarkerChild -> println("Label Marker Child")
                     }
                 }
             }

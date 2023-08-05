@@ -2,11 +2,15 @@ package com.joshrose.common.components.linegraph
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
+import com.joshrose.common.components.linegraph.label.LabelComponent
+import com.joshrose.common.components.linegraph.label_line.LabelLineComponent
+import com.joshrose.common.components.linegraph.label_marker.LabelMarkerComponent
 import com.joshrose.common.components.linegraph.line.LineComponent
 import com.joshrose.common.components.linegraph.marker.MarkerComponent
 import com.joshrose.common.components.linegraph.models.*
 import com.joshrose.common.util.ScreenNames
 
+//TODO: get assets
 interface LineGraphComponent {
     val screenProperties: ScreenNames
 
@@ -28,8 +32,8 @@ interface LineGraphComponent {
     sealed class Child {
         class LineChild(val component: LineComponent): Child()
         class MarkerChild(val component: MarkerComponent): Child()
-        class LabelChild(): Child() // TODO
-        class LabelLineChild(): Child() // TODO
-        class LabelMarkerChild(): Child() // TODO
+        class LabelChild(val component: LabelComponent): Child()
+        class LabelLineChild(val component: LabelLineComponent): Child()
+        class LabelMarkerChild(val component: LabelMarkerComponent): Child()
     }
 }
