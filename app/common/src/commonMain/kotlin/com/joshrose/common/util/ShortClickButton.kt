@@ -26,7 +26,8 @@ fun ShortClickButton(
     decClick: () -> Unit,
     enabled: Boolean = true,
     modifier: Modifier = Modifier,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceBetween,
+    pattern: String = "#"
 ) {
     Column(
         modifier = modifier,
@@ -59,7 +60,7 @@ fun ShortClickButton(
             Spacer(Modifier.width(10.dp))
 
             Text(
-                text = value.toInt().toString(),
+                text = DecimalFormat(pattern).format(value).toString(),
                 color = colorScheme.primary,
                 fontSize = typography.labelLarge.fontSize
             )

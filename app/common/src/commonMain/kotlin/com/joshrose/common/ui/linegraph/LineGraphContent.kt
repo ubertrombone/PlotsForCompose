@@ -2,18 +2,21 @@ package com.joshrose.common.ui.linegraph
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.components.linegraph.LineGraphComponent
+import com.joshrose.common.ui.linegraph.label.LabelContent
 import com.joshrose.common.ui.linegraph.line.LineContent
 import com.joshrose.common.ui.linegraph.marker.MarkerContent
 import com.joshrose.common.util.*
@@ -30,6 +33,7 @@ import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.linegraph.config.lineGraphConfiguration
 import com.joshrose.plotsforcompose.util.Proportional
 
+@Suppress("DuplicatedCode")
 @Composable
 fun LineGraphContent(
     component: DefaultLineGraphComponent,
@@ -40,13 +44,16 @@ fun LineGraphContent(
 
     val lineStates by component.lineStates.subscribeAsState()
     val markerStates by component.markerStates.subscribeAsState()
+    val labelStates by component.labelStates.subscribeAsState()
+    val labelLineStates by component.labelLineStates.subscribeAsState()
+    val labelMarkerStates by component.labelMarkerStates.subscribeAsState()
     val data by component.dataValues.subscribeAsState()
 
-    val color = MaterialTheme.colorScheme.primary
+    val color = colorScheme.primary
     val xAxisLineConfigs = xConfiguration { lineColor = color }
     val yAxisLineConfigs = yConfiguration { lineColor = color }
 
-    val guidesColor = MaterialTheme.colorScheme.onBackground
+    val guidesColor = colorScheme.onBackground
     val guidelinesConfigs = guidelinesConfiguration {
         lineColor = guidesColor
         padding = 0f
@@ -58,8 +65,10 @@ fun LineGraphContent(
         rotation = 45f
     }
 
-    val lineGraphColor = MaterialTheme.colorScheme.tertiaryContainer
-    val markColor = MaterialTheme.colorScheme.tertiary
+    val lineGraphColor = colorScheme.tertiaryContainer
+    val markColor = colorScheme.tertiary
+    val fontColor = colorScheme.secondary
+    val labelColor = colorScheme.onBackground
     val lineGraphConfigs = lineGraphConfiguration {
         lineType = lineStates.lineType
         lineColor = lineGraphColor
@@ -68,12 +77,24 @@ fun LineGraphContent(
         markers = markerStates.markers
         markerSize = markerStates.markerSize.dp
         markerColor = markColor
+        labelFontSize = labelStates.fontSize.sp
+        labelFontColor = fontColor
+        boxColor = labelColor
+        boxAlpha = labelStates.boxAlpha
+        rectCornerRadius = CornerRadius(x = labelStates.xCornerRadius, y = labelStates.yCornerRadius)
+        labelMarkerColor = labelColor
+        labelMarkerRadius = labelMarkerStates.radius
+        labelMarkerStyle = labelMarkerStates.style
+        labelLineColor = labelColor
+        labelLineAlpha = labelLineStates.alpha
+        labelLineStrokeWidth = labelLineStates.strokeWidth
+        labelLineStrokeCap = labelLineStates.strokeCap.strokeCap
     }
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            NavigationBar(containerColor = MaterialTheme.colorScheme.primary) {
+            NavigationBar(containerColor = colorScheme.primary) {
                 BottomBarItems(
                     label = "Line",
                     selected = activeComponent is LineGraphComponent.Child.LineChild,
@@ -160,7 +181,8 @@ fun LineGraphContent(
                             LineContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is LineGraphComponent.Child.MarkerChild ->
                             MarkerContent(component = child.component, modifier = Modifier.fillMaxSize())
-                        is LineGraphComponent.Child.LabelChild -> println("Label Child")
+                        is LineGraphComponent.Child.LabelChild ->
+                            LabelContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is LineGraphComponent.Child.LabelLineChild -> println("Label Line Child")
                         is LineGraphComponent.Child.LabelMarkerChild -> println("Label Marker Child")
                     }

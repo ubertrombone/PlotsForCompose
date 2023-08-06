@@ -24,7 +24,7 @@ class LabelModelImpl(initialState: LabelStates) : InstanceKeeper.Instance, Label
 
     override fun incBoxAlpha() {
         scope.launch {
-            labelStates.update { it.copy(boxAlpha = it.boxAlpha.plus(.1f)) }
+            labelStates.update { it.copy(boxAlpha = it.boxAlpha.plus(.1f).coerceAtMost(1f)) }
         }
     }
 
