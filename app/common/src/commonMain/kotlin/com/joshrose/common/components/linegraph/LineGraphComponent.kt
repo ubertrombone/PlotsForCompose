@@ -10,7 +10,6 @@ import com.joshrose.common.components.linegraph.marker.MarkerComponent
 import com.joshrose.common.components.linegraph.models.*
 import com.joshrose.common.util.ScreenNames
 
-//TODO: get assets
 interface LineGraphComponent {
     val screenProperties: ScreenNames
 

@@ -17,8 +17,7 @@ import com.joshrose.common.components.linegraph.LineGraphComponent
 import com.joshrose.common.ui.linegraph.line.LineContent
 import com.joshrose.common.ui.linegraph.marker.MarkerContent
 import com.joshrose.common.util.*
-import com.joshrose.common.util.ImageResources.PUSH_PIN
-import com.joshrose.common.util.ImageResources.SHOW_CHART
+import com.joshrose.common.util.ImageResources.*
 import com.joshrose.plotsforcompose.Stats
 import com.joshrose.plotsforcompose.axis.config.axisline.xConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.yConfiguration
@@ -86,6 +85,27 @@ fun LineGraphContent(
                     selected = activeComponent is LineGraphComponent.Child.MarkerChild,
                     icon = { Icon(painter = createPainter(PUSH_PIN), contentDescription = "Marker Options") },
                     onClick = component::onMarkerTabClicked
+                )
+
+                BottomBarItems(
+                    label = "Label",
+                    selected = activeComponent is LineGraphComponent.Child.LabelChild,
+                    icon = { Icon(painter = createPainter(LABELS), contentDescription = "Label Options") },
+                    onClick = component::onLabelTabClicked
+                )
+
+                BottomBarItems(
+                    label = "Label Line",
+                    selected = activeComponent is LineGraphComponent.Child.LabelLineChild,
+                    icon = { Icon(painter = createPainter(LABEL_LINE), contentDescription = "Label Line Options") },
+                    onClick = component::onLabelLineTabClicked
+                )
+
+                BottomBarItems(
+                    label = "Label Marker",
+                    selected = activeComponent is LineGraphComponent.Child.LabelMarkerChild,
+                    icon = { Icon(painter = createPainter(LABEL_MARKER), contentDescription = "Label Marker Options") },
+                    onClick = component::onLabelMarkerTabClicked
                 )
             }
         }

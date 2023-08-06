@@ -31,7 +31,7 @@ fun Markers(
         OutlinedIconToggleButton(
             checked = selected,
             onCheckedChange = { onSelected(!selected) },
-            colors = IconButtonDefaults.iconToggleButtonColors(
+            colors = IconButtonDefaults.outlinedIconToggleButtonColors(
                 checkedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 checkedContentColor = MaterialTheme.colorScheme.primary
             ),

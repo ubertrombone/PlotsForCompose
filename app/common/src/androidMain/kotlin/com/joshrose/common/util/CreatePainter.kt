@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.joshrose.common.util
 
 import androidx.compose.runtime.Composable
@@ -30,5 +32,8 @@ internal actual fun createPainter(file: ImageResources): Painter =
             PUSH_PIN -> R.drawable.push_pin
             SMALL_PUSH_PIN -> R.drawable.small_push_pin
             SHOW_CHART -> R.drawable.show_chart
+            LINE -> R.drawable.maximize
+            LABEL_LINE -> R.drawable.height_line
+            LABEL_MARKER -> R.drawable.label_marker
         }
     )
