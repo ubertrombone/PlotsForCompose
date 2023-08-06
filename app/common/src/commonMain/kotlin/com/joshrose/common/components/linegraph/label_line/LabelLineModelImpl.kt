@@ -1,10 +1,10 @@
 package com.joshrose.common.components.linegraph.label_line
 
-import androidx.compose.ui.graphics.StrokeCap
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.linegraph.models.LabelLineStates
+import com.joshrose.common.util.Cap
 import kotlinx.coroutines.*
 
 class LabelLineModelImpl(initialState: LabelLineStates) : InstanceKeeper.Instance, LabelLineModel {
@@ -35,7 +35,7 @@ class LabelLineModelImpl(initialState: LabelLineStates) : InstanceKeeper.Instanc
         }
     }
 
-    override fun updateStrokeCap(cap: StrokeCap) {
+    override fun updateStrokeCap(cap: Cap) {
         scope.launch {
             labelLineStates.update { it.copy(strokeCap = cap) }
         }

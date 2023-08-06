@@ -4,6 +4,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ data class LineGraphConfiguration(
     var lineType: LineType = STRAIGHT,
     var lineColor: Color = md_theme_dark_primary,
     var strokeWidth: Dp = 2.dp,
+    var strokeJoin: StrokeJoin = StrokeJoin.Bevel,
     var markers: Boolean = false,
     var markerSize: Dp? = null,
     var markerColor: Color? = null,

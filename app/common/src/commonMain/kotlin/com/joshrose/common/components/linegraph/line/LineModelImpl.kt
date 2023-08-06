@@ -4,6 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.linegraph.models.LineStates
+import com.joshrose.common.util.Join
 import com.joshrose.plotsforcompose.linegraph.util.LineType
 import kotlinx.coroutines.*
 
@@ -14,6 +15,12 @@ class LineModelImpl(initialState: LineStates) : InstanceKeeper.Instance, LineMod
     override fun updateType(change: LineType) {
         scope.launch {
             lineStates.update { it.copy(lineType = change) }
+        }
+    }
+
+    override fun updateJoin(change: Join) {
+        scope.launch {
+            lineStates.update { it.copy(strokeJoin = change) }
         }
     }
 

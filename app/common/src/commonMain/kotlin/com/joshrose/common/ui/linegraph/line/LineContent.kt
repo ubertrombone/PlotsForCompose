@@ -46,6 +46,13 @@ fun LineContent(component: LineComponent, modifier: Modifier) {
 
             Spacer(Modifier.height(10.dp))
 
+            LineJoinContent(
+                currentSelected = line.strokeJoin,
+                onSelected = component::updateJoin
+            )
+
+            Spacer(Modifier.height(10.dp))
+
             ShortClickButton(
                 label = "Stroke Width",
                 value = line.strokeWidth,

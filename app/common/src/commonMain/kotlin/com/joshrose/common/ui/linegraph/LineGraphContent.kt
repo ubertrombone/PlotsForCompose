@@ -64,6 +64,7 @@ fun LineGraphContent(
         lineType = lineStates.lineType
         lineColor = lineGraphColor
         strokeWidth = lineStates.strokeWidth.dp
+        strokeJoin = lineStates.strokeJoin.join
         markers = markerStates.markers
         markerSize = markerStates.markerSize.dp
         markerColor = markColor

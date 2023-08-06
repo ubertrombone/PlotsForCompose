@@ -1,7 +1,7 @@
 package com.joshrose.common.components.linegraph.label_line
 
-import androidx.compose.ui.graphics.StrokeCap
 import com.arkivanov.decompose.ComponentContext
+import com.joshrose.common.util.Cap
 
 class DefaultLabelLineComponent(
     componentContext: ComponentContext,
@@ -17,5 +17,5 @@ class DefaultLabelLineComponent(
 
     override fun decStrokeWidth() = labelLineValues.decStrokeWidth()
 
-    override fun updateStrokeCap(cap: StrokeCap) = labelLineValues.updateStrokeCap(cap)
+    override fun updateStrokeCap(cap: Cap) = labelLineValues.updateStrokeCap(cap)
 }

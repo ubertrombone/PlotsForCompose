@@ -1,7 +1,5 @@
 package com.joshrose.common.components.linegraph.label
 
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
@@ -70,6 +68,3 @@ class LabelModelImpl(initialState: LabelStates) : InstanceKeeper.Instance, Label
         scope.cancel()
     }
 }
-
-fun TextUnit.inc() = this.value.plus(1f).sp
-fun TextUnit.dec() = this.value.minus(1f).coerceAtLeast(0f).sp
