@@ -17,6 +17,7 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.linegraph.DefaultLineGraphComponent
 import com.joshrose.common.components.linegraph.LineGraphComponent
 import com.joshrose.common.ui.linegraph.label.LabelContent
+import com.joshrose.common.ui.linegraph.label_line.LabelLineContent
 import com.joshrose.common.ui.linegraph.line.LineContent
 import com.joshrose.common.ui.linegraph.marker.MarkerContent
 import com.joshrose.common.util.*
@@ -46,7 +47,6 @@ fun LineGraphContent(
     val markerStates by component.markerStates.subscribeAsState()
     val labelStates by component.labelStates.subscribeAsState()
     val labelLineStates by component.labelLineStates.subscribeAsState()
-    val labelMarkerStates by component.labelMarkerStates.subscribeAsState()
     val data by component.dataValues.subscribeAsState()
 
     val color = colorScheme.primary
@@ -83,8 +83,6 @@ fun LineGraphContent(
         boxAlpha = labelStates.boxAlpha
         rectCornerRadius = CornerRadius(x = labelStates.xCornerRadius, y = labelStates.yCornerRadius)
         labelMarkerColor = labelColor
-        labelMarkerRadius = labelMarkerStates.radius
-        labelMarkerStyle = labelMarkerStates.style
         labelLineColor = labelColor
         labelLineAlpha = labelLineStates.alpha
         labelLineStrokeWidth = labelLineStates.strokeWidth
@@ -121,13 +119,6 @@ fun LineGraphContent(
                     selected = activeComponent is LineGraphComponent.Child.LabelLineChild,
                     icon = { Icon(painter = createPainter(LABEL_LINE), contentDescription = "Label Line Options") },
                     onClick = component::onLabelLineTabClicked
-                )
-
-                BottomBarItems(
-                    label = "Label Marker",
-                    selected = activeComponent is LineGraphComponent.Child.LabelMarkerChild,
-                    icon = { Icon(painter = createPainter(LABEL_MARKER), contentDescription = "Label Marker Options") },
-                    onClick = component::onLabelMarkerTabClicked
                 )
             }
         }
@@ -183,8 +174,8 @@ fun LineGraphContent(
                             MarkerContent(component = child.component, modifier = Modifier.fillMaxSize())
                         is LineGraphComponent.Child.LabelChild ->
                             LabelContent(component = child.component, modifier = Modifier.fillMaxSize())
-                        is LineGraphComponent.Child.LabelLineChild -> println("Label Line Child")
-                        is LineGraphComponent.Child.LabelMarkerChild -> println("Label Marker Child")
+                        is LineGraphComponent.Child.LabelLineChild ->
+                            LabelLineContent(component = child.component, modifier = Modifier.fillMaxSize())
                     }
                 }
             }

@@ -1,4 +1,4 @@
-package com.joshrose.common.util
+package com.joshrose.common.ui.linegraph.label_line
 
 import androidx.compose.ui.graphics.StrokeCap
 

@@ -19,7 +19,7 @@ import com.joshrose.common.util.RepeatableButton
 import com.joshrose.common.util.ShortClickButton
 
 @Composable
-fun LabelContent(component: LabelComponent, modifier: Modifier) {
+fun LabelContent(component: LabelComponent, modifier: Modifier = Modifier) {
     val label by component.labelStates.subscribeAsState()
 
     Card(
@@ -46,7 +46,8 @@ fun LabelContent(component: LabelComponent, modifier: Modifier) {
                 upperLimit = 25f,
                 lowerLimit = 1f,
                 incClick = component::incFontSize,
-                decClick = component::decFontSize
+                decClick = component::decFontSize,
+                horizontalArrangement = Arrangement.SpaceEvenly
             )
 
             Spacer(Modifier.height(10.dp))
@@ -58,7 +59,8 @@ fun LabelContent(component: LabelComponent, modifier: Modifier) {
                 lowerLimit = 0f,
                 incClick = component::incBoxAlpha,
                 decClick = component::decBoxAlpha,
-                pattern = "#.#"
+                pattern = "#.#",
+                horizontalArrangement = Arrangement.SpaceEvenly
             )
 
             Spacer(Modifier.height(10.dp))
@@ -69,7 +71,8 @@ fun LabelContent(component: LabelComponent, modifier: Modifier) {
                 upperLimit = 50f,
                 lowerLimit = 1f,
                 incClick = component::incXCornerRadius,
-                decClick = component::decXCornerRadius
+                decClick = component::decXCornerRadius,
+                horizontalArrangement = Arrangement.SpaceEvenly
             )
 
             Spacer(Modifier.height(10.dp))
@@ -80,7 +83,8 @@ fun LabelContent(component: LabelComponent, modifier: Modifier) {
                 upperLimit = 50f,
                 lowerLimit = 1f,
                 incClick = component::incYCornerRadius,
-                decClick = component::decYCornerRadius
+                decClick = component::decYCornerRadius,
+                horizontalArrangement = Arrangement.SpaceEvenly
             )
         }
     }

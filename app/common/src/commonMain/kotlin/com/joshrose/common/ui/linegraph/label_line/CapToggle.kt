@@ -1,4 +1,4 @@
-package com.joshrose.common.util
+package com.joshrose.common.ui.linegraph.label_line
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,12 +15,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun TriStateToggle(
-    selected: Join,
-    onSelectChange: (Join) -> Unit,
+fun CapToggle(
+    selected: Cap,
+    onSelectChange: (Cap) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val joins = Join.entries
+    val caps = Cap.entries
 
     Surface(
         shape = RoundedCornerShape(24.dp),
@@ -28,19 +28,19 @@ fun TriStateToggle(
         modifier = modifier
     ) {
         Row(
-           modifier = Modifier
-               .clip(shape = RoundedCornerShape(24.dp))
-               .background(colorScheme.inversePrimary)
+            modifier = Modifier
+                .clip(shape = RoundedCornerShape(24.dp))
+                .background(colorScheme.inversePrimary)
         ) {
-            joins.forEach { join ->
+            caps.forEach { cap ->
                 Text(
-                    text = join.joinName(),
+                    text = cap.capName(),
                     fontSize = MaterialTheme.typography.titleSmall.fontSize,
                     color = colorScheme.primary,
                     modifier = Modifier
                         .clip(shape = RoundedCornerShape(24.dp))
-                        .clickable { onSelectChange(join) }
-                        .background(if (join == selected) colorScheme.primaryContainer else colorScheme.inversePrimary)
+                        .clickable { onSelectChange(cap) }
+                        .background(if (cap == selected) colorScheme.primaryContainer else colorScheme.inversePrimary)
                         .padding(vertical = 8.dp, horizontal = 8.dp)
                 )
             }

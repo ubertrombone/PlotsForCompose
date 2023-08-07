@@ -2,7 +2,7 @@ package com.joshrose.common.components.linegraph.line
 
 import com.arkivanov.decompose.value.MutableValue
 import com.joshrose.common.components.linegraph.models.LineStates
-import com.joshrose.common.util.Join
+import com.joshrose.common.ui.linegraph.line.Join
 import com.joshrose.plotsforcompose.linegraph.util.LineType
 import kotlinx.coroutines.CoroutineScope
 

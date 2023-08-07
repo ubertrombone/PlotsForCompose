@@ -2,7 +2,7 @@ package com.joshrose.common.components.linegraph.models
 
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.joshrose.common.util.Join
+import com.joshrose.common.ui.linegraph.line.Join
 import com.joshrose.plotsforcompose.linegraph.util.LineType
 
 @Parcelize

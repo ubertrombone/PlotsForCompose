@@ -4,7 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.linegraph.models.LineStates
-import com.joshrose.common.util.Join
+import com.joshrose.common.ui.linegraph.line.Join
 import com.joshrose.plotsforcompose.linegraph.util.LineType
 import kotlinx.coroutines.*
 

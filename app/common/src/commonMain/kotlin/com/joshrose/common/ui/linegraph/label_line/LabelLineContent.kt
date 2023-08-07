@@ -1,4 +1,4 @@
-package com.joshrose.common.ui.linegraph.line
+package com.joshrose.common.ui.linegraph.label_line
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -14,12 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.joshrose.common.components.linegraph.line.LineComponent
+import com.joshrose.common.components.linegraph.label_line.LabelLineComponent
 import com.joshrose.common.util.ShortClickButton
 
 @Composable
-fun LineContent(component: LineComponent, modifier: Modifier = Modifier) {
-    val line by component.lineStates.subscribeAsState()
+fun LabelLineContent(component: LabelLineComponent, modifier: Modifier = Modifier) {
+    val labelLine by component.labelLineStates.subscribeAsState()
 
     Card(
         modifier = modifier,
@@ -35,32 +35,38 @@ fun LineContent(component: LineComponent, modifier: Modifier = Modifier) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text("Line Options", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+            Text("Label Line Options", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
 
             Spacer(Modifier.height(10.dp))
 
-            LineTypeContent(
-                currentSelected = line.lineType,
-                onSelected = component::updateType
-            )
-
-            Spacer(Modifier.height(10.dp))
-
-            LineJoinContent(
-                currentSelected = line.strokeJoin,
-                onSelected = component::updateJoin
+            ShortClickButton(
+                label = "Alpha",
+                value = labelLine.alpha,
+                upperLimit = 1f,
+                lowerLimit = 0f,
+                incClick = component::incAlpha,
+                decClick = component::decAlpha,
+                pattern = "#.#",
+                horizontalArrangement = Arrangement.SpaceEvenly
             )
 
             Spacer(Modifier.height(10.dp))
 
             ShortClickButton(
                 label = "Stroke Width",
-                value = line.strokeWidth,
+                value = labelLine.strokeWidth,
                 upperLimit = 10f,
                 lowerLimit = 1f,
                 incClick = component::incStrokeWidth,
                 decClick = component::decStrokeWidth,
-                horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally)
+                horizontalArrangement = Arrangement.SpaceEvenly
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            CapToggle(
+                selected = labelLine.strokeCap,
+                onSelectChange = component::updateStrokeCap
             )
         }
     }

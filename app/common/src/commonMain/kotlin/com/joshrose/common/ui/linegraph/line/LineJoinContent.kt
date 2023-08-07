@@ -7,8 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.util.Join
-import com.joshrose.common.util.TriStateToggle
 
 @Composable
 fun LineJoinContent(
@@ -34,7 +32,7 @@ fun LineJoinContent(
             horizontalArrangement = Arrangement.spacedBy(40.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TriStateToggle(
+            JoinToggle(
                 selected = currentSelected,
                 onSelectChange = onSelected
             )

@@ -4,7 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.linegraph.models.LabelLineStates
-import com.joshrose.common.util.Cap
+import com.joshrose.common.ui.linegraph.label_line.Cap
 import kotlinx.coroutines.*
 
 class LabelLineModelImpl(initialState: LabelLineStates) : InstanceKeeper.Instance, LabelLineModel {
@@ -13,7 +13,7 @@ class LabelLineModelImpl(initialState: LabelLineStates) : InstanceKeeper.Instanc
 
     override fun incAlpha() {
         scope.launch {
-            labelLineStates.update { it.copy(alpha = it.alpha.plus(.1f)) }
+            labelLineStates.update { it.copy(alpha = it.alpha.plus(.1f).coerceAtMost(1f)) }
         }
     }
 

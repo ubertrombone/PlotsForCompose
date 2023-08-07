@@ -18,7 +18,7 @@ import com.joshrose.common.components.linegraph.marker.MarkerComponent
 import com.joshrose.common.util.ShortClickButton
 
 @Composable
-fun MarkerContent(component: MarkerComponent, modifier: Modifier) {
+fun MarkerContent(component: MarkerComponent, modifier: Modifier = Modifier) {
     val marker by component.markerStates.subscribeAsState()
 
     Card(

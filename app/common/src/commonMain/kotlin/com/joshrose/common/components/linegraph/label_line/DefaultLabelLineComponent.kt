@@ -1,7 +1,7 @@
 package com.joshrose.common.components.linegraph.label_line
 
 import com.arkivanov.decompose.ComponentContext
-import com.joshrose.common.util.Cap
+import com.joshrose.common.ui.linegraph.label_line.Cap
 
 class DefaultLabelLineComponent(
     componentContext: ComponentContext,
