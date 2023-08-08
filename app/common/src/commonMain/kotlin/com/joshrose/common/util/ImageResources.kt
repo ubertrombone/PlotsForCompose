@@ -23,5 +23,7 @@ enum class ImageResources(val path: String) {
     SHOW_CHART("show_chart.xml"),
     LINE("maximize.xml"),
     LABEL_LINE("height_line.xml"),
-    LABEL_MARKER("label_marker.xml")
+    LABEL_MARKER("label_marker.xml"),
+    FILL("stroke_full.xml"),
+    STROKE("circle.xml")
 }

@@ -19,14 +19,14 @@ sealed interface Radius : Parcelable {
     // In general, the radius should be greater than the size of the graph's markers.
     @Stable
     @Parcelize
-    class Stroke(val radius: Float = 5f) : Radius {
+    data class Stroke(val radius: Float = 5f) : Radius {
         override fun toString() = "Radius#WithMarker#$radius"
     }
 
     // Fill should be used when graph doesn't have markers. The radius then determines the size of the label marker.
     @Stable
     @Parcelize
-    class Fill(val radius: Float = 5f) : Radius {
+    data class Fill(val radius: Float = 5f) : Radius {
         override fun toString() = "Radius#WithoutMarkers#$radius"
     }
 }

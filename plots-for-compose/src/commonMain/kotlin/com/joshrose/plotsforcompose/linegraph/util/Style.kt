@@ -27,7 +27,7 @@ sealed interface Style : Parcelable {
     // strokeWidth is the thickness of the ring.
     @Stable
     @Parcelize
-    class Stroke(val strokeWidth: Float = 5f) : Style {
+    data class Stroke(val strokeWidth: Float = 5f) : Style {
         override fun toString() = "Style#Stroke#$strokeWidth"
     }
 }

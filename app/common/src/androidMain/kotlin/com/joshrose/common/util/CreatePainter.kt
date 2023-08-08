@@ -35,5 +35,7 @@ internal actual fun createPainter(file: ImageResources): Painter =
             LINE -> R.drawable.maximize
             LABEL_LINE -> R.drawable.height_line
             LABEL_MARKER -> R.drawable.label_marker
+            FILL -> R.drawable.stroke_full
+            STROKE -> R.drawable.circle
         }
     )

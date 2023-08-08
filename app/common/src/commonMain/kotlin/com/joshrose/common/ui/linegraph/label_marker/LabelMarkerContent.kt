@@ -1,4 +1,4 @@
-package com.joshrose.common.ui.linegraph.label_line
+package com.joshrose.common.ui.linegraph.label_marker
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -14,12 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.joshrose.common.components.linegraph.label_line.LabelLineComponent
-import com.joshrose.common.util.ShortClickButton
+import com.joshrose.common.components.linegraph.label_marker.LabelMarkerComponent
 
 @Composable
-fun LabelLineContent(component: LabelLineComponent, modifier: Modifier = Modifier) {
-    val labelLine by component.labelLineStates.subscribeAsState()
+fun LabelMarkerContent(
+    component: LabelMarkerComponent,
+    markerSize: Float,
+    modifier: Modifier = Modifier
+) {
+    val labelMarker by component.labelMarkerStates.subscribeAsState()
 
     Card(
         modifier = modifier,
@@ -39,34 +42,17 @@ fun LabelLineContent(component: LabelLineComponent, modifier: Modifier = Modifie
 
             Spacer(Modifier.height(10.dp))
 
-            ShortClickButton(
-                label = "Alpha",
-                value = labelLine.alpha,
-                upperLimit = 1f,
-                lowerLimit = 0f,
-                incClick = component::incAlpha,
-                decClick = component::decAlpha,
-                pattern = "#.#",
-                horizontalArrangement = Arrangement.SpaceEvenly
+            LabelMarkerRadiusContent(
+                selected = labelMarker.radius,
+                onSelectChange = component::updateRadius,
+                markerSize = markerSize
             )
 
             Spacer(Modifier.height(10.dp))
 
-            ShortClickButton(
-                label = "Stroke Width",
-                value = labelLine.strokeWidth,
-                upperLimit = 10f,
-                lowerLimit = 1f,
-                incClick = component::incStrokeWidth,
-                decClick = component::decStrokeWidth,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            )
-
-            Spacer(Modifier.height(10.dp))
-
-            LabelLineCapContent(
-                selected = labelLine.strokeCap,
-                onSelectChange = component::updateStrokeCap
+            LabelMarkerStyleContent(
+                selected = labelMarker.style,
+                onSelectChange = component::updateStyle
             )
         }
     }
