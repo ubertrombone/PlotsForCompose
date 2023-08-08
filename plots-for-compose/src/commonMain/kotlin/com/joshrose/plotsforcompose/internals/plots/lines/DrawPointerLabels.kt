@@ -55,15 +55,15 @@ internal fun DrawScope.drawPointerLabels(
     )
 
     val radiusWithMarkers = when (configs.labelMarkerRadius) {
+        is Radius.Stroke -> (configs.labelMarkerRadius as Radius.Stroke).radius
+        is Radius.Fill -> (configs.labelMarkerRadius as Radius.Fill).radius
         is Radius.Auto -> if (configs.markers) configs.markerSize?.toPx()?.plus(2f) ?: 5f else 10f
-        is Radius.WithMarkers -> configs.labelMarkerRadius.size
-        is Radius.WithoutMarkers -> configs.labelMarkerRadius.size
     }
     val strokeWidthWithMarkers = radiusWithMarkers.minus(configs.markerSize?.toPx() ?: 3f)
     val circleStyle = when (configs.labelMarkerStyle) {
         is Style.Auto -> if (!configs.markers) Fill else Stroke(width = strokeWidthWithMarkers)
         is Style.Fill -> Fill
-        is Style.Stroke -> Stroke(width = radiusWithMarkers.minus(configs.labelMarkerStyle.size))
+        is Style.Stroke -> Stroke(width = radiusWithMarkers.minus((configs.labelMarkerStyle as Style.Stroke).strokeWidth))
     }
     drawCircle(
         color = configs.labelMarkerColor,

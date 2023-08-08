@@ -8,24 +8,25 @@ import com.arkivanov.essenty.parcelable.Parcelize
 @Immutable
 sealed interface Radius : Parcelable {
 
-    val size: Float
-
     @Stable
     @Parcelize
-    // Size does nothing
-    class Auto(override val size: Float = 0f): Radius {
+    data object Auto: Radius {
+        private fun readResolve(): Any = Auto
         override fun toString() = "Radius#Auto"
     }
 
+    // Stroke should be used when graph has markers. Radius is applied to the label marker.
+    // In general, the radius should be greater than the size of the graph's markers.
     @Stable
     @Parcelize
-    class WithMarkers(override val size: Float) : Radius {
-        override fun toString() = "Radius#WithMarker#$size"
+    class Stroke(val radius: Float = 5f) : Radius {
+        override fun toString() = "Radius#WithMarker#$radius"
     }
 
+    // Fill should be used when graph doesn't have markers. The radius then determines the size of the label marker.
     @Stable
     @Parcelize
-    class WithoutMarkers(override val size: Float) : Radius {
-        override fun toString() = "Radius#WithoutMarkers#$size"
+    class Fill(val radius: Float = 5f) : Radius {
+        override fun toString() = "Radius#WithoutMarkers#$radius"
     }
 }

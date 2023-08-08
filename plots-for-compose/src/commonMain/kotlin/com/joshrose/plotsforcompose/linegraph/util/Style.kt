@@ -6,23 +6,28 @@ import com.arkivanov.essenty.parcelable.Parcelize
 
 sealed interface Style : Parcelable {
 
-    val size: Float
-
+    // Auto will determine if the graph should make the labels Fill or Stroke.
+    // If Stroke, the graph will determine the strokeWidth based on the size of the graph's markers.
     @Stable
     @Parcelize
-    class Auto(override val size: Float = 0f) : Style {
+    data object Auto : Style {
+        private fun readResolve(): Any = Auto
         override fun toString() = "Style#Auto"
     }
 
+    // Fill should be used when you want the marker to be a solid shape.
     @Stable
     @Parcelize
-    class Fill(override val size: Float = 0f) : Style {
+    data object Fill : Style {
+        private fun readResolve(): Any = Fill
         override fun toString() = "Style#Fill"
     }
 
+    // Stroke should be used when you want the label marker to be a hollow circle or ring around markers.
+    // strokeWidth is the thickness of the ring.
     @Stable
     @Parcelize
-    class Stroke(override val size: Float) : Style {
-        override fun toString() = "Style#Stroke#$size"
+    class Stroke(val strokeWidth: Float = 5f) : Style {
+        override fun toString() = "Style#Stroke#$strokeWidth"
     }
 }
