@@ -39,6 +39,11 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
     requireNotNull(value = y) { "LinePlot must have values defined for Y." }
     require(value = isCastAsNumber(y)) { "LinePlot requires Y values be of type Number." }
 
+    val z = asMappingData(data = data, mapping = plot.mapping.map, key = "z")
+    println("Z: $z")
+    val zPart = z?.groupBy { it.toString() }
+    println("zPart: $zPart")
+
     val (newX, newY) = if (figure.stat.kind == COUNT) x to y else {
         x
             .zip(y.map { it.toString().toFloatOrNull() })

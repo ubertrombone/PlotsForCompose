@@ -144,21 +144,21 @@ fun LineGraphContent(
                 val sortedData = data.data["Independent"]!!.zip(data.data["Dependent"]!!).sortedBy { it.first }.unzip()
                 val cleanedData = mapOf(
                     "Independent" to sortedData.first,
-                    "Dependent" to sortedData.second
+                    "Dependent" to sortedData.second,
+                    "Third" to List(20) { if ((0..1).random() == 0) "Zero" else "One" }
                 )
 
-                // TODO: What happens when X has null values?
                 val plot = composePlot(data = cleanedData) {
                     figure = LineFigure(stat = Stats.identity, configs = lineGraphConfigs)
                     x = "Independent"
                     y = "Dependent"
+                    z = "Third"
                 }
                     .plus(
                         xAxis(
                             axisLineConfigs = xAxisLineConfigs,
                             guidelinesConfigs = guidelinesConfigs,
                             labelConfigs = labelConfigs,
-                            labels = Proportional(.5f)
                         )
                     )
                     .plus(
