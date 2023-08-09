@@ -41,7 +41,20 @@ fun LinePlot(plot: Plot, modifier: Modifier = Modifier) {
 
     val z = asMappingData(data = data, mapping = plot.mapping.map, key = "z")
     println("Z: $z")
-    val zPart = z?.groupBy { it.toString() }
+    val zPart = z?.groupBy { it.toString() }?.mapValues { value ->
+        val values = value.value.toMutableList()
+        val indices: MutableList<Int> = mutableListOf()
+        run {
+            z.forEachIndexed { index, any ->
+                if (any.toString() == values.first().toString()) {
+                    indices.add(index)
+                    values.removeFirst()
+                }
+                if (values.isEmpty()) return@run
+            }
+        }
+        indices
+    }
     println("zPart: $zPart")
 
     val (newX, newY) = if (figure.stat.kind == COUNT) x to y else {
