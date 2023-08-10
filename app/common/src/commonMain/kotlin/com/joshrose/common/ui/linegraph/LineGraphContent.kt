@@ -145,14 +145,12 @@ fun LineGraphContent(
                 val cleanedData = mapOf(
                     "Independent" to sortedData.first,
                     "Dependent" to sortedData.second,
-                    "Third" to List(20) { if ((0..1).random() == 0) "Zero" else "One" }
                 )
 
                 val plot = composePlot(data = cleanedData) {
                     figure = LineFigure(stat = Stats.identity, configs = lineGraphConfigs)
                     x = "Independent"
                     y = "Dependent"
-                    z = "Third"
                 }
                     .plus(
                         xAxis(
