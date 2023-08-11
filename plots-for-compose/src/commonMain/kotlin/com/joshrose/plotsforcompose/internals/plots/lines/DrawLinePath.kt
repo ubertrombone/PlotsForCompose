@@ -1,11 +1,12 @@
 package com.joshrose.plotsforcompose.internals.plots.lines
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import com.joshrose.plotsforcompose.internals.markers.markerCircle
+import com.joshrose.plotsforcompose.internals.markers.markerSquare
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration
+import com.joshrose.plotsforcompose.util.Markers
 
 fun DrawScope.drawLinePath(
     coordinates: List<Pair<Float, Float>>,
@@ -22,13 +23,22 @@ fun DrawScope.drawLinePath(
         )
     )
 
+    // TODO: Add config for kind of marker
+    // TODO: make sure label marker matches marker shape
     coordinates.forEach {
         if (configs.markers) {
-            drawCircle(
-                color = configs.markerColor ?: Color.White,
-                radius = configs.markerSize?.toPx() ?: 5f,
-                center = Offset(it.first, it.second)
-            )
+            when (configs.markerShape) {
+                Markers.SQUARE -> markerSquare(
+                    color = configs.markerColor,
+                    size = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                else -> markerCircle(
+                    color = configs.markerColor,
+                    radius = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+            }
         }
     }
 }

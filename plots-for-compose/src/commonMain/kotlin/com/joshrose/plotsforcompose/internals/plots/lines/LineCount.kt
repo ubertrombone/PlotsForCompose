@@ -95,7 +95,6 @@ internal fun DrawScope.drawLineCount(
             else size.height.minus(yValues.indexOf(count).plus(1).times(yFactor))
 
         coordinates.add(x to y)
-        // TODO: Custom marker types
     }
 
     coordinates.forEachIndexed { index, (x, y) ->

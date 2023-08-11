@@ -4,6 +4,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.update
 import com.arkivanov.essenty.instancekeeper.InstanceKeeper
 import com.joshrose.common.components.linegraph.models.MarkerStates
+import com.joshrose.plotsforcompose.util.Markers
 import kotlinx.coroutines.*
 
 class MarkerModelImpl(initialState: MarkerStates) : InstanceKeeper.Instance, MarkerModel {
@@ -13,6 +14,12 @@ class MarkerModelImpl(initialState: MarkerStates) : InstanceKeeper.Instance, Mar
     override fun updateShowMarkers(update: Boolean) {
         scope.launch {
             markerStates.update { it.copy(markers = update) }
+        }
+    }
+
+    override fun updateMarkerShape(update: Markers) {
+        scope.launch {
+            markerStates.update { it.copy(markerShape = update) }
         }
     }
 

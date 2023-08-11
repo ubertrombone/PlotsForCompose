@@ -16,6 +16,7 @@ import com.joshrose.plotsforcompose.linegraph.util.Style
 import com.joshrose.plotsforcompose.theme.md_theme_dark_onBackground
 import com.joshrose.plotsforcompose.theme.md_theme_dark_primary
 import com.joshrose.plotsforcompose.theme.md_theme_dark_secondary
+import com.joshrose.plotsforcompose.util.Markers
 
 data class LineGraphConfiguration(
     var lineType: LineType = STRAIGHT,
@@ -25,6 +26,7 @@ data class LineGraphConfiguration(
     var markers: Boolean = false,
     var markerSize: Dp? = null,
     var markerColor: Color? = null,
+    var markerShape: Markers? = null,
     var pathEffect: PathEffect? = null,
     var hasDynamicLabels: Boolean = true,
     var labelFontColor: Color = md_theme_dark_secondary,

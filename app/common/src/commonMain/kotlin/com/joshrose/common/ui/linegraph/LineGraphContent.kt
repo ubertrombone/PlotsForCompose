@@ -79,6 +79,7 @@ fun LineGraphContent(
         markers = markerStates.markers
         markerSize = markerStates.markerSize.dp
         markerColor = markColor
+        markerShape = markerStates.markerShape
         labelFontSize = labelStates.fontSize.sp
         labelFontColor = fontColor
         boxColor = labelColor
