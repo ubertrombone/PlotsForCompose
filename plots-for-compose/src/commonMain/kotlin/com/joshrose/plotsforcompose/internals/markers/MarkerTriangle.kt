@@ -19,7 +19,7 @@ internal fun DrawScope.markerTriangle(
         moveTo(x = topPoint.x, y = topPoint.y)
         lineTo(x = bottomRight.x, y = bottomRight.y)
         lineTo(x = bottomLeft.x, y = bottomLeft.y)
-        lineTo(x = topPoint.x, y = topPoint.y)
+        close()
     }
 
     drawPath(path = path, color = color ?: Color.White)

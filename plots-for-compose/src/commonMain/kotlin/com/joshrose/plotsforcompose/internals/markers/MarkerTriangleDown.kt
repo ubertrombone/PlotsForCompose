@@ -19,7 +19,7 @@ internal fun DrawScope.markerTriangleDown(
         moveTo(x = bottomPoint.x, y = bottomPoint.y)
         lineTo(x = topRight.x, y = topRight.y)
         lineTo(x = topLeft.x, y = topLeft.y)
-        lineTo(x = bottomPoint.x, y = bottomPoint.y)
+        close()
     }
 
     drawPath(path = path, color = color ?: Color.White)

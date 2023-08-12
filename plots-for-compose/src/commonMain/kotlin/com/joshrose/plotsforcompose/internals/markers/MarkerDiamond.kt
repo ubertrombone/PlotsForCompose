@@ -22,7 +22,7 @@ internal fun DrawScope.markerDiamond(
         lineTo(x = rightPoint.x, y = rightPoint.y)
         lineTo(x = bottomPoint.x, y = bottomPoint.y)
         lineTo(x = leftPoint.x, y = leftPoint.y)
-        lineTo(x = topPoint.x, y = topPoint.y)
+        close()
     }
 
     drawPath(path = path, color = color ?: Color.White)

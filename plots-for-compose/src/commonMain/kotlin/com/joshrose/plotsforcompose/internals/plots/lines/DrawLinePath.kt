@@ -72,6 +72,11 @@ fun DrawScope.drawLinePath(
                     radius = configs.markerSize?.toPx(),
                     coordinates = it
                 )
+                Markers.STAR -> markerStar(
+                    color = configs.markerColor,
+                    size = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
                 else -> markerCircle(
                     color = configs.markerColor,
                     radius = configs.markerSize?.toPx(),
