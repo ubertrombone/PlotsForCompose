@@ -10,7 +10,7 @@ enum class Markers {
     DIAMOND,
     TRIANGLE_DOWN,
     SNOWFLAKE,
-    CROSS_HAIRS,
-    CROSS_HAIRS_ANGLED,
+    BUTTON,
+    CRACKER,
     HEART
 }

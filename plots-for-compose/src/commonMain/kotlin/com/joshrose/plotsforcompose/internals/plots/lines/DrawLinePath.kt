@@ -62,6 +62,16 @@ fun DrawScope.drawLinePath(
                     length = configs.markerSize?.toPx(),
                     coordinates = it
                 )
+                Markers.BUTTON -> markerButton(
+                    color = configs.markerColor,
+                    radius = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                Markers.CRACKER -> markerCracker(
+                    color = configs.markerColor,
+                    radius = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
                 else -> markerCircle(
                     color = configs.markerColor,
                     radius = configs.markerSize?.toPx(),
