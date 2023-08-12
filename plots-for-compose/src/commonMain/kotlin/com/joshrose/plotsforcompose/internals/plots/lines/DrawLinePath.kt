@@ -3,10 +3,7 @@ package com.joshrose.plotsforcompose.internals.plots.lines
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import com.joshrose.plotsforcompose.internals.markers.markerCircle
-import com.joshrose.plotsforcompose.internals.markers.markerSquare
-import com.joshrose.plotsforcompose.internals.markers.markerTriangle
-import com.joshrose.plotsforcompose.internals.markers.markerTriangleDown
+import com.joshrose.plotsforcompose.internals.markers.*
 import com.joshrose.plotsforcompose.linegraph.config.LineGraphConfiguration
 import com.joshrose.plotsforcompose.util.Markers
 
@@ -43,6 +40,26 @@ fun DrawScope.drawLinePath(
                 Markers.TRIANGLE_DOWN -> markerTriangleDown(
                     color = configs.markerColor,
                     size = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                Markers.X -> markerX(
+                    color = configs.markerColor,
+                    length = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                Markers.PLUS -> markerPlus(
+                    color = configs.markerColor,
+                    length = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                Markers.DIAMOND -> markerDiamond(
+                    color = configs.markerColor,
+                    size = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                Markers.SNOWFLAKE -> markerSnowflake(
+                    color = configs.markerColor,
+                    length = configs.markerSize?.toPx(),
                     coordinates = it
                 )
                 else -> markerCircle(

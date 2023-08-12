@@ -6,7 +6,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 
 @Suppress("DuplicatedCode")
-fun DrawScope.markerTriangleDown(
+internal fun DrawScope.markerTriangleDown(
     color: Color?,
     size: Float?,
     coordinates: Pair<Float, Float>
