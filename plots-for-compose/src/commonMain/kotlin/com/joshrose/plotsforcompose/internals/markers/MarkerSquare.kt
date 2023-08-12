@@ -10,7 +10,7 @@ fun DrawScope.markerSquare(
     size: Float?,
     coordinates: Pair<Float, Float>
 ) {
-    val sizeLessNull = size ?: 5f
+    val sizeLessNull = size?.times(2f) ?: 10f
     drawRect(
         color = color ?: Color.White,
         size = Size(width = sizeLessNull, height = sizeLessNull),
