@@ -16,25 +16,25 @@ import androidx.compose.ui.unit.LayoutDirection
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Triangle(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier, contentDescription = "Triangle Marker Shape") {
-        drawPath(path = trianglePath(size), color = color)
+fun TriangleDown(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier, contentDescription = "Upside Down Triangle Marker Shape") {
+        drawPath(path = triangleDownPath(size), color = color)
     }
 }
 
-val TriangleShape: Shape = object : Shape {
+val TriangleDownShape: Shape = object : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline =
-        Outline.Generic(path = trianglePath(size))
+        Outline.Generic(path = triangleDownPath(size))
 }
 
-private fun trianglePath(size: Size): Path {
-    val topPoint = Offset(x = size.center.x, y = 0f)
-    val bottomRight = Offset(x = size.width, y = size.height)
-    val bottomLeft = Offset(x = 0f, y = size.height)
+private fun triangleDownPath(size: Size): Path {
+    val bottomPoint = Offset(x = size.center.x, y = size.height)
+    val topRight = Offset(x = size.width, y = 0f)
+    val topLeft = Offset(x = 0f, y = 0f)
     return Path().apply {
-        moveTo(x = topPoint.x, y = topPoint.y)
-        lineTo(x = bottomRight.x, y = bottomRight.y)
-        lineTo(x = bottomLeft.x, y = bottomLeft.y)
+        moveTo(x = bottomPoint.x, y = bottomPoint.y)
+        lineTo(x = topRight.x, y = topRight.y)
+        lineTo(x = topLeft.x, y = topLeft.y)
         close()
     }
 }

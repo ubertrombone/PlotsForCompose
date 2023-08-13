@@ -16,25 +16,29 @@ import androidx.compose.ui.unit.LayoutDirection
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Triangle(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier, contentDescription = "Triangle Marker Shape") {
-        drawPath(path = trianglePath(size), color = color)
+fun Diamond(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier, contentDescription = "Diamond Marker Shape") {
+        drawPath(path = diamondPath(size), color = color)
     }
 }
 
-val TriangleShape: Shape = object : Shape {
+val DiamondShape: Shape = object : Shape {
     override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline =
-        Outline.Generic(path = trianglePath(size))
+        Outline.Generic(path = diamondPath(size))
 }
 
-private fun trianglePath(size: Size): Path {
+@Suppress("DuplicatedCode")
+private fun diamondPath(size: Size): Path {
+    val threeQuartersX = size.center.x.times(.75f)
     val topPoint = Offset(x = size.center.x, y = 0f)
-    val bottomRight = Offset(x = size.width, y = size.height)
-    val bottomLeft = Offset(x = 0f, y = size.height)
+    val rightPoint = Offset(x = size.center.x.plus(threeQuartersX), y = size.center.y)
+    val leftPoint = Offset(x = size.center.x.minus(threeQuartersX), y = size.center.y)
+    val bottomPoint = Offset(x = size.center.x, y = size.height)
     return Path().apply {
         moveTo(x = topPoint.x, y = topPoint.y)
-        lineTo(x = bottomRight.x, y = bottomRight.y)
-        lineTo(x = bottomLeft.x, y = bottomLeft.y)
+        lineTo(x = rightPoint.x, y = rightPoint.y)
+        lineTo(x = bottomPoint.x, y = bottomPoint.y)
+        lineTo(x = leftPoint.x, y = leftPoint.y)
         close()
     }
 }

@@ -22,6 +22,7 @@ fun DrawScope.drawLinePath(
         )
     )
 
+    // TODO: Refactor these so that each shape is drawn independently of the coordinate in a canvas.
     coordinates.forEach {
         if (configs.markers) {
             when (configs.markerShape) {

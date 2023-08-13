@@ -15,10 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.ui.linegraph.marker.marker_shapes.Circle
-import com.joshrose.common.ui.linegraph.marker.marker_shapes.Square
-import com.joshrose.common.ui.linegraph.marker.marker_shapes.Triangle
-import com.joshrose.common.ui.linegraph.marker.marker_shapes.TriangleShape
+import com.joshrose.common.ui.linegraph.marker.marker_shapes.*
 import com.joshrose.plotsforcompose.util.Markers
 import com.joshrose.plotsforcompose.util.Markers.*
 
@@ -67,6 +64,20 @@ fun Shapes(
                     .size(28.dp)
                     .clip(TriangleShape)
                     .clickable { onSelected(TRIANGLE) }
+            )
+            Diamond(
+                color = selectionColor(selected == DIAMOND),
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(DiamondShape)
+                    .clickable { onSelected(DIAMOND) }
+            )
+            TriangleDown(
+                color = selectionColor(selected == TRIANGLE_DOWN),
+                modifier = Modifier
+                    .size(28.dp)
+                    .clip(TriangleDownShape)
+                    .clickable { onSelected(TRIANGLE_DOWN) }
             )
         }
     }
