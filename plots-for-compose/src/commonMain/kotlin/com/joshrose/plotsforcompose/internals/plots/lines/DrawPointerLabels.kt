@@ -53,6 +53,7 @@ internal fun DrawScope.drawPointerLabels(
         textLayoutResult = textLayoutResult
     )
 
+    // TODO: Make this less confusing
     val radiusWithMarkers = when (configs.labelMarkerRadius) {
         is Radius.Stroke -> (configs.labelMarkerRadius as Radius.Stroke).radius
         is Radius.Fill -> (configs.labelMarkerRadius as Radius.Fill).radius
@@ -64,6 +65,7 @@ internal fun DrawScope.drawPointerLabels(
         is Style.Fill -> Fill
         is Style.Stroke -> Stroke(width = radiusWithMarkers.minus((configs.labelMarkerStyle as Style.Stroke).strokeWidth))
     }
+    // TODO: Circle radius will vary based on marker, account for that
     drawCircle(
         color = configs.labelMarkerColor,
         radius = radiusWithMarkers,

@@ -5,6 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.util.ImageResources.SMALL_PUSH_PIN
 import com.joshrose.common.util.createPainter
@@ -23,7 +24,8 @@ fun Markers(
         Text(
             text = "Show Markers",
             color = MaterialTheme.colorScheme.primary,
-            fontSize = MaterialTheme.typography.titleMedium.fontSize
+            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+            textAlign = TextAlign.Center
         )
 
         Spacer(Modifier.height(5.dp))

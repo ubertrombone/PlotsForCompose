@@ -22,7 +22,6 @@ fun DrawScope.drawLinePath(
         )
     )
 
-    // TODO: make sure label marker matches marker shape
     coordinates.forEach {
         if (configs.markers) {
             when (configs.markerShape) {

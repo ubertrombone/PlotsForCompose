@@ -17,7 +17,6 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.joshrose.common.components.linegraph.marker.MarkerComponent
 import com.joshrose.common.util.ShortClickButton
 
-// TODO: Add component for markerShapes
 @Composable
 fun MarkerContent(component: MarkerComponent, modifier: Modifier = Modifier) {
     val marker by component.markerStates.subscribeAsState()
@@ -53,6 +52,10 @@ fun MarkerContent(component: MarkerComponent, modifier: Modifier = Modifier) {
                 decClick = component::decMarkerSize,
                 horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally)
             )
+
+            Spacer(Modifier.height(10.dp))
+
+            Shapes(selected = marker.markerShape, onSelected = component::updateMarkerShape)
         }
     }
 }

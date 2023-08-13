@@ -33,7 +33,6 @@ import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.linegraph.config.lineGraphConfiguration
-import com.joshrose.plotsforcompose.util.Markers
 import com.joshrose.plotsforcompose.util.Proportional
 
 @Suppress("DuplicatedCode")
@@ -80,7 +79,7 @@ fun LineGraphContent(
         markers = markerStates.markers
         markerSize = markerStates.markerSize.dp
         markerColor = markColor
-        markerShape = Markers.HEART//markerStates.markerShape
+        markerShape = markerStates.markerShape
         labelFontSize = labelStates.fontSize.sp
         labelFontColor = fontColor
         boxColor = labelColor
