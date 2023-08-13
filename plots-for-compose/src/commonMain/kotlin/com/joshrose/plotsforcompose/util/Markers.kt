@@ -8,7 +8,7 @@ enum class Markers {
     PLUS, // 2
     X, // 2
     DIAMOND,
-    TRIANGLE_DOWN, // 1
+    TRIANGLE_DOWN,
     SNOWFLAKE, // 2
     BUTTON, // 2
     CRACKER, // 2

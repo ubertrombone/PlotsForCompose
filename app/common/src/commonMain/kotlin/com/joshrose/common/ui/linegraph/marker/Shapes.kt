@@ -28,7 +28,7 @@ fun Shapes(
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceEvenly
     ) {
         Text(
             text = "Marker Shape",
@@ -78,6 +78,22 @@ fun Shapes(
                     .size(28.dp)
                     .clip(TriangleDownShape)
                     .clickable { onSelected(TRIANGLE_DOWN) }
+            )
+        }
+
+        Spacer(Modifier.height(10.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Plus(
+                color = selectionColor(selected == PLUS),
+                modifier = Modifier
+                    .size(28.dp)
+                    //.clip(PlusShape) TODO
+                    .clickable { onSelected(PLUS) }
             )
         }
     }
