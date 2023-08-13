@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package com.joshrose.common.ui.linegraph.marker.marker_shapes
 
 import androidx.compose.foundation.Canvas
@@ -16,6 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Plus(color: Color, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier, contentDescription = "Plus Marker Shape") {
