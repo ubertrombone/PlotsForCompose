@@ -4,7 +4,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import kotlin.math.PI
+import com.joshrose.plotsforcompose.internals.util.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -52,5 +52,3 @@ internal fun DrawScope.markerStar(
 
     drawPath(path = path, color = color ?: Color.White)
 }
-
-fun Float.toRadians() = this * (PI / 180f).toFloat()

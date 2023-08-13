@@ -22,7 +22,6 @@ fun DrawScope.drawLinePath(
         )
     )
 
-    // TODO: Add config for kind of marker
     // TODO: make sure label marker matches marker shape
     coordinates.forEach {
         if (configs.markers) {
@@ -73,6 +72,11 @@ fun DrawScope.drawLinePath(
                     coordinates = it
                 )
                 Markers.STAR -> markerStar(
+                    color = configs.markerColor,
+                    size = configs.markerSize?.toPx(),
+                    coordinates = it
+                )
+                Markers.HEART -> markerHeart(
                     color = configs.markerColor,
                     size = configs.markerSize?.toPx(),
                     coordinates = it
