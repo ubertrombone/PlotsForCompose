@@ -6,11 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.util.ImageResources.LINE_CURVE
-import com.joshrose.common.util.ImageResources.LINE_STRAIGHT
-import com.joshrose.common.util.createPainter
 import com.joshrose.plotsforcompose.linegraph.util.LineType
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun LineTypeContent(
     currentSelected: LineType,
@@ -44,7 +44,7 @@ fun LineTypeContent(
                 ),
                 modifier = Modifier.size(28.dp)
             ) {
-                Icon(painter = createPainter(LINE_STRAIGHT), contentDescription = "Straight Line Type")
+                Icon(painter = painterResource("line_straight.xml"), contentDescription = "Straight Line Type")
             }
 
             OutlinedIconToggleButton(
@@ -56,7 +56,7 @@ fun LineTypeContent(
                 ),
                 modifier = Modifier.size(28.dp)
             ) {
-                Icon(painter = createPainter(LINE_CURVE), contentDescription = "Curved Line Type")
+                Icon(painter = painterResource("line_curve.xml"), contentDescription = "Curved Line Type")
             }
         }
     }

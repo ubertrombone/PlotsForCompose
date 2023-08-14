@@ -8,10 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.util.ImageResources.*
-import com.joshrose.common.util.createPainter
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun XAxisAlignment(
     currentSelected: XAxis?,
@@ -39,7 +40,7 @@ fun XAxisAlignment(
         ) {
             XAlignmentButton(
                 selected = currentSelected == null,
-                icon = createPainter(file = ALIGN_AUTO),
+                icon = painterResource("auto_awesome.xml"),
                 contentDescription = "Automatic Alignment",
                 axisPosition = null,
                 enabled = enabled,
@@ -54,7 +55,7 @@ fun XAxisAlignment(
         ) {
             XAlignmentButton(
                 selected = currentSelected == Top,
-                icon = createPainter(file = ALIGN_TOP),
+                icon = painterResource("align_vertical_top.xml"),
                 contentDescription = "Align top",
                 axisPosition = Top,
                 enabled = enabled,
@@ -63,7 +64,7 @@ fun XAxisAlignment(
 
             XAlignmentButton(
                 selected = currentSelected == Bottom,
-                icon = createPainter(file = ALIGN_BOTTOM),
+                icon = painterResource("align_vertical_bottom.xml"),
                 contentDescription = "Align bottom",
                 axisPosition = Bottom,
                 enabled = enabled,
@@ -78,7 +79,7 @@ fun XAxisAlignment(
         ) {
             XAlignmentButton(
                 selected = currentSelected == Center,
-                icon = createPainter(file = ALIGN_CENTER_VERTICAL),
+                icon = painterResource("align_vertical_center.xml"),
                 contentDescription = "Align center",
                 axisPosition = Center,
                 enabled = enabled,
@@ -87,7 +88,7 @@ fun XAxisAlignment(
 
             XAlignmentButton(
                 selected = currentSelected == Both,
-                icon = createPainter(file = ALIGN_BOTH_VERTICAL),
+                icon = painterResource("align_vertical_both.xml"),
                 contentDescription = "Align Both",
                 axisPosition = Both,
                 enabled = enabled,

@@ -22,7 +22,6 @@ import com.joshrose.common.ui.linegraph.label_marker.LabelMarkerContent
 import com.joshrose.common.ui.linegraph.line.LineContent
 import com.joshrose.common.ui.linegraph.marker.MarkerContent
 import com.joshrose.common.util.*
-import com.joshrose.common.util.ImageResources.*
 import com.joshrose.plotsforcompose.Stats
 import com.joshrose.plotsforcompose.axis.config.axisline.xConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.yConfiguration
@@ -34,7 +33,10 @@ import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.figures.LineFigure
 import com.joshrose.plotsforcompose.linegraph.config.lineGraphConfiguration
 import com.joshrose.plotsforcompose.util.Proportional
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Suppress("DuplicatedCode")
 @Composable
 fun LineGraphContent(
@@ -101,35 +103,35 @@ fun LineGraphContent(
                 BottomBarItems(
                     label = "Line",
                     selected = activeComponent is LineGraphComponent.Child.LineChild,
-                    icon = { Icon(painter = createPainter(SHOW_CHART), contentDescription = "Line Options") },
+                    icon = { Icon(painter = painterResource("show_chart.xml"), contentDescription = "Line Options") },
                     onClick = component::onLineTabClicked
                 )
 
                 BottomBarItems(
                     label = "Marker",
                     selected = activeComponent is LineGraphComponent.Child.MarkerChild,
-                    icon = { Icon(painter = createPainter(PUSH_PIN), contentDescription = "Marker Options") },
+                    icon = { Icon(painter = painterResource("push_pin.xml"), contentDescription = "Marker Options") },
                     onClick = component::onMarkerTabClicked
                 )
 
                 BottomBarItems(
                     label = "Label",
                     selected = activeComponent is LineGraphComponent.Child.LabelChild,
-                    icon = { Icon(painter = createPainter(LABELS), contentDescription = "Label Options") },
+                    icon = { Icon(painter = painterResource("label.xml"), contentDescription = "Label Options") },
                     onClick = component::onLabelTabClicked
                 )
 
                 BottomBarItems(
                     label = "Label Line",
                     selected = activeComponent is LineGraphComponent.Child.LabelLineChild,
-                    icon = { Icon(painter = createPainter(LABEL_LINE), contentDescription = "Label Line Options") },
+                    icon = { Icon(painter = painterResource("height_line.xml"), contentDescription = "Label Line Options") },
                     onClick = component::onLabelLineTabClicked
                 )
 
                 BottomBarItems(
                     label = "Label Marker",
                     selected = activeComponent is LineGraphComponent.Child.LabelMarkerChild,
-                    icon = { Icon(painter = createPainter(LABEL_MARKER), contentDescription = "Label Marker Options") },
+                    icon = { Icon(painter = painterResource("label_marker.xml"), contentDescription = "Label Marker Options") },
                     onClick = component::onLabelMarkerTabClicked
                 )
             }

@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_VARIABLE")
-
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
@@ -11,13 +9,13 @@ group = "com.joshrose"
 version = "1.0-SNAPSHOT"
 
 kotlin {
-    android()
-    jvm("desktop") {
-        jvmToolchain(17)
-    }
+    androidTarget()
+    jvm("desktop")
     sourceSets {
         val commonMain by getting {
             dependencies {
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                api(compose.components.resources)
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
@@ -50,9 +48,14 @@ android {
     namespace = "com.joshrose.common"
     compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
+    sourceSets["main"].res.srcDirs("src/androidMain/res")
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     defaultConfig.minSdk = 26
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlin {
+        jvmToolchain(17)
     }
 }

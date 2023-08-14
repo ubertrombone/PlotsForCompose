@@ -8,9 +8,10 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.util.ImageResources.DOUBLE_ARROW_UP
-import com.joshrose.common.util.createPainter
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun RepeatableIncButton(
     enabled: Boolean = true,
@@ -18,7 +19,7 @@ fun RepeatableIncButton(
     modifier: Modifier = Modifier
 ) {
     Icon(
-        painter = createPainter(DOUBLE_ARROW_UP),
+        painter = painterResource("keyboard_double_arrow_up.xml"),
         contentDescription = contentDescription,
         tint = if (enabled) colorScheme.primary else colorScheme.secondary,
         modifier = modifier

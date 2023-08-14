@@ -7,9 +7,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.util.ImageResources.SMALL_PUSH_PIN
-import com.joshrose.common.util.createPainter
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun Markers(
     selected: Boolean,
@@ -39,7 +40,7 @@ fun Markers(
             ),
             modifier = Modifier.size(28.dp)
         ) {
-            Icon(painter = createPainter(SMALL_PUSH_PIN), contentDescription = "Show Markers")
+            Icon(painter = painterResource("small_push_pin.xml"), contentDescription = "Show Markers")
         }
     }
 }

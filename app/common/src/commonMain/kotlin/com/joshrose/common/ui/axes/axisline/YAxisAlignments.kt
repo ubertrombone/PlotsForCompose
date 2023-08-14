@@ -8,10 +8,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.joshrose.common.util.ImageResources.*
-import com.joshrose.common.util.createPainter
 import com.joshrose.plotsforcompose.axis.util.AxisPosition.*
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun YAxisAlignment(
     currentSelected: YAxis?,
@@ -39,7 +40,7 @@ fun YAxisAlignment(
         ) {
             YAlignmentButton(
                 selected = currentSelected == null,
-                icon = createPainter(file = ALIGN_AUTO),
+                icon = painterResource("auto_awesome.xml"),
                 contentDescription = "Automatic Alignment",
                 axisPosition = null,
                 enabled = enabled,
@@ -54,7 +55,7 @@ fun YAxisAlignment(
         ) {
             YAlignmentButton(
                 selected = currentSelected == Start,
-                icon = createPainter(file = ALIGN_LEFT),
+                icon = painterResource("align_horizontal_left.xml"),
                 contentDescription = "Align start",
                 axisPosition = Start,
                 enabled = enabled,
@@ -63,7 +64,7 @@ fun YAxisAlignment(
 
             YAlignmentButton(
                 selected = currentSelected == End,
-                icon = createPainter(file = ALIGN_RIGHT),
+                icon = painterResource("align_horizontal_right.xml"),
                 contentDescription = "Align end",
                 axisPosition = End,
                 enabled = enabled,
@@ -78,7 +79,7 @@ fun YAxisAlignment(
         ) {
             YAlignmentButton(
                 selected = currentSelected == Center,
-                icon = createPainter(file = ALIGN_CENTER_HORIZONTAL),
+                icon = painterResource("align_horizontal_center.xml"),
                 contentDescription = "Align center",
                 axisPosition = Center,
                 enabled = enabled,
@@ -87,7 +88,7 @@ fun YAxisAlignment(
 
             YAlignmentButton(
                 selected = currentSelected == Both,
-                icon = createPainter(file = ALIGN_BOTH_HORIZONTAL),
+                icon = painterResource("align_horizontal_both.xml"),
                 contentDescription = "Align Both",
                 axisPosition = Both,
                 enabled = enabled,

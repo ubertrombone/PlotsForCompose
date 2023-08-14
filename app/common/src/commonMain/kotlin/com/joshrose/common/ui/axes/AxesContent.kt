@@ -20,7 +20,6 @@ import com.joshrose.common.ui.axes.guidelines.GuidelinesContent
 import com.joshrose.common.ui.axes.labels.LabelsContent
 import com.joshrose.common.ui.axes.visibility.VisibilityContent
 import com.joshrose.common.util.*
-import com.joshrose.common.util.ImageResources.*
 import com.joshrose.plotsforcompose.axis.config.axisline.xConfiguration
 import com.joshrose.plotsforcompose.axis.config.axisline.yConfiguration
 import com.joshrose.plotsforcompose.axis.config.guidelines.guidelinesConfiguration
@@ -29,7 +28,10 @@ import com.joshrose.plotsforcompose.axis.xAxis
 import com.joshrose.plotsforcompose.axis.yAxis
 import com.joshrose.plotsforcompose.composePlot
 import com.joshrose.plotsforcompose.linegraph.model.NumberData
+import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.jetbrains.compose.resources.painterResource
 
+@OptIn(ExperimentalResourceApi::class)
 @Composable
 fun AxesContent(
     component: AxesComponent,
@@ -104,28 +106,28 @@ fun AxesContent(
                 BottomBarItems(
                     label = "Visibility",
                     selected = activeComponent is AxesComponent.Child.VisibilityChild,
-                    icon = { Icon(painter = createPainter(VISIBILITY), contentDescription = "Visibility Options") },
+                    icon = { Icon(painter = painterResource("visibility.xml"), contentDescription = "Visibility Options") },
                     onClick = component::onVisibilityTabClicked
                 )
 
                 BottomBarItems(
                     label = "Guidelines",
                     selected = activeComponent is AxesComponent.Child.GuidelinesChild,
-                    icon = { Icon(painter = createPainter(GUIDELINES), contentDescription = "Guidelines") },
+                    icon = { Icon(painter = painterResource("grid_on.xml"), contentDescription = "Guidelines") },
                     onClick = component::onGuidelinesTabClicked
                 )
 
                 BottomBarItems(
                     label = "Axis Lines",
                     selected = activeComponent is AxesComponent.Child.AxisLinesChild,
-                    icon = { Icon(painter = createPainter(AXIS_LINES), contentDescription = "Axis Lines") },
+                    icon = { Icon(painter = painterResource("line_axis.xml"), contentDescription = "Axis Lines") },
                     onClick = component::onAxisLinesTabClicked
                 )
 
                 BottomBarItems(
                     label = "Labels",
                     selected = activeComponent is AxesComponent.Child.LabelsChild,
-                    icon = { Icon(painter = createPainter(LABELS), contentDescription = "Labels") },
+                    icon = { Icon(painter = painterResource("label.xml"), contentDescription = "Labels") },
                     onClick = component::onLabelsTabClicked
                 )
             }
