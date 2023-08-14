@@ -92,7 +92,6 @@ fun Shapes(
                 color = selectionColor(selected == PLUS),
                 modifier = Modifier
                     .size(28.dp)
-                    //.clip(PlusShape) TODO
                     .clickable { onSelected(PLUS) }
             )
         }

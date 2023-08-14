@@ -9,7 +9,7 @@ internal fun DrawScope.markerPlus(
     length: Float?,
     coordinates: Pair<Float, Float>
 ) {
-    val sizeLessNull = (length ?: 10f).div(2f)
+    val sizeLessNull = length ?: 5f
 
     drawLine(
         color = color ?: Color.White,
