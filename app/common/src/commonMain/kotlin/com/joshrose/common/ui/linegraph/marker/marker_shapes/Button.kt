@@ -12,14 +12,16 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 @Suppress("DuplicatedCode")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Plus(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier, contentDescription = "Plus Marker Shape") {
+fun Button(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier, contentDescription = "Button Marker Shape") {
+        val stroke = Stroke(width = size.width.div(4f))
         val path = Path().apply {
             moveTo(x = 0f, y = size.center.y)
             lineTo(x = size.width, y = size.center.y)
             moveTo(x = size.center.x, y = 0f)
             lineTo(x = size.center.x, y = size.height)
         }
-        drawPath(path = path, color = color, style = Stroke(width = size.width.div(4f)))
+        drawPath(path = path, color = color, style = stroke)
+        drawCircle(color = color, radius = size.width.div(2f), style = stroke)
     }
 }

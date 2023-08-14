@@ -25,6 +25,8 @@ fun Shapes(
     onSelected: (Markers) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val size = 28.dp
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -37,7 +39,7 @@ fun Shapes(
             textAlign = TextAlign.Center
         )
 
-        Spacer(Modifier.height(5.dp))
+        Spacer(Modifier.height(10.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -47,41 +49,41 @@ fun Shapes(
             Circle(
                 color = selectionColor(selected == CIRCLE),
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(size)
                     .clip(CircleShape)
                     .clickable { onSelected(CIRCLE) }
             )
             Square(
                 color = selectionColor(selected == SQUARE),
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(size)
                     .clip(RectangleShape)
                     .clickable { onSelected(SQUARE) }
             )
             Triangle(
                 color = selectionColor(selected == TRIANGLE),
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(size)
                     .clip(TriangleShape)
                     .clickable { onSelected(TRIANGLE) }
             )
             Diamond(
                 color = selectionColor(selected == DIAMOND),
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(size)
                     .clip(DiamondShape)
                     .clickable { onSelected(DIAMOND) }
             )
             TriangleDown(
                 color = selectionColor(selected == TRIANGLE_DOWN),
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(size)
                     .clip(TriangleDownShape)
                     .clickable { onSelected(TRIANGLE_DOWN) }
             )
         }
 
-        Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(15.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -90,9 +92,32 @@ fun Shapes(
         ) {
             Plus(
                 color = selectionColor(selected == PLUS),
+                modifier = Modifier.size(size).clickable { onSelected(PLUS) }
+            )
+            Button(
+                color = selectionColor(selected == BUTTON),
                 modifier = Modifier
-                    .size(28.dp)
-                    .clickable { onSelected(PLUS) }
+                    .size(size)
+                    .clip(CircleShape)
+                    .clickable { onSelected(BUTTON) }
+            )
+            Snowflake(
+                color = selectionColor(selected == SNOWFLAKE),
+                modifier = Modifier
+                    .size(size)
+                    .clip(CircleShape)
+                    .clickable { onSelected(SNOWFLAKE) }
+            )
+            Cracker(
+                color = selectionColor(selected == CRACKER),
+                modifier = Modifier
+                    .size(size)
+                    .clip(CircleShape)
+                    .clickable { onSelected(CRACKER) }
+            )
+            X(
+                color = selectionColor(selected == X),
+                modifier = Modifier.size(size).clickable { onSelected(X) }
             )
         }
     }

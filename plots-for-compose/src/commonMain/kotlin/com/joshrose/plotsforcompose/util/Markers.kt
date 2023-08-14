@@ -5,12 +5,12 @@ enum class Markers {
     SQUARE,
     CIRCLE,
     TRIANGLE,
-    PLUS, // 2
-    X, // 2
+    PLUS,
+    X,
     DIAMOND,
     TRIANGLE_DOWN,
-    SNOWFLAKE, // 2
-    BUTTON, // 2
-    CRACKER, // 2
+    SNOWFLAKE,
+    BUTTON,
+    CRACKER,
     HEART // 3
 }

@@ -11,10 +11,8 @@ internal fun DrawScope.markerSnowflake(
     length: Float?,
     coordinates: Pair<Float, Float>
 ) {
-    val sizeLessNull = length ?: 10f
-    val halfSize = sizeLessNull.div(2f)
-    val diagonalLength = hypot(x = halfSize, y = halfSize).times(2f)
-    println("Length: $sizeLessNull, Hypot: $diagonalLength")
+    val sizeLessNull = length ?: 5f
+    val diagonalLength = hypot(x = sizeLessNull, y = sizeLessNull)
 
     drawLine(
         color = color ?: Color.White,

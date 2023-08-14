@@ -14,13 +14,13 @@ internal fun DrawScope.markerButton(
 
     markerPlus(
         color = color ?: Color.White,
-        length = sizeLessNull.times(2f),
+        length = sizeLessNull,
         coordinates = coordinates
     )
 
     drawCircle(
         color = color ?: Color.White,
-        radius = radius ?: 5f,
+        radius = sizeLessNull,
         center = Offset(coordinates.first, coordinates.second),
         style = Stroke(width = sizeLessNull.div(2f))
     )
