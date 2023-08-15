@@ -1,18 +1,14 @@
 package com.joshrose.common.ui.linegraph.marker
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.joshrose.common.ui.linegraph.marker.marker_shapes.*
@@ -25,8 +21,6 @@ fun Shapes(
     onSelected: (Markers) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val size = 28.dp
-
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,41 +40,29 @@ fun Shapes(
             horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Circle(
+            circle.draw(properties = CanvasProperties(
                 color = selectionColor(selected == CIRCLE),
-                modifier = Modifier
-                    .size(size)
-                    .clip(CircleShape)
-                    .clickable { onSelected(CIRCLE) }
-            )
-            Square(
+                action = { onSelected(it) }
+            ))
+            square.draw(properties = CanvasProperties(
                 color = selectionColor(selected == SQUARE),
-                modifier = Modifier
-                    .size(size)
-                    .clip(RectangleShape)
-                    .clickable { onSelected(SQUARE) }
-            )
-            Triangle(
+                action = { onSelected(it) }
+            ))
+            triangle.draw(properties = CanvasProperties(
                 color = selectionColor(selected == TRIANGLE),
-                modifier = Modifier
-                    .size(size)
-                    .clip(TriangleShape)
-                    .clickable { onSelected(TRIANGLE) }
-            )
-            Diamond(
+                shape = TriangleShape,
+                action = { onSelected(it) }
+            ))
+            diamond.draw(properties = CanvasProperties(
                 color = selectionColor(selected == DIAMOND),
-                modifier = Modifier
-                    .size(size)
-                    .clip(DiamondShape)
-                    .clickable { onSelected(DIAMOND) }
-            )
-            TriangleDown(
+                shape = DiamondShape,
+                action = { onSelected(it) }
+            ))
+            triangleDown.draw(properties = CanvasProperties(
                 color = selectionColor(selected == TRIANGLE_DOWN),
-                modifier = Modifier
-                    .size(size)
-                    .clip(TriangleDownShape)
-                    .clickable { onSelected(TRIANGLE_DOWN) }
-            )
+                shape = TriangleDownShape,
+                action = { onSelected(it) }
+            ))
         }
 
         Spacer(Modifier.height(15.dp))
@@ -90,35 +72,36 @@ fun Shapes(
             horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Plus(
+            plus.draw(properties = CanvasProperties(
                 color = selectionColor(selected == PLUS),
-                modifier = Modifier.size(size).clickable { onSelected(PLUS) }
-            )
-            Button(
+                action = { onSelected(it) }
+            ))
+            button.draw(properties = CanvasProperties(
                 color = selectionColor(selected == BUTTON),
-                modifier = Modifier
-                    .size(size)
-                    .clip(CircleShape)
-                    .clickable { onSelected(BUTTON) }
-            )
-            Snowflake(
+                action = { onSelected(it) }
+            ))
+            snowflake.draw(properties = CanvasProperties(
                 color = selectionColor(selected == SNOWFLAKE),
-                modifier = Modifier
-                    .size(size)
-                    .clip(CircleShape)
-                    .clickable { onSelected(SNOWFLAKE) }
-            )
-            Cracker(
+                action = { onSelected(it) }
+            ))
+            cracker.draw(properties = CanvasProperties(
                 color = selectionColor(selected == CRACKER),
-                modifier = Modifier
-                    .size(size)
-                    .clip(CircleShape)
-                    .clickable { onSelected(CRACKER) }
-            )
-            X(
+                action = { onSelected(it) }
+            ))
+            x.draw(properties = CanvasProperties(
                 color = selectionColor(selected == X),
-                modifier = Modifier.size(size).clickable { onSelected(X) }
-            )
+                action = { onSelected(it) }
+            ))
+        }
+
+        Spacer(Modifier.height(15.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
         }
     }
 }

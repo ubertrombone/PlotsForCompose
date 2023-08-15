@@ -2,14 +2,18 @@ package com.joshrose.common.ui.linegraph.marker.marker_shapes
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
+import com.joshrose.plotsforcompose.util.Markers.SQUARE
 
 @OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun Square(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier, contentDescription = "Square Marker Shape") {
-        drawRect(color = color, size = size)
+val square = DrawShape {
+    Canvas(
+        modifier = it.modifier
+            .size(it.size)
+            .clickable { it.action(SQUARE) },
+        contentDescription = "Square Marker Shape"
+    ) {
+        drawRect(color = it.color, size = size)
     }
 }

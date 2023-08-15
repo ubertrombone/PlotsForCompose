@@ -2,23 +2,29 @@ package com.joshrose.common.ui.linegraph.marker.marker_shapes
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.size
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.geometry.center
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
+import com.joshrose.plotsforcompose.util.Markers.TRIANGLE_DOWN
 
 @OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TriangleDown(color: Color, modifier: Modifier = Modifier) {
-    Canvas(modifier = modifier, contentDescription = "Upside Down Triangle Marker Shape") {
-        drawPath(path = triangleDownPath(size), color = color)
+val triangleDown = DrawShape {
+    Canvas(
+        modifier = it.modifier
+            .size(it.size)
+            .clip(it.shape)
+            .clickable { it.action(TRIANGLE_DOWN) },
+        contentDescription = "Upside Down Triangle Marker Shape"
+    ) {
+        drawPath(path = triangleDownPath(size), color = it.color)
     }
 }
 
