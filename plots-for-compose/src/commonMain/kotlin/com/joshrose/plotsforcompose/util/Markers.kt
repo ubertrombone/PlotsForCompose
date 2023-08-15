@@ -1,7 +1,7 @@
 package com.joshrose.plotsforcompose.util
 
 enum class Markers {
-    STAR, // 3
+    STAR,
     SQUARE,
     CIRCLE,
     TRIANGLE,
@@ -12,5 +12,5 @@ enum class Markers {
     SNOWFLAKE,
     BUTTON,
     CRACKER,
-    HEART // 3
+    HEART
 }
