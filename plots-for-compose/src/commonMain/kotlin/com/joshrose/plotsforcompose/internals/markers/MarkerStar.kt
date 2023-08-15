@@ -8,6 +8,7 @@ import com.joshrose.plotsforcompose.internals.util.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
 
+@Suppress("DuplicatedCode")
 internal fun DrawScope.markerStar(
     color: Color?,
     size: Float?,

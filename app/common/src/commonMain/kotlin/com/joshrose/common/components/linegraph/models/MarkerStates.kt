@@ -8,6 +8,6 @@ import com.joshrose.plotsforcompose.util.Markers.CIRCLE
 @Parcelize
 data class MarkerStates(
     var markers: Boolean = false,
-    var markerSize: Float = 4f,
+    var markerSize: Float = 5f,
     var markerShape: Markers = CIRCLE
 ) : Parcelable

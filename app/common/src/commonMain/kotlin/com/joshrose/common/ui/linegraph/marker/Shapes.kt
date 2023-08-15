@@ -63,6 +63,11 @@ fun Shapes(
                 shape = TriangleDownShape,
                 action = { onSelected(it) }
             ))
+            star.draw(properties = CanvasProperties(
+                color = selectionColor(selected == STAR),
+                shape = StarShape,
+                action = { onSelected(it) }
+            ))
         }
 
         Spacer(Modifier.height(15.dp))
