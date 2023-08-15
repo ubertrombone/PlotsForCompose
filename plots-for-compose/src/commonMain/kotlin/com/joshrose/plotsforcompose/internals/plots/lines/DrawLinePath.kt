@@ -1,5 +1,6 @@
 package com.joshrose.plotsforcompose.internals.plots.lines
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -22,71 +23,33 @@ fun DrawScope.drawLinePath(
         )
     )
 
-    // TODO: Refactor these so that each shape is drawn independently of the coordinate in a canvas.
     coordinates.forEach {
+        val markerProperties = MarkerProperties(
+            color = configs.markerColor,
+            size = configs.markerSize?.toPx(),
+            coordinates = it
+        )
         if (configs.markers) {
             when (configs.markerShape) {
-                Markers.SQUARE -> markerSquare(
-                    color = configs.markerColor,
-                    size = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.TRIANGLE -> markerTriangle(
-                    color = configs.markerColor,
-                    size = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.TRIANGLE_DOWN -> markerTriangleDown(
-                    color = configs.markerColor,
-                    size = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.X -> markerX(
-                    color = configs.markerColor,
-                    length = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.PLUS -> markerPlus(
-                    color = configs.markerColor,
-                    length = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.DIAMOND -> markerDiamond(
-                    color = configs.markerColor,
-                    size = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.SNOWFLAKE -> markerSnowflake(
-                    color = configs.markerColor,
-                    length = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.BUTTON -> markerButton(
-                    color = configs.markerColor,
-                    radius = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.CRACKER -> markerCracker(
-                    color = configs.markerColor,
-                    radius = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.STAR -> markerStar(
-                    color = configs.markerColor,
-                    size = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                Markers.HEART -> markerHeart(
-                    color = configs.markerColor,
-                    size = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
-                else -> markerCircle(
-                    color = configs.markerColor,
-                    radius = configs.markerSize?.toPx(),
-                    coordinates = it
-                )
+                Markers.SQUARE -> markerSquare(markerProperties)
+                Markers.TRIANGLE -> markerTriangle(markerProperties)
+                Markers.TRIANGLE_DOWN -> markerTriangleDown(markerProperties)
+                Markers.X -> markerX(markerProperties)
+                Markers.PLUS -> markerPlus(markerProperties)
+                Markers.DIAMOND -> markerDiamond(markerProperties)
+                Markers.SNOWFLAKE -> markerSnowflake(markerProperties)
+                Markers.BUTTON -> markerButton(markerProperties)
+                Markers.CRACKER -> markerCracker(markerProperties)
+                Markers.STAR -> markerStar(markerProperties)
+                Markers.HEART -> markerHeart(markerProperties)
+                else -> markerCircle(markerProperties)
             }
         }
     }
 }
+
+data class MarkerProperties(
+    val color: Color? = null,
+    val size: Float? = null,
+    val coordinates: Pair<Float, Float>
+)

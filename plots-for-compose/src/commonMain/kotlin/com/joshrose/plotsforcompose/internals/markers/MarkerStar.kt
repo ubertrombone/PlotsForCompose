@@ -4,19 +4,17 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import com.joshrose.plotsforcompose.internals.plots.lines.MarkerProperties
 import com.joshrose.plotsforcompose.internals.util.toRadians
 import kotlin.math.cos
 import kotlin.math.sin
 
 @Suppress("DuplicatedCode")
-internal fun DrawScope.markerStar(
-    color: Color?,
-    size: Float?,
-    coordinates: Pair<Float, Float>
-) {
-    val sizeLessNull = (size ?: 10f).times(2f)
+internal fun DrawScope.markerStar(markerProperties: MarkerProperties) {
+    val sizeLessNull = (markerProperties.size ?: 10f).times(2f)
 
-    val topPoint = Offset(x = coordinates.first, y = coordinates.second.minus(sizeLessNull.div(2f)))
+    val topPoint =
+        Offset(x = markerProperties.coordinates.first, y = markerProperties.coordinates.second.minus(sizeLessNull.div(2f)))
     val bottomRightPoint = Offset(
         x = sizeLessNull
             .times(sin(18f.toRadians()))
@@ -51,5 +49,5 @@ internal fun DrawScope.markerStar(
         close()
     }
 
-    drawPath(path = path, color = color ?: Color.White)
+    drawPath(path = path, color = markerProperties.color ?: Color.White)
 }

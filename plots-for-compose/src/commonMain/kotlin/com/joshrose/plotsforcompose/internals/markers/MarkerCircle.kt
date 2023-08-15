@@ -3,15 +3,12 @@ package com.joshrose.plotsforcompose.internals.markers
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import com.joshrose.plotsforcompose.internals.plots.lines.MarkerProperties
 
-internal fun DrawScope.markerCircle(
-    color: Color?,
-    radius: Float?,
-    coordinates: Pair<Float, Float>
-) {
+internal fun DrawScope.markerCircle(markerProperties: MarkerProperties) {
     drawCircle(
-        color = color ?: Color.White,
-        radius = radius ?: 5f,
-        center = Offset(coordinates.first, coordinates.second)
+        color = markerProperties.color ?: Color.White,
+        radius = markerProperties.size ?: 5f,
+        center = Offset(markerProperties.coordinates.first, markerProperties.coordinates.second)
     )
 }
