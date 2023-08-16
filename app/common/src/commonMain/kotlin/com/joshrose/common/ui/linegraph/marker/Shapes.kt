@@ -63,11 +63,6 @@ fun Shapes(
                 shape = TriangleDownShape,
                 action = { onSelected(it) }
             ))
-            star.draw(properties = CanvasProperties(
-                color = selectionColor(selected == STAR),
-                shape = StarShape,
-                action = { onSelected(it) }
-            ))
         }
 
         Spacer(Modifier.height(15.dp))
@@ -93,8 +88,9 @@ fun Shapes(
                 color = selectionColor(selected == CRACKER),
                 action = { onSelected(it) }
             ))
-            x.draw(properties = CanvasProperties(
-                color = selectionColor(selected == X),
+            star.draw(properties = CanvasProperties(
+                color = selectionColor(selected == STAR),
+                shape = StarShape,
                 action = { onSelected(it) }
             ))
         }
@@ -106,7 +102,15 @@ fun Shapes(
             horizontalArrangement = Arrangement.spacedBy(20.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
+            x.draw(properties = CanvasProperties(
+                color = selectionColor(selected == X),
+                action = { onSelected(it) }
+            ))
+            heart.draw(properties = CanvasProperties(
+                color = selectionColor(selected == HEART),
+                shape = HeartShape,
+                action = onSelected
+            ))
         }
     }
 }
