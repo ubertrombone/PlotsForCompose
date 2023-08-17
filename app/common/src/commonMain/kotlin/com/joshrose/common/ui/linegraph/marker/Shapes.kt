@@ -103,12 +103,13 @@ fun Shapes(
             verticalAlignment = Alignment.CenterVertically
         ) {
             x.draw(properties = CanvasProperties(
+                size = 24.dp,
                 color = selectionColor(selected == X),
                 action = { onSelected(it) }
             ))
             heart.draw(properties = CanvasProperties(
+                size = 22.dp,
                 color = selectionColor(selected == HEART),
-                shape = HeartShape,
                 action = onSelected
             ))
         }

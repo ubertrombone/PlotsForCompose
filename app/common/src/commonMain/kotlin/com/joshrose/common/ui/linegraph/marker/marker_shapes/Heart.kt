@@ -16,6 +16,8 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import com.joshrose.plotsforcompose.internals.util.toRadians
 import com.joshrose.plotsforcompose.util.Markers.HEART
+import kotlin.math.abs
+import kotlin.math.atan2
 import kotlin.math.sin
 import kotlin.math.tan
 
@@ -24,7 +26,7 @@ val heart = DrawShape {
     Canvas(
         modifier = it.modifier
             .size(it.size)
-            .clip(it.shape)
+            .clip(HeartShape)
             .clickable { it.action(HEART) },
         contentDescription = "Heart Marker Shape"
     ) {
@@ -46,39 +48,44 @@ private fun drawHeart(size: Size): Path {
 
     val topPointXOffset = halfSize.plus(radius).times(tan(37f.toRadians()))
     val leftPoint = Offset(x = size.center.x.minus(topPointXOffset), y = size.center.y.minus(radius))
-    val rightPoint = Offset(x = size.center.x.plus(topPointXOffset), y = size.center.y.minus(radius))
 
     val circleYCenterOffset = radius.times(sin(30f.toRadians()))
     val circleCenterY = leftPoint.y.minus(circleYCenterOffset)
+    val leftCircleCenterX = size.center.x.minus(radius)
+    val rightCircleCenterX = size.center.x.plus(radius)
+
+    val startAngle = atan2(
+        y = circleCenterY.minus(circleCenterY),
+        x = size.center.x.minus(leftCircleCenterX)
+    )
+    val bottomLeftAngle = atan2(
+        y = leftPoint.y.minus(circleCenterY),
+        x = leftPoint.x.minus(leftCircleCenterX)
+    )
+    val leftAngleBetween = Math.toDegrees(startAngle.minus(bottomLeftAngle).toDouble())
+    val rightAngleBetween = 180f.minus(abs(leftAngleBetween)).plus(180f)
 
     return Path().apply {
         moveTo(x = bottomPoint.x, y = bottomPoint.y)
         lineTo(x = leftPoint.x, y = leftPoint.y)
-        lineTo(x = rightPoint.x, y = rightPoint.y)
-        close()
-
-        addArc(
-            oval = Rect(
-                center = Offset(x = size.center.x.minus(radius), y = circleCenterY),
+        arcTo(
+            rect = Rect(
+                center = Offset(x = leftCircleCenterX, y = circleCenterY),
                 radius = radius
             ),
-            startAngleDegrees = 0f,
-            sweepAngleDegrees = 360f
+            startAngleDegrees = abs(leftAngleBetween).toFloat(),
+            sweepAngleDegrees = 360f.minus(abs(leftAngleBetween).toFloat()),
+            forceMoveTo = false
         )
-
-        addArc(
-            oval = Rect(
-                center = Offset(x = size.center.x.plus(radius), y = circleCenterY),
+        arcTo(
+            rect = Rect(
+                center = Offset(x = rightCircleCenterX, y = circleCenterY),
                 radius = radius
             ),
-            startAngleDegrees = 0f,
-            sweepAngleDegrees = 360f
+            startAngleDegrees = 180f,
+            sweepAngleDegrees = rightAngleBetween.toFloat(),
+            forceMoveTo = false
         )
-
-        moveTo(x = size.center.x.minus(topPointXOffset), y = circleCenterY)
-        lineTo(x = size.center.x.plus(topPointXOffset), y = circleCenterY)
-        lineTo(x = size.center.x.plus(topPointXOffset), y = circleCenterY.plus(circleYCenterOffset))
-        lineTo(x = size.center.x.minus(topPointXOffset), y = circleCenterY.plus(circleYCenterOffset))
-        close()
+        lineTo(x = bottomPoint.x, y = bottomPoint.y)
     }
 }
