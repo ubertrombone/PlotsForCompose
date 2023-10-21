@@ -12,7 +12,9 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 fun Modifier.repeatingClickable(
     interactionSource: InteractionSource,
@@ -21,19 +23,19 @@ fun Modifier.repeatingClickable(
 ): Modifier = composed {
     val currentClickListener by rememberUpdatedState(onClick)
     val isEnabled by rememberUpdatedState(enabled)
-    val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     pointerInput(interactionSource, enabled) {
-        awaitEachGesture {
-            val down = awaitFirstDown(requireUnconsumed = false)
-            val heldButtonJob = scope.launch {
-                while (isEnabled && down.pressed) {
-                    currentClickListener()
-                    delay(100)
+        coroutineScope {
+            awaitEachGesture {
+                val down = awaitFirstDown(requireUnconsumed = false)
+                launch {
+                    while (isEnabled && down.pressed) {
+                        currentClickListener()
+                        delay(100)
+                    }
                 }
+                waitForUpOrCancellation()
             }
-            waitForUpOrCancellation()
-            heldButtonJob.cancel()
         }
     }
 }
