@@ -28,13 +28,14 @@ fun Modifier.repeatingClickable(
         coroutineScope {
             awaitEachGesture {
                 val down = awaitFirstDown(requireUnconsumed = false)
-                launch {
+                val job = launch {
                     while (isEnabled && down.pressed) {
                         currentClickListener()
                         delay(100)
                     }
                 }
                 waitForUpOrCancellation()
+                job.cancel()
             }
         }
     }
